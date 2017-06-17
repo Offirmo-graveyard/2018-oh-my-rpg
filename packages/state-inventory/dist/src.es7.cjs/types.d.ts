@@ -1,0 +1,10 @@
+import { Item } from '@oh-my-rpg/definitions';
+declare type InventoryCoordinates = number;
+interface State {
+    unslotted_capacity: number;
+    slotted: {
+        [slot: string]: Item | null;
+    };
+    unslotted: Array<Item | null>;
+}
+export { InventoryCoordinates, Item, State };

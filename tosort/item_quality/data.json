@@ -1,0 +1,10 @@
+{
+	"entries": [
+		"common",
+		"uncommon",
+		"rare",
+		"epic",
+		"legendary",
+		"artifact"
+	]
+}

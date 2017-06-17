@@ -1,0 +1,7 @@
+{
+	"adventure_archetype|true,bored_log|confrontation": "[TOTRANSLATE:adventure_archetype|true,bored_log|confrontation]",
+	"adventure_archetype|true,bored_log|resolution": "[TOTRANSLATE:adventure_archetype|true,bored_log|resolution]",
+	"adventure_archetype|true,caravan|confrontation": "[TOTRANSLATE:adventure_archetype|true,caravan|confrontation]",
+	"adventure_archetype|true,caravan|resolution": "[TOTRANSLATE:adventure_archetype|true,caravan|resolution]",
+	"lang": "en"
+}
