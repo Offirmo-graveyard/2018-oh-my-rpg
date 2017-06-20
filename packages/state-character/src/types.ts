@@ -17,11 +17,13 @@ type CharacterStat = Enum<typeof CharacterStat>
 /////////////////////
 
 interface State {
-	agility: number
-	health: number
 	level: number
-	luck: number
+
+	health: number
 	mana: number
+
+	agility: number
+	luck: number
 	strength: number
 	vitality: number
 	wisdom: number

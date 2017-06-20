@@ -73,7 +73,7 @@ function generate_random_demo_weapon(): Weapon {
 
 /////////////////////
 
-function enhance_weapon(weapon: Weapon): Weapon {
+function enhance(weapon: Weapon): Weapon {
 	if (weapon.enhancement_level >= MAX_ENHANCEMENT_LEVEL)
 		throw new Error(`can't enhance a weapon above the maximal enhancement level!`)
 
@@ -91,7 +91,7 @@ export {
 	MAX_STRENGTH,
 	factory,
 	generate_random_demo_weapon,
-	enhance_weapon,
+	enhance,
 }
 
 /////////////////////

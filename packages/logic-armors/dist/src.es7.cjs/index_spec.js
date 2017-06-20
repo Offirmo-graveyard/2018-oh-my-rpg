@@ -43,10 +43,10 @@ describe('🛡 👕  armor logic:', function () {
         it('should allow enhancing a armor', function () {
             let armor = _1.generate_random_demo_armor();
             armor.enhancement_level = 0;
-            armor = _1.enhance_armor(armor);
+            armor = _1.enhance(armor);
             expect(armor.enhancement_level, 1).to.equal(1);
             for (let i = 2; i <= _1.MAX_ENHANCEMENT_LEVEL; ++i) {
-                armor = _1.enhance_armor(armor);
+                armor = _1.enhance(armor);
                 expect(armor.enhancement_level, i).to.equal(i);
             }
             expect(armor.enhancement_level, 'max').to.equal(_1.MAX_ENHANCEMENT_LEVEL);
@@ -54,10 +54,10 @@ describe('🛡 👕  armor logic:', function () {
         it('should fail if armor is already at max enhancement level', () => {
             let armor = _1.generate_random_demo_armor();
             armor.enhancement_level = _1.MAX_ENHANCEMENT_LEVEL;
-            function enhance() {
-                armor = _1.enhance_armor(armor);
+            function attempt_enhance() {
+                armor = _1.enhance(armor);
             }
-            expect(enhance).to.throw('maximal enhancement level!');
+            expect(attempt_enhance).to.throw('maximal enhancement level!');
         });
     });
 });

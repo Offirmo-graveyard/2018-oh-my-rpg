@@ -5,7 +5,7 @@ import {
 	MAX_ENHANCEMENT_LEVEL,
 	factory,
 	generate_random_demo_armor,
-	enhance_armor,
+	enhance,
 } from '.'
 
 describe('🛡 👕  armor logic:', function() {
@@ -56,11 +56,11 @@ describe('🛡 👕  armor logic:', function() {
 			let armor = generate_random_demo_armor()
 			armor.enhancement_level = 0
 
-			armor = enhance_armor(armor)
+			armor = enhance(armor)
 			expect(armor.enhancement_level, 1).to.equal(1)
 
 			for(let i = 2; i <= MAX_ENHANCEMENT_LEVEL; ++i) {
-				armor = enhance_armor(armor)
+				armor = enhance(armor)
 				expect(armor.enhancement_level, i).to.equal(i)
 			}
 
@@ -71,11 +71,11 @@ describe('🛡 👕  armor logic:', function() {
 			let armor = generate_random_demo_armor()
 			armor.enhancement_level = MAX_ENHANCEMENT_LEVEL
 
-			function enhance() {
-				armor = enhance_armor(armor)
+			function attempt_enhance() {
+				armor = enhance(armor)
 			}
 
-			expect(enhance).to.throw('maximal enhancement level!')
+			expect(attempt_enhance).to.throw('maximal enhancement level!')
 		})
 	})
 })

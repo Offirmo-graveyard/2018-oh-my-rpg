@@ -61,12 +61,12 @@ function generate_random_demo_armor() {
 }
 exports.generate_random_demo_armor = generate_random_demo_armor;
 /////////////////////
-function enhance_armor(armor) {
+function enhance(armor) {
     if (armor.enhancement_level >= MAX_ENHANCEMENT_LEVEL)
         throw new Error(`can't enhance an armor above the maximal enhancement level!`);
     armor.enhancement_level++;
     return armor;
 }
-exports.enhance_armor = enhance_armor;
+exports.enhance = enhance;
 /////////////////////
 //# sourceMappingURL=index.js.map

@@ -51,6 +51,8 @@ function pick_random_bad_archetype(rng) {
 }
 exports.pick_random_bad_archetype = pick_random_bad_archetype;
 function generate_random_coin_gain(rng, range, player_level) {
+    if (range === types_1.CoinsGain.none)
+        return 0;
     const level_multiplier = player_level * COINS_GAIN_MULTIPLIER_PER_LEVEL;
     const interval = COINS_GAIN_RANGES[range];
     return random_1.Random.integer(interval[0] * level_multiplier, interval[1] * level_multiplier)(rng);

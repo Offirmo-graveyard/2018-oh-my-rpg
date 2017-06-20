@@ -5,7 +5,7 @@ import {
 	MAX_ENHANCEMENT_LEVEL,
 	factory,
 	generate_random_demo_weapon,
-	enhance_weapon,
+	enhance,
 } from '.'
 
 describe('⚔ 🏹  weapon logic:', function() {
@@ -56,11 +56,11 @@ describe('⚔ 🏹  weapon logic:', function() {
 			let weapon = generate_random_demo_weapon()
 			weapon.enhancement_level = 0
 
-			weapon = enhance_weapon(weapon)
+			weapon = enhance(weapon)
 			expect(weapon.enhancement_level, 1).to.equal(1)
 
 			for(let i = 2; i <= MAX_ENHANCEMENT_LEVEL; ++i) {
-				weapon = enhance_weapon(weapon)
+				weapon = enhance(weapon)
 				expect(weapon.enhancement_level, i).to.equal(i)
 			}
 
@@ -71,11 +71,11 @@ describe('⚔ 🏹  weapon logic:', function() {
 			let weapon = generate_random_demo_weapon()
 			weapon.enhancement_level = MAX_ENHANCEMENT_LEVEL
 
-			function enhance() {
-				weapon = enhance_weapon(weapon)
+			function attempt_enhance() {
+				weapon = enhance(weapon)
 			}
 
-			expect(enhance).to.throw('maximal enhancement level!')
+			expect(attempt_enhance).to.throw('maximal enhancement level!')
 		})
 	})
 })

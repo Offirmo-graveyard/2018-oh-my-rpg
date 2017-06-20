@@ -61,12 +61,12 @@ function generate_random_demo_weapon() {
 }
 exports.generate_random_demo_weapon = generate_random_demo_weapon;
 /////////////////////
-function enhance_weapon(weapon) {
+function enhance(weapon) {
     if (weapon.enhancement_level >= MAX_ENHANCEMENT_LEVEL)
         throw new Error(`can't enhance a weapon above the maximal enhancement level!`);
     weapon.enhancement_level++;
     return weapon;
 }
-exports.enhance_weapon = enhance_weapon;
+exports.enhance = enhance;
 /////////////////////
 //# sourceMappingURL=index.js.map

@@ -43,10 +43,10 @@ describe('⚔ 🏹  weapon logic:', function () {
         it('should allow enhancing a weapon', function () {
             let weapon = _1.generate_random_demo_weapon();
             weapon.enhancement_level = 0;
-            weapon = _1.enhance_weapon(weapon);
+            weapon = _1.enhance(weapon);
             expect(weapon.enhancement_level, 1).to.equal(1);
             for (let i = 2; i <= _1.MAX_ENHANCEMENT_LEVEL; ++i) {
-                weapon = _1.enhance_weapon(weapon);
+                weapon = _1.enhance(weapon);
                 expect(weapon.enhancement_level, i).to.equal(i);
             }
             expect(weapon.enhancement_level, 'max').to.equal(_1.MAX_ENHANCEMENT_LEVEL);
@@ -54,10 +54,10 @@ describe('⚔ 🏹  weapon logic:', function () {
         it('should fail if weapon is already at max enhancement level', () => {
             let weapon = _1.generate_random_demo_weapon();
             weapon.enhancement_level = _1.MAX_ENHANCEMENT_LEVEL;
-            function enhance() {
-                weapon = _1.enhance_weapon(weapon);
+            function attempt_enhance() {
+                weapon = _1.enhance(weapon);
             }
-            expect(enhance).to.throw('maximal enhancement level!');
+            expect(attempt_enhance).to.throw('maximal enhancement level!');
         });
     });
 });

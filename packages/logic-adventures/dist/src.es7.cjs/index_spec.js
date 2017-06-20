@@ -22,7 +22,7 @@ describe('⚔ 💰  adventures logic:', function () {
         });
     });
     describe('coin gain picker', function () {
-        it('should provide an amount corresponding to the gain category', () => {
+        it('should provide an amount proportional to the gain category', () => {
             const rng = random_1.Random.engines.mt19937().seed(789);
             const level = 1 / 1.1; // hack
             const cgN1 = _1.generate_random_coin_gain(rng, _1.CoinsGain.none, level);
@@ -54,6 +54,7 @@ describe('⚔ 💰  adventures logic:', function () {
             expect(cgH2).to.be.gte(900);
             expect(cgH2).to.be.lte(2000);
         });
+        it('should provide an amount proportional to the player level');
     });
 });
 //# sourceMappingURL=index_spec.js.map

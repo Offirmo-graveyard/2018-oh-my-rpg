@@ -7,6 +7,19 @@ import {
 
 /////////////////////
 
+const CHARACTER_STATS = [
+	CharacterStat.agility,
+	CharacterStat.health,
+	CharacterStat.level,
+	CharacterStat.luck,
+	CharacterStat.mana,
+	CharacterStat.strength,
+	CharacterStat.vitality,
+	CharacterStat.wisdom,
+]
+
+///////
+
 function factory(): State {
 	return {
 		level: 1,
@@ -39,6 +52,7 @@ export {
 	CharacterStat,
 	State,
 
+	CHARACTER_STATS,
 	factory,
 	increase_stat,
 }

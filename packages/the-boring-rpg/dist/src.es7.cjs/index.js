@@ -1,14 +1,17 @@
 "use strict";
-/////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
+/////////////////////
 const definitions_1 = require("@oh-my-rpg/definitions");
+const state_character_1 = require("@oh-my-rpg/state-character");
 const state_inventory_1 = require("@oh-my-rpg/state-inventory");
 const state_prng_1 = require("@oh-my-rpg/state-prng");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
 const logic_armors_1 = require("@oh-my-rpg/logic-armors");
+const logic_adventures_1 = require("@oh-my-rpg/logic-adventures");
 /////////////////////
 function factory() {
     let state = {
+        characteristics: state_character_1.factory(),
         inventory: state_inventory_1.factory(),
         prng: state_prng_1.factory(),
     };
@@ -35,27 +38,20 @@ function factory() {
 }
 exports.factory = factory;
 /////////////////////
-function receive_item(state, item) {
-    state.inventory = state_inventory_1.add_item(state.inventory, item);
-    return state;
-}
-function equip_item(state, coordinates) {
-    state.inventory = state_inventory_1.equip_item(state.inventory, coordinates);
-    return state;
-}
-/////////////////////
-function play(state) {
-    // TODO
-    return state;
-}
-function factory(rng, archetype) {
-    const { hid, good } = archetype;
-    const { agility, health, luck, mana, strength, vitality, wisdom, tokens } = archetype.post.gains;
+function instantiate_adventure_archetype(rng, aa, player_level, inventory) {
+    const { hid, good, post: { gains: { level: should_gain_a_level, agility, health, luck, mana, strength, vitality, wisdom, coins: coins_gain, tokens, armor: should_receive_armor, weapon: should_receive_weapon, armor_improvement: improved_armor, weapon_improvement: improved_weapon, } } } = aa;
+    const new_player_level = player_level + (should_gain_a_level ? 1 : 0);
+    const weapon = should_receive_weapon
+        ? logic_weapons_1.factory(rng)
+        : null;
+    const armor = should_receive_armor
+        ? logic_armors_1.factory(rng)
+        : null;
     return {
         hid,
         good,
         gains: {
-            level: number,
+            level: should_gain_a_level ? 1 : 0,
             health,
             mana,
             strength,
@@ -63,22 +59,75 @@ function factory(rng, archetype) {
             vitality,
             wisdom,
             luck,
-            coins: number,
+            coins: logic_adventures_1.generate_random_coin_gain(rng, coins_gain, new_player_level),
             tokens,
-            weapon: null | Weapon,
-            armor: null | Armor,
-            improved_weapon_index: null | number,
-            improved_armor_index: null | number
+            weapon,
+            armor,
+            improved_weapon,
+            improved_armor,
         }
     };
 }
-exports.factory = factory;
+function generate_random_good_adventure(rng, player_level, inventory) {
+    const aa = logic_adventures_1.pick_random_good_archetype(rng);
+    return instantiate_adventure_archetype(rng, aa, player_level, inventory);
+}
+function receive_item(state, item) {
+    // TODO handler inventory full
+    state.inventory = state_inventory_1.add_item(state.inventory, item);
+    return state;
+}
+function play_good(state) {
+    const adventure = generate_random_good_adventure(state.prng, state.characteristics.level, state.inventory);
+    const { hid, gains: { level, health, mana, strength, agility, vitality, wisdom, luck, coins, tokens, weapon, armor, improved_weapon, improved_armor, } } = adventure;
+    // TODO store hid for no repetition
+    if (level)
+        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.level);
+    if (health)
+        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.health, health);
+    if (mana)
+        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.mana, mana);
+    if (strength)
+        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.strength, strength);
+    if (agility)
+        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.agility, agility);
+    if (vitality)
+        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.vitality, vitality);
+    if (wisdom)
+        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.wisdom, wisdom);
+    if (luck)
+        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.luck, luck);
+    // TODO wallet
+    if (weapon)
+        receive_item(state, weapon);
+    if (armor)
+        receive_item(state, armor);
+    if (improved_weapon) {
+        let weapon_to_enhance = state_inventory_1.get_item_in_slot(state.inventory, definitions_1.InventorySlot.weapon);
+        if (weapon_to_enhance && weapon_to_enhance.enhancement_level < logic_weapons_1.MAX_ENHANCEMENT_LEVEL)
+            logic_weapons_1.enhance(weapon_to_enhance);
+        // TODO enhance another weapon as fallback
+    }
+    if (improved_armor) {
+        const armor_to_enhance = state_inventory_1.get_item_in_slot(state.inventory, definitions_1.InventorySlot.armor);
+        if (armor_to_enhance && armor_to_enhance.enhancement_level < logic_armors_1.MAX_ENHANCEMENT_LEVEL)
+            logic_armors_1.enhance(armor_to_enhance);
+        // TODO enhance another armor as fallback
+    }
+    return state;
+}
 /////////////////////
-// for demo purpose, all characteristics having the same probability + also random enhancement level
-function generate_random_demo_adventure() {
-    const rng = Random.engines.mt19937().autoSeed();
-    const archetype = pick_random_archetype(rng);
-    return factory(rng, archetype);
+function play(state) {
+    // TODO good / bad
+    return play_good(state);
+}
+function equip_item(state, coordinates) {
+    state.inventory = state_inventory_1.equip_item(state.inventory, coordinates);
+    return state;
+}
+function unequip_item(state, slot) {
+    state.inventory = state_inventory_1.unequip_item(state.inventory, slot);
+    return state;
 }
 /////////////////////
 //# sourceMappingURL=index.js.map

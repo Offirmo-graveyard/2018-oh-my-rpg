@@ -64,6 +64,9 @@ function pick_random_bad_archetype(rng: Engine): AdventureArchetype {
 }
 
 function generate_random_coin_gain(rng: Engine, range: CoinsGain, player_level: number): number {
+	if (range === CoinsGain.none)
+		return 0
+
 	const level_multiplier = player_level * COINS_GAIN_MULTIPLIER_PER_LEVEL
 	const interval = COINS_GAIN_RANGES[range]
 

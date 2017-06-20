@@ -73,7 +73,7 @@ function generate_random_demo_armor(): Armor {
 
 /////////////////////
 
-function enhance_armor(armor: Armor): Armor {
+function enhance(armor: Armor): Armor {
 	if (armor.enhancement_level >= MAX_ENHANCEMENT_LEVEL)
 		throw new Error(`can't enhance an armor above the maximal enhancement level!`)
 
@@ -91,7 +91,7 @@ export {
 	MAX_STRENGTH,
 	factory,
 	generate_random_demo_armor,
-	enhance_armor,
+	enhance,
 }
 
 /////////////////////
