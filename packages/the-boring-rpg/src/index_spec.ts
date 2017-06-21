@@ -1,3 +1,4 @@
+import { xxx_internal_reset_prng_cache } from '@oh-my-rpg/state-prng'
 
 import {
 	get_unequiped_item_count,
@@ -5,10 +6,12 @@ import {
 } from '@oh-my-rpg/state-inventory'
 
 import {
-	factory
+	factory,
+	play,
 } from '.'
 
 describe('⚔ 👑 😪  The Boring RPG', function() {
+	beforeEach(() => xxx_internal_reset_prng_cache())
 
 	describe('🆕 initial state', function() {
 
@@ -17,6 +20,38 @@ describe('⚔ 👑 😪  The Boring RPG', function() {
 
 			expect(get_equiped_item_count(state.inventory), 'e').to.equal(2)
 			expect(get_unequiped_item_count(state.inventory), 'u').to.equal(0)
+
+		})
+	})
+
+	describe('user actions', function() {
+
+		describe('play', function() {
+
+			context('when the cooldown has NOT passed', function() {
+				it('should generate a negative adventure')
+				it('should not decrease user stats')
+				it('should punish the user by increasing the cooldown')
+			})
+
+			context('when the cooldown has passed', function() {
+
+				it('should sometime generate an adventure', () => {
+					const state = play(factory())
+
+					expect(state.last_adventure).not.to.be.null
+					expect(state.last_adventure!.good).not.to.be.true
+				})
+
+				it('should update state according to the adventure output', () => {
+
+				})
+
+				it('should sometime generate a battle')
+			})
+		})
+
+		describe('inventory management', function() {
 
 		})
 	})

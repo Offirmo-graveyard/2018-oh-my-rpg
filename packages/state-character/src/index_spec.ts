@@ -43,7 +43,7 @@ describe('🤕 ❤️  Character stats logic', function() {
 			expect(decrease).to.throw('invalid amount!')
 		})
 
-		it('should work', function() {
+		it('should work in nominal case', function() {
 			let state = factory()
 
 			state = increase_stat(state, CharacterStat.agility)

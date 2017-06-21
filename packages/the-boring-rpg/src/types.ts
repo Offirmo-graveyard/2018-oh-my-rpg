@@ -8,12 +8,6 @@ import { State as PRNGState } from '@oh-my-rpg/state-prng'
 
 /////////////////////
 
-interface State {
-	characteristics: CharacterState
-	inventory: InventoryState
-	prng: PRNGState
-}
-
 interface Adventure {
 	hid: string
 	good: boolean
@@ -35,11 +29,18 @@ interface Adventure {
 	}
 }
 
+interface State {
+	characteristics: CharacterState
+	inventory: InventoryState
+	prng: PRNGState
+	last_adventure: Adventure | null
+}
+
 /////////////////////
 
 export {
-	State,
 	Adventure,
+	State,
 }
 
 /////////////////////

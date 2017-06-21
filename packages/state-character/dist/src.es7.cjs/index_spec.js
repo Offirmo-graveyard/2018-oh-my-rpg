@@ -29,7 +29,7 @@ describe('🤕 ❤️  Character stats logic', function () {
             }
             expect(decrease).to.throw('invalid amount!');
         });
-        it('should work', function () {
+        it('should work in nominal case', function () {
             let state = _1.factory();
             state = _1.increase_stat(state, _1.CharacterStat.agility);
             expect(state.agility).to.equal(2);

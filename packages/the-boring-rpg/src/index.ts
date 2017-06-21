@@ -64,15 +64,16 @@ import {
 /////////////////////
 
 function factory(): State {
-	let state = {
+	let state: State = {
 		characteristics: character_state_factory(),
 		inventory: inventory_state_factory(),
 		prng: prng_state_factory(),
+		last_adventure: null,
 	}
 
-	let prng = get_prng(state.prng)
+	let rng = get_prng(state.prng)
 
-	const start_weapon = weapon_factory(prng, {
+	const start_weapon = weapon_factory(rng, {
 		base_hid: 'spoon',
 		qualifier1_hid: 'used',
 		qualifier2_hid: 'noob',
@@ -82,16 +83,17 @@ function factory(): State {
 	state = receive_item(state, start_weapon)
 	state = equip_item(state, 0)
 
-	const start_armor = armor_factory(prng, {
+	const start_armor = armor_factory(rng, {
 		base_hid: 'socks',
 		qualifier1_hid: 'used',
 		qualifier2_hid: 'noob',
 		quality: 'common',
+		base_strength: 1,
 	})
 	state = receive_item(state, start_armor)
 	state = equip_item(state, 0)
 
-	//state.prng = prng_update_use_count(state.prng, prng)
+	//state.prng = prng_update_use_count(state.prng, rng)
 
 	return state
 }
@@ -165,8 +167,10 @@ function receive_item(state: State, item: Item): State {
 }
 
 function play_good(state: State): State {
+	let rng = get_prng(state.prng)
+
 	const adventure = generate_random_good_adventure(
-		state.prng,
+		rng,
 		state.characteristics.level,
 		state.inventory,
 	)
@@ -217,6 +221,8 @@ function play_good(state: State): State {
 		// TODO enhance another armor as fallback
 	}
 
+	state.prng = prng_update_use_count(state.prng, rng)
+
 	return state
 }
 
@@ -224,7 +230,6 @@ function play_good(state: State): State {
 
 function play(state: State): State {
 	// TODO good / bad
-
 	return play_good(state)
 }
 
@@ -238,10 +243,21 @@ function unequip_item(state: State, slot: InventorySlot): State {
 	return state
 }
 
+function discard_item(state: State, coordinates: InventoryCoordinates): State {
+	// TODO
+	return state
+}
+
 /////////////////////
 
 export {
-	factory
+	Adventure,
+	State,
+	factory,
+	play,
+	equip_item,
+	unequip_item,
+	discard_item,
 }
 
 /////////////////////

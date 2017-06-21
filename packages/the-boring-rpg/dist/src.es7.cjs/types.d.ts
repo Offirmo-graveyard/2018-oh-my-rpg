@@ -3,11 +3,6 @@ import { Armor } from '@oh-my-rpg/logic-armors';
 import { State as CharacterState } from '@oh-my-rpg/state-character';
 import { State as InventoryState } from '@oh-my-rpg/state-inventory';
 import { State as PRNGState } from '@oh-my-rpg/state-prng';
-interface State {
-    characteristics: CharacterState;
-    inventory: InventoryState;
-    prng: PRNGState;
-}
 interface Adventure {
     hid: string;
     good: boolean;
@@ -28,4 +23,10 @@ interface Adventure {
         improved_armor: boolean;
     };
 }
-export { State, Adventure };
+interface State {
+    characteristics: CharacterState;
+    inventory: InventoryState;
+    prng: PRNGState;
+    last_adventure: Adventure | null;
+}
+export { Adventure, State };

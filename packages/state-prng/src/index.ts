@@ -75,7 +75,7 @@ function get_prng(state: Readonly<State>): MT19937 {
 
 		// should never happen
 		if (cached_prng.getUseCount() !== 0)
-			throw new Error(`state-prng unexpected case: need to update a partially used prng!`)
+			throw new Error(`state-prng get_prng() unexpected case with current cached implementation: need to update a partially used prng!`)
 
 		cached_prng.discard(state.use_count)
 		update_made = true

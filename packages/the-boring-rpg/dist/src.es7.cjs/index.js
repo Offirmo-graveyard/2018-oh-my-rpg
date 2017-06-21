@@ -14,9 +14,10 @@ function factory() {
         characteristics: state_character_1.factory(),
         inventory: state_inventory_1.factory(),
         prng: state_prng_1.factory(),
+        last_adventure: null,
     };
-    let prng = state_prng_1.get_prng(state.prng);
-    const start_weapon = logic_weapons_1.factory(prng, {
+    let rng = state_prng_1.get_prng(state.prng);
+    const start_weapon = logic_weapons_1.factory(rng, {
         base_hid: 'spoon',
         qualifier1_hid: 'used',
         qualifier2_hid: 'noob',
@@ -25,15 +26,16 @@ function factory() {
     });
     state = receive_item(state, start_weapon);
     state = equip_item(state, 0);
-    const start_armor = logic_armors_1.factory(prng, {
+    const start_armor = logic_armors_1.factory(rng, {
         base_hid: 'socks',
         qualifier1_hid: 'used',
         qualifier2_hid: 'noob',
         quality: 'common',
+        base_strength: 1,
     });
     state = receive_item(state, start_armor);
     state = equip_item(state, 0);
-    //state.prng = prng_update_use_count(state.prng, prng)
+    //state.prng = prng_update_use_count(state.prng, rng)
     return state;
 }
 exports.factory = factory;
@@ -78,7 +80,8 @@ function receive_item(state, item) {
     return state;
 }
 function play_good(state) {
-    const adventure = generate_random_good_adventure(state.prng, state.characteristics.level, state.inventory);
+    let rng = state_prng_1.get_prng(state.prng);
+    const adventure = generate_random_good_adventure(rng, state.characteristics.level, state.inventory);
     const { hid, gains: { level, health, mana, strength, agility, vitality, wisdom, luck, coins, tokens, weapon, armor, improved_weapon, improved_armor, } } = adventure;
     // TODO store hid for no repetition
     if (level)
@@ -114,6 +117,7 @@ function play_good(state) {
             logic_armors_1.enhance(armor_to_enhance);
         // TODO enhance another armor as fallback
     }
+    state.prng = state_prng_1.update_use_count(state.prng, rng);
     return state;
 }
 /////////////////////
@@ -121,13 +125,21 @@ function play(state) {
     // TODO good / bad
     return play_good(state);
 }
+exports.play = play;
 function equip_item(state, coordinates) {
     state.inventory = state_inventory_1.equip_item(state.inventory, coordinates);
     return state;
 }
+exports.equip_item = equip_item;
 function unequip_item(state, slot) {
     state.inventory = state_inventory_1.unequip_item(state.inventory, slot);
     return state;
 }
+exports.unequip_item = unequip_item;
+function discard_item(state, coordinates) {
+    // TODO
+    return state;
+}
+exports.discard_item = discard_item;
 /////////////////////
 //# sourceMappingURL=index.js.map
