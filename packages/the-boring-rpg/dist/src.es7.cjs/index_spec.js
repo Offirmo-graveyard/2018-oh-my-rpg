@@ -23,14 +23,16 @@ describe('⚔ 👑 😪  The Boring RPG', function () {
                 it('should sometime generate an adventure', () => {
                     const state = _1.play(_1.factory());
                     expect(state.last_adventure).not.to.be.null;
-                    expect(state.last_adventure.good).not.to.be.true;
+                    expect(state.last_adventure.good).to.be.true;
                 });
-                it('should update state according to the adventure output', () => {
-                });
+                it('should update state according to the adventure output');
                 it('should sometime generate a battle');
             });
         });
         describe('inventory management', function () {
+            it('should allow equiping an item, correctly swapping with an already equiped item');
+            it('should allow un-equiping an item');
+            it('should allow discarding an item');
         });
     });
 });

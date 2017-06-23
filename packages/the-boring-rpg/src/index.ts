@@ -175,7 +175,9 @@ function play_good(state: State): State {
 		state.inventory,
 	)
 
-	const {hid, gains : {
+	state.last_adventure = adventure
+
+	const {gains : {
 		level,
 		health,
 		mana,

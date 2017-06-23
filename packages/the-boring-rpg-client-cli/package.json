@@ -1,0 +1,16 @@
+{
+  "name": "@oh-my-rpg/the-boring-rpg-client-cli",
+  "version": "0.0.1",
+  "description": "The Boring RPG command line client",
+  "main": "index.js",
+  "author": "Offirmo <offirmo.net@gmail.com>",
+  "license": "UNLICENSED",
+	"scripts": {
+		"start": "node index.js"
+	},
+	"dependencies": {
+		"@offirmo/cli-toolbox": "^0.3.0",
+		"@oh-my-rpg/the-boring-rpg": "^0.0.1",
+		"tslib": "^1.7.1"
+	}
+}

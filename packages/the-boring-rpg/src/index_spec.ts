@@ -1,3 +1,4 @@
+
 import { xxx_internal_reset_prng_cache } from '@oh-my-rpg/state-prng'
 
 import {
@@ -40,12 +41,10 @@ describe('⚔ 👑 😪  The Boring RPG', function() {
 					const state = play(factory())
 
 					expect(state.last_adventure).not.to.be.null
-					expect(state.last_adventure!.good).not.to.be.true
+					expect(state.last_adventure!.good).to.be.true
 				})
 
-				it('should update state according to the adventure output', () => {
-
-				})
+				it('should update state according to the adventure output')
 
 				it('should sometime generate a battle')
 			})
@@ -53,6 +52,9 @@ describe('⚔ 👑 😪  The Boring RPG', function() {
 
 		describe('inventory management', function() {
 
+			it('should allow equiping an item, correctly swapping with an already equiped item')
+			it('should allow un-equiping an item')
+			it('should allow discarding an item')
 		})
 	})
 })

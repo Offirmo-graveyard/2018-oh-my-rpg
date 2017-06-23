@@ -82,7 +82,8 @@ function receive_item(state, item) {
 function play_good(state) {
     let rng = state_prng_1.get_prng(state.prng);
     const adventure = generate_random_good_adventure(rng, state.characteristics.level, state.inventory);
-    const { hid, gains: { level, health, mana, strength, agility, vitality, wisdom, luck, coins, tokens, weapon, armor, improved_weapon, improved_armor, } } = adventure;
+    state.last_adventure = adventure;
+    const { gains: { level, health, mana, strength, agility, vitality, wisdom, luck, coins, tokens, weapon, armor, improved_weapon, improved_armor, } } = adventure;
     // TODO store hid for no repetition
     if (level)
         state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.level);
