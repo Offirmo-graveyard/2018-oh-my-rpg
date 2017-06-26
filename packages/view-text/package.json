@@ -1,7 +1,7 @@
 {
-	"name": "@oh-my-rpg/logic-adventures",
+	"name": "@oh-my-rpg/view-text",
 	"version": "0.0.1",
-	"description": "predefined adventures logic",
+	"description": "view to string (using unicode and emojis)",
 	"main": "dist/src.es7.cjs/index.js",
 	"typings": "dist/src.es7.cjs/index.js",
 	"author": "Offirmo <offirmo.net@gmail.com>",
@@ -15,12 +15,12 @@
 		"dev": "npm run build:dev:watch"
 	},
 	"dependencies": {
-		"@oh-my-rpg/data": "^0.0.1",
 		"@oh-my-rpg/definitions": "^0.0.1",
 		"@oh-my-rpg/logic-armors": "^0.0.1",
 		"@oh-my-rpg/logic-weapons": "^0.0.1",
-		"@offirmo/random": "^2.0.4",
-		"typescript-string-enums": "^0.3.4"
+		"@oh-my-rpg/logic-adventures": "^0.0.1",
+		"@oh-my-rpg/state-character": "^0.0.1",
+		"@oh-my-rpg/state-inventory": "^0.0.1"
 	},
 	"devDependencies": {
 		"tslib": "^1.7.1"

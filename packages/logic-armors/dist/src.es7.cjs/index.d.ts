@@ -6,4 +6,5 @@ declare const MAX_STRENGTH = 20;
 declare function factory(rng: Engine, hints?: Partial<Armor>): Armor;
 declare function generate_random_demo_armor(): Armor;
 declare function enhance(armor: Armor): Armor;
-export { ArmorPartType, Armor, MAX_ENHANCEMENT_LEVEL, MIN_STRENGTH, MAX_STRENGTH, factory, generate_random_demo_armor, enhance };
+declare function get_damage_reduction_interval(armor: Armor): [number, number];
+export { ArmorPartType, Armor, MAX_ENHANCEMENT_LEVEL, MIN_STRENGTH, MAX_STRENGTH, factory, generate_random_demo_armor, enhance, get_damage_reduction_interval };

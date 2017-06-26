@@ -1,3 +1,4 @@
+import { InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
 import { Random, Engine } from '@offirmo/random'
 
 import {
@@ -16,14 +17,14 @@ describe('🛡 👕  armor logic:', function() {
 			const rng: Engine = Random.engines.mt19937().seed(789)
 			const armor1 = factory(rng)
 			expect(armor1).to.deep.equal({
-				slot: 'armor',
+				slot: InventorySlot.armor,
 				base_hid: 'socks',
 				qualifier1_hid: 'onyx',
 				qualifier2_hid: 'tormentor',
-				quality: 'legendary',
+				quality: ItemQuality.legendary,
 				base_strength: 14,
 				enhancement_level: 0
-			} as Armor)
+			})
 			expect((rng as any).getUseCount()).to.equal(5)
 
 			const armor2 = factory(rng)
@@ -38,14 +39,14 @@ describe('🛡 👕  armor logic:', function() {
 				quality: 'artifact',
 			})
 			expect(armor).to.deep.equal({
-				slot: 'armor',
+				slot: InventorySlot.armor,
 				base_hid: 'shoes',
 				qualifier1_hid: 'skeleton',
 				qualifier2_hid: 'training',
-				quality: 'artifact',
+				quality: ItemQuality.artifact,
 				base_strength: 19,
 				enhancement_level: 0
-			} as Armor)
+			})
 			expect((rng as any).getUseCount()).to.equal(3) // 2 less random picks
 		})
 	})

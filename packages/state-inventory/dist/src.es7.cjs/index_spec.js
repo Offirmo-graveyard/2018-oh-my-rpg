@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const definitions_1 = require("@oh-my-rpg/definitions");
 const _1 = require(".");
-describe('📦📦📦  Inventory logic', function () {
+describe('📦 📦 📦  Inventory logic', function () {
     const EXPECTED_UNSLOTTED_INVENTORY_LENGTH = 20;
     describe('🆕 initial state', function () {
         it('should have correct defaults', function () {

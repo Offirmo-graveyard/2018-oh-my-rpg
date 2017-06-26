@@ -6,4 +6,6 @@ declare const MAX_STRENGTH = 20;
 declare function factory(rng: Engine, hints?: Partial<Weapon>): Weapon;
 declare function generate_random_demo_weapon(): Weapon;
 declare function enhance(weapon: Weapon): Weapon;
-export { WeaponPartType, Weapon, MAX_ENHANCEMENT_LEVEL, MIN_STRENGTH, MAX_STRENGTH, factory, generate_random_demo_weapon, enhance };
+declare function get_damage_interval(weapon: Weapon): [number, number];
+declare function get_medium_damage(weapon: Weapon): number;
+export { WeaponPartType, Weapon, MAX_ENHANCEMENT_LEVEL, MIN_STRENGTH, MAX_STRENGTH, factory, generate_random_demo_weapon, enhance, get_damage_interval, get_medium_damage };

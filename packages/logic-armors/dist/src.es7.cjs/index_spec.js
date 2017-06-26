@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const definitions_1 = require("@oh-my-rpg/definitions");
 const random_1 = require("@offirmo/random");
 const _1 = require(".");
 describe('🛡 👕  armor logic:', function () {
@@ -8,11 +9,11 @@ describe('🛡 👕  armor logic:', function () {
             const rng = random_1.Random.engines.mt19937().seed(789);
             const armor1 = _1.factory(rng);
             expect(armor1).to.deep.equal({
-                slot: 'armor',
+                slot: definitions_1.InventorySlot.armor,
                 base_hid: 'socks',
                 qualifier1_hid: 'onyx',
                 qualifier2_hid: 'tormentor',
-                quality: 'legendary',
+                quality: definitions_1.ItemQuality.legendary,
                 base_strength: 14,
                 enhancement_level: 0
             });
@@ -28,11 +29,11 @@ describe('🛡 👕  armor logic:', function () {
                 quality: 'artifact',
             });
             expect(armor).to.deep.equal({
-                slot: 'armor',
+                slot: definitions_1.InventorySlot.armor,
                 base_hid: 'shoes',
                 qualifier1_hid: 'skeleton',
                 qualifier2_hid: 'training',
-                quality: 'artifact',
+                quality: definitions_1.ItemQuality.artifact,
                 base_strength: 19,
                 enhancement_level: 0
             });

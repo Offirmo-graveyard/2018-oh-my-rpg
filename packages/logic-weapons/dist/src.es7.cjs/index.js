@@ -6,6 +6,7 @@ const definitions_1 = require("@oh-my-rpg/definitions");
 const static_weapon_data = require("@oh-my-rpg/data/src/weapon_component");
 const types_1 = require("./types");
 exports.WeaponPartType = types_1.WeaponPartType;
+const constants_1 = require("./constants");
 const WEAPON_BASES = static_weapon_data.filter((weapon_component) => weapon_component.type === types_1.WeaponPartType.base);
 const WEAPON_QUALIFIERS1 = static_weapon_data.filter((weapon_component) => weapon_component.type === types_1.WeaponPartType.qualifier1);
 const WEAPON_QUALIFIERS2 = static_weapon_data.filter((weapon_component) => weapon_component.type === types_1.WeaponPartType.qualifier2);
@@ -68,5 +69,24 @@ function enhance(weapon) {
     return weapon;
 }
 exports.enhance = enhance;
+///////
+function get_damage_interval(weapon) {
+    const spread = constants_1.QUALITY_STRENGTH_SPREAD[weapon.quality];
+    const strength_multiplier = constants_1.QUALITY_STRENGTH_MULTIPLIER[weapon.quality];
+    const enhancement_multiplier = (1 + constants_1.ENHANCEMENT_MULTIPLIER * weapon.enhancement_level);
+    // constrain interval
+    const min_strength = Math.max(weapon.base_strength - spread, 1);
+    const max_strength = Math.min(weapon.base_strength + spread, 20);
+    return [
+        Math.round(min_strength * strength_multiplier * enhancement_multiplier),
+        Math.round(max_strength * strength_multiplier * enhancement_multiplier)
+    ];
+}
+exports.get_damage_interval = get_damage_interval;
+function get_medium_damage(weapon) {
+    const damage_range = get_damage_interval(weapon);
+    return (damage_range[0] + damage_range[1]) / 2;
+}
+exports.get_medium_damage = get_medium_damage;
 /////////////////////
 //# sourceMappingURL=index.js.map

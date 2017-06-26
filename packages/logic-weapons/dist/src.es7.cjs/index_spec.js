@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const definitions_1 = require("@oh-my-rpg/definitions");
 const random_1 = require("@offirmo/random");
 const _1 = require(".");
 describe('⚔ 🏹  weapon logic:', function () {
@@ -8,11 +9,11 @@ describe('⚔ 🏹  weapon logic:', function () {
             const rng = random_1.Random.engines.mt19937().seed(789);
             const weapon1 = _1.factory(rng);
             expect(weapon1).to.deep.equal({
-                slot: 'weapon',
+                slot: definitions_1.InventorySlot.weapon,
                 base_hid: 'luth',
                 qualifier1_hid: 'simple',
                 qualifier2_hid: 'mercenary',
-                quality: 'legendary',
+                quality: definitions_1.ItemQuality.legendary,
                 base_strength: 14,
                 enhancement_level: 0
             });
@@ -28,11 +29,11 @@ describe('⚔ 🏹  weapon logic:', function () {
                 quality: 'artifact',
             });
             expect(weapon).to.deep.equal({
-                slot: 'weapon',
+                slot: definitions_1.InventorySlot.weapon,
                 base_hid: 'spoon',
                 qualifier1_hid: 'composite',
                 qualifier2_hid: 'twink',
-                quality: 'artifact',
+                quality: definitions_1.ItemQuality.artifact,
                 base_strength: 19,
                 enhancement_level: 0
             });
@@ -58,6 +59,47 @@ describe('⚔ 🏹  weapon logic:', function () {
                 weapon = _1.enhance(weapon);
             }
             expect(attempt_enhance).to.throw('maximal enhancement level!');
+        });
+    });
+    describe('damage', function () {
+        describe('interval', function () {
+            it('should work', () => {
+                const [min, max] = _1.get_damage_interval({
+                    slot: definitions_1.InventorySlot.weapon,
+                    base_hid: 'luth',
+                    qualifier1_hid: 'simple',
+                    qualifier2_hid: 'mercenary',
+                    quality: 'legendary',
+                    base_strength: 14,
+                    enhancement_level: 3,
+                });
+                expect(min).to.be.a.number;
+                expect(max).to.be.a.number;
+                expect(max).to.be.above(min);
+                expect(min).to.be.above(291); // min for legend+3
+                expect(min).to.be.below(5824); // max for legend+3
+                expect(max).to.be.above(291); // min for legend+3
+                expect(max).to.be.below(5824); // max for legend+3
+                expect(min).to.equal(3494);
+                expect(max).to.equal(4659);
+            });
+        });
+        describe('medium', function () {
+            it('should work', () => {
+                const med = _1.get_medium_damage({
+                    slot: definitions_1.InventorySlot.weapon,
+                    base_hid: 'luth',
+                    qualifier1_hid: 'simple',
+                    qualifier2_hid: 'mercenary',
+                    quality: 'legendary',
+                    base_strength: 14,
+                    enhancement_level: 3,
+                });
+                expect(med).to.be.a.number;
+                expect(med).to.be.above(291); // min for legend+3
+                expect(med).to.be.below(5824); // max for legend+3
+                expect(med).to.equal((4659 + 3494) / 2);
+            });
         });
     });
 });

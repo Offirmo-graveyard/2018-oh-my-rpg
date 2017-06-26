@@ -19,6 +19,6 @@ TODO:
 
 
 
-		"@offirmo/random": "^2.0.4",
-		"lodash": "^4.17.4",
-		"typescript-string-enums": "^0.3.4"
+"@offirmo/random": "^2.0.4",
+"lodash": "^4.17.4",
+"typescript-string-enums": "^0.3.4"

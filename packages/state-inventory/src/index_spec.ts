@@ -21,7 +21,7 @@ import {
 	get_item_in_slot,
 } from '.'
 
-describe('📦📦📦  Inventory logic', function() {
+describe('📦 📦 📦  Inventory logic', function() {
 	const EXPECTED_UNSLOTTED_INVENTORY_LENGTH = 20
 
 	describe('🆕 initial state', function() {

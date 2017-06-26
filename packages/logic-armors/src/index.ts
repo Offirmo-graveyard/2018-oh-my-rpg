@@ -81,6 +81,11 @@ function enhance(armor: Armor): Armor {
 	return armor
 }
 
+function get_damage_reduction_interval(armor: Armor): [number, number] {
+	// TODO
+	return [0, 1]
+}
+
 /////////////////////
 
 export {
@@ -92,6 +97,7 @@ export {
 	factory,
 	generate_random_demo_armor,
 	enhance,
+	get_damage_reduction_interval,
 }
 
 /////////////////////

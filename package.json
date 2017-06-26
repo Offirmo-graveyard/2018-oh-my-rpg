@@ -4,12 +4,11 @@
 	"description": "Web based RPG",
 	"author": "Offirmo <offirmo.net@gmail.com>",
 	"license": "UNLICENSED",
-	"dependencies": {
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"@offirmo/cli-toolbox": "^0.3.0",
 		"@offirmo/unit-test-toolbox": "^1.0.0",
-		"@types/lodash": "^4.14.65",
+		"@types/lodash": "^4.14.66",
 		"lerna": "^2.0.0-rc.5",
 		"typescript": "^2.3.4"
 	}

@@ -68,5 +68,10 @@ function enhance(armor) {
     return armor;
 }
 exports.enhance = enhance;
+function get_damage_reduction_interval(armor) {
+    // TODO
+    return [0, 1];
+}
+exports.get_damage_reduction_interval = get_damage_reduction_interval;
 /////////////////////
 //# sourceMappingURL=index.js.map
