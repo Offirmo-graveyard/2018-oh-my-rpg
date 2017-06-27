@@ -1,7 +1,7 @@
 /////////////////////
-import { ItemQuality, InventorySlot } from '@oh-my-rpg/definitions'
-import { Weapon, get_damage_interval as get_weapon_damage_interval } from '@oh-my-rpg/logic-weapons'
-import { Armor, get_damage_reduction_interval as get_armor_damage_reduction_interval } from '@oh-my-rpg/logic-armors'
+import { ItemQuality } from '@oh-my-rpg/definitions'
+import { Weapon } from '@oh-my-rpg/logic-weapons'
+import { Armor } from '@oh-my-rpg/logic-armors'
 
 /////////////////////
 

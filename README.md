@@ -25,8 +25,8 @@ Example: see `packages/the boring rpg`
 ## Misc
 
 ### Interesting reads:
-https://github.com/Offirmo-team/wiki/wiki/RPG
-
+* https://github.com/Offirmo-team/wiki/wiki/RPG
+* https://gamedevelopment.tutsplus.com/categories/game-design
 
 
 git push --set-upstream origin master

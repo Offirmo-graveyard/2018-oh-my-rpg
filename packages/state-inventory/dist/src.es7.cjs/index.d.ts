@@ -10,4 +10,5 @@ declare function get_unequiped_item_count(state: Readonly<State>): number;
 declare function get_item_count(state: Readonly<State>): number;
 declare function get_item_at_coordinates(state: Readonly<State>, coordinates: InventoryCoordinates): Item | null;
 declare function get_item_in_slot(state: Readonly<State>, slot: InventorySlot): Item | null;
-export { InventorySlot, InventoryCoordinates, Item, State, factory, add_item, remove_item, equip_item, unequip_item, get_equiped_item_count, get_unequiped_item_count, get_item_count, get_item_at_coordinates, get_item_in_slot };
+declare function iterables_unslotted(state: Readonly<State>): IterableIterator<Item | null>;
+export { InventorySlot, InventoryCoordinates, Item, State, factory, add_item, remove_item, equip_item, unequip_item, get_equiped_item_count, get_unequiped_item_count, get_item_count, get_item_at_coordinates, get_item_in_slot, iterables_unslotted };

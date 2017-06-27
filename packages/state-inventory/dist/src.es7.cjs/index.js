@@ -110,5 +110,9 @@ function get_item_in_slot(state, slot) {
     return state.slotted[slot] || null;
 }
 exports.get_item_in_slot = get_item_in_slot;
+function* iterables_unslotted(state) {
+    yield* state.unslotted;
+}
+exports.iterables_unslotted = iterables_unslotted;
 /////////////////////
 //# sourceMappingURL=index.js.map

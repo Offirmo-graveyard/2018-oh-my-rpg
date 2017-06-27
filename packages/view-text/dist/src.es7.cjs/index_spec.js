@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const definitions_1 = require("@oh-my-rpg/definitions");
+const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
+const logic_armors_1 = require("@oh-my-rpg/logic-armors");
+const state_inventory_1 = require("@oh-my-rpg/state-inventory");
 const _1 = require(".");
 describe('🔠  view to text', function () {
     describe('💠  item quality rendering', function () {
@@ -93,6 +96,58 @@ describe('🔠  view to text', function () {
                 expect(str).to.include('embroidered');
                 expect(str).to.include('warfield_king');
                 expect(str).to.include('+5');
+                console.log(str);
+            });
+        });
+    });
+    describe('⚔ 🛡  equipment rendering', function () {
+        context('when empty', function () {
+            it('should render properly', () => {
+                let inventory = state_inventory_1.factory();
+                const str = _1.render_equipment(inventory);
+                expect(str).to.be.a.string;
+                console.log(str);
+            });
+        });
+        context('when not empty', function () {
+            it('should render properly', () => {
+                let inventory = state_inventory_1.factory();
+                inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
+                inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
+                inventory = state_inventory_1.equip_item(inventory, 0);
+                inventory = state_inventory_1.equip_item(inventory, 1);
+                const str = _1.render_equipment(inventory);
+                expect(str).to.be.a.string;
+                console.log(str);
+            });
+        });
+    });
+    describe('📦  inventory rendering', function () {
+        context('when empty', function () {
+            it('should render properly', () => {
+                let inventory = state_inventory_1.factory();
+                const str = _1.render_inventory(inventory);
+                expect(str).to.be.a.string;
+                expect(str).to.contain(' 1.');
+                expect(str).not.to.contain(' 0.');
+                expect(str).to.contain('20.');
+                console.log(str);
+            });
+        });
+        context('when not empty', function () {
+            it('should render properly', () => {
+                let inventory = state_inventory_1.factory();
+                inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
+                inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
+                inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
+                inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
+                inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
+                inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
+                inventory = state_inventory_1.remove_item(inventory, 4);
+                const str = _1.render_inventory(inventory);
+                expect(str).to.be.a.string;
+                expect(str).to.contain(' 1.');
+                expect(str).to.contain('20.');
                 console.log(str);
             });
         });

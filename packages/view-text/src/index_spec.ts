@@ -1,4 +1,14 @@
 import { InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
+import { generate_random_demo_weapon } from '@oh-my-rpg/logic-weapons'
+import { generate_random_demo_armor } from '@oh-my-rpg/logic-armors'
+
+import {
+	State as InventoryState,
+	factory as inventory_factory,
+	equip_item,
+	add_item,
+	remove_item,
+} from '@oh-my-rpg/state-inventory'
 
 import { Random, Engine } from '@offirmo/random'
 
@@ -7,6 +17,8 @@ import {
 	get_html_color_for_quality,
 	render_weapon,
 	render_armor,
+	render_equipment,
+	render_inventory,
 } from '.'
 
 describe('🔠  view to text', function() {
@@ -124,4 +136,71 @@ describe('🔠  view to text', function() {
 		})
 	})
 
+	describe('⚔ 🛡  equipment rendering', function() {
+
+		context('when empty', function() {
+
+			it('should render properly', () => {
+				let inventory = inventory_factory()
+				const str = render_equipment(inventory)
+				expect(str).to.be.a.string
+
+				console.log(str)
+			})
+		})
+
+		context('when not empty', function() {
+
+			it('should render properly', () => {
+				let inventory = inventory_factory()
+				inventory = add_item(inventory, generate_random_demo_weapon())
+				inventory = add_item(inventory, generate_random_demo_armor())
+				inventory = equip_item(inventory, 0)
+				inventory = equip_item(inventory, 1)
+
+				const str = render_equipment(inventory)
+				expect(str).to.be.a.string
+
+				console.log(str)
+			})
+		})
+	})
+
+	describe('📦  inventory rendering', function() {
+
+		context('when empty', function() {
+
+			it('should render properly', () => {
+				let inventory = inventory_factory()
+				const str = render_inventory(inventory)
+				expect(str).to.be.a.string
+				expect(str).to.contain(' 1.')
+				expect(str).not.to.contain(' 0.')
+				expect(str).to.contain('20.')
+
+				console.log(str)
+			})
+		})
+
+		context('when not empty', function() {
+
+			it('should render properly', () => {
+				let inventory = inventory_factory()
+				inventory = add_item(inventory, generate_random_demo_weapon())
+				inventory = add_item(inventory, generate_random_demo_weapon())
+				inventory = add_item(inventory, generate_random_demo_armor())
+				inventory = add_item(inventory, generate_random_demo_weapon())
+				inventory = add_item(inventory, generate_random_demo_armor())
+				inventory = add_item(inventory, generate_random_demo_armor())
+				inventory = remove_item(inventory, 4)
+
+				const str = render_inventory(inventory)
+				expect(str).to.be.a.string
+				expect(str).to.contain(' 1.')
+				expect(str).to.contain('20.')
+
+				console.log(str)
+			})
+		})
+	})
 })

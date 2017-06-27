@@ -1,9 +1,12 @@
 "use strict";
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
+const lodash_1 = require("lodash");
 const definitions_1 = require("@oh-my-rpg/definitions");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
 const logic_armors_1 = require("@oh-my-rpg/logic-armors");
+const state_inventory_1 = require("@oh-my-rpg/state-inventory");
+const constants_1 = require("./constants");
 /////////////////////
 function get_ansi_color_for_quality(quality) {
     switch (quality) {
@@ -44,29 +47,75 @@ function get_html_color_for_quality(quality) {
     }
 }
 exports.get_html_color_for_quality = get_html_color_for_quality;
+function get_icon_for(i) {
+    if (!i)
+        return '⋯';
+    switch (i.slot) {
+        case definitions_1.InventorySlot.weapon:
+            return constants_1.WEAPON_ICON;
+        case definitions_1.InventorySlot.armor:
+            return constants_1.ARMOR_ICON;
+        default:
+            throw new Error(`get_icon_for_slot(): no icon for "${i.slot}" !`);
+    }
+}
+///////
 // note: we don't render the quality to allow coloring according to the environment (ansi, html)
 function render_weapon(w) {
     if (w.slot !== definitions_1.InventorySlot.weapon)
-        throw new Error(`render_weapon(): can't render a ${w.slot}!`);
+        throw new Error(`render_weapon(): can't render a ${w.slot} !`);
     const name = `${w.qualifier1_hid}.${w.base_hid}.of.the.${w.qualifier2_hid}`;
     const enhancement_level = w.enhancement_level
         ? ` +${w.enhancement_level}`
         : '';
     const [min_damage, max_damage] = logic_weapons_1.get_damage_interval(w);
-    return `${name}${enhancement_level} [${min_damage}⇢ ${max_damage}]`;
+    return `${name}${enhancement_level} [${min_damage} ↔ ${max_damage}]`;
 }
 exports.render_weapon = render_weapon;
 // note: we don't render the quality to allow coloring according to the environment (ansi, html)
 function render_armor(a) {
     if (a.slot !== definitions_1.InventorySlot.armor)
-        throw new Error(`render_armor(): can't render a ${a.slot}!`);
+        throw new Error(`render_armor(): can't render a ${a.slot} !`);
     const name = `${a.qualifier1_hid}.${a.base_hid}.of.the.${a.qualifier2_hid}`;
     const enhancement_level = a.enhancement_level
         ? ` +${a.enhancement_level}`
         : '';
     const [min_dmg_reduc, max_dmg_reduc] = logic_armors_1.get_damage_reduction_interval(a);
-    return `${name}${enhancement_level} [${min_dmg_reduc}⇢ ${max_dmg_reduc}]`;
+    return `${name}${enhancement_level} [${min_dmg_reduc} ↔ ${max_dmg_reduc}]`;
 }
 exports.render_armor = render_armor;
+function render_item(i) {
+    if (!i)
+        return '';
+    switch (i.slot) {
+        case definitions_1.InventorySlot.weapon:
+            return render_weapon(i);
+        case definitions_1.InventorySlot.armor:
+            return render_armor(i);
+        default:
+            throw new Error(`render_item(): don't know how to render a "${i.slot}" !`);
+    }
+}
+exports.render_item = render_item;
+function render_equipment(inventory) {
+    const equiped_items = definitions_1.ITEM_SLOTS.map(lodash_1.partial(state_inventory_1.get_item_in_slot, inventory));
+    return equiped_items.map((i, index) => {
+        const padded_slot = `${definitions_1.ITEM_SLOTS[index]}  `.slice(0, 7);
+        const icon = get_icon_for(i);
+        const label = render_item(i);
+        return `${padded_slot}: ${icon}  ${label}`;
+    }).join('\n');
+}
+exports.render_equipment = render_equipment;
+function render_inventory(inventory) {
+    const misc_items = Array.from(state_inventory_1.iterables_unslotted(inventory));
+    return misc_items.map((i, index) => {
+        const icon = get_icon_for(i);
+        const label = render_item(i);
+        const padded_human_index = `  ${index + 1}.`.slice(-3);
+        return `${padded_human_index} ${icon}  ${label}`;
+    }).join('\n');
+}
+exports.render_inventory = render_inventory;
 /////////////////////
 //# sourceMappingURL=index.js.map

@@ -19,6 +19,7 @@ import {
 	get_item_count,
 	get_item_at_coordinates,
 	get_item_in_slot,
+	iterables_unslotted,
 } from '.'
 
 describe('📦 📦 📦  Inventory logic', function() {
@@ -232,6 +233,28 @@ describe('📦 📦 📦  Inventory logic', function() {
 				state = unequip_item(state, InventorySlot.weapon)
 			}
 			expect(unequip).to.throw('inventory is full!')
+		})
+	})
+
+	describe('misc items iteration', function() {
+
+		it('should yield all unequiped slots', () => {
+			const item1: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
+			const item2: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
+			let state = factory()
+
+			state = add_item(state, item1)
+			state = add_item(state, item1)
+			state = add_item(state, item2)
+			state = remove_item(state, 0)
+
+			const yielded_items = Array.from(iterables_unslotted(state))
+			expect(yielded_items).to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH)
+			expect(yielded_items[0]).to.be.null
+			expect(yielded_items[1]).to.equal(item1)
+			expect(yielded_items[2]).to.equal(item2)
+			expect(yielded_items[3]).to.be.null
+			expect(yielded_items[EXPECTED_UNSLOTTED_INVENTORY_LENGTH-1]).to.be.null
 		})
 	})
 })

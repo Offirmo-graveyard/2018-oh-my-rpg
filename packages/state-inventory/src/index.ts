@@ -139,7 +139,9 @@ function get_item_in_slot(state: Readonly<State>, slot: InventorySlot): Item | n
 	return state.slotted[slot] || null
 }
 
-
+function* iterables_unslotted(state: Readonly<State>) {
+	yield* state.unslotted
+}
 
 /////////////////////
 
@@ -160,6 +162,7 @@ export {
 	get_item_count,
 	get_item_at_coordinates,
 	get_item_in_slot,
+	iterables_unslotted,
 }
 
 /////////////////////

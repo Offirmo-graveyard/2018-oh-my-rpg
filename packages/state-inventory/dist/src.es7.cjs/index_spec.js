@@ -187,5 +187,23 @@ describe('📦 📦 📦  Inventory logic', function () {
             expect(unequip).to.throw('inventory is full!');
         });
     });
+    describe('misc items iteration', function () {
+        it('should yield all unequiped slots', () => {
+            const item1 = { slot: definitions_1.InventorySlot.none, quality: definitions_1.ItemQuality.common };
+            const item2 = { slot: definitions_1.InventorySlot.none, quality: definitions_1.ItemQuality.common };
+            let state = _1.factory();
+            state = _1.add_item(state, item1);
+            state = _1.add_item(state, item1);
+            state = _1.add_item(state, item2);
+            state = _1.remove_item(state, 0);
+            const yielded_items = Array.from(_1.iterables_unslotted(state));
+            expect(yielded_items).to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH);
+            expect(yielded_items[0]).to.be.null;
+            expect(yielded_items[1]).to.equal(item1);
+            expect(yielded_items[2]).to.equal(item2);
+            expect(yielded_items[3]).to.be.null;
+            expect(yielded_items[EXPECTED_UNSLOTTED_INVENTORY_LENGTH - 1]).to.be.null;
+        });
+    });
 });
 //# sourceMappingURL=index_spec.js.map
