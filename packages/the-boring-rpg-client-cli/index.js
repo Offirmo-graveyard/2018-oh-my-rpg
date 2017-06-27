@@ -1,40 +1,47 @@
 require('@offirmo/cli-toolbox/stdout/clear-cli')()
 
+const _ = require('lodash')
+
 const displayInAsciiArtFont = require('@offirmo/cli-toolbox/stdout/display_in_ascii_art_font')
-displayInAsciiArtFont('TBRPG', { font: 'simple' })
-
-const vorpal = require('@offirmo/cli-toolbox/framework/vorpal')
 const prettifyJson = require('@offirmo/cli-toolbox/string/prettify-json')
-
-
+const boxify = require('@offirmo/cli-toolbox/string/boxify')
 const stylizeString = require('@offirmo/cli-toolbox/string/stylize')
-const _ = require('@offirmo/cli-toolbox/lodash')
-
 const json = require('@offirmo/cli-toolbox/fs/json')
-
-//return json.read(__dirname + '/../../package.json').then(data => console.log(data.repository))
-
+const arrayify = require('@offirmo/cli-toolbox/string/arrayify')
+const columnify = require('@offirmo/cli-toolbox/string/columnify')
 
 const {
 	factory,
 	play,
 } = require('@oh-my-rpg/the-boring-rpg')
 
+const {
+	get_ansi_color_for_quality,
+	render_weapon,
+	render_armor,
+	render_item,
+	render_characteristics,
+	render_equipment,
+	render_inventory,
+	render_adventure,
+} = require('@oh-my-rpg/view-text')
+
+//console.log(boxify('𝐓he 𝐁oring 𝐑𝐏𝐆 𝑟𝑒𝑙𝑜𝑎𝑑𝑒𝑑 ', {padding: 1, margin: 1, borderStyle: 'double'}))
+console.log(boxify('𝐓𝐡𝐞 𝐁𝐨𝐫𝐢𝐧𝐠 𝐑𝐏𝐆 𝑟𝑒𝑙𝑜𝑎𝑑𝑒𝑑 ', {padding: 2, margin: 1, borderStyle: 'double', borderColor: 'red'}))
+
+
 let state = factory()
 state = play(state)
-console.log(prettifyJson(state))
+//console.log(prettifyJson(state))
 
-const arrayify = require('@offirmo/cli-toolbox/string/arrayify')
+console.log(render_characteristics(state.characteristics))
+console.log(boxify(stylizeString.bold('⚔  EQUIPMENT 🛡 \n') + render_equipment(state.inventory), {borderStyle: 'single'}))
+console.log(boxify(stylizeString.bold('📦  INVENTORY 💰 \n') + render_inventory(state.inventory), {borderStyle: 'single'}))
+console.log(render_adventure(state.last_adventure))
 
-const data = {
-	"commander@0.6.1": 1,
-	"minimatch@0.2.14": 3,
-	"mkdirp@0.3.5": 2,
-	"sigmund@1.0.0": 3
-}
 
-console.log(arrayify(data))
 
-const columnify = require('@offirmo/cli-toolbox/string/columnify')
+//console.log(arrayify(data))
+
 
 //console.log(columnify(data))

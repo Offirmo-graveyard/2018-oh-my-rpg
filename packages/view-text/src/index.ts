@@ -134,6 +134,14 @@ function render_inventory(inventory: InventoryState): string {
 	}).join('\n')
 }
 
+function render_adventure(): string {
+	return 'TODO render_adventure'
+}
+
+function render_characteristics(): string {
+	return 'TODO render_characteristics'
+}
+
 /////////////////////
 
 export {
@@ -142,8 +150,10 @@ export {
 	render_weapon,
 	render_armor,
 	render_item,
+	render_characteristics,
 	render_equipment,
 	render_inventory,
+	render_adventure,
 }
 
 /////////////////////

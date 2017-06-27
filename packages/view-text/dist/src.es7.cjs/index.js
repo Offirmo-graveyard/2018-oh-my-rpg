@@ -117,5 +117,13 @@ function render_inventory(inventory) {
     }).join('\n');
 }
 exports.render_inventory = render_inventory;
+function render_adventure() {
+    return 'TODO render_adventure';
+}
+exports.render_adventure = render_adventure;
+function render_characteristics() {
+    return 'TODO render_characteristics';
+}
+exports.render_characteristics = render_characteristics;
 /////////////////////
 //# sourceMappingURL=index.js.map

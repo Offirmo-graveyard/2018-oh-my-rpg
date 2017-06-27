@@ -9,4 +9,6 @@ declare function render_armor(a: Armor): string;
 declare function render_item(i: Item | null): string;
 declare function render_equipment(inventory: InventoryState): string;
 declare function render_inventory(inventory: InventoryState): string;
-export { get_ansi_color_for_quality, get_html_color_for_quality, render_weapon, render_armor, render_item, render_equipment, render_inventory };
+declare function render_adventure(): string;
+declare function render_characteristics(): string;
+export { get_ansi_color_for_quality, get_html_color_for_quality, render_weapon, render_armor, render_item, render_characteristics, render_equipment, render_inventory, render_adventure };
