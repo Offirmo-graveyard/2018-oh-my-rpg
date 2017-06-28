@@ -5,14 +5,14 @@ const types_1 = require("./types");
 exports.CharacterStat = types_1.CharacterStat;
 /////////////////////
 const CHARACTER_STATS = [
-    types_1.CharacterStat.agility,
-    types_1.CharacterStat.health,
     types_1.CharacterStat.level,
-    types_1.CharacterStat.luck,
+    types_1.CharacterStat.health,
     types_1.CharacterStat.mana,
     types_1.CharacterStat.strength,
+    types_1.CharacterStat.agility,
     types_1.CharacterStat.vitality,
     types_1.CharacterStat.wisdom,
+    types_1.CharacterStat.luck,
 ];
 exports.CHARACTER_STATS = CHARACTER_STATS;
 ///////

@@ -7,7 +7,7 @@ import { ItemQuality, InventorySlot, Item, ITEM_SLOTS } from '@oh-my-rpg/definit
 import { Weapon, get_damage_interval as get_weapon_damage_interval } from '@oh-my-rpg/logic-weapons'
 import { Armor, get_damage_reduction_interval as get_armor_damage_reduction_interval } from '@oh-my-rpg/logic-armors'
 import { State as InventoryState, iterables_unslotted, get_item_in_slot } from '@oh-my-rpg/state-inventory'
-
+import { State as CharacterState, CharacterStat, CHARACTER_STATS } from '@oh-my-rpg/state-character'
 import {
 	WEAPON_ICON,
 	ARMOR_ICON,
@@ -54,7 +54,7 @@ function get_html_color_for_quality(quality: ItemQuality): string {
 	}
 }
 
-function get_icon_for(i: Item | null): string {
+function get_item_icon_for(i: Item | null): string {
 	if (!i)
 		return '⋯'
 
@@ -64,7 +64,34 @@ function get_icon_for(i: Item | null): string {
 		case InventorySlot.armor:
 			return ARMOR_ICON
 		default:
-			throw new Error(`get_icon_for_slot(): no icon for "${i.slot}" !`)
+			throw new Error(`get_item_icon_for(): no icon for slot "${i.slot}" !`)
+	}
+}
+
+function get_characteristic_icon_for(stat: CharacterStat): string {
+	switch(stat) {
+		case CharacterStat.level:
+			return '👶🏽'
+		case CharacterStat.health:
+			return '💗'
+		case CharacterStat.mana:
+			return '💙'
+
+		case CharacterStat.agility:
+			return '🤸🏽'
+		case CharacterStat.luck:
+			return '🤹🏼‍♀️'
+		case CharacterStat.strength:
+			// 🏋🏽
+			// '💪🏽'
+			return '🏋🏽'
+		case CharacterStat.vitality:
+			return '🏊🏽'
+		case CharacterStat.wisdom:
+			// '🙏🏽'
+			return '👵🏽'
+		default:
+			throw new Error(`get_characteristic_icon_for(): no icon for stat "${stat}" !`)
 	}
 }
 
@@ -110,12 +137,26 @@ function render_item(i: Item | null): string {
 	}
 }
 
+function render_characteristics(state: CharacterState): string {
+	return CHARACTER_STATS.map((stat: CharacterStat) => {
+		const icon = get_characteristic_icon_for(stat)
+		const label = stat
+		const value = state[stat]
+
+		const padded_label = `${label}............`.slice(0, 11)
+		const padded_human_values = `.......${value}`.slice(-4)
+
+
+		return `"${icon}  ${padded_label}${padded_human_values}"`
+	}).join('\n')
+}
+
 function render_equipment(inventory: InventoryState): string {
 	const equiped_items = ITEM_SLOTS.map(partial(get_item_in_slot, inventory))
 
 	return equiped_items.map((i: Item, index: number) => {
 		const padded_slot = `${ITEM_SLOTS[index]}  `.slice(0, 7)
-		const icon = get_icon_for(i)
+		const icon = get_item_icon_for(i)
 		const label = render_item(i)
 
 		return `${padded_slot}: ${icon}  ${label}`
@@ -126,7 +167,7 @@ function render_inventory(inventory: InventoryState): string {
 	const misc_items = Array.from(iterables_unslotted(inventory))
 
 	return misc_items.map((i: Item, index: number) => {
-		const icon = get_icon_for(i)
+		const icon = get_item_icon_for(i)
 		const label = render_item(i)
 		const padded_human_index = `  ${index + 1}.`.slice(-3)
 
@@ -136,10 +177,6 @@ function render_inventory(inventory: InventoryState): string {
 
 function render_adventure(): string {
 	return 'TODO render_adventure'
-}
-
-function render_characteristics(): string {
-	return 'TODO render_characteristics'
 }
 
 /////////////////////

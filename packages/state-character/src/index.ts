@@ -8,14 +8,16 @@ import {
 /////////////////////
 
 const CHARACTER_STATS = [
-	CharacterStat.agility,
-	CharacterStat.health,
 	CharacterStat.level,
-	CharacterStat.luck,
+
+	CharacterStat.health,
 	CharacterStat.mana,
+
 	CharacterStat.strength,
+	CharacterStat.agility,
 	CharacterStat.vitality,
 	CharacterStat.wisdom,
+	CharacterStat.luck,
 ]
 
 ///////

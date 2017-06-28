@@ -6,6 +6,7 @@ const definitions_1 = require("@oh-my-rpg/definitions");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
 const logic_armors_1 = require("@oh-my-rpg/logic-armors");
 const state_inventory_1 = require("@oh-my-rpg/state-inventory");
+const state_character_1 = require("@oh-my-rpg/state-character");
 const constants_1 = require("./constants");
 /////////////////////
 function get_ansi_color_for_quality(quality) {
@@ -47,7 +48,7 @@ function get_html_color_for_quality(quality) {
     }
 }
 exports.get_html_color_for_quality = get_html_color_for_quality;
-function get_icon_for(i) {
+function get_item_icon_for(i) {
     if (!i)
         return '⋯';
     switch (i.slot) {
@@ -56,7 +57,32 @@ function get_icon_for(i) {
         case definitions_1.InventorySlot.armor:
             return constants_1.ARMOR_ICON;
         default:
-            throw new Error(`get_icon_for_slot(): no icon for "${i.slot}" !`);
+            throw new Error(`get_item_icon_for(): no icon for slot "${i.slot}" !`);
+    }
+}
+function get_characteristic_icon_for(stat) {
+    switch (stat) {
+        case state_character_1.CharacterStat.level:
+            return '👶🏽';
+        case state_character_1.CharacterStat.health:
+            return '💗';
+        case state_character_1.CharacterStat.mana:
+            return '💙';
+        case state_character_1.CharacterStat.agility:
+            return '🤸🏽';
+        case state_character_1.CharacterStat.luck:
+            return '🤹🏼‍♀️';
+        case state_character_1.CharacterStat.strength:
+            // 🏋🏽
+            // '💪🏽'
+            return '🏋🏽';
+        case state_character_1.CharacterStat.vitality:
+            return '🏊🏽';
+        case state_character_1.CharacterStat.wisdom:
+            // '🙏🏽'
+            return '👵🏽';
+        default:
+            throw new Error(`get_characteristic_icon_for(): no icon for stat "${stat}" !`);
     }
 }
 ///////
@@ -97,11 +123,22 @@ function render_item(i) {
     }
 }
 exports.render_item = render_item;
+function render_characteristics(state) {
+    return state_character_1.CHARACTER_STATS.map((stat) => {
+        const icon = get_characteristic_icon_for(stat);
+        const label = stat;
+        const value = state[stat];
+        const padded_label = `${label}............`.slice(0, 11);
+        const padded_human_values = `.......${value}`.slice(-4);
+        return `"${icon}  ${padded_label}${padded_human_values}"`;
+    }).join('\n');
+}
+exports.render_characteristics = render_characteristics;
 function render_equipment(inventory) {
     const equiped_items = definitions_1.ITEM_SLOTS.map(lodash_1.partial(state_inventory_1.get_item_in_slot, inventory));
     return equiped_items.map((i, index) => {
         const padded_slot = `${definitions_1.ITEM_SLOTS[index]}  `.slice(0, 7);
-        const icon = get_icon_for(i);
+        const icon = get_item_icon_for(i);
         const label = render_item(i);
         return `${padded_slot}: ${icon}  ${label}`;
     }).join('\n');
@@ -110,7 +147,7 @@ exports.render_equipment = render_equipment;
 function render_inventory(inventory) {
     const misc_items = Array.from(state_inventory_1.iterables_unslotted(inventory));
     return misc_items.map((i, index) => {
-        const icon = get_icon_for(i);
+        const icon = get_item_icon_for(i);
         const label = render_item(i);
         const padded_human_index = `  ${index + 1}.`.slice(-3);
         return `${padded_human_index} ${icon}  ${label}`;
@@ -121,9 +158,5 @@ function render_adventure() {
     return 'TODO render_adventure';
 }
 exports.render_adventure = render_adventure;
-function render_characteristics() {
-    return 'TODO render_characteristics';
-}
-exports.render_characteristics = render_characteristics;
 /////////////////////
 //# sourceMappingURL=index.js.map
