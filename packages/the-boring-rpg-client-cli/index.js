@@ -31,13 +31,7 @@ console.log(boxify('𝐓𝐡𝐞 𝐁𝐨𝐫𝐢𝐧𝐠 𝐑𝐏𝐆 𝑟𝑒�
 
 
 let state = factory()
-state = play(state)
 //console.log(prettifyJson(state))
-
-console.log(
-	stylizeString.bold('🙂  CHARACTERISTICS 💗\n')
-	+ render_characteristics(state.characteristics)
-)
 
 console.log(boxify(
 	stylizeString.bold('🙂  CHARACTERISTICS 💗\n')
@@ -45,12 +39,19 @@ console.log(boxify(
 	{borderStyle: 'single'}
 	))
 console.log(boxify(stylizeString.bold('⚔  EQUIPMENT 🛡 \n') + render_equipment(state.inventory), {borderStyle: 'single'}))
-console.log(boxify(stylizeString.bold('📦  INVENTORY 💰 \n') + render_inventory(state.inventory), {borderStyle: 'single'}))
+//console.log(boxify(stylizeString.bold('📦  INVENTORY 💰 \n') + render_inventory(state.inventory), {borderStyle: 'single'}))
+
+
+state = play(state)
+
 console.log(render_adventure(state.last_adventure))
+console.log(prettifyJson(state.last_adventure))
 
+console.log(boxify(
+	stylizeString.bold('🙂  CHARACTERISTICS 💗\n')
+	+ render_characteristics(state.characteristics),
+	{borderStyle: 'single'}
+))
+console.log(boxify(stylizeString.bold('⚔  EQUIPMENT 🛡 \n') + render_equipment(state.inventory), {borderStyle: 'single'}))
+//console.log(boxify(stylizeString.bold('📦  INVENTORY 💰 \n') + render_inventory(state.inventory), {borderStyle: 'single'}))
 
-
-//console.log(arrayify(data))
-
-
-//console.log(columnify(data))

@@ -12,6 +12,7 @@ import {
 	WEAPON_ICON,
 	ARMOR_ICON,
 } from './constants'
+import { Adventure } from '@oh-my-rpg/the-boring-rpg'
 
 /////////////////////
 
@@ -147,7 +148,7 @@ function render_characteristics(state: CharacterState): string {
 		const padded_human_values = `.......${value}`.slice(-4)
 
 
-		return `"${icon}  ${padded_label}${padded_human_values}"`
+		return `${icon}  ${padded_label}${padded_human_values}`
 	}).join('\n')
 }
 
@@ -175,8 +176,10 @@ function render_inventory(inventory: InventoryState): string {
 	}).join('\n')
 }
 
-function render_adventure(): string {
-	return 'TODO render_adventure'
+function render_adventure(a: Adventure): string {
+	const icon = '⚔'
+	const text = a.hid
+	return `${icon} ${text} TODO render_adventure`
 }
 
 /////////////////////

@@ -130,7 +130,7 @@ function render_characteristics(state) {
         const value = state[stat];
         const padded_label = `${label}............`.slice(0, 11);
         const padded_human_values = `.......${value}`.slice(-4);
-        return `"${icon}  ${padded_label}${padded_human_values}"`;
+        return `${icon}  ${padded_label}${padded_human_values}`;
     }).join('\n');
 }
 exports.render_characteristics = render_characteristics;
@@ -154,8 +154,10 @@ function render_inventory(inventory) {
     }).join('\n');
 }
 exports.render_inventory = render_inventory;
-function render_adventure() {
-    return 'TODO render_adventure';
+function render_adventure(a) {
+    const icon = '⚔';
+    const text = a.hid;
+    return `${icon} ${text} TODO render_adventure`;
 }
 exports.render_adventure = render_adventure;
 /////////////////////
