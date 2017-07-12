@@ -6,7 +6,7 @@ const static_adventure_data = require("@oh-my-rpg/data/src/adventure_archetype")
 const types_1 = require("./types");
 exports.CoinsGain = types_1.CoinsGain;
 /////////////////////
-const ADVENTURE_ARCHETYPES = static_adventure_data.map((paa) => {
+const ALL_ADVENTURE_ARCHETYPES = static_adventure_data.map((paa) => {
     const gains = (paa.post || {}).gains || {};
     // type fields
     gains.level = !!gains.level;
@@ -31,8 +31,8 @@ const ADVENTURE_ARCHETYPES = static_adventure_data.map((paa) => {
         },
     };
 });
-const GOOD_ADVENTURE_ARCHETYPES = ADVENTURE_ARCHETYPES.filter(aa => aa.good);
-const BAD_ADVENTURE_ARCHETYPES = ADVENTURE_ARCHETYPES.filter(aa => !aa.good);
+const ALL_GOOD_ADVENTURE_ARCHETYPES = ALL_ADVENTURE_ARCHETYPES.filter(aa => aa.good);
+const ALL_BAD_ADVENTURE_ARCHETYPES = ALL_ADVENTURE_ARCHETYPES.filter(aa => !aa.good);
 const COINS_GAIN_MULTIPLIER_PER_LEVEL = 1.1;
 const COINS_GAIN_RANGES = {
     none: [0, 0],
@@ -42,12 +42,20 @@ const COINS_GAIN_RANGES = {
     huge: [900, 2000],
 };
 /////////////////////
+// useful for picking an exact archetype (ex. tests)
+function get_archetype(hid) {
+    const aa = ALL_ADVENTURE_ARCHETYPES.find(aa => aa.hid === hid);
+    if (!aa)
+        throw new Error(`logic-adventures, get_archetype(): couldn't find archetype "${hid}" !`);
+    return aa;
+}
+exports.get_archetype = get_archetype;
 function pick_random_good_archetype(rng) {
-    return random_1.Random.pick(rng, GOOD_ADVENTURE_ARCHETYPES);
+    return random_1.Random.pick(rng, ALL_GOOD_ADVENTURE_ARCHETYPES);
 }
 exports.pick_random_good_archetype = pick_random_good_archetype;
 function pick_random_bad_archetype(rng) {
-    return random_1.Random.pick(rng, BAD_ADVENTURE_ARCHETYPES);
+    return random_1.Random.pick(rng, ALL_BAD_ADVENTURE_ARCHETYPES);
 }
 exports.pick_random_bad_archetype = pick_random_bad_archetype;
 function generate_random_coin_gain(rng, range, player_level) {

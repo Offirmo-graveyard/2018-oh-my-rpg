@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /////////////////////
 const definitions_1 = require("@oh-my-rpg/definitions");
 const state_character_1 = require("@oh-my-rpg/state-character");
+const state_wallet_1 = require("@oh-my-rpg/state-wallet");
 const state_inventory_1 = require("@oh-my-rpg/state-inventory");
 const state_prng_1 = require("@oh-my-rpg/state-prng");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
@@ -13,8 +14,11 @@ function factory() {
     let state = {
         characteristics: state_character_1.factory(),
         inventory: state_inventory_1.factory(),
+        wallet: state_wallet_1.factory(),
         prng: state_prng_1.factory(),
         last_adventure: null,
+        click_count: 0,
+        good_click_count: 0,
     };
     let rng = state_prng_1.get_prng(state.prng);
     const start_weapon = logic_weapons_1.factory(rng, {
@@ -74,38 +78,57 @@ function generate_random_good_adventure(rng, player_level, inventory) {
     const aa = logic_adventures_1.pick_random_good_archetype(rng);
     return instantiate_adventure_archetype(rng, aa, player_level, inventory);
 }
+function receive_stat_increase(state, stat, amount = 1) {
+    state.characteristics = state_character_1.increase_stat(state.characteristics, stat, amount);
+    return state;
+}
 function receive_item(state, item) {
-    // TODO handler inventory full
+    // TODO handle inventory full
     state.inventory = state_inventory_1.add_item(state.inventory, item);
     return state;
 }
-function play_good(state) {
+function receive_coins(state, amount) {
+    state.wallet = state_wallet_1.add_amount(state.wallet, state_wallet_1.Currency.coin, amount);
+    return state;
+}
+function receive_tokens(state, amount) {
+    state.wallet = state_wallet_1.add_amount(state.wallet, state_wallet_1.Currency.token, amount);
+    return state;
+}
+function play_good(state, explicit_adventure_archetype_hid) {
+    state.good_click_count++;
     let rng = state_prng_1.get_prng(state.prng);
-    const adventure = generate_random_good_adventure(rng, state.characteristics.level, state.inventory);
+    const aa = explicit_adventure_archetype_hid
+        ? logic_adventures_1.get_archetype(explicit_adventure_archetype_hid)
+        : logic_adventures_1.pick_random_good_archetype(rng);
+    const adventure = instantiate_adventure_archetype(rng, aa, state.characteristics.level, state.inventory);
     state.last_adventure = adventure;
     const { gains: { level, health, mana, strength, agility, vitality, wisdom, luck, coins, tokens, weapon, armor, improved_weapon, improved_armor, } } = adventure;
     // TODO store hid for no repetition
     if (level)
-        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.level);
+        state = receive_stat_increase(state, state_character_1.CharacterStat.level);
     if (health)
-        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.health, health);
+        state = receive_stat_increase(state, state_character_1.CharacterStat.health, health);
     if (mana)
-        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.mana, mana);
+        state = receive_stat_increase(state, state_character_1.CharacterStat.mana, mana);
     if (strength)
-        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.strength, strength);
+        state = receive_stat_increase(state, state_character_1.CharacterStat.strength, strength);
     if (agility)
-        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.agility, agility);
+        state = receive_stat_increase(state, state_character_1.CharacterStat.agility, agility);
     if (vitality)
-        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.vitality, vitality);
+        state = receive_stat_increase(state, state_character_1.CharacterStat.vitality, vitality);
     if (wisdom)
-        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.wisdom, wisdom);
+        state = receive_stat_increase(state, state_character_1.CharacterStat.wisdom, wisdom);
     if (luck)
-        state_character_1.increase_stat(state.characteristics, state_character_1.CharacterStat.luck, luck);
-    // TODO wallet
+        state = receive_stat_increase(state, state_character_1.CharacterStat.luck, luck);
+    if (coins)
+        state = receive_coins(state, coins);
+    if (tokens)
+        state = receive_tokens(state, tokens);
     if (weapon)
-        receive_item(state, weapon);
+        state = receive_item(state, weapon);
     if (armor)
-        receive_item(state, armor);
+        state = receive_item(state, armor);
     if (improved_weapon) {
         let weapon_to_enhance = state_inventory_1.get_item_in_slot(state.inventory, definitions_1.InventorySlot.weapon);
         if (weapon_to_enhance && weapon_to_enhance.enhancement_level < logic_weapons_1.MAX_ENHANCEMENT_LEVEL)
@@ -122,9 +145,11 @@ function play_good(state) {
     return state;
 }
 /////////////////////
-function play(state) {
+// allow passing an explicit adventure archetype for testing !
+function play(state, explicit_adventure_archetype_hid) {
+    state.click_count++;
     // TODO good / bad
-    return play_good(state);
+    return play_good(state, explicit_adventure_archetype_hid);
 }
 exports.play = play;
 function equip_item(state, coordinates) {
@@ -132,15 +157,16 @@ function equip_item(state, coordinates) {
     return state;
 }
 exports.equip_item = equip_item;
+// later, not often needed
 function unequip_item(state, slot) {
     state.inventory = state_inventory_1.unequip_item(state.inventory, slot);
     return state;
 }
 exports.unequip_item = unequip_item;
-function discard_item(state, coordinates) {
+function sell_item(state, coordinates) {
     // TODO
     return state;
 }
-exports.discard_item = discard_item;
+exports.sell_item = sell_item;
 /////////////////////
 //# sourceMappingURL=index.js.map

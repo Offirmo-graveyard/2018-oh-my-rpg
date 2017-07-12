@@ -1,11 +1,11 @@
 {
-  "name": "@oh-my-rpg/the-boring-rpg",
-  "version": "0.0.1",
-  "description": "The Boring RPG",
-  "main": "dist/src.es7.cjs/index.js",
-  "typings": "dist/src.es7.cjs/index.js",
-  "author": "Offirmo <offirmo.net@gmail.com>",
-  "license": "UNLICENSED",
+	"name": "@oh-my-rpg/the-boring-rpg",
+	"version": "0.0.1",
+	"description": "The Boring RPG",
+	"main": "dist/src.es7.cjs/index.js",
+	"typings": "dist/src.es7.cjs/index.js",
+	"author": "Offirmo <offirmo.net@gmail.com>",
+	"license": "UNLICENSED",
 	"scripts": {
 		"__dev": "~~~~~~~ DEVELOPMENT ~~~~~~~",
 		"build:dev": "../../node_modules/.bin/tsc --project meta/dev",
@@ -21,7 +21,8 @@
 		"@oh-my-rpg/logic-adventures": "^0.0.1",
 		"@oh-my-rpg/state-character": "^0.0.1",
 		"@oh-my-rpg/state-inventory": "^0.0.1",
-		"@oh-my-rpg/state-prng": "^0.0.1"
+		"@oh-my-rpg/state-prng": "^0.0.1",
+		"@oh-my-rpg/state-wallet": "^0.0.1"
 	},
 	"devDependencies": {
 		"tslib": "^1.7.1"

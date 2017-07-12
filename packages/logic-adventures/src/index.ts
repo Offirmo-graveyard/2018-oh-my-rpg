@@ -11,7 +11,7 @@ import {
 
 /////////////////////
 
-const ADVENTURE_ARCHETYPES: AdventureArchetype[] = static_adventure_data.map((paa: Partial<AdventureArchetype>) => {
+const ALL_ADVENTURE_ARCHETYPES: AdventureArchetype[] = static_adventure_data.map((paa: Partial<AdventureArchetype>) => {
 	const gains: Partial<AdventureArchetype['post']['gains']> = (paa.post || {} as any).gains || {}
 	// type fields
 	gains.level    = !!gains.level
@@ -38,9 +38,8 @@ const ADVENTURE_ARCHETYPES: AdventureArchetype[] = static_adventure_data.map((pa
 	}
 })
 
-const GOOD_ADVENTURE_ARCHETYPES: AdventureArchetype[] = ADVENTURE_ARCHETYPES.filter(aa => aa.good)
-const BAD_ADVENTURE_ARCHETYPES: AdventureArchetype[] = ADVENTURE_ARCHETYPES.filter(aa => !aa.good)
-
+const ALL_GOOD_ADVENTURE_ARCHETYPES: AdventureArchetype[] = ALL_ADVENTURE_ARCHETYPES.filter(aa => aa.good)
+const ALL_BAD_ADVENTURE_ARCHETYPES: AdventureArchetype[] = ALL_ADVENTURE_ARCHETYPES.filter(aa => !aa.good)
 
 const COINS_GAIN_MULTIPLIER_PER_LEVEL = 1.1
 
@@ -52,15 +51,23 @@ const COINS_GAIN_RANGES: { [k: string]: [number, number] } = {
 	huge:   [900, 2000],
 }
 
+
 /////////////////////
 
+// useful for picking an exact archetype (ex. tests)
+function get_archetype(hid: string): AdventureArchetype {
+	const aa = ALL_ADVENTURE_ARCHETYPES.find(aa => aa.hid === hid)
+	if (!aa)
+		throw new Error(`logic-adventures, get_archetype(): couldn't find archetype "${hid}" !`)
+	return aa!
+}
 
 function pick_random_good_archetype(rng: Engine): AdventureArchetype {
-	return Random.pick(rng, GOOD_ADVENTURE_ARCHETYPES)
+	return Random.pick(rng, ALL_GOOD_ADVENTURE_ARCHETYPES)
 }
 
 function pick_random_bad_archetype(rng: Engine): AdventureArchetype {
-	return Random.pick(rng, BAD_ADVENTURE_ARCHETYPES)
+	return Random.pick(rng, ALL_BAD_ADVENTURE_ARCHETYPES)
 }
 
 function generate_random_coin_gain(rng: Engine, range: CoinsGain, player_level: number): number {
@@ -82,6 +89,7 @@ export {
 	pick_random_good_archetype,
 	pick_random_bad_archetype,
 	generate_random_coin_gain,
+	get_archetype,
 }
 
 /////////////////////

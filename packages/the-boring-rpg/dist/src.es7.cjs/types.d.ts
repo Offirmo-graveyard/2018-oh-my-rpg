@@ -2,6 +2,7 @@ import { Weapon } from '@oh-my-rpg/logic-weapons';
 import { Armor } from '@oh-my-rpg/logic-armors';
 import { State as CharacterState } from '@oh-my-rpg/state-character';
 import { State as InventoryState } from '@oh-my-rpg/state-inventory';
+import { State as WalletState } from '@oh-my-rpg/state-wallet';
 import { State as PRNGState } from '@oh-my-rpg/state-prng';
 interface Adventure {
     hid: string;
@@ -26,7 +27,10 @@ interface Adventure {
 interface State {
     characteristics: CharacterState;
     inventory: InventoryState;
+    wallet: WalletState;
     prng: PRNGState;
     last_adventure: Adventure | null;
+    click_count: number;
+    good_click_count: number;
 }
 export { Adventure, State };
