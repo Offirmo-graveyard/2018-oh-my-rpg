@@ -15,6 +15,11 @@ TODO:
 * random
   ability to get seed back
   624 ??
+* time
+  * seasonal content
+* countdowns
+* refact to string enums
+* accumulator on non-play
 
 
 
