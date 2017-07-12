@@ -4,6 +4,7 @@ const definitions_1 = require("@oh-my-rpg/definitions");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
 const logic_armors_1 = require("@oh-my-rpg/logic-armors");
 const state_inventory_1 = require("@oh-my-rpg/state-inventory");
+const state_wallet_1 = require("@oh-my-rpg/state-wallet");
 const _1 = require(".");
 describe('🔠  view to text', function () {
     describe('💠  item quality rendering', function () {
@@ -148,6 +149,30 @@ describe('🔠  view to text', function () {
                 expect(str).to.be.a.string;
                 expect(str).to.contain(' 1.');
                 expect(str).to.contain('20.');
+                console.log(str);
+            });
+        });
+    });
+    describe('💰  wallet rendering', function () {
+        context('when empty', function () {
+            it('should render properly', () => {
+                let wallet = state_wallet_1.factory();
+                const str = _1.render_wallet(wallet);
+                expect(str).to.be.a.string;
+                expect(str).to.contain('0');
+                console.log(str);
+            });
+        });
+        context('when not empty', function () {
+            it('should render properly', () => {
+                let wallet = state_wallet_1.factory();
+                wallet = state_wallet_1.add_amount(wallet, state_wallet_1.Currency.coin, 12);
+                wallet = state_wallet_1.add_amount(wallet, state_wallet_1.Currency.token, 34);
+                const str = _1.render_wallet(wallet);
+                expect(str).to.be.a.string;
+                expect(str).not.to.contain('0');
+                expect(str).to.contain('12');
+                expect(str).to.contain('34');
                 console.log(str);
             });
         });

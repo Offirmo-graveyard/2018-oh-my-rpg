@@ -7,6 +7,7 @@ import { ItemQuality, InventorySlot, Item, ITEM_SLOTS } from '@oh-my-rpg/definit
 import { Weapon, get_damage_interval as get_weapon_damage_interval } from '@oh-my-rpg/logic-weapons'
 import { Armor, get_damage_reduction_interval as get_armor_damage_reduction_interval } from '@oh-my-rpg/logic-armors'
 import { State as InventoryState, iterables_unslotted, get_item_in_slot } from '@oh-my-rpg/state-inventory'
+import { State as WalletState, Currency, get_currency_amount } from '@oh-my-rpg/state-wallet'
 import { State as CharacterState, CharacterStat, CHARACTER_STATS } from '@oh-my-rpg/state-character'
 import {
 	WEAPON_ICON,
@@ -176,6 +177,13 @@ function render_inventory(inventory: InventoryState): string {
 	}).join('\n')
 }
 
+function render_wallet(wallet: WalletState): string {
+	const padded_coins = `       ${wallet.coin_count}`.slice(-5)
+	const padded_tokens = `       ${wallet.token_count}`.slice(-5)
+	return `💰  coins  ${padded_coins}
+💠  tokens ${padded_tokens}`
+}
+
 function render_adventure(a: Adventure): string {
 	const icon = '⚔'
 	const text = a.hid
@@ -193,6 +201,7 @@ export {
 	render_characteristics,
 	render_equipment,
 	render_inventory,
+	render_wallet,
 	render_adventure,
 }
 

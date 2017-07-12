@@ -10,6 +10,13 @@ import {
 	remove_item,
 } from '@oh-my-rpg/state-inventory'
 
+import {
+	Currency,
+	State as WalletState,
+	factory as wallet_factory,
+	add_amount,
+} from '@oh-my-rpg/state-wallet'
+
 import { Random, Engine } from '@offirmo/random'
 
 import {
@@ -19,6 +26,7 @@ import {
 	render_armor,
 	render_equipment,
 	render_inventory,
+	render_wallet,
 } from '.'
 
 describe('🔠  view to text', function() {
@@ -203,4 +211,38 @@ describe('🔠  view to text', function() {
 			})
 		})
 	})
+
+	describe('💰  wallet rendering', function() {
+
+		context('when empty', function() {
+
+			it('should render properly', () => {
+				let wallet = wallet_factory()
+				const str = render_wallet(wallet)
+				expect(str).to.be.a.string
+				expect(str).to.contain('0')
+				console.log(str)
+			})
+		})
+
+		context('when not empty', function() {
+
+			it('should render properly', () => {
+				let wallet = wallet_factory()
+
+				wallet = add_amount(wallet, Currency.coin, 12)
+				wallet = add_amount(wallet, Currency.token, 34)
+
+
+				const str = render_wallet(wallet)
+				expect(str).to.be.a.string
+				expect(str).not.to.contain('0')
+				expect(str).to.contain('12')
+				expect(str).to.contain('34')
+
+				console.log(str)
+			})
+		})
+	})
+
 })

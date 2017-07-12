@@ -154,6 +154,13 @@ function render_inventory(inventory) {
     }).join('\n');
 }
 exports.render_inventory = render_inventory;
+function render_wallet(wallet) {
+    const padded_coins = `       ${wallet.coin_count}`.slice(-5);
+    const padded_tokens = `       ${wallet.token_count}`.slice(-5);
+    return `💰  coins  ${padded_coins}
+💠  tokens ${padded_tokens}`;
+}
+exports.render_wallet = render_wallet;
 function render_adventure(a) {
     const icon = '⚔';
     const text = a.hid;

@@ -23,6 +23,7 @@ const {
 	render_characteristics,
 	render_equipment,
 	render_inventory,
+	render_wallet,
 	render_adventure,
 } = require('@oh-my-rpg/view-text')
 
@@ -53,5 +54,6 @@ console.log(boxify(
 	{borderStyle: 'single'}
 ))
 console.log(boxify(stylizeString.bold('⚔  EQUIPMENT 🛡 \n') + render_equipment(state.inventory), {borderStyle: 'single'}))
-//console.log(boxify(stylizeString.bold('📦  INVENTORY 💰 \n') + render_inventory(state.inventory), {borderStyle: 'single'}))
+//console.log(boxify(stylizeString.bold('📦  WALLET 💰 \n') + render_wallet(state.wallet), {borderStyle: 'single'}))
+console.log(boxify(stylizeString.bold('📦  INVENTORY 💰 \n') + render_wallet(state.wallet) + '\n' + render_inventory(state.inventory), {borderStyle: 'single'}))
 
