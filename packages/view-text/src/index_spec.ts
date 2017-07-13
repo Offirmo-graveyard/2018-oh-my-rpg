@@ -71,8 +71,6 @@ describe('🔠  view to text', function() {
 				expect(str).to.include('simple')
 				expect(str).to.include('mercenary')
 				expect(str).not.to.include('+')
-
-				console.log(str)
 			})
 		})
 
@@ -93,8 +91,6 @@ describe('🔠  view to text', function() {
 				expect(str).to.include('onyx')
 				expect(str).to.include('warfield_king')
 				expect(str).to.include('+3')
-
-				console.log(str)
 			})
 		})
 	})
@@ -118,8 +114,6 @@ describe('🔠  view to text', function() {
 				expect(str).to.include('onyx')
 				expect(str).to.include('tormentor')
 				expect(str).not.to.include('+')
-
-				console.log(str)
 			})
 		})
 
@@ -140,8 +134,6 @@ describe('🔠  view to text', function() {
 				expect(str).to.include('embroidered')
 				expect(str).to.include('warfield_king')
 				expect(str).to.include('+5')
-
-				console.log(str)
 			})
 		})
 	})
@@ -154,8 +146,6 @@ describe('🔠  view to text', function() {
 				let inventory = inventory_factory()
 				const str = render_equipment(inventory)
 				expect(str).to.be.a.string
-
-				console.log(str)
 			})
 		})
 
@@ -170,8 +160,6 @@ describe('🔠  view to text', function() {
 
 				const str = render_equipment(inventory)
 				expect(str).to.be.a.string
-
-				console.log(str)
 			})
 		})
 	})
@@ -187,8 +175,6 @@ describe('🔠  view to text', function() {
 				expect(str).to.contain(' 1.')
 				expect(str).not.to.contain(' 0.')
 				expect(str).to.contain('20.')
-
-				console.log(str)
 			})
 		})
 
@@ -208,8 +194,6 @@ describe('🔠  view to text', function() {
 				expect(str).to.be.a.string
 				expect(str).to.contain(' 1.')
 				expect(str).to.contain('20.')
-
-				console.log(str)
 			})
 		})
 	})
@@ -223,7 +207,6 @@ describe('🔠  view to text', function() {
 				const str = render_wallet(wallet)
 				expect(str).to.be.a.string
 				expect(str).to.contain('0')
-				console.log(str)
 			})
 		})
 
@@ -241,8 +224,6 @@ describe('🔠  view to text', function() {
 				expect(str).not.to.contain('0')
 				expect(str).to.contain('12')
 				expect(str).to.contain('34')
-
-				console.log(str)
 			})
 		})
 	})

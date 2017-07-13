@@ -11,8 +11,8 @@
 	"dependencies": {},
 	"devDependencies": {
 		"@offirmo/unit-test-toolbox": "^1.0.0",
-		"@types/lodash": "^4.14.66",
-		"lerna": "^2.0.0-rc.5",
-		"typescript": "^2.3.4"
+		"@types/lodash": "^4.14.68",
+		"lerna": "^2.0.0",
+		"typescript": "^2.4.1"
 	}
 }

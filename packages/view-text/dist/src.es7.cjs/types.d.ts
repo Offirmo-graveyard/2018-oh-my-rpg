@@ -1,7 +1,17 @@
-import { ItemQuality } from '@oh-my-rpg/definitions';
-import { Weapon } from '@oh-my-rpg/logic-weapons';
-import { Armor } from '@oh-my-rpg/logic-armors';
-declare type WeaponRenderer = (w: Weapon) => string;
-declare type ArmorRenderer = (a: Armor) => string;
-declare type ItemQualityColorizer = (q: ItemQuality, s: string) => string;
-export { WeaponRenderer, ArmorRenderer, ItemQualityColorizer };
+import { Enum } from 'typescript-string-enums';
+import { Adventure } from '@oh-my-rpg/the-boring-rpg';
+declare const TextStyle: {
+    item_quality_common: "item_quality_common";
+    item_quality_uncommon: "item_quality_uncommon";
+    item_quality_rare: "item_quality_rare";
+    item_quality_epic: "item_quality_epic";
+    item_quality_legendary: "item_quality_legendary";
+    item_quality_artifact: "item_quality_artifact";
+    change_outline: "change_outline";
+};
+declare type TextStyle = Enum<typeof TextStyle>;
+interface RenderingOptions {
+    stylize: (style: TextStyle, s: string) => string;
+    last_adventure?: Adventure;
+}
+export { TextStyle, RenderingOptions };

@@ -38,7 +38,6 @@ describe('🔠  view to text', function () {
                 expect(str).to.include('simple');
                 expect(str).to.include('mercenary');
                 expect(str).not.to.include('+');
-                console.log(str);
             });
         });
         context('when enhanced', function () {
@@ -57,7 +56,6 @@ describe('🔠  view to text', function () {
                 expect(str).to.include('onyx');
                 expect(str).to.include('warfield_king');
                 expect(str).to.include('+3');
-                console.log(str);
             });
         });
     });
@@ -78,7 +76,6 @@ describe('🔠  view to text', function () {
                 expect(str).to.include('onyx');
                 expect(str).to.include('tormentor');
                 expect(str).not.to.include('+');
-                console.log(str);
             });
         });
         context('when enhanced', function () {
@@ -97,7 +94,6 @@ describe('🔠  view to text', function () {
                 expect(str).to.include('embroidered');
                 expect(str).to.include('warfield_king');
                 expect(str).to.include('+5');
-                console.log(str);
             });
         });
     });
@@ -107,7 +103,6 @@ describe('🔠  view to text', function () {
                 let inventory = state_inventory_1.factory();
                 const str = _1.render_equipment(inventory);
                 expect(str).to.be.a.string;
-                console.log(str);
             });
         });
         context('when not empty', function () {
@@ -119,7 +114,6 @@ describe('🔠  view to text', function () {
                 inventory = state_inventory_1.equip_item(inventory, 1);
                 const str = _1.render_equipment(inventory);
                 expect(str).to.be.a.string;
-                console.log(str);
             });
         });
     });
@@ -132,7 +126,6 @@ describe('🔠  view to text', function () {
                 expect(str).to.contain(' 1.');
                 expect(str).not.to.contain(' 0.');
                 expect(str).to.contain('20.');
-                console.log(str);
             });
         });
         context('when not empty', function () {
@@ -149,7 +142,6 @@ describe('🔠  view to text', function () {
                 expect(str).to.be.a.string;
                 expect(str).to.contain(' 1.');
                 expect(str).to.contain('20.');
-                console.log(str);
             });
         });
     });
@@ -160,7 +152,6 @@ describe('🔠  view to text', function () {
                 const str = _1.render_wallet(wallet);
                 expect(str).to.be.a.string;
                 expect(str).to.contain('0');
-                console.log(str);
             });
         });
         context('when not empty', function () {
@@ -173,7 +164,6 @@ describe('🔠  view to text', function () {
                 expect(str).not.to.contain('0');
                 expect(str).to.contain('12');
                 expect(str).to.contain('34');
-                console.log(str);
             });
         });
     });
