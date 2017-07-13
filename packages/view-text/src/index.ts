@@ -139,7 +139,7 @@ function render_item(i: Item | null): string {
 	}
 }
 
-function render_characteristics(state: CharacterState): string {
+function render_characteristics(state: CharacterState, last_adventure?: Adventure): string {
 	return CHARACTER_STATS.map((stat: CharacterStat) => {
 		const icon = get_characteristic_icon_for(stat)
 		const label = stat
@@ -148,24 +148,35 @@ function render_characteristics(state: CharacterState): string {
 		const padded_label = `${label}............`.slice(0, 11)
 		const padded_human_values = `.......${value}`.slice(-4)
 
+		const update_notice = last_adventure && last_adventure.gains[stat]
+			? ` increased +${last_adventure.gains[stat]} 🆙`
+			: ''
 
-		return `${icon}  ${padded_label}${padded_human_values}`
+		return `${icon}  ${padded_label}${padded_human_values}${update_notice}`
 	}).join('\n')
 }
 
-function render_equipment(inventory: InventoryState): string {
+function render_equipment(inventory: InventoryState, last_adventure?: Adventure): string {
 	const equiped_items = ITEM_SLOTS.map(partial(get_item_in_slot, inventory))
 
 	return equiped_items.map((i: Item, index: number) => {
-		const padded_slot = `${ITEM_SLOTS[index]}  `.slice(0, 7)
+		const padded_slot = `${ITEM_SLOTS[index]}  `.slice(0, 6)
 		const icon = get_item_icon_for(i)
 		const label = render_item(i)
+		// TODO handle if no item
 
-		return `${padded_slot}: ${icon}  ${label}`
+		const update_notice = i && last_adventure && (
+			(last_adventure.gains.improved_weapon && i.slot === 'weapon')
+			|| (last_adventure.gains.improved_armor && i.slot === 'armor')
+		)
+			? ` enhanced +1! 🆙`
+			: ''
+
+		return `${padded_slot}: ${icon}  ${label}${update_notice}`
 	}).join('\n')
 }
 
-function render_inventory(inventory: InventoryState): string {
+function render_inventory(inventory: InventoryState, last_adventure?: Adventure): string {
 	const misc_items = Array.from(iterables_unslotted(inventory))
 
 	return misc_items.map((i: Item, index: number) => {
@@ -173,21 +184,40 @@ function render_inventory(inventory: InventoryState): string {
 		const label = render_item(i)
 		const padded_human_index = `  ${index + 1}.`.slice(-3)
 
-		return `${padded_human_index} ${icon}  ${label}`
+		const update_notice = i && last_adventure && (last_adventure.gains.weapon === i || last_adventure.gains.armor === i)
+			? ` new 🎁`
+			: ''
+
+		return `${padded_human_index} ${icon}  ${label}${update_notice}`
 	}).join('\n')
 }
 
-function render_wallet(wallet: WalletState): string {
-	const padded_coins = `       ${wallet.coin_count}`.slice(-5)
-	const padded_tokens = `       ${wallet.token_count}`.slice(-5)
-	return `💰  coins  ${padded_coins}
-💠  tokens ${padded_tokens}`
+function render_wallet(wallet: WalletState, last_adventure?: Adventure): string {
+	const padded_coins = `.......${wallet.coin_count}`.slice(-5)
+	const padded_tokens = `.......${wallet.token_count}`.slice(-5)
+
+	const coins_update_notice = last_adventure && last_adventure.gains.coins
+		? ` gained +${last_adventure.gains.coins} 🆙`
+		: ''
+	const tokens_update_notice = last_adventure && last_adventure.gains.tokens
+		? ` gained +${last_adventure.gains.tokens} 🆙`
+		: ''
+
+	return `💰  coins..${padded_coins}${coins_update_notice}
+💠  tokens.${padded_tokens}${tokens_update_notice}`
 }
 
 function render_adventure(a: Adventure): string {
 	const icon = '⚔'
 	const text = a.hid
-	return `${icon} ${text} TODO render_adventure`
+	let res = `${icon} ${text} TODO render_adventure`
+
+	if (a.gains.weapon)
+		res += `\nNew item: ` + render_item(a.gains.weapon)
+	if (a.gains.armor)
+		res += `\nNew item: ` + render_item(a.gains.armor)
+
+	return res
 }
 
 /////////////////////

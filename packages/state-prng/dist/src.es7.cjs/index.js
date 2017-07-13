@@ -24,7 +24,7 @@ function update_use_count(state, prng) {
     if (new_use_count < state.use_count)
         throw new Error(`update PRNG state: count is lower than previous count, this is unexpected! Check your code!`);
     if (new_use_count === state.use_count)
-        throw new Error(`update PRNG state: count hasn't changed! Check your code!`);
+        console.warn(`update PRNG state: count hasn't changed = no random was generated! This is most likely a bug, check your code!`);
     if (prng !== cached_prng)
         throw new Error(`update PRNG state: passed prng is not the cached one, this is unexpected!`);
     state.use_count = new_use_count;

@@ -34,6 +34,7 @@ console.log(boxify('𝐓𝐡𝐞 𝐁𝐨𝐫𝐢𝐧𝐠 𝐑𝐏𝐆 𝑟𝑒�
 let state = factory()
 //console.log(prettifyJson(state))
 
+/*
 console.log(boxify(
 	stylizeString.bold('🙂  CHARACTERISTICS 💗\n')
 	+ render_characteristics(state.characteristics),
@@ -41,19 +42,29 @@ console.log(boxify(
 	))
 console.log(boxify(stylizeString.bold('⚔  EQUIPMENT 🛡 \n') + render_equipment(state.inventory), {borderStyle: 'single'}))
 //console.log(boxify(stylizeString.bold('📦  INVENTORY 💰 \n') + render_inventory(state.inventory), {borderStyle: 'single'}))
+*/
 
-
-state = play(state)
+state = play(state, 'rare_goods_seller')
 
 console.log(render_adventure(state.last_adventure))
-console.log(prettifyJson(state.last_adventure))
+//console.log(prettifyJson(state.last_adventure))
 
-console.log(boxify(
+function noboxify(s) { return '\n' + s }
+
+console.log(noboxify(
 	stylizeString.bold('🙂  CHARACTERISTICS 💗\n')
-	+ render_characteristics(state.characteristics),
+	+ render_characteristics(state.characteristics, state.last_adventure),
 	{borderStyle: 'single'}
 ))
-console.log(boxify(stylizeString.bold('⚔  EQUIPMENT 🛡 \n') + render_equipment(state.inventory), {borderStyle: 'single'}))
-//console.log(boxify(stylizeString.bold('📦  WALLET 💰 \n') + render_wallet(state.wallet), {borderStyle: 'single'}))
-console.log(boxify(stylizeString.bold('📦  INVENTORY 💰 \n') + render_wallet(state.wallet) + '\n' + render_inventory(state.inventory), {borderStyle: 'single'}))
-
+console.log(noboxify(
+	stylizeString.bold('⚔  ACTIVE EQUIPMENT 🛡 \n')
+	+ render_equipment(state.inventory, state.last_adventure),
+	{borderStyle: 'single'}
+))
+console.log(noboxify(
+	stylizeString.bold('📦  INVENTORY 💰 \n')
+	+ render_wallet(state.wallet, state.last_adventure)
+	+ '\n'
+	+ render_inventory(state.inventory, state.last_adventure),
+	{borderStyle: 'single'}
+))

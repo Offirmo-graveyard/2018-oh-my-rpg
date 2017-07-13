@@ -123,48 +123,70 @@ function render_item(i) {
     }
 }
 exports.render_item = render_item;
-function render_characteristics(state) {
+function render_characteristics(state, last_adventure) {
     return state_character_1.CHARACTER_STATS.map((stat) => {
         const icon = get_characteristic_icon_for(stat);
         const label = stat;
         const value = state[stat];
         const padded_label = `${label}............`.slice(0, 11);
         const padded_human_values = `.......${value}`.slice(-4);
-        return `${icon}  ${padded_label}${padded_human_values}`;
+        const update_notice = last_adventure && last_adventure.gains[stat]
+            ? ` increased +${last_adventure.gains[stat]} 🆙`
+            : '';
+        return `${icon}  ${padded_label}${padded_human_values}${update_notice}`;
     }).join('\n');
 }
 exports.render_characteristics = render_characteristics;
-function render_equipment(inventory) {
+function render_equipment(inventory, last_adventure) {
     const equiped_items = definitions_1.ITEM_SLOTS.map(lodash_1.partial(state_inventory_1.get_item_in_slot, inventory));
     return equiped_items.map((i, index) => {
-        const padded_slot = `${definitions_1.ITEM_SLOTS[index]}  `.slice(0, 7);
+        const padded_slot = `${definitions_1.ITEM_SLOTS[index]}  `.slice(0, 6);
         const icon = get_item_icon_for(i);
         const label = render_item(i);
-        return `${padded_slot}: ${icon}  ${label}`;
+        // TODO handle if no item
+        const update_notice = i && last_adventure && ((last_adventure.gains.improved_weapon && i.slot === 'weapon')
+            || (last_adventure.gains.improved_armor && i.slot === 'armor'))
+            ? ` enhanced +1! 🆙`
+            : '';
+        return `${padded_slot}: ${icon}  ${label}${update_notice}`;
     }).join('\n');
 }
 exports.render_equipment = render_equipment;
-function render_inventory(inventory) {
+function render_inventory(inventory, last_adventure) {
     const misc_items = Array.from(state_inventory_1.iterables_unslotted(inventory));
     return misc_items.map((i, index) => {
         const icon = get_item_icon_for(i);
         const label = render_item(i);
         const padded_human_index = `  ${index + 1}.`.slice(-3);
-        return `${padded_human_index} ${icon}  ${label}`;
+        const update_notice = i && last_adventure && (last_adventure.gains.weapon === i || last_adventure.gains.armor === i)
+            ? ` new 🎁`
+            : '';
+        return `${padded_human_index} ${icon}  ${label}${update_notice}`;
     }).join('\n');
 }
 exports.render_inventory = render_inventory;
-function render_wallet(wallet) {
-    const padded_coins = `       ${wallet.coin_count}`.slice(-5);
-    const padded_tokens = `       ${wallet.token_count}`.slice(-5);
-    return `💰  coins  ${padded_coins}
-💠  tokens ${padded_tokens}`;
+function render_wallet(wallet, last_adventure) {
+    const padded_coins = `.......${wallet.coin_count}`.slice(-5);
+    const padded_tokens = `.......${wallet.token_count}`.slice(-5);
+    const coins_update_notice = last_adventure && last_adventure.gains.coins
+        ? ` gained +${last_adventure.gains.coins} 🆙`
+        : '';
+    const tokens_update_notice = last_adventure && last_adventure.gains.tokens
+        ? ` gained +${last_adventure.gains.tokens} 🆙`
+        : '';
+    return `💰  coins..${padded_coins}${coins_update_notice}
+💠  tokens.${padded_tokens}${tokens_update_notice}`;
 }
 exports.render_wallet = render_wallet;
 function render_adventure(a) {
     const icon = '⚔';
     const text = a.hid;
-    return `${icon} ${text} TODO render_adventure`;
+    let res = `${icon} ${text} TODO render_adventure`;
+    if (a.gains.weapon)
+        res += `\nNew item: ` + render_item(a.gains.weapon);
+    if (a.gains.armor)
+        res += `\nNew item: ` + render_item(a.gains.armor);
+    return res;
 }
 exports.render_adventure = render_adventure;
 /////////////////////

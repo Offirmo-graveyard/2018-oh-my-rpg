@@ -29,6 +29,8 @@ import {
 	render_wallet,
 } from '.'
 
+declare const console: any // XXX
+
 describe('🔠  view to text', function() {
 
 	describe('💠  item quality rendering', function() {

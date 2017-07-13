@@ -159,17 +159,6 @@ function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, pl
 	}
 }
 
-function generate_random_good_adventure(rng: Engine, player_level: number, inventory: InventoryState): Adventure {
-	const aa: AdventureArchetype = pick_random_good_archetype(rng)
-
-	return instantiate_adventure_archetype(
-		rng,
-		aa,
-		player_level,
-		inventory,
-	)
-}
-
 function receive_stat_increase(state: State, stat: CharacterStat, amount = 1): State {
 	state.characteristics = increase_stat(state.characteristics, stat, amount)
 	return state

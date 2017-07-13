@@ -74,10 +74,6 @@ function instantiate_adventure_archetype(rng, aa, player_level, inventory) {
         }
     };
 }
-function generate_random_good_adventure(rng, player_level, inventory) {
-    const aa = logic_adventures_1.pick_random_good_archetype(rng);
-    return instantiate_adventure_archetype(rng, aa, player_level, inventory);
-}
 function receive_stat_increase(state, stat, amount = 1) {
     state.characteristics = state_character_1.increase_stat(state.characteristics, stat, amount);
     return state;

@@ -16,18 +16,24 @@ interface AdventureArchetype {
 	good: boolean
 	post: {
 		gains: {
+			// keys must match characteristics
 			level: boolean
-			agility: number
 			health: number
-			luck: number
 			mana: number
+
 			strength: number
+			agility: number
 			vitality: number
 			wisdom: number
+			luck: number
+
 			coins: CoinsGain
 			tokens: number
+
 			armor: boolean
 			weapon: boolean
+
+			// key radix must match item slots
 			armor_improvement: boolean
 			weapon_improvement: boolean
 		}
