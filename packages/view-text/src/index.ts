@@ -9,7 +9,7 @@ import { Armor, get_damage_reduction_interval as get_armor_damage_reduction_inte
 import { State as InventoryState, iterables_unslotted, get_item_in_slot } from '@oh-my-rpg/state-inventory'
 import { State as WalletState, Currency, get_currency_amount } from '@oh-my-rpg/state-wallet'
 import { State as CharacterState, CharacterStat, CHARACTER_STATS } from '@oh-my-rpg/state-character'
-import { Adventure } from '@oh-my-rpg/the-boring-rpg'
+import { Adventure } from '@oh-my-rpg/state-the-boring-rpg'
 
 import { TextStyle, RenderingOptions } from './types'
 
@@ -35,45 +35,6 @@ function get_style_for_quality(quality: ItemQuality): TextStyle {
 			return TextStyle.item_quality_artifact
 		default:
 			throw new Error(`get_style_for_quality(): Unknown ItemQuality : ${quality}`)
-	}
-}
-
-function get_ansi_color_for_quality(quality: ItemQuality): string {
-	switch (quality) {
-		case ItemQuality.common:
-			return 'gray'
-		case ItemQuality.uncommon:
-			return 'green'
-		case ItemQuality.rare:
-			return 'blue'
-		case ItemQuality.epic:
-			return 'magenta'
-		case ItemQuality.legendary:
-			return 'red'
-		case ItemQuality.artifact:
-			return 'yellow'
-		default:
-			throw new Error(`get_ansi_color_for_quality(): Unknown ItemQuality : ${quality}`)
-	}
-}
-
-function get_html_color_for_quality(quality: ItemQuality): string {
-	// TODO better colors
-	switch (quality) {
-		case ItemQuality.common:
-			return 'gray'
-		case ItemQuality.uncommon:
-			return 'green'
-		case ItemQuality.rare:
-			return 'blue'
-		case ItemQuality.epic:
-			return 'magenta'
-		case ItemQuality.legendary:
-			return 'red'
-		case ItemQuality.artifact:
-			return 'yellow'
-		default:
-			throw new Error(`get_html_color_for_quality(): Unknown ItemQuality : ${quality}`)
 	}
 }
 
@@ -261,8 +222,6 @@ export {
 	RenderingOptions,
 	DEFAULT_RENDERING_OPTIONS,
 
-	get_ansi_color_for_quality,
-	get_html_color_for_quality,
 	render_weapon,
 	render_armor,
 	render_item,

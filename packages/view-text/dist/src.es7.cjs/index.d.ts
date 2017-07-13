@@ -1,14 +1,12 @@
-import { ItemQuality, Item } from '@oh-my-rpg/definitions';
+import { Item } from '@oh-my-rpg/definitions';
 import { Weapon } from '@oh-my-rpg/logic-weapons';
 import { Armor } from '@oh-my-rpg/logic-armors';
 import { State as InventoryState } from '@oh-my-rpg/state-inventory';
 import { State as WalletState } from '@oh-my-rpg/state-wallet';
 import { State as CharacterState } from '@oh-my-rpg/state-character';
-import { Adventure } from '@oh-my-rpg/the-boring-rpg';
+import { Adventure } from '@oh-my-rpg/state-the-boring-rpg';
 import { TextStyle, RenderingOptions } from './types';
 declare const DEFAULT_RENDERING_OPTIONS: RenderingOptions;
-declare function get_ansi_color_for_quality(quality: ItemQuality): string;
-declare function get_html_color_for_quality(quality: ItemQuality): string;
 declare function render_weapon(w: Weapon, options?: RenderingOptions): string;
 declare function render_armor(a: Armor, options?: RenderingOptions): string;
 declare function render_item(i: Item | null, options?: RenderingOptions): string;
@@ -17,4 +15,4 @@ declare function render_equipment(inventory: InventoryState, options?: Rendering
 declare function render_inventory(inventory: InventoryState, options?: RenderingOptions): string;
 declare function render_wallet(wallet: WalletState, options?: RenderingOptions): string;
 declare function render_adventure(a: Adventure, options?: RenderingOptions): string;
-export { TextStyle, RenderingOptions, DEFAULT_RENDERING_OPTIONS, get_ansi_color_for_quality, get_html_color_for_quality, render_weapon, render_armor, render_item, render_characteristics, render_equipment, render_inventory, render_wallet, render_adventure };
+export { TextStyle, RenderingOptions, DEFAULT_RENDERING_OPTIONS, render_weapon, render_armor, render_item, render_characteristics, render_equipment, render_inventory, render_wallet, render_adventure };

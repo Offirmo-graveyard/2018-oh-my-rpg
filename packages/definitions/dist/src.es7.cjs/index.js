@@ -1,9 +1,7 @@
 "use strict";
 /////////////////////
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 const types_1 = require("./types");
 const ITEM_QUALITIES = [
     types_1.ItemQuality.common,
@@ -20,6 +18,6 @@ const ITEM_SLOTS = [
 ];
 exports.ITEM_SLOTS = ITEM_SLOTS;
 /////////////////////
-__export(require("./types"));
+tslib_1.__exportStar(require("./types"), exports);
 /////////////////////
 //# sourceMappingURL=index.js.map

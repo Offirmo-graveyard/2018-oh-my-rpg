@@ -14,6 +14,9 @@ npm install
 lerna run install
 
 lerna bootstrap
+
+lerna run build:dev
+
 ```
 
 ## Usage

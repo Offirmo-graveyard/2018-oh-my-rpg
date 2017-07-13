@@ -32,45 +32,6 @@ function get_style_for_quality(quality) {
             throw new Error(`get_style_for_quality(): Unknown ItemQuality : ${quality}`);
     }
 }
-function get_ansi_color_for_quality(quality) {
-    switch (quality) {
-        case definitions_1.ItemQuality.common:
-            return 'gray';
-        case definitions_1.ItemQuality.uncommon:
-            return 'green';
-        case definitions_1.ItemQuality.rare:
-            return 'blue';
-        case definitions_1.ItemQuality.epic:
-            return 'magenta';
-        case definitions_1.ItemQuality.legendary:
-            return 'red';
-        case definitions_1.ItemQuality.artifact:
-            return 'yellow';
-        default:
-            throw new Error(`get_ansi_color_for_quality(): Unknown ItemQuality : ${quality}`);
-    }
-}
-exports.get_ansi_color_for_quality = get_ansi_color_for_quality;
-function get_html_color_for_quality(quality) {
-    // TODO better colors
-    switch (quality) {
-        case definitions_1.ItemQuality.common:
-            return 'gray';
-        case definitions_1.ItemQuality.uncommon:
-            return 'green';
-        case definitions_1.ItemQuality.rare:
-            return 'blue';
-        case definitions_1.ItemQuality.epic:
-            return 'magenta';
-        case definitions_1.ItemQuality.legendary:
-            return 'red';
-        case definitions_1.ItemQuality.artifact:
-            return 'yellow';
-        default:
-            throw new Error(`get_html_color_for_quality(): Unknown ItemQuality : ${quality}`);
-    }
-}
-exports.get_html_color_for_quality = get_html_color_for_quality;
 function get_item_icon_for(i) {
     if (!i)
         return '⋯';

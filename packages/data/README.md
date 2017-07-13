@@ -1,1 +1,1 @@
-Static data for "The Boring RPG reloaded" game.
+Static data for "Oh My RPG" game.

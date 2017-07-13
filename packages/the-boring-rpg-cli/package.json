@@ -1,5 +1,5 @@
 {
-	"name": "@oh-my-rpg/the-boring-rpg-client-cli",
+	"name": "@oh-my-rpg/the-boring-rpg-cli",
 	"version": "0.0.1",
 	"description": "The Boring RPG command line client",
 	"main": "index.js",
@@ -10,7 +10,7 @@
 	},
 	"dependencies": {
 		"@offirmo/cli-toolbox": "^0.3.0",
-		"@oh-my-rpg/the-boring-rpg": "^0.0.1",
+		"@oh-my-rpg/state-the-boring-rpg": "^0.0.1",
 		"@oh-my-rpg/view-text": "^0.0.1",
 		"conf": "^1.1.2",
 		"tslib": "^1.7.1"

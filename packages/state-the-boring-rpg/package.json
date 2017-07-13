@@ -1,5 +1,5 @@
 {
-	"name": "@oh-my-rpg/the-boring-rpg",
+	"name": "@oh-my-rpg/state-the-boring-rpg",
 	"version": "0.0.1",
 	"description": "The Boring RPG",
 	"main": "dist/src.es7.cjs/index.js",

@@ -7,20 +7,6 @@ const state_inventory_1 = require("@oh-my-rpg/state-inventory");
 const state_wallet_1 = require("@oh-my-rpg/state-wallet");
 const _1 = require(".");
 describe('🔠  view to text', function () {
-    describe('💠  item quality rendering', function () {
-        describe('color for ansi console', function () {
-            it('should work', () => {
-                const color = _1.get_ansi_color_for_quality(definitions_1.ItemQuality.legendary);
-                expect(color).to.equal('red');
-            });
-        });
-        describe('color for html', function () {
-            it('should work', () => {
-                const color = _1.get_html_color_for_quality(definitions_1.ItemQuality.uncommon);
-                expect(color).to.equal('green');
-            });
-        });
-    });
     describe('⚔  weapon rendering', function () {
         context('when not enhanced', function () {
             it('should render properly', () => {

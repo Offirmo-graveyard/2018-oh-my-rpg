@@ -13,5 +13,8 @@
 	},
 	"dependencies": {
 		"typescript-string-enums": "^0.3.4"
+	},
+	"devDependencies": {
+		"tslib": "^1.7.1"
 	}
 }

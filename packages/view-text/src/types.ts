@@ -3,7 +3,7 @@ import { Enum } from 'typescript-string-enums'
 
 ///////
 
-import { Adventure } from '@oh-my-rpg/the-boring-rpg'
+import { Adventure } from '@oh-my-rpg/state-the-boring-rpg'
 
 /////////////////////
 

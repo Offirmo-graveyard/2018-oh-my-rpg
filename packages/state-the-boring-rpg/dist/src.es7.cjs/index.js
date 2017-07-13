@@ -9,9 +9,6 @@ const state_prng_1 = require("@oh-my-rpg/state-prng");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
 const logic_armors_1 = require("@oh-my-rpg/logic-armors");
 const logic_adventures_1 = require("@oh-my-rpg/logic-adventures");
-const types_1 = require("./types");
-exports.State = types_1.State;
-exports.Adventure = types_1.Adventure;
 /////////////////////
 function factory() {
     let state = {

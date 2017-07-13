@@ -20,8 +20,6 @@ import {
 import { Random, Engine } from '@offirmo/random'
 
 import {
-	get_ansi_color_for_quality,
-	get_html_color_for_quality,
 	render_weapon,
 	render_armor,
 	render_equipment,
@@ -32,25 +30,6 @@ import {
 declare const console: any // XXX
 
 describe('🔠  view to text', function() {
-
-	describe('💠  item quality rendering', function() {
-
-		describe('color for ansi console', function() {
-
-			it('should work', () => {
-				const color = get_ansi_color_for_quality(ItemQuality.legendary)
-				expect(color).to.equal('red')
-			})
-		})
-
-		describe('color for html', function() {
-
-			it('should work', () => {
-				const color = get_html_color_for_quality(ItemQuality.uncommon)
-				expect(color).to.equal('green')
-			})
-		})
-	})
 
 	describe('⚔  weapon rendering', function() {
 

@@ -14,7 +14,7 @@ const columnify = require('@offirmo/cli-toolbox/string/columnify')
 const {
 	factory,
 	play,
-} = require('@oh-my-rpg/the-boring-rpg')
+} = require('@oh-my-rpg/state-the-boring-rpg')
 
 const {
 	render_weapon,
