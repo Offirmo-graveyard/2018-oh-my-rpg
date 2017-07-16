@@ -114,7 +114,7 @@ function render_characteristics(state, options = DEFAULT_RENDERING_OPTIONS) {
         const padded_label = `${label}............`.slice(0, 11);
         const padded_human_values = `.......${value}`.slice(-4);
         const update_notice = options.stylize(types_1.TextStyle.change_outline, la && la.gains && la.gains[stat]
-            ? ` increased +${la.gains[stat]} 🆙`
+            ? ` increased by ${la.gains[stat]}! 🆙`
             : '');
         return `${icon}  ${padded_label}${padded_human_values}${update_notice}`;
     }).join('\n');
@@ -131,7 +131,7 @@ function render_equipment(inventory, options = DEFAULT_RENDERING_OPTIONS) {
         const label = render_item(i, options);
         const update_notice = options.stylize(types_1.TextStyle.change_outline, i && la && la.gains && ((la.gains.improved_weapon && i.slot === 'weapon')
             || (la.gains.improved_armor && i.slot === 'armor'))
-            ? ` enhanced +1! 🆙`
+            ? ` enhanced! 🆙`
             : '');
         return `${padded_slot}: ${icon}  ${label}${update_notice}`;
     }).join('\n');
@@ -154,10 +154,10 @@ exports.render_inventory = render_inventory;
 function render_wallet(wallet, options = DEFAULT_RENDERING_OPTIONS) {
     const { last_adventure: la } = options;
     const coins_update_notice = options.stylize(types_1.TextStyle.change_outline, la && la.gains.coins
-        ? ` gained +${la.gains.coins} 🆙`
+        ? ` gained ${la.gains.coins}! 🆙`
         : '');
     const tokens_update_notice = options.stylize(types_1.TextStyle.change_outline, la && la.gains.tokens
-        ? ` gained +${la.gains.tokens} 🆙`
+        ? ` gained ${la.gains.tokens}! 🆙`
         : '');
     return `💰  ${wallet.coin_count} coins${coins_update_notice}
 💠  ${wallet.token_count} tokens${tokens_update_notice}`;

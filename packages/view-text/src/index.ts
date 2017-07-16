@@ -132,7 +132,7 @@ function render_characteristics(state: CharacterState, options: RenderingOptions
 
 		const update_notice = options.stylize(TextStyle.change_outline,
 			la && la.gains && la.gains[stat]
-			? ` increased +${la.gains[stat]} 🆙`
+			? ` increased by ${la.gains[stat]}! 🆙`
 			: ''
 		)
 
@@ -157,7 +157,7 @@ function render_equipment(inventory: InventoryState, options: RenderingOptions =
 					(la.gains.improved_weapon && i.slot === 'weapon')
 				|| (la.gains.improved_armor && i.slot === 'armor')
 			)
-			? ` enhanced +1! 🆙`
+			? ` enhanced! 🆙`
 			: ''
 		)
 
@@ -189,12 +189,12 @@ function render_wallet(wallet: WalletState, options: RenderingOptions = DEFAULT_
 
 	const coins_update_notice = options.stylize(TextStyle.change_outline,
 		la && la.gains.coins
-		? ` gained +${la.gains.coins} 🆙`
+		? ` gained ${la.gains.coins}! 🆙`
 		: ''
 	)
 	const tokens_update_notice = options.stylize(TextStyle.change_outline,
 		la && la.gains.tokens
-		? ` gained +${la.gains.tokens} 🆙`
+		? ` gained ${la.gains.tokens}! 🆙`
 		: ''
 	)
 

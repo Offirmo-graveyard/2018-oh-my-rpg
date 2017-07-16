@@ -76,8 +76,7 @@ const rendering_options = {
 
 
 console.log(stylizeString.bold(`\n============ Click #${state.good_click_count} ============\n`))
-console.log(render_adventure(state.last_adventure))
-//console.log(prettifyJson(state.last_adventure))
+console.log(render_adventure(state.last_adventure, rendering_options))
 
 function noboxify(s) { return '\n' + s }
 
@@ -101,4 +100,5 @@ console.log(noboxify(
 
 console.log('You can play again in...')
 
+// TODO print advices (equip, sell...)
 config.set(state)
