@@ -7,11 +7,9 @@ RPG logic for web RPGs in TypeScript.
 nvm use 8
 npm install --global lerna
 
-lerna clean
+lerna clean --yes
 lerna exec -- rm -f package-lock.json
 rm -f package-lock.json
-npm install
-lerna run install
 
 lerna bootstrap
 
@@ -37,3 +35,5 @@ Example: see `packages/the boring rpg`
 
 
 git push --set-upstream origin master
+npm install
+lerna run install

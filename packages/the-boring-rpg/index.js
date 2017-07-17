@@ -27,12 +27,14 @@ const {
 	render_adventure,
 } = require('@oh-my-rpg/view-text')
 
+const { version } = require('./package.json')
+
 let verbose = false
 
 //console.log(boxify('𝐓he 𝐁oring 𝐑𝐏𝐆 𝑟𝑒𝑙𝑜𝑎𝑑𝑒𝑑 ', {padding: 1, margin: 1, borderStyle: 'double'}))
 //console.log(boxify('𝐓𝐡𝐞 𝐁𝐨𝐫𝐢𝐧𝐠 𝐑𝐏𝐆 𝑟𝑒𝑙𝑜𝑎𝑑𝑒𝑑 ', {padding: 2, margin: 1, borderStyle: 'double', borderColor: 'red'}))
 console.log(boxify(`   ${stylizeString.bold('The Boring RPG 𝑟𝑒𝑙𝑜𝑎𝑑𝑒𝑑')} \n\nhttp://www.online-adventur.es`, {padding: 1, margin: 0, borderStyle: 'double', borderColor: 'red'}))
-console.log('v0.x.0')
+console.log(`v${version}`)
 
 const config = new Conf({
 	configName: 'state',

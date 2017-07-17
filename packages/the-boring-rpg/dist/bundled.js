@@ -1473,12 +1473,14 @@ const {
 	render_adventure,
 } = __webpack_require__(99)
 
+const { version } = __webpack_require__(103)
+
 let verbose = false
 
 //console.log(boxify('𝐓he 𝐁oring 𝐑𝐏𝐆 𝑟𝑒𝑙𝑜𝑎𝑑𝑒𝑑 ', {padding: 1, margin: 1, borderStyle: 'double'}))
 //console.log(boxify('𝐓𝐡𝐞 𝐁𝐨𝐫𝐢𝐧𝐠 𝐑𝐏𝐆 𝑟𝑒𝑙𝑜𝑎𝑑𝑒𝑑 ', {padding: 2, margin: 1, borderStyle: 'double', borderColor: 'red'}))
 console.log(boxify(`   ${stylizeString.bold('The Boring RPG 𝑟𝑒𝑙𝑜𝑎𝑑𝑒𝑑')} \n\nhttp://www.online-adventur.es`, {padding: 1, margin: 0, borderStyle: 'double', borderColor: 'red'}))
-console.log('v0.x.0')
+console.log(`v${version}`)
 
 const config = new Conf({
 	configName: 'state',
@@ -44206,6 +44208,33 @@ exports.Enum = Enum;
     Enum.isType = isType;
 })(Enum = exports.Enum || (exports.Enum = {}));
 //# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports) {
+
+module.exports = {
+	"name": "the-boring-rpg",
+	"version": "0.0.1",
+	"description": "The Boring RPG, a command line game",
+	"main": "index.js",
+	"author": "Offirmo <offirmo.net@gmail.com>",
+	"license": "UNLICENSED",
+	"scripts": {
+		"start": "node index.js",
+		"build": "webpack --config meta/webpack.config.js"
+	},
+	"dependencies": {
+		"conf": "^1.1.2"
+	},
+	"devDependencies": {
+		"@offirmo/cli-toolbox": "^0.3.0",
+		"@oh-my-rpg/state-the-boring-rpg": "^0.0.1",
+		"@oh-my-rpg/view-text": "^0.0.1",
+		"tslib": "^1.7.1",
+		"webpack": "^3.3.0"
+	}
+};
 
 /***/ })
 /******/ ]);

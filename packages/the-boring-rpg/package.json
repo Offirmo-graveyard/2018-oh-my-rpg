@@ -1,7 +1,7 @@
 {
-	"name": "the-boring-rpg-cli",
+	"name": "the-boring-rpg",
 	"version": "0.0.1",
-	"description": "The Boring RPG command line client",
+	"description": "The Boring RPG, a command line game",
 	"main": "index.js",
 	"author": "Offirmo <offirmo.net@gmail.com>",
 	"license": "UNLICENSED",
