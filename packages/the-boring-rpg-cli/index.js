@@ -3,13 +3,13 @@ require('@offirmo/cli-toolbox/stdout/clear-cli')()
 const _ = require('lodash')
 const Conf = require('conf')
 
-const displayInAsciiArtFont = require('@offirmo/cli-toolbox/stdout/display_in_ascii_art_font')
+//const displayInAsciiArtFont = require('@offirmo/cli-toolbox/stdout/display_in_ascii_art_font')
 const prettifyJson = require('@offirmo/cli-toolbox/string/prettify-json')
 const boxify = require('@offirmo/cli-toolbox/string/boxify')
 const stylizeString = require('@offirmo/cli-toolbox/string/stylize')
-const json = require('@offirmo/cli-toolbox/fs/json')
-const arrayify = require('@offirmo/cli-toolbox/string/arrayify')
-const columnify = require('@offirmo/cli-toolbox/string/columnify')
+//const json = require('@offirmo/cli-toolbox/fs/json')
+//const arrayify = require('@offirmo/cli-toolbox/string/arrayify')
+//const columnify = require('@offirmo/cli-toolbox/string/columnify')
 
 const {
 	factory,

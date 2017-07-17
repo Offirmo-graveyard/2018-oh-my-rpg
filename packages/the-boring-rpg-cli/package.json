@@ -1,18 +1,22 @@
 {
-	"name": "@oh-my-rpg/the-boring-rpg-cli",
+	"name": "the-boring-rpg-cli",
 	"version": "0.0.1",
 	"description": "The Boring RPG command line client",
 	"main": "index.js",
 	"author": "Offirmo <offirmo.net@gmail.com>",
 	"license": "UNLICENSED",
 	"scripts": {
-		"start": "node index.js"
+		"start": "node index.js",
+		"build": "webpack --config meta/webpack.config.js"
 	},
 	"dependencies": {
+		"conf": "^1.1.2"
+	},
+	"devDependencies": {
 		"@offirmo/cli-toolbox": "^0.3.0",
 		"@oh-my-rpg/state-the-boring-rpg": "^0.0.1",
 		"@oh-my-rpg/view-text": "^0.0.1",
-		"conf": "^1.1.2",
-		"tslib": "^1.7.1"
+		"tslib": "^1.7.1",
+		"webpack": "^3.3.0"
 	}
 }
