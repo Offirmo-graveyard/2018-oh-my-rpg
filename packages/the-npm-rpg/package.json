@@ -1,5 +1,5 @@
 {
-	"name": "the-boring-rpg",
+	"name": "the-npm-rpg",
 	"version": "0.0.1",
 	"description": "The Boring RPG, a command line game",
 	"main": "index.js",
