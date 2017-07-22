@@ -39,3 +39,6 @@ In progress!!!
 
 ## Contributing
 TODO...
+
+* http://jlongster.com/Backend-Apps-with-Webpack--Part-I
+* lerna
