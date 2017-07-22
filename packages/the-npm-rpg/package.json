@@ -5,6 +5,10 @@
 	"main": "index.js",
 	"author": "Offirmo <offirmo.net@gmail.com>",
 	"license": "UNLICENSED",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/online-adventures/oh-my-rpg.git"
+	},
 	"bin": "./bin/index.js",
 	"scripts": {
 		"start": "bin/index.js",
