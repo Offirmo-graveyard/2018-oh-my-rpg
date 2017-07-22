@@ -1,12 +1,12 @@
 {
 	"name": "the-npm-rpg",
 	"version": "0.0.1",
-	"description": "The Boring RPG, a command line game",
+	"description": "The Boring RPG, a command line RPG game. Just `npx the-npm-rpg`!",
 	"main": "index.js",
 	"author": "Offirmo <offirmo.net@gmail.com>",
 	"license": "UNLICENSED",
 	"scripts": {
-		"start": "node index.js",
+		"start": "bin/index.js",
 		"build": "webpack --config meta/webpack.config.js"
 	},
 	"dependencies": {
