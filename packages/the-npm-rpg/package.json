@@ -5,6 +5,7 @@
 	"main": "index.js",
 	"author": "Offirmo <offirmo.net@gmail.com>",
 	"license": "UNLICENSED",
+	"bin": "./bin/index.js",
 	"scripts": {
 		"start": "bin/index.js",
 		"build": "webpack --config meta/webpack.config.js"
