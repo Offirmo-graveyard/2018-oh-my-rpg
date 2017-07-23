@@ -1,4 +1,4 @@
-The npm RPG
+The npm RPG ⚔🛡💰
 ===========
 
 This is a simple command-line RPG. Every time you launch the command, something happen!
@@ -8,20 +8,20 @@ This is a simple command-line RPG. Every time you launch the command, something 
 
 ## TLDR; I want to play !
 
-Just:
+Quick test, just:
 ```bash
 > npx  the-npm-rpg
 ```
 
-If you don't have npx:
+Full install, if you don't have npx or if you want to play faster:
 ```bash
-> npm install --global the-npm-rpg
+> npm install --global  the-npm-rpg
 > the-npm-rpg
 ```
 
 
 ## More info
-Inspiration for the game itself was taken from the defunct "boring RPG".
+Inspiration for the game itself was taken from the defunct "boring RPG" https://www.reddit.com/r/boringrpg/.
 
 Inspiration to turn it into a command-line RPG was taken from the "npx" utility, recently integrated to npm.
 
@@ -42,3 +42,5 @@ TODO...
 
 * http://jlongster.com/Backend-Apps-with-Webpack--Part-I
 * lerna
+* http://thisdavej.com/making-interactive-node-js-console-apps-that-listen-for-keypress-events/
+* https://stackoverflow.com/questions/5006821/nodejs-how-to-read-keystrokes-from-stdin

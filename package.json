@@ -9,7 +9,7 @@
 		"url": "git+https://github.com/online-adventures/oh-my-rpg.git"
 	},
 	"scripts": {
-		"demo:globalize": "node demos/mod_globalize_001"
+		"demo:globalize": "node spikes/mod_globalize_001"
 	},
 	"dependencies": {},
 	"devDependencies": {
