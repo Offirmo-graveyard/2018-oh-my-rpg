@@ -1,6 +1,10 @@
+import * as Globalize from 'globalize'
+import * as CLDRData from 'cldr-data'
+
 import { InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
 import { generate_random_demo_weapon } from '@oh-my-rpg/logic-weapons'
 import { generate_random_demo_armor } from '@oh-my-rpg/logic-armors'
+import { en as en_adventures } from '@oh-my-rpg/data/src/adventure_archetype/i18n'
 
 import {
 	State as InventoryState,
@@ -22,14 +26,54 @@ import { Random, Engine } from '@offirmo/random'
 import {
 	render_weapon,
 	render_armor,
+	render_item,
+	render_characteristics,
 	render_equipment,
 	render_inventory,
 	render_wallet,
+	render_adventure,
 } from '.'
 
 declare const console: any // XXX
 
 describe('🔠  view to text', function() {
+	before(function init_globalize() {
+		Globalize.load(CLDRData.entireSupplemental())
+		Globalize.load(CLDRData.entireMainFor('en', 'fr'))
+		//Globalize.loadTimeZone(require('iana-tz-data'))
+		Globalize.loadMessages({en: en_adventures})
+	})
+
+	describe('📃  adventure rendering', function() {
+		it('should render properly', () => {
+			const str = render_adventure({
+				hid: 'dying_man',
+				good: true,
+				gains: {
+					level: 0,
+					health: 0,
+					mana: 0,
+					strength: 0,
+					agility: 0,
+					vitality: 0,
+					wisdom: 0,
+					luck: 0,
+					coins: 1234,
+					tokens: 0,
+					weapon: null,
+					armor: null,
+					improved_weapon: false,
+					improved_armor: false,
+				}
+			}, {
+				globalize: Globalize('en'),
+				stylize: (style: string, s: string) => s
+			})
+			expect(str).to.be.a.string
+			expect(str).to.include('A dying man on the street left you everything he had.')
+			expect(str).to.include('You gained 1,234 coins!')
+		})
+	})
 
 	describe('⚔  weapon rendering', function() {
 

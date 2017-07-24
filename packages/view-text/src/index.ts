@@ -14,6 +14,10 @@ import { Adventure } from '@oh-my-rpg/state-the-boring-rpg'
 import { TextStyle, RenderingOptions } from './types'
 
 const DEFAULT_RENDERING_OPTIONS: RenderingOptions = {
+	globalize: {
+		formatMessage: (s: any) => s,
+		formatNumber: (n: any) => `${n}`,
+	},
 	stylize: (style: string, s: string) => s
 }
 
@@ -204,13 +208,28 @@ function render_wallet(wallet: WalletState, options: RenderingOptions = DEFAULT_
 
 function render_adventure(a: Adventure, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
 	const icon = '📃' //'⚔'
-	const text = a.hid
-	let res = `${icon}   TODO render_adventure ${text}`
+	let res = `${icon}  `
 
+	const g = options.globalize
+
+	const gains_for_display = Object.assign(
+		{},
+		a.gains,
+		{
+			formattedCoins: a.gains.coins ? g.formatNumber(a.gains.coins) : '',
+			formattedWeapon: a.gains.weapon ? render_item(a.gains.weapon, options) : '',
+			formattedArmor: a.gains.armor ? render_item(a.gains.armor, options) : '',
+		}
+	)
+
+	const raw_message = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display)
+	res += raw_message.trim().replace('\n', ' ')
+
+	// TODO loot
 	if (a.gains.weapon)
-		res += `\nNew item: ` + render_item(a.gains.weapon, options)
+		res += `\nNew item: ` + gains_for_display.formattedWeapon
 	if (a.gains.armor)
-		res += `\nNew item: ` + render_item(a.gains.armor, options)
+		res += `\nNew item: ` + gains_for_display.formattedArmor
 
 	return res
 }

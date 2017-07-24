@@ -1,12 +1,51 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const Globalize = require("globalize");
+const CLDRData = require("cldr-data");
 const definitions_1 = require("@oh-my-rpg/definitions");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
 const logic_armors_1 = require("@oh-my-rpg/logic-armors");
+const i18n_1 = require("@oh-my-rpg/data/src/adventure_archetype/i18n");
 const state_inventory_1 = require("@oh-my-rpg/state-inventory");
 const state_wallet_1 = require("@oh-my-rpg/state-wallet");
 const _1 = require(".");
 describe('🔠  view to text', function () {
+    before(function init_globalize() {
+        Globalize.load(CLDRData.entireSupplemental());
+        Globalize.load(CLDRData.entireMainFor('en', 'fr'));
+        //Globalize.loadTimeZone(require('iana-tz-data'))
+        Globalize.loadMessages({ en: i18n_1.en });
+    });
+    describe('📃  adventure rendering', function () {
+        it('should render properly', () => {
+            const str = _1.render_adventure({
+                hid: 'dying_man',
+                good: true,
+                gains: {
+                    level: 0,
+                    health: 0,
+                    mana: 0,
+                    strength: 0,
+                    agility: 0,
+                    vitality: 0,
+                    wisdom: 0,
+                    luck: 0,
+                    coins: 1234,
+                    tokens: 0,
+                    weapon: null,
+                    armor: null,
+                    improved_weapon: false,
+                    improved_armor: false,
+                }
+            }, {
+                globalize: Globalize('en'),
+                stylize: (style, s) => s
+            });
+            expect(str).to.be.a.string;
+            expect(str).to.include('A dying man on the street left you everything he had.');
+            expect(str).to.include('You gained 1,234 coins!');
+        });
+    });
     describe('⚔  weapon rendering', function () {
         context('when not enhanced', function () {
             it('should render properly', () => {

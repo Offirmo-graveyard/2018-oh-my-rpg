@@ -2,6 +2,11 @@ require('@offirmo/cli-toolbox/stdout/clear-cli')()
 
 const _ = require('lodash')
 const Conf = require('conf')
+const Globalize = require('globalize')
+const CLDRData = require('cldr-data')
+
+
+const en_adventures = require('@oh-my-rpg/data/src/adventure_archetype/i18n').en
 
 //const displayInAsciiArtFont = require('@offirmo/cli-toolbox/stdout/display_in_ascii_art_font')
 const prettifyJson = require('@offirmo/cli-toolbox/string/prettify-json')
@@ -30,6 +35,12 @@ const {
 const { version } = require('./package.json')
 
 let verbose = false
+
+Globalize.load(CLDRData.entireSupplemental())
+Globalize.load(CLDRData.entireMainFor('en', 'fr'))
+//Globalize.loadTimeZone(require('iana-tz-data'))
+Globalize.loadMessages({en: en_adventures})
+
 
 //console.log(boxify('𝐓he 𝐁oring 𝐑𝐏𝐆 𝑟𝑒𝑙𝑜𝑎𝑑𝑒𝑑 ', {padding: 1, margin: 1, borderStyle: 'double'}))
 //console.log(boxify('𝐓𝐡𝐞 𝐁𝐨𝐫𝐢𝐧𝐠 𝐑𝐏𝐆 𝑟𝑒𝑙𝑜𝑎𝑑𝑒𝑑 ', {padding: 2, margin: 1, borderStyle: 'double', borderColor: 'red'}))
@@ -72,6 +83,7 @@ function stylize_tbrpg_string(style, s) {
 
 const rendering_options = {
 	mode: 'ansi',
+	globalize: Globalize('en'),
 	stylize: stylize_tbrpg_string,
 	last_adventure: state.last_adventure
 }

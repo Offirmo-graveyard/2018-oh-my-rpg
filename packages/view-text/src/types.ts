@@ -20,6 +20,10 @@ type TextStyle = Enum<typeof TextStyle>
 
 
 interface RenderingOptions {
+	globalize: {
+		formatMessage: Function
+		formatNumber: Function
+	}
 	stylize: (style: TextStyle, s: string) => string
 	last_adventure?: Adventure
 }

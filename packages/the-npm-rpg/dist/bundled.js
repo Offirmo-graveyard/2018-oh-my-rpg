@@ -108,10 +108,10 @@ module['exports'] = colors;
 
 colors.themes = {};
 
-var ansiStyles = colors.styles = __webpack_require__(27);
+var ansiStyles = colors.styles = __webpack_require__(31);
 var defineProps = Object.defineProperties;
 
-colors.supportsColor = __webpack_require__(28);
+colors.supportsColor = __webpack_require__(32);
 
 if (typeof colors.enabled === "undefined") {
   colors.enabled = colors.supportsColor;
@@ -241,15 +241,15 @@ var sequencer = function sequencer (map, str) {
 };
 
 // custom formatter methods
-colors.trap = __webpack_require__(30);
-colors.zalgo = __webpack_require__(31);
+colors.trap = __webpack_require__(34);
+colors.zalgo = __webpack_require__(35);
 
 // maps
 colors.maps = {};
-colors.maps.america = __webpack_require__(32);
-colors.maps.zebra = __webpack_require__(33);
-colors.maps.rainbow = __webpack_require__(34);
-colors.maps.random = __webpack_require__(35)
+colors.maps.america = __webpack_require__(36);
+colors.maps.zebra = __webpack_require__(37);
+colors.maps.rainbow = __webpack_require__(38);
+colors.maps.random = __webpack_require__(39)
 
 for (var map in colors.maps) {
   (function(map){
@@ -269,7 +269,7 @@ defineProps(colors, init());
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = __webpack_require__(73);
+const tslib_1 = __webpack_require__(77);
 const types_1 = __webpack_require__(14);
 const ITEM_QUALITIES = [
     types_1.ItemQuality.common,
@@ -388,7 +388,7 @@ module.exports = function (str, pos) {
 
 "use strict";
 
-var numberIsNan = __webpack_require__(41);
+var numberIsNan = __webpack_require__(45);
 
 module.exports = function (x) {
 	if (numberIsNan(x)) {
@@ -452,11 +452,11 @@ module.exports = function () {
 
 "use strict";
 
-var escapeStringRegexp = __webpack_require__(42);
-var ansiStyles = __webpack_require__(43);
+var escapeStringRegexp = __webpack_require__(46);
+var ansiStyles = __webpack_require__(47);
 var stripAnsi = __webpack_require__(3);
-var hasAnsi = __webpack_require__(44);
-var supportsColor = __webpack_require__(45);
+var hasAnsi = __webpack_require__(48);
+var supportsColor = __webpack_require__(49);
 var defineProps = Object.defineProperties;
 var isSimpleWindowsTerm = process.platform === 'win32' && !/^xterm/i.test(process.env.TERM);
 
@@ -586,11 +586,11 @@ module.exports = LRUCache
 
 // This will be a proper iterable 'Map' in engines that support it,
 // or a fakey-fake PseudoMap in older versions.
-var Map = __webpack_require__(57)
-var util = __webpack_require__(59)
+var Map = __webpack_require__(61)
+var util = __webpack_require__(63)
 
 // A linked list to keep track of recently-used-ness
-var Yallist = __webpack_require__(60)
+var Yallist = __webpack_require__(64)
 
 // use symbols if possible, otherwise just _props
 var hasSymbol = typeof Symbol === 'function'
@@ -1078,7 +1078,7 @@ module.exports = function (opts) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(74);
+const typescript_string_enums_1 = __webpack_require__(78);
 /////////////////////
 const ItemQuality = typescript_string_enums_1.Enum('common', 'uncommon', 'rare', 'epic', 'legendary', 'artifact');
 exports.ItemQuality = ItemQuality;
@@ -1096,7 +1096,7 @@ exports.InventorySlot = InventorySlot;
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const types_1 = __webpack_require__(75);
+const types_1 = __webpack_require__(79);
 exports.CharacterStat = types_1.CharacterStat;
 /////////////////////
 const CHARACTER_STATS = [
@@ -1267,12 +1267,12 @@ exports.iterables_unslotted = iterables_unslotted;
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const random_1 = __webpack_require__(82);
+const random_1 = __webpack_require__(86);
 const definitions_1 = __webpack_require__(2);
-const static_weapon_data = __webpack_require__(83);
-const types_1 = __webpack_require__(85);
+const static_weapon_data = __webpack_require__(87);
+const types_1 = __webpack_require__(89);
 exports.WeaponPartType = types_1.WeaponPartType;
-const constants_1 = __webpack_require__(87);
+const constants_1 = __webpack_require__(91);
 const WEAPON_BASES = static_weapon_data.filter((weapon_component) => weapon_component.type === types_1.WeaponPartType.base);
 const WEAPON_QUALIFIERS1 = static_weapon_data.filter((weapon_component) => weapon_component.type === types_1.WeaponPartType.qualifier1);
 const WEAPON_QUALIFIERS2 = static_weapon_data.filter((weapon_component) => weapon_component.type === types_1.WeaponPartType.qualifier2);
@@ -1365,10 +1365,10 @@ exports.get_medium_damage = get_medium_damage;
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const random_1 = __webpack_require__(88);
+const random_1 = __webpack_require__(92);
 const definitions_1 = __webpack_require__(2);
-const static_armor_data = __webpack_require__(89);
-const types_1 = __webpack_require__(91);
+const static_armor_data = __webpack_require__(93);
+const types_1 = __webpack_require__(95);
 exports.ArmorPartType = types_1.ArmorPartType;
 const ARMOR_BASES = static_armor_data.filter((armor_component) => armor_component.type === types_1.ArmorPartType.base);
 const ARMOR_QUALIFIERS1 = static_armor_data.filter((armor_component) => armor_component.type === types_1.ArmorPartType.qualifier1);
@@ -1448,11 +1448,16 @@ __webpack_require__(20)()
 
 const _ = __webpack_require__(22)
 const Conf = __webpack_require__(23)
+const Globalize = __webpack_require__(24)
+const CLDRData = __webpack_require__(25)
+
+
+const en_adventures = __webpack_require__(26).en
 
 //const displayInAsciiArtFont = require('@offirmo/cli-toolbox/stdout/display_in_ascii_art_font')
-const prettifyJson = __webpack_require__(24)
-const boxify = __webpack_require__(38)
-const stylizeString = __webpack_require__(71)
+const prettifyJson = __webpack_require__(28)
+const boxify = __webpack_require__(42)
+const stylizeString = __webpack_require__(75)
 //const json = require('@offirmo/cli-toolbox/fs/json')
 //const arrayify = require('@offirmo/cli-toolbox/string/arrayify')
 //const columnify = require('@offirmo/cli-toolbox/string/columnify')
@@ -1460,7 +1465,7 @@ const stylizeString = __webpack_require__(71)
 const {
 	factory,
 	play,
-} = __webpack_require__(72)
+} = __webpack_require__(76)
 
 const {
 	render_weapon,
@@ -1471,11 +1476,17 @@ const {
 	render_inventory,
 	render_wallet,
 	render_adventure,
-} = __webpack_require__(99)
+} = __webpack_require__(103)
 
-const { version } = __webpack_require__(103)
+const { version } = __webpack_require__(107)
 
 let verbose = false
+
+Globalize.load(CLDRData.entireSupplemental())
+Globalize.load(CLDRData.entireMainFor('en', 'fr'))
+//Globalize.loadTimeZone(require('iana-tz-data'))
+Globalize.loadMessages({en: en_adventures})
+
 
 //console.log(boxify('𝐓he 𝐁oring 𝐑𝐏𝐆 𝑟𝑒𝑙𝑜𝑎𝑑𝑒𝑑 ', {padding: 1, margin: 1, borderStyle: 'double'}))
 //console.log(boxify('𝐓𝐡𝐞 𝐁𝐨𝐫𝐢𝐧𝐠 𝐑𝐏𝐆 𝑟𝑒𝑙𝑜𝑎𝑑𝑒𝑑 ', {padding: 2, margin: 1, borderStyle: 'double', borderColor: 'red'}))
@@ -1518,6 +1529,7 @@ function stylize_tbrpg_string(style, s) {
 
 const rendering_options = {
 	mode: 'ansi',
+	globalize: Globalize('en'),
 	stylize: stylize_tbrpg_string,
 	last_adventure: state.last_adventure
 }
@@ -18780,9 +18792,179 @@ module.exports = require("conf");
 
 /***/ }),
 /* 24 */
+/***/ (function(module, exports) {
+
+module.exports = require("globalize");
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+module.exports = require("cldr-data");
+
+/***/ }),
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const prettyjson = __webpack_require__(25)
+const en = __webpack_require__(27)
+
+module.exports = {
+	en
+}
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports) {
+
+module.exports = {
+	clickmsg: {
+		bad_default: `You clicked too early!
++{penalty_s}s !`,
+
+		// from the original game
+		bored_log: `
+You were so bored, you punched a log for hours!
+You gained +{strength} strength!`,
+		caravan: `
+You were hired to protect a caravan of merchants.
+You gained {formattedCoins} coins!`,
+		dying_man: `
+A dying man on the street left you everything he had.
+You gained {formattedCoins} coins!`,
+		ate_bacon: `
+You ate some bacon.
+You gained +{level} level!`,
+		ate_mushroom: `
+You ate a mushroom.
+You gained +{level} level!`,
+		ate_zombie: `
+You ate a zombie.
+You gained +{mana} mana!`,
+		refreshing_nap: `
+You took a nap and feel refreshed.
+You gained +{vitality} vitality!`,
+		older: `
+You feel a little older.
+You gained +{level} level!`,
+		stare_cup: `
+You stare really hard at a cup, and it almost moves!
+You gained +{mana} mana!`,
+		nuclear_fusion_paper: `
+You wrote a paper on nuclear fusion.
+You gained +{wisdom} wisdom!`,
+		found_green_mushroom: `
+You found a green mushroom.
+You gained +{level} level!`,
+
+		// from me
+		meet_old_wizard: `
+You meet a mysterious old wizard…
+Before giving you the quest, he tells you his loooong story : Vous gain +{wisdom} wisdom!`,
+		// electricbunnycomics.com
+		good_necromancer: `
+You meet a child weeping over his dead hamster pet… Thanks to necromancy, you reanimate it an a hamster-zombie!
+Oddly, the child cries even more while running away.
+Fortunately, you gain +{agility} agility for avoiding the stones thrown by the villagers.`,
+		// dorkly
+		talk_to_all_villagers: `
+You spoke to all villagers in the village : no quest may have escaped you!
+On the other hand, your head aches for discussing so much.
++{mana} mana thanks to this mental training!`,
+		always_keep_potions: `
+Being a good adventurer, you kept a health potion "just in case":
+Well done, your health is fully restored!`,
+		lost: `
+With all those quests, you forgot where you had to go…
+But circling around the whole map is good for your health: +{vitality} vitality!`,
+		// DK
+		fate_sword: `
+To thank you for saving his wife and his children, the farmer offer you "Destiny",
+the heirloom sword passed in his family from generations.
+30 minutes later, the merchant only gives you {formattedCoins} coins for it… Ahh those poors!`,
+		// dorkly
+		grinding: `
+For lack of a better idea, you grind for hours and hours…
+So what? It's an RPG, what did you expect?
+But it pays: +{level} level!`,
+		// ?
+		so_many_potions: `
+The fight against the final boss was hard, very hard…
+Most importantly, +{strength} strength for managing to control a pressing urge after drinking 25 potions !`,
+		// cad-comic.com
+		rematch: `
+You got beaten by a goblin!
+Shameful, you roam around the country, accepting quests after quests to train yourself before facing him again.
+Unfortunately, he also trained and beat you again!
+Well, the +{level} level will always be useful…`,
+		// paintraincomic.com
+		useless: `
+Arrivé au village, le maire vous assure que le pays n’est pas dangereux ;
+La sorcière dont vous aviez entendu parler s’est trouvé quelqu’un et ne maudis plus personne.
+Le cimetière hanté était un cimetière d’animaux de compagnie et les habitants sont heureux de les revoir ;
+Le géant aide les villageois aux travaux des champs.
+Vous vous sentez inutile et réfléchissez à votre place en ce monde… +1 en sagesse !`,
+		// memecenter.com
+		escort: `
+Vous devez escorter un NPC important.
+Hélas, si vous marchez il va plus vite que vous, mais si vous courrez c’est vous qui allez trop vite !
+En zigzagant et en tournant en rond ça passe. +1 en vitalité grâce à tous ces efforts !`,
+		// memecenter.com
+		rare_goods_seller: `
+Vous croisez sur la route un vieil homme habillé de façon excentrique.
+Gagné, c’est un vendeur d’objets rares ! Il vous fait un très bon prix pour une [TODO weapon]`,
+		// memecenter.com
+		progress_loop: `
+Il vous faudrait un meilleur équipement pour pouvoir monter en niveau.
+Mais il faudrait monter en niveau pour pouvoir gagner un meilleur équipement.
+Cruel dilemne ! Heureusement, vous trouvez un [TODO weapon] au fond d’un puit !`,
+		// memecenter.com/motohorse
+		idiot_bandits: `
+On parle de vous après que vous ayez tué le dragon et la sorcière maléfique.
+Des bandits vous tendent une embuscade. Quelle drôle d’idée !
+À voir ses yeux, le dernier l’a presque compris une fraction de seconde avant que
+votre boule de feu ne le réduise en cendre.
+Heureusement, les pièces d’or ne brûlent pas : +33 écus !`,
+		// don't remember the source for this one
+		princess: `
+« Vous n’emporterez pas la princesse ! » vous crie le terrible mage noir,
+alors que vous parvenez dans sa salle du trône.
+Vous le rassurez : seul le butin vous intéresse.
+Il vous laisse vous servir (+234 écus) et enchante même une arme pour vous ! ([TODO weapon])`,
+		// DM of the ring
+		bad_village: `
+Vous arrivez dans un village. Il n’y a pas de marchand d’armes.
+Pas de marchand de potions non plus ! Et l’auberge ne propose pas de quêtes !!
+C’en est trop : sur votre ordre, les éclairs et les météorites rasent ce lieu inutile.
+Au passage, bon occasion de pratiquer votre magie : +1 mana.`,
+		// ?
+		mana_mana: `
+« Mah na mah na » « To to to do do »
++1 mana!`,
+
+		/*
+		 // "make friends" necromancy
+		 xmake_friends:
+		 '',
+		 // licorne multicolore
+		 xunicorns:
+		 '',
+		 // memes
+		 xarrown_in_the_knee:
+		 '', // arrow in the knee
+		 // retour chez le mage noir, apprentissage de sorts
+		 xblack_mage_again:
+		 '',
+		 */
+	}
+}
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const prettyjson = __webpack_require__(29)
 
 module.exports = function prettifyJson(data, options) {
 	return prettyjson.render(data, options)
@@ -18790,17 +18972,17 @@ module.exports = function prettifyJson(data, options) {
 
 
 /***/ }),
-/* 25 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 // ### Module dependencies
-var colors = __webpack_require__(26);
-var Utils = __webpack_require__(36);
+var colors = __webpack_require__(30);
+var Utils = __webpack_require__(40);
 
-exports.version = __webpack_require__(37).version;
+exports.version = __webpack_require__(41).version;
 
 // Helper function to detect if an object can be directly serializable
 var isSerializable = function(input, onlyPrimitives, options) {
@@ -19060,7 +19242,7 @@ exports.renderString = function renderString(data, options, indentation) {
 
 
 /***/ }),
-/* 26 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -19074,7 +19256,7 @@ var colors = __webpack_require__(1);
 module['exports'] = colors;
 
 /***/ }),
-/* 27 */
+/* 31 */
 /***/ (function(module, exports) {
 
 /*
@@ -19156,7 +19338,7 @@ Object.keys(codes).forEach(function (key) {
 });
 
 /***/ }),
-/* 28 */
+/* 32 */
 /***/ (function(module, exports) {
 
 /*
@@ -19222,7 +19404,7 @@ module.exports = (function () {
 })();
 
 /***/ }),
-/* 29 */
+/* 33 */
 /***/ (function(module, exports) {
 
 function webpackEmptyContext(req) {
@@ -19231,10 +19413,10 @@ function webpackEmptyContext(req) {
 webpackEmptyContext.keys = function() { return []; };
 webpackEmptyContext.resolve = webpackEmptyContext;
 module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 29;
+webpackEmptyContext.id = 33;
 
 /***/ }),
-/* 30 */
+/* 34 */
 /***/ (function(module, exports) {
 
 module['exports'] = function runTheTrap (text, options) {
@@ -19285,7 +19467,7 @@ module['exports'] = function runTheTrap (text, options) {
 
 
 /***/ }),
-/* 31 */
+/* 35 */
 /***/ (function(module, exports) {
 
 // please no
@@ -19395,7 +19577,7 @@ module['exports'] = function zalgo(text, options) {
 
 
 /***/ }),
-/* 32 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var colors = __webpack_require__(1);
@@ -19412,7 +19594,7 @@ module['exports'] = (function() {
 })();
 
 /***/ }),
-/* 33 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var colors = __webpack_require__(1);
@@ -19422,7 +19604,7 @@ module['exports'] = function (letter, i, exploded) {
 };
 
 /***/ }),
-/* 34 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var colors = __webpack_require__(1);
@@ -19441,7 +19623,7 @@ module['exports'] = (function () {
 
 
 /***/ }),
-/* 35 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var colors = __webpack_require__(1);
@@ -19454,7 +19636,7 @@ module['exports'] = (function () {
 })();
 
 /***/ }),
-/* 36 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19486,106 +19668,33 @@ exports.getMaxIndexLength = function(input) {
 
 
 /***/ }),
-/* 37 */
+/* 41 */
 /***/ (function(module, exports) {
 
-module.exports = {
-	"_from": "prettyjson@^1.1.3",
-	"_id": "prettyjson@1.2.1",
-	"_inBundle": false,
-	"_integrity": "sha1-/P+rQdGcq0365eV15kJGYZsS0ok=",
-	"_location": "/prettyjson",
-	"_phantomChildren": {},
-	"_requested": {
-		"type": "range",
-		"registry": true,
-		"raw": "prettyjson@^1.1.3",
-		"name": "prettyjson",
-		"escapedName": "prettyjson",
-		"rawSpec": "^1.1.3",
-		"saveSpec": null,
-		"fetchSpec": "^1.1.3"
-	},
-	"_requiredBy": [
-		"/@offirmo/cli-toolbox"
-	],
-	"_resolved": "https://registry.npmjs.org/prettyjson/-/prettyjson-1.2.1.tgz",
-	"_shasum": "fcffab41d19cab4dfae5e575e64246619b12d289",
-	"_spec": "prettyjson@^1.1.3",
-	"_where": "/Users/sam/work/src/oh-my-rpg/packages/the-boring-rpg-cli/node_modules/@offirmo/cli-toolbox",
-	"author": {
-		"name": "Rafael de Oleza",
-		"email": "rafeca@gmail.com",
-		"url": "https://github.com/rafeca"
-	},
-	"bin": {
-		"prettyjson": "./bin/prettyjson"
-	},
-	"bugs": {
-		"url": "https://github.com/rafeca/prettyjson/issues"
-	},
-	"bundleDependencies": false,
-	"dependencies": {
-		"colors": "^1.1.2",
-		"minimist": "^1.2.0"
-	},
-	"deprecated": false,
-	"description": "Package for formatting JSON data in a coloured YAML-style, perfect for CLI output",
-	"devDependencies": {
-		"coveralls": "^2.11.15",
-		"istanbul": "^0.4.5",
-		"jshint": "^2.9.4",
-		"mocha": "^3.1.2",
-		"mocha-lcov-reporter": "^1.2.0",
-		"should": "^11.1.1"
-	},
-	"homepage": "http://rafeca.com/prettyjson",
-	"keywords": [
-		"json",
-		"cli",
-		"formatting",
-		"colors"
-	],
-	"license": "MIT",
-	"main": "./lib/prettyjson",
-	"name": "prettyjson",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/rafeca/prettyjson.git"
-	},
-	"scripts": {
-		"changelog": "git log $(git describe --tags --abbrev=0)..HEAD --pretty='* %s' --first-parent",
-		"coverage": "istanbul cover _mocha --report lcovonly -- -R spec",
-		"coveralls": "npm run coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
-		"jshint": "jshint lib/*.js test/*.js",
-		"test": "npm run jshint && mocha --reporter spec",
-		"testwin": "node ./node_modules/mocha/bin/mocha --reporter spec"
-	},
-	"version": "1.2.1"
-};
+module.exports = {"_from":"prettyjson@^1.1.3","_id":"prettyjson@1.2.1","_inBundle":false,"_integrity":"sha1-/P+rQdGcq0365eV15kJGYZsS0ok=","_location":"/prettyjson","_phantomChildren":{},"_requested":{"type":"range","registry":true,"raw":"prettyjson@^1.1.3","name":"prettyjson","escapedName":"prettyjson","rawSpec":"^1.1.3","saveSpec":null,"fetchSpec":"^1.1.3"},"_requiredBy":["/@offirmo/cli-toolbox"],"_resolved":"https://registry.npmjs.org/prettyjson/-/prettyjson-1.2.1.tgz","_shasum":"fcffab41d19cab4dfae5e575e64246619b12d289","_spec":"prettyjson@^1.1.3","_where":"/Users/sam/work/src/oh-my-rpg/packages/the-npm-rpg/node_modules/@offirmo/cli-toolbox","author":{"name":"Rafael de Oleza","email":"rafeca@gmail.com","url":"https://github.com/rafeca"},"bin":{"prettyjson":"./bin/prettyjson"},"bugs":{"url":"https://github.com/rafeca/prettyjson/issues"},"bundleDependencies":false,"dependencies":{"colors":"^1.1.2","minimist":"^1.2.0"},"deprecated":false,"description":"Package for formatting JSON data in a coloured YAML-style, perfect for CLI output","devDependencies":{"coveralls":"^2.11.15","istanbul":"^0.4.5","jshint":"^2.9.4","mocha":"^3.1.2","mocha-lcov-reporter":"^1.2.0","should":"^11.1.1"},"homepage":"http://rafeca.com/prettyjson","keywords":["json","cli","formatting","colors"],"license":"MIT","main":"./lib/prettyjson","name":"prettyjson","repository":{"type":"git","url":"git+https://github.com/rafeca/prettyjson.git"},"scripts":{"changelog":"git log $(git describe --tags --abbrev=0)..HEAD --pretty='* %s' --first-parent","coverage":"istanbul cover _mocha --report lcovonly -- -R spec","coveralls":"npm run coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage","jshint":"jshint lib/*.js test/*.js","test":"npm run jshint && mocha --reporter spec","testwin":"node ./node_modules/mocha/bin/mocha --reporter spec"},"version":"1.2.1"}
 
 /***/ }),
-/* 38 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const boxen = __webpack_require__(39)
+const boxen = __webpack_require__(43)
 
 module.exports = boxen
 
 
 /***/ }),
-/* 39 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const stringWidth = __webpack_require__(40);
+const stringWidth = __webpack_require__(44);
 const chalk = __webpack_require__(10);
-const widestLine = __webpack_require__(46);
-const cliBoxes = __webpack_require__(48);
-const camelCase = __webpack_require__(50);
-const ansiAlign = __webpack_require__(51);
-const termSize = __webpack_require__(53);
+const widestLine = __webpack_require__(50);
+const cliBoxes = __webpack_require__(52);
+const camelCase = __webpack_require__(54);
+const ansiAlign = __webpack_require__(55);
+const termSize = __webpack_require__(57);
 
 const getObject = detail => {
 	let obj;
@@ -19720,7 +19829,7 @@ module.exports._borderStyles = cliBoxes;
 
 
 /***/ }),
-/* 40 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19764,7 +19873,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 41 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19775,7 +19884,7 @@ module.exports = Number.isNaN || function (x) {
 
 
 /***/ }),
-/* 42 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19793,7 +19902,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 43 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19866,7 +19975,7 @@ Object.defineProperty(module, 'exports', {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module)))
 
 /***/ }),
-/* 44 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19877,7 +19986,7 @@ module.exports = re.test.bind(re);
 
 
 /***/ }),
-/* 45 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19934,12 +20043,12 @@ module.exports = (function () {
 
 
 /***/ }),
-/* 46 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var stringWidth = __webpack_require__(47);
+var stringWidth = __webpack_require__(51);
 
 module.exports = function (str) {
 	return Math.max.apply(null, str.split('\n').map(function (x) {
@@ -19950,7 +20059,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 47 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19994,71 +20103,22 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 48 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-module.exports = __webpack_require__(49);
+module.exports = __webpack_require__(53);
 
 
 /***/ }),
-/* 49 */
+/* 53 */
 /***/ (function(module, exports) {
 
-module.exports = {
-	"single": {
-		"topLeft": "┌",
-		"topRight": "┐",
-		"bottomRight": "┘",
-		"bottomLeft": "└",
-		"vertical": "│",
-		"horizontal": "─"
-	},
-	"double": {
-		"topLeft": "╔",
-		"topRight": "╗",
-		"bottomRight": "╝",
-		"bottomLeft": "╚",
-		"vertical": "║",
-		"horizontal": "═"
-	},
-	"round": {
-		"topLeft": "╭",
-		"topRight": "╮",
-		"bottomRight": "╯",
-		"bottomLeft": "╰",
-		"vertical": "│",
-		"horizontal": "─"
-	},
-	"single-double": {
-		"topLeft": "╓",
-		"topRight": "╖",
-		"bottomRight": "╜",
-		"bottomLeft": "╙",
-		"vertical": "║",
-		"horizontal": "─"
-	},
-	"double-single": {
-		"topLeft": "╒",
-		"topRight": "╕",
-		"bottomRight": "╛",
-		"bottomLeft": "╘",
-		"vertical": "│",
-		"horizontal": "═"
-	},
-	"classic": {
-		"topLeft": "+",
-		"topRight": "+",
-		"bottomRight": "+",
-		"bottomLeft": "+",
-		"vertical": "|",
-		"horizontal": "-"
-	}
-};
+module.exports = {"single":{"topLeft":"┌","topRight":"┐","bottomRight":"┘","bottomLeft":"└","vertical":"│","horizontal":"─"},"double":{"topLeft":"╔","topRight":"╗","bottomRight":"╝","bottomLeft":"╚","vertical":"║","horizontal":"═"},"round":{"topLeft":"╭","topRight":"╮","bottomRight":"╯","bottomLeft":"╰","vertical":"│","horizontal":"─"},"single-double":{"topLeft":"╓","topRight":"╖","bottomRight":"╜","bottomLeft":"╙","vertical":"║","horizontal":"─"},"double-single":{"topLeft":"╒","topRight":"╕","bottomRight":"╛","bottomLeft":"╘","vertical":"│","horizontal":"═"},"classic":{"topLeft":"+","topRight":"+","bottomRight":"+","bottomLeft":"+","vertical":"|","horizontal":"-"}}
 
 /***/ }),
-/* 50 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20121,13 +20181,13 @@ module.exports = function () {
 
 
 /***/ }),
-/* 51 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var stringWidth = __webpack_require__(52)
+var stringWidth = __webpack_require__(56)
 
 function ansiAlign (text, opts) {
   if (!text) return text
@@ -20189,7 +20249,7 @@ function fullDiff (maxWidth, curWidth) {
 
 
 /***/ }),
-/* 52 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20233,13 +20293,13 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 53 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(__dirname) {
 const path = __webpack_require__(4);
-const execa = __webpack_require__(54);
+const execa = __webpack_require__(58);
 
 const create = (columns, rows) => ({
 	columns: parseInt(columns, 10),
@@ -20311,17 +20371,17 @@ module.exports = () => {
 /* WEBPACK VAR INJECTION */}.call(exports, "/"))
 
 /***/ }),
-/* 54 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var childProcess = __webpack_require__(11);
-var crossSpawnAsync = __webpack_require__(55);
-var stripEof = __webpack_require__(67);
-var objectAssign = __webpack_require__(68);
-var npmRunPath = __webpack_require__(69);
-var isStream = __webpack_require__(70);
+var crossSpawnAsync = __webpack_require__(59);
+var stripEof = __webpack_require__(71);
+var objectAssign = __webpack_require__(72);
+var npmRunPath = __webpack_require__(73);
+var isStream = __webpack_require__(74);
 var pathKey = __webpack_require__(13)();
 var TEN_MEBIBYTE = 1024 * 1024 * 10;
 
@@ -20490,15 +20550,15 @@ module.exports.shellSync = function (cmd, opts) {
 
 
 /***/ }),
-/* 55 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var cp = __webpack_require__(11);
-var parse = __webpack_require__(56);
-var enoent = __webpack_require__(66);
+var parse = __webpack_require__(60);
+var enoent = __webpack_require__(70);
 
 function spawn(command, args, options) {
     var parsed;
@@ -20524,7 +20584,7 @@ module.exports._enoent = enoent;
 
 
 /***/ }),
-/* 56 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20532,7 +20592,7 @@ module.exports._enoent = enoent;
 
 var fs = __webpack_require__(5);
 var LRU = __webpack_require__(12);
-var resolveCommand = __webpack_require__(61);
+var resolveCommand = __webpack_require__(65);
 
 var isWin = process.platform === 'win32';
 var shebangCache = new LRU({ max: 50, maxAge: 30 * 1000 });  // Cache just for 30sec
@@ -20659,7 +20719,7 @@ module.exports = parse;
 
 
 /***/ }),
-/* 57 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 if (process.env.npm_package_name === 'pseudomap' &&
@@ -20669,12 +20729,12 @@ if (process.env.npm_package_name === 'pseudomap' &&
 if (typeof Map === 'function' && !process.env.TEST_PSEUDOMAP) {
   module.exports = Map
 } else {
-  module.exports = __webpack_require__(58)
+  module.exports = __webpack_require__(62)
 }
 
 
 /***/ }),
-/* 58 */
+/* 62 */
 /***/ (function(module, exports) {
 
 var hasOwnProperty = Object.prototype.hasOwnProperty
@@ -20793,13 +20853,13 @@ function set (data, k, v) {
 
 
 /***/ }),
-/* 59 */
+/* 63 */
 /***/ (function(module, exports) {
 
 module.exports = require("util");
 
 /***/ }),
-/* 60 */
+/* 64 */
 /***/ (function(module, exports) {
 
 module.exports = Yallist
@@ -21175,14 +21235,14 @@ function Node (value, prev, next, list) {
 
 
 /***/ }),
-/* 61 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var path = __webpack_require__(4);
-var which = __webpack_require__(62);
+var which = __webpack_require__(66);
 var LRU = __webpack_require__(12);
 
 var commandCache = new LRU({ max: 50, maxAge: 30 * 1000 });  // Cache just for 30sec
@@ -21220,7 +21280,7 @@ module.exports = resolveCommand;
 
 
 /***/ }),
-/* 62 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = which
@@ -21232,7 +21292,7 @@ var isWindows = process.platform === 'win32' ||
 
 var path = __webpack_require__(4)
 var COLON = isWindows ? ';' : ':'
-var isexe = __webpack_require__(63)
+var isexe = __webpack_require__(67)
 
 function getNotFoundError (cmd) {
   var er = new Error('not found: ' + cmd)
@@ -21358,15 +21418,15 @@ function whichSync (cmd, opt) {
 
 
 /***/ }),
-/* 63 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var fs = __webpack_require__(5)
 var core
 if (process.platform === 'win32' || global.TESTING_WINDOWS) {
-  core = __webpack_require__(64)
+  core = __webpack_require__(68)
 } else {
-  core = __webpack_require__(65)
+  core = __webpack_require__(69)
 }
 
 module.exports = isexe
@@ -21421,7 +21481,7 @@ function sync (path, options) {
 
 
 /***/ }),
-/* 64 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = isexe
@@ -21469,7 +21529,7 @@ function sync (path, options) {
 
 
 /***/ }),
-/* 65 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = isexe
@@ -21516,7 +21576,7 @@ function checkMode (stat, options) {
 
 
 /***/ }),
-/* 66 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21574,7 +21634,7 @@ module.exports.notFoundError = notFoundError;
 
 
 /***/ }),
-/* 67 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21596,7 +21656,7 @@ module.exports = function (x) {
 
 
 /***/ }),
-/* 68 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21693,7 +21753,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 69 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21723,7 +21783,7 @@ module.exports = function (opts) {
 
 
 /***/ }),
-/* 70 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21751,7 +21811,7 @@ isStream.transform = function (stream) {
 
 
 /***/ }),
-/* 71 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const chalk = __webpack_require__(10)
@@ -21761,7 +21821,7 @@ module.exports = chalk
 
 
 /***/ }),
-/* 72 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21770,12 +21830,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /////////////////////
 const definitions_1 = __webpack_require__(2);
 const state_character_1 = __webpack_require__(15);
-const state_wallet_1 = __webpack_require__(77);
+const state_wallet_1 = __webpack_require__(81);
 const state_inventory_1 = __webpack_require__(16);
-const state_prng_1 = __webpack_require__(80);
+const state_prng_1 = __webpack_require__(84);
 const logic_weapons_1 = __webpack_require__(17);
 const logic_armors_1 = __webpack_require__(18);
-const logic_adventures_1 = __webpack_require__(93);
+const logic_adventures_1 = __webpack_require__(97);
 /////////////////////
 function factory() {
     let state = {
@@ -21935,7 +21995,7 @@ exports.sell_item = sell_item;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 73 */
+/* 77 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22119,7 +22179,7 @@ function __asyncValues(o) {
 }
 
 /***/ }),
-/* 74 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22174,13 +22234,13 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 75 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(76);
+const typescript_string_enums_1 = __webpack_require__(80);
 /////////////////////
 const CharacterStat = typescript_string_enums_1.Enum('agility', 'health', 'level', 'luck', 'mana', 'strength', 'vitality', 'wisdom');
 exports.CharacterStat = CharacterStat;
@@ -22188,7 +22248,7 @@ exports.CharacterStat = CharacterStat;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 76 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22243,14 +22303,14 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 77 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const types_1 = __webpack_require__(78);
+const types_1 = __webpack_require__(82);
 exports.Currency = types_1.Currency;
 /////////////////////
 const ALL_CURRENCIES = [
@@ -22310,13 +22370,13 @@ exports.iterables_currency = iterables_currency;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 78 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(79);
+const typescript_string_enums_1 = __webpack_require__(83);
 /////////////////////
 const Currency = typescript_string_enums_1.Enum('coin', 'token');
 exports.Currency = Currency;
@@ -22324,7 +22384,7 @@ exports.Currency = Currency;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 79 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22379,14 +22439,14 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 80 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const random_1 = __webpack_require__(81);
+const random_1 = __webpack_require__(85);
 /////////////////////
 const DEFAULT_SEED = 987;
 exports.DEFAULT_SEED = DEFAULT_SEED;
@@ -22458,7 +22518,7 @@ exports.xxx_internal_reset_prng_cache = xxx_internal_reset_prng_cache;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 81 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
@@ -23188,7 +23248,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
 
 
 /***/ }),
-/* 82 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
@@ -23918,499 +23978,28 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
 
 
 /***/ }),
-/* 83 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const set = __webpack_require__(84).entries
+const set = __webpack_require__(88).entries
 
 module.exports = set
 
 
 /***/ }),
-/* 84 */
+/* 88 */
 /***/ (function(module, exports) {
 
-module.exports = {
-	"entries": [
-		{
-			"type": "base",
-			"hid": "axe"
-		},
-		{
-			"type": "base",
-			"hid": "bow"
-		},
-		{
-			"type": "base",
-			"hid": "claw"
-		},
-		{
-			"type": "base",
-			"hid": "dagger"
-		},
-		{
-			"type": "base",
-			"hid": "grimoire"
-		},
-		{
-			"type": "base",
-			"hid": "harp"
-		},
-		{
-			"type": "base",
-			"hid": "knife"
-		},
-		{
-			"type": "base",
-			"hid": "longbow"
-		},
-		{
-			"type": "base",
-			"hid": "longsword"
-		},
-		{
-			"type": "base",
-			"hid": "luth"
-		},
-		{
-			"type": "base",
-			"hid": "mace"
-		},
-		{
-			"type": "base",
-			"hid": "scythe"
-		},
-		{
-			"type": "base",
-			"hid": "spear"
-		},
-		{
-			"type": "base",
-			"hid": "spoon"
-		},
-		{
-			"type": "base",
-			"hid": "staff"
-		},
-		{
-			"type": "base",
-			"hid": "sword"
-		},
-		{
-			"type": "base",
-			"hid": "wand"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "admirable"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "arcanic"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "bestial"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "bone"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "brass"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "cardboard"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "complex"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "composite"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "consecrated"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "crafted"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "cruel"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "cunning"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "cursed"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "emerald"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "engraved"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "forbidden"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "forgotten"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "ghost"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "golden"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "heavy"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "heroic"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "holy"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "inflexible"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "invincible"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "iron"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "jade"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "light"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "living"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "lost"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "mechanical"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "mysterious"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "old"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "onyx"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "overrated"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "powerful"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "practical"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "proven"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "raging"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "robust"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "sapphire"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "savage"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "silver"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "simple"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "sinister"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "skeleton"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "solid"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "steel"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "strange"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "subtile"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "swift"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "unwavering"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "used"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "whirling"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "wooden"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "adjudicator"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "ambassador"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "ancients"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "apprentice"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "assaulting"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "beginner"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "brave"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "conqueror"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "cruel_tyrant"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "defender"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "destructor"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "dwarven"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "elite"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "elven"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "executioner"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "expert"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "explorer"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "gladiator"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "goddess"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "guard"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "hunter"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "judgement"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "king"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "mediator"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "mercenary"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "militia"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "nightmare"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "noble"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "noob"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "pilgrim"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "pioneer"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "pirate"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "profane"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "ranger"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "sorcerer"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "tormentor"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "training"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "traveler"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "twink"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "tyrant"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "upholder"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "warfield_king"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "warfield"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "warrior"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "wise"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "woodsman"
-		}
-	]
-};
+module.exports = {"entries":[{"type":"base","hid":"axe"},{"type":"base","hid":"bow"},{"type":"base","hid":"claw"},{"type":"base","hid":"dagger"},{"type":"base","hid":"grimoire"},{"type":"base","hid":"harp"},{"type":"base","hid":"knife"},{"type":"base","hid":"longbow"},{"type":"base","hid":"longsword"},{"type":"base","hid":"luth"},{"type":"base","hid":"mace"},{"type":"base","hid":"scythe"},{"type":"base","hid":"spear"},{"type":"base","hid":"spoon"},{"type":"base","hid":"staff"},{"type":"base","hid":"sword"},{"type":"base","hid":"wand"},{"type":"qualifier1","hid":"admirable"},{"type":"qualifier1","hid":"arcanic"},{"type":"qualifier1","hid":"bestial"},{"type":"qualifier1","hid":"bone"},{"type":"qualifier1","hid":"brass"},{"type":"qualifier1","hid":"cardboard"},{"type":"qualifier1","hid":"complex"},{"type":"qualifier1","hid":"composite"},{"type":"qualifier1","hid":"consecrated"},{"type":"qualifier1","hid":"crafted"},{"type":"qualifier1","hid":"cruel"},{"type":"qualifier1","hid":"cunning"},{"type":"qualifier1","hid":"cursed"},{"type":"qualifier1","hid":"emerald"},{"type":"qualifier1","hid":"engraved"},{"type":"qualifier1","hid":"forbidden"},{"type":"qualifier1","hid":"forgotten"},{"type":"qualifier1","hid":"ghost"},{"type":"qualifier1","hid":"golden"},{"type":"qualifier1","hid":"heavy"},{"type":"qualifier1","hid":"heroic"},{"type":"qualifier1","hid":"holy"},{"type":"qualifier1","hid":"inflexible"},{"type":"qualifier1","hid":"invincible"},{"type":"qualifier1","hid":"iron"},{"type":"qualifier1","hid":"jade"},{"type":"qualifier1","hid":"light"},{"type":"qualifier1","hid":"living"},{"type":"qualifier1","hid":"lost"},{"type":"qualifier1","hid":"mechanical"},{"type":"qualifier1","hid":"mysterious"},{"type":"qualifier1","hid":"old"},{"type":"qualifier1","hid":"onyx"},{"type":"qualifier1","hid":"overrated"},{"type":"qualifier1","hid":"powerful"},{"type":"qualifier1","hid":"practical"},{"type":"qualifier1","hid":"proven"},{"type":"qualifier1","hid":"raging"},{"type":"qualifier1","hid":"robust"},{"type":"qualifier1","hid":"sapphire"},{"type":"qualifier1","hid":"savage"},{"type":"qualifier1","hid":"silver"},{"type":"qualifier1","hid":"simple"},{"type":"qualifier1","hid":"sinister"},{"type":"qualifier1","hid":"skeleton"},{"type":"qualifier1","hid":"solid"},{"type":"qualifier1","hid":"steel"},{"type":"qualifier1","hid":"strange"},{"type":"qualifier1","hid":"subtile"},{"type":"qualifier1","hid":"swift"},{"type":"qualifier1","hid":"unwavering"},{"type":"qualifier1","hid":"used"},{"type":"qualifier1","hid":"whirling"},{"type":"qualifier1","hid":"wooden"},{"type":"qualifier2","hid":"adjudicator"},{"type":"qualifier2","hid":"ambassador"},{"type":"qualifier2","hid":"ancients"},{"type":"qualifier2","hid":"apprentice"},{"type":"qualifier2","hid":"assaulting"},{"type":"qualifier2","hid":"beginner"},{"type":"qualifier2","hid":"brave"},{"type":"qualifier2","hid":"conqueror"},{"type":"qualifier2","hid":"cruel_tyrant"},{"type":"qualifier2","hid":"defender"},{"type":"qualifier2","hid":"destructor"},{"type":"qualifier2","hid":"dwarven"},{"type":"qualifier2","hid":"elite"},{"type":"qualifier2","hid":"elven"},{"type":"qualifier2","hid":"executioner"},{"type":"qualifier2","hid":"expert"},{"type":"qualifier2","hid":"explorer"},{"type":"qualifier2","hid":"gladiator"},{"type":"qualifier2","hid":"goddess"},{"type":"qualifier2","hid":"guard"},{"type":"qualifier2","hid":"hunter"},{"type":"qualifier2","hid":"judgement"},{"type":"qualifier2","hid":"king"},{"type":"qualifier2","hid":"mediator"},{"type":"qualifier2","hid":"mercenary"},{"type":"qualifier2","hid":"militia"},{"type":"qualifier2","hid":"nightmare"},{"type":"qualifier2","hid":"noble"},{"type":"qualifier2","hid":"noob"},{"type":"qualifier2","hid":"pilgrim"},{"type":"qualifier2","hid":"pioneer"},{"type":"qualifier2","hid":"pirate"},{"type":"qualifier2","hid":"profane"},{"type":"qualifier2","hid":"ranger"},{"type":"qualifier2","hid":"sorcerer"},{"type":"qualifier2","hid":"tormentor"},{"type":"qualifier2","hid":"training"},{"type":"qualifier2","hid":"traveler"},{"type":"qualifier2","hid":"twink"},{"type":"qualifier2","hid":"tyrant"},{"type":"qualifier2","hid":"upholder"},{"type":"qualifier2","hid":"warfield_king"},{"type":"qualifier2","hid":"warfield"},{"type":"qualifier2","hid":"warrior"},{"type":"qualifier2","hid":"wise"},{"type":"qualifier2","hid":"woodsman"}]}
 
 /***/ }),
-/* 85 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(86);
+const typescript_string_enums_1 = __webpack_require__(90);
 /////////////////////
 const WeaponPartType = typescript_string_enums_1.Enum('base', 'qualifier1', 'qualifier2');
 exports.WeaponPartType = WeaponPartType;
@@ -24418,7 +24007,7 @@ exports.WeaponPartType = WeaponPartType;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 86 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24473,7 +24062,7 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 87 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24516,7 +24105,7 @@ exports.ENHANCEMENT_MULTIPLIER = ENHANCEMENT_MULTIPLIER;
 //# sourceMappingURL=constants.js.map
 
 /***/ }),
-/* 88 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
@@ -25246,411 +24835,28 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
 
 
 /***/ }),
-/* 89 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const set = __webpack_require__(90).entries
+const set = __webpack_require__(94).entries
 
 module.exports = set
 
 
 /***/ }),
-/* 90 */
+/* 94 */
 /***/ (function(module, exports) {
 
-module.exports = {
-	"entries": [
-		{
-			"type": "base",
-			"hid": "armguards"
-		},
-		{
-			"type": "base",
-			"hid": "belt"
-		},
-		{
-			"type": "base",
-			"hid": "boots"
-		},
-		{
-			"type": "base",
-			"hid": "bracers"
-		},
-		{
-			"type": "base",
-			"hid": "breatplate"
-		},
-		{
-			"type": "base",
-			"hid": "cloak"
-		},
-		{
-			"type": "base",
-			"hid": "crown"
-		},
-		{
-			"type": "base",
-			"hid": "gauntlets"
-		},
-		{
-			"type": "base",
-			"hid": "gloves"
-		},
-		{
-			"type": "base",
-			"hid": "greaves"
-		},
-		{
-			"type": "base",
-			"hid": "hat"
-		},
-		{
-			"type": "base",
-			"hid": "helmet"
-		},
-		{
-			"type": "base",
-			"hid": "leggings"
-		},
-		{
-			"type": "base",
-			"hid": "mantle"
-		},
-		{
-			"type": "base",
-			"hid": "pants"
-		},
-		{
-			"type": "base",
-			"hid": "robe"
-		},
-		{
-			"type": "base",
-			"hid": "shield"
-		},
-		{
-			"type": "base",
-			"hid": "shoes"
-		},
-		{
-			"type": "base",
-			"hid": "shoulders"
-		},
-		{
-			"type": "base",
-			"hid": "socks"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "bone"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "brass"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "embroidered"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "cardboard"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "composite"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "consecrated"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "crafted"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "cursed"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "emerald"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "engraved"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "golden"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "heavy"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "holy"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "invincible"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "iron"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "jade"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "light"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "mechanical"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "mysterious"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "old"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "onyx"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "powerful"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "practical"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "proven"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "robust"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "sapphire"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "scale"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "silver"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "simple"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "skeleton"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "solid"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "steel"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "strange"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "subtile"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "swift"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "unwavering"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "used"
-		},
-		{
-			"type": "qualifier1",
-			"hid": "wooden"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "ancients"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "apprentice"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "beginner"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "brave"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "conqueror"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "cruel_tyrant"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "defender"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "destructor"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "dwarven"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "elite"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "elven"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "expert"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "explorer"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "gladiator"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "goddess"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "guard"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "judgement"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "king"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "mediator"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "mercenary"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "militia"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "nightmare"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "noble"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "noob"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "pilgrim"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "pioneer"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "profane"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "sorcerer"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "tormentor"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "training"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "twink"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "tyrant"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "upholder"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "warfield_king"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "warfield"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "warrior"
-		},
-		{
-			"type": "qualifier2",
-			"hid": "wise"
-		}
-	]
-};
+module.exports = {"entries":[{"type":"base","hid":"armguards"},{"type":"base","hid":"belt"},{"type":"base","hid":"boots"},{"type":"base","hid":"bracers"},{"type":"base","hid":"breatplate"},{"type":"base","hid":"cloak"},{"type":"base","hid":"crown"},{"type":"base","hid":"gauntlets"},{"type":"base","hid":"gloves"},{"type":"base","hid":"greaves"},{"type":"base","hid":"hat"},{"type":"base","hid":"helmet"},{"type":"base","hid":"leggings"},{"type":"base","hid":"mantle"},{"type":"base","hid":"pants"},{"type":"base","hid":"robe"},{"type":"base","hid":"shield"},{"type":"base","hid":"shoes"},{"type":"base","hid":"shoulders"},{"type":"base","hid":"socks"},{"type":"qualifier1","hid":"bone"},{"type":"qualifier1","hid":"brass"},{"type":"qualifier1","hid":"embroidered"},{"type":"qualifier1","hid":"cardboard"},{"type":"qualifier1","hid":"composite"},{"type":"qualifier1","hid":"consecrated"},{"type":"qualifier1","hid":"crafted"},{"type":"qualifier1","hid":"cursed"},{"type":"qualifier1","hid":"emerald"},{"type":"qualifier1","hid":"engraved"},{"type":"qualifier1","hid":"golden"},{"type":"qualifier1","hid":"heavy"},{"type":"qualifier1","hid":"holy"},{"type":"qualifier1","hid":"invincible"},{"type":"qualifier1","hid":"iron"},{"type":"qualifier1","hid":"jade"},{"type":"qualifier1","hid":"light"},{"type":"qualifier1","hid":"mechanical"},{"type":"qualifier1","hid":"mysterious"},{"type":"qualifier1","hid":"old"},{"type":"qualifier1","hid":"onyx"},{"type":"qualifier1","hid":"powerful"},{"type":"qualifier1","hid":"practical"},{"type":"qualifier1","hid":"proven"},{"type":"qualifier1","hid":"robust"},{"type":"qualifier1","hid":"sapphire"},{"type":"qualifier1","hid":"scale"},{"type":"qualifier1","hid":"silver"},{"type":"qualifier1","hid":"simple"},{"type":"qualifier1","hid":"skeleton"},{"type":"qualifier1","hid":"solid"},{"type":"qualifier1","hid":"steel"},{"type":"qualifier1","hid":"strange"},{"type":"qualifier1","hid":"subtile"},{"type":"qualifier1","hid":"swift"},{"type":"qualifier1","hid":"unwavering"},{"type":"qualifier1","hid":"used"},{"type":"qualifier1","hid":"wooden"},{"type":"qualifier2","hid":"ancients"},{"type":"qualifier2","hid":"apprentice"},{"type":"qualifier2","hid":"beginner"},{"type":"qualifier2","hid":"brave"},{"type":"qualifier2","hid":"conqueror"},{"type":"qualifier2","hid":"cruel_tyrant"},{"type":"qualifier2","hid":"defender"},{"type":"qualifier2","hid":"destructor"},{"type":"qualifier2","hid":"dwarven"},{"type":"qualifier2","hid":"elite"},{"type":"qualifier2","hid":"elven"},{"type":"qualifier2","hid":"expert"},{"type":"qualifier2","hid":"explorer"},{"type":"qualifier2","hid":"gladiator"},{"type":"qualifier2","hid":"goddess"},{"type":"qualifier2","hid":"guard"},{"type":"qualifier2","hid":"judgement"},{"type":"qualifier2","hid":"king"},{"type":"qualifier2","hid":"mediator"},{"type":"qualifier2","hid":"mercenary"},{"type":"qualifier2","hid":"militia"},{"type":"qualifier2","hid":"nightmare"},{"type":"qualifier2","hid":"noble"},{"type":"qualifier2","hid":"noob"},{"type":"qualifier2","hid":"pilgrim"},{"type":"qualifier2","hid":"pioneer"},{"type":"qualifier2","hid":"profane"},{"type":"qualifier2","hid":"sorcerer"},{"type":"qualifier2","hid":"tormentor"},{"type":"qualifier2","hid":"training"},{"type":"qualifier2","hid":"twink"},{"type":"qualifier2","hid":"tyrant"},{"type":"qualifier2","hid":"upholder"},{"type":"qualifier2","hid":"warfield_king"},{"type":"qualifier2","hid":"warfield"},{"type":"qualifier2","hid":"warrior"},{"type":"qualifier2","hid":"wise"}]}
 
 /***/ }),
-/* 91 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(92);
+const typescript_string_enums_1 = __webpack_require__(96);
 /////////////////////
 const ArmorPartType = typescript_string_enums_1.Enum('base', 'qualifier1', 'qualifier2');
 exports.ArmorPartType = ArmorPartType;
@@ -25658,7 +24864,7 @@ exports.ArmorPartType = ArmorPartType;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 92 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25713,16 +24919,16 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 93 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const random_1 = __webpack_require__(94);
-const static_adventure_data = __webpack_require__(95);
-const types_1 = __webpack_require__(97);
+const random_1 = __webpack_require__(98);
+const static_adventure_data = __webpack_require__(99);
+const types_1 = __webpack_require__(101);
 exports.CoinsGain = types_1.CoinsGain;
 /////////////////////
 const ALL_ADVENTURE_ARCHETYPES = static_adventure_data.map((paa) => {
@@ -25789,7 +24995,7 @@ exports.generate_random_coin_gain = generate_random_coin_gain;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 94 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
@@ -26519,289 +25725,28 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
 
 
 /***/ }),
-/* 95 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const set = __webpack_require__(96).entries
+const set = __webpack_require__(100).entries
 
 module.exports = set
 
 
 /***/ }),
-/* 96 */
+/* 100 */
 /***/ (function(module, exports) {
 
-module.exports = {
-	"entries": [
-		{
-			"good": false,
-			"hid": "bad_default",
-			"post": {}
-		},
-		{
-			"good": true,
-			"hid": "bored_log",
-			"post": {
-				"gains": {
-					"strength": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "caravan",
-			"post": {
-				"gains": {
-					"coins": "small"
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "dying_man",
-			"post": {
-				"gains": {
-					"coins": "medium"
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "ate_bacon",
-			"post": {
-				"gains": {
-					"level": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "ate_mushroom",
-			"post": {
-				"gains": {
-					"level": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "ate_zombie",
-			"post": {
-				"gains": {
-					"mana": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "refreshing_nap",
-			"post": {
-				"gains": {
-					"vitality": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "older",
-			"post": {
-				"gains": {
-					"level": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "stare_cup",
-			"post": {
-				"gains": {
-					"mana": 2
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "nuclear_fusion_paper",
-			"post": {
-				"gains": {
-					"wisdom": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "found_green_mushroom",
-			"post": {
-				"gains": {
-					"level": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "meet_old_wizard",
-			"post": {
-				"gains": {
-					"wisdom": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "good_necromancer",
-			"post": {
-				"gains": {
-					"agility": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "talk_to_all_villagers",
-			"post": {
-				"gains": {
-					"mana": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "always_keep_potions",
-			"post": {
-				"gains": {
-					"vitality": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "lost",
-			"post": {
-				"gains": {
-					"vitality": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "fate_sword",
-			"post": {
-				"gains": {
-					"coins": "small"
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "grinding",
-			"post": {
-				"gains": {
-					"level": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "so_many_potions",
-			"post": {
-				"gains": {
-					"strength": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "rematch",
-			"post": {
-				"gains": {
-					"level": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "useless",
-			"post": {
-				"gains": {
-					"wisdom": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "escort",
-			"post": {
-				"gains": {
-					"vitality": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "rare_goods_seller",
-			"post": {
-				"gains": {
-					"weapon": true
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "progress_loop",
-			"post": {
-				"gains": {
-					"weapon": true
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "idiot_bandits",
-			"post": {
-				"gains": {
-					"coins": "medium"
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "princess",
-			"post": {
-				"gains": {
-					"coins": "medium",
-					"weapon_improvement": true
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "bad_village",
-			"post": {
-				"gains": {
-					"mana": 1
-				}
-			}
-		},
-		{
-			"good": true,
-			"hid": "mana_mana",
-			"post": {
-				"gains": {
-					"mana": 1
-				}
-			}
-		}
-	]
-};
+module.exports = {"entries":[{"good":false,"hid":"bad_default","post":{}},{"good":true,"hid":"bored_log","post":{"gains":{"strength":1}}},{"good":true,"hid":"caravan","post":{"gains":{"coins":"small"}}},{"good":true,"hid":"dying_man","post":{"gains":{"coins":"medium"}}},{"good":true,"hid":"ate_bacon","post":{"gains":{"level":1}}},{"good":true,"hid":"ate_mushroom","post":{"gains":{"level":1}}},{"good":true,"hid":"ate_zombie","post":{"gains":{"mana":1}}},{"good":true,"hid":"refreshing_nap","post":{"gains":{"vitality":1}}},{"good":true,"hid":"older","post":{"gains":{"level":1}}},{"good":true,"hid":"stare_cup","post":{"gains":{"mana":2}}},{"good":true,"hid":"nuclear_fusion_paper","post":{"gains":{"wisdom":1}}},{"good":true,"hid":"found_green_mushroom","post":{"gains":{"level":1}}},{"good":true,"hid":"meet_old_wizard","post":{"gains":{"wisdom":1}}},{"good":true,"hid":"good_necromancer","post":{"gains":{"agility":1}}},{"good":true,"hid":"talk_to_all_villagers","post":{"gains":{"mana":1}}},{"good":true,"hid":"always_keep_potions","post":{"gains":{"vitality":1}}},{"good":true,"hid":"lost","post":{"gains":{"vitality":1}}},{"good":true,"hid":"fate_sword","post":{"gains":{"coins":"small"}}},{"good":true,"hid":"grinding","post":{"gains":{"level":1}}},{"good":true,"hid":"so_many_potions","post":{"gains":{"strength":1}}},{"good":true,"hid":"rematch","post":{"gains":{"level":1}}},{"good":true,"hid":"useless","post":{"gains":{"wisdom":1}}},{"good":true,"hid":"escort","post":{"gains":{"vitality":1}}},{"good":true,"hid":"rare_goods_seller","post":{"gains":{"weapon":true}}},{"good":true,"hid":"progress_loop","post":{"gains":{"weapon":true}}},{"good":true,"hid":"idiot_bandits","post":{"gains":{"coins":"medium"}}},{"good":true,"hid":"princess","post":{"gains":{"coins":"medium","weapon_improvement":true}}},{"good":true,"hid":"bad_village","post":{"gains":{"mana":1}}},{"good":true,"hid":"mana_mana","post":{"gains":{"mana":1}}}]}
 
 /***/ }),
-/* 97 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(98);
+const typescript_string_enums_1 = __webpack_require__(102);
 /////////////////////
 const CoinsGain = typescript_string_enums_1.Enum('none', 'small', 'medium', 'big', 'huge');
 exports.CoinsGain = CoinsGain;
@@ -26809,7 +25754,7 @@ exports.CoinsGain = CoinsGain;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 98 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26864,22 +25809,26 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 99 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const lodash_1 = __webpack_require__(100);
+const lodash_1 = __webpack_require__(104);
 const definitions_1 = __webpack_require__(2);
 const logic_weapons_1 = __webpack_require__(17);
 const logic_armors_1 = __webpack_require__(18);
 const state_inventory_1 = __webpack_require__(16);
 const state_character_1 = __webpack_require__(15);
-const types_1 = __webpack_require__(101);
+const types_1 = __webpack_require__(105);
 exports.TextStyle = types_1.TextStyle;
 const DEFAULT_RENDERING_OPTIONS = {
+    globalize: {
+        formatMessage: (s) => s,
+        formatNumber: (n) => `${n}`,
+    },
     stylize: (style, s) => s
 };
 exports.DEFAULT_RENDERING_OPTIONS = DEFAULT_RENDERING_OPTIONS;
@@ -27035,12 +25984,20 @@ function render_wallet(wallet, options = DEFAULT_RENDERING_OPTIONS) {
 exports.render_wallet = render_wallet;
 function render_adventure(a, options = DEFAULT_RENDERING_OPTIONS) {
     const icon = '📃'; //'⚔'
-    const text = a.hid;
-    let res = `${icon}   TODO render_adventure ${text}`;
+    let res = `${icon}  `;
+    const g = options.globalize;
+    const gains_for_display = Object.assign({}, a.gains, {
+        formattedCoins: a.gains.coins ? g.formatNumber(a.gains.coins) : '',
+        formattedWeapon: a.gains.weapon ? render_item(a.gains.weapon, options) : '',
+        formattedArmor: a.gains.armor ? render_item(a.gains.armor, options) : '',
+    });
+    const raw_message = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display);
+    res += raw_message.trim().replace('\n', ' ');
+    // TODO loot
     if (a.gains.weapon)
-        res += `\nNew item: ` + render_item(a.gains.weapon, options);
+        res += `\nNew item: ` + gains_for_display.formattedWeapon;
     if (a.gains.armor)
-        res += `\nNew item: ` + render_item(a.gains.armor, options);
+        res += `\nNew item: ` + gains_for_display.formattedArmor;
     return res;
 }
 exports.render_adventure = render_adventure;
@@ -27048,7 +26005,7 @@ exports.render_adventure = render_adventure;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 100 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -44140,14 +43097,14 @@ exports.render_adventure = render_adventure;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module)))
 
 /***/ }),
-/* 101 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 /////////////////////
-const typescript_string_enums_1 = __webpack_require__(102);
+const typescript_string_enums_1 = __webpack_require__(106);
 /////////////////////
 const TextStyle = typescript_string_enums_1.Enum('item_quality_common', 'item_quality_uncommon', 'item_quality_rare', 'item_quality_epic', 'item_quality_legendary', 'item_quality_artifact', 'change_outline');
 exports.TextStyle = TextStyle;
@@ -44155,7 +43112,7 @@ exports.TextStyle = TextStyle;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 102 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44210,31 +43167,10 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 103 */
+/* 107 */
 /***/ (function(module, exports) {
 
-module.exports = {
-	"name": "the-boring-rpg",
-	"version": "0.0.1",
-	"description": "The Boring RPG, a command line game",
-	"main": "index.js",
-	"author": "Offirmo <offirmo.net@gmail.com>",
-	"license": "UNLICENSED",
-	"scripts": {
-		"start": "node index.js",
-		"build": "webpack --config meta/webpack.config.js"
-	},
-	"dependencies": {
-		"conf": "^1.1.2"
-	},
-	"devDependencies": {
-		"@offirmo/cli-toolbox": "^0.3.0",
-		"@oh-my-rpg/state-the-boring-rpg": "^0.0.1",
-		"@oh-my-rpg/view-text": "^0.0.1",
-		"tslib": "^1.7.1",
-		"webpack": "^3.3.0"
-	}
-};
+module.exports = {"name":"the-npm-rpg","version":"0.0.3","description":"The Boring RPG, a command line RPG game. Just `npx the-npm-rpg`!","main":"index.js","author":"Offirmo <offirmo.net@gmail.com>","license":"UNLICENSED","repository":{"type":"git","url":"git+https://github.com/online-adventures/oh-my-rpg.git"},"bin":"./bin/index.js","scripts":{"start:dev":"node index.js","start":"bin/index.js","build":"webpack --config meta/webpack.config.ts"},"dependencies":{"conf":"^1.1.2"},"devDependencies":{"@oh-my-rpg/data":"^0.0.1","@offirmo/cli-toolbox":"^0.3.0","@oh-my-rpg/state-the-boring-rpg":"^0.0.1","@oh-my-rpg/view-text":"^0.0.1","cldr-data":"^31.0.2","globalize":"^1.3.0","globalize-webpack-plugin":"^1.1.1","iana-tz-data":"^2017.1.0","tslib":"^1.7.1","webpack":"^3.3.0"}}
 
 /***/ })
 /******/ ]);
