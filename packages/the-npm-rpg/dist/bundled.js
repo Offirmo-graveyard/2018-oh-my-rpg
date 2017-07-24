@@ -43170,7 +43170,7 @@ exports.Enum = Enum;
 /* 107 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"the-npm-rpg","version":"0.0.3","description":"The Boring RPG, a command line RPG game. Just `npx the-npm-rpg`!","main":"index.js","author":"Offirmo <offirmo.net@gmail.com>","license":"UNLICENSED","repository":{"type":"git","url":"git+https://github.com/online-adventures/oh-my-rpg.git"},"bin":"./bin/index.js","scripts":{"start:dev":"node index.js","start":"bin/index.js","build":"webpack --config meta/webpack.config.ts"},"dependencies":{"conf":"^1.1.2"},"devDependencies":{"@oh-my-rpg/data":"^0.0.1","@offirmo/cli-toolbox":"^0.3.0","@oh-my-rpg/state-the-boring-rpg":"^0.0.1","@oh-my-rpg/view-text":"^0.0.1","cldr-data":"^31.0.2","globalize":"^1.3.0","globalize-webpack-plugin":"^1.1.1","iana-tz-data":"^2017.1.0","tslib":"^1.7.1","webpack":"^3.3.0"}}
+module.exports = {"name":"the-npm-rpg","version":"0.0.4","description":"The Boring RPG, a command line RPG game. Just `npx the-npm-rpg`!","main":"index.js","author":"Offirmo <offirmo.net@gmail.com>","license":"UNLICENSED","repository":{"type":"git","url":"git+https://github.com/online-adventures/oh-my-rpg.git"},"bin":"./bin/index.js","scripts":{"start:dev":"node index.js","start":"bin/index.js","build":"webpack --config meta/webpack.config.ts"},"dependencies":{"conf":"^1.1.2"},"devDependencies":{"@oh-my-rpg/data":"^0.0.1","@offirmo/cli-toolbox":"^0.3.0","@oh-my-rpg/state-the-boring-rpg":"^0.0.1","@oh-my-rpg/view-text":"^0.0.1","cldr-data":"^31.0.2","globalize":"^1.3.0","globalize-webpack-plugin":"^1.1.1","iana-tz-data":"^2017.1.0","tslib":"^1.7.1","webpack":"^3.3.0"}}
 
 /***/ })
 /******/ ]);
