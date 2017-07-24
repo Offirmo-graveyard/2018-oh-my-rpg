@@ -1,7 +1,7 @@
 The npm RPG ⚔🛡💰
 ===========
 
-This is a simple command-line RPG. Every time you launch the command, something happen!
+This is a simple command-line RPG. Every time you launch the command, something happens!
 
 **NOTE: very early stage of development**
 
