@@ -1,4 +1,4 @@
-# Oh My RPG
+# Oh My RPG ⚔ 👑
 
 
 ## Intro
