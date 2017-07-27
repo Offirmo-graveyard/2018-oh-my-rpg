@@ -54,7 +54,7 @@ On the other hand, your head aches for discussing so much.
 +{mana} mana thanks to this mental training!`,
 		always_keep_potions: `
 Being a good adventurer, you kept a health potion "just in case":
-Well done, your health is fully restored!`,
+Well done, your health is top-notch!`,
 		lost: `
 With all those quests, you forgot where you had to go…
 But circling around the whole map is good for your health: +{vitality} vitality!`,
@@ -80,11 +80,11 @@ Unfortunately, he also trained and beat you again!
 Well, the +{level} level will always be useful…`,
 		// paintraincomic.com
 		useless: `
-Arrivé au village, le maire vous assure que le pays n’est pas dangereux ;
-La sorcière dont vous aviez entendu parler s’est trouvé quelqu’un et ne maudis plus personne.
-Le cimetière hanté était un cimetière d’animaux de compagnie et les habitants sont heureux de les revoir ;
-Le géant aide les villageois aux travaux des champs.
-Vous vous sentez inutile et réfléchissez à votre place en ce monde… +1 en sagesse !`,
+Arriving at the village, the mayor testify that the neighborhood is no longer dangerous.
+The sorceress find herself someone and no longer curses anyone.
+The haunted cemetery was a pet cemetery, villagers are happy to have them back.
+The giant is helping the farmers in the fields.
+You feel useless and reflect on your role in the world. +{wisdom} wisdom!`,
 		// memecenter.com
 		escort: `
 Vous devez escorter un NPC important.

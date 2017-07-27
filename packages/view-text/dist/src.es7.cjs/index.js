@@ -51,24 +51,23 @@ function get_item_icon_for(i) {
 function get_characteristic_icon_for(stat) {
     switch (stat) {
         case state_character_1.CharacterStat.level:
-            return '👶🏽';
+            return '👶';
         case state_character_1.CharacterStat.health:
             return '💗';
         case state_character_1.CharacterStat.mana:
             return '💙';
         case state_character_1.CharacterStat.agility:
-            return '🤸🏽';
+            return '🤸';
         case state_character_1.CharacterStat.luck:
-            return '🤹🏼‍♀️';
+            return '🤹';
         case state_character_1.CharacterStat.strength:
-            // 🏋🏽
-            // '💪🏽'
-            return '🏋🏽';
+            // 💪
+            return '🏋';
         case state_character_1.CharacterStat.vitality:
-            return '🏊🏽';
+            return '🏊';
         case state_character_1.CharacterStat.wisdom:
-            // '🙏🏽'
-            return '👵🏽';
+            // '🙏'
+            return '👵';
         default:
             throw new Error(`get_characteristic_icon_for(): no icon for stat "${stat}" !`);
     }
@@ -152,7 +151,7 @@ function render_inventory(inventory, options = DEFAULT_RENDERING_OPTIONS) {
             ? ` new! 🎁`
             : '');
         return `${padded_human_index} ${icon}  ${label}${update_notice}`;
-    }).join('\n');
+    }).filter((s) => !s.includes('⋯')).join('\n');
 }
 exports.render_inventory = render_inventory;
 function render_wallet(wallet, options = DEFAULT_RENDERING_OPTIONS) {
@@ -177,7 +176,7 @@ function render_adventure(a, options = DEFAULT_RENDERING_OPTIONS) {
         formattedArmor: a.gains.armor ? render_item(a.gains.armor, options) : '',
     });
     const raw_message = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display);
-    res += raw_message.trim().replace('\n', ' ');
+    res += raw_message.split('\n').map((s) => s.trim()).join(' ');
     // TODO loot
     if (a.gains.weapon)
         res += `\nNew item: ` + gains_for_display.formattedWeapon;

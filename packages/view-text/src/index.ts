@@ -59,25 +59,25 @@ function get_item_icon_for(i: Item | null): string {
 function get_characteristic_icon_for(stat: CharacterStat): string {
 	switch(stat) {
 		case CharacterStat.level:
-			return '👶🏽'
+			return '👶'
 		case CharacterStat.health:
 			return '💗'
 		case CharacterStat.mana:
 			return '💙'
 
 		case CharacterStat.agility:
-			return '🤸🏽'
+			return '🤸'
 		case CharacterStat.luck:
-			return '🤹🏼‍♀️'
+			return '🤹'
 		case CharacterStat.strength:
-			// 🏋🏽
-			// '💪🏽'
-			return '🏋🏽'
+			// 💪
+			return '🏋'
 		case CharacterStat.vitality:
-			return '🏊🏽'
+			return '🏊'
 		case CharacterStat.wisdom:
-			// '🙏🏽'
-			return '👵🏽'
+			// '🙏'
+			return '👵'
+
 		default:
 			throw new Error(`get_characteristic_icon_for(): no icon for stat "${stat}" !`)
 	}
@@ -185,7 +185,7 @@ function render_inventory(inventory: InventoryState, options: RenderingOptions =
 		)
 
 		return `${padded_human_index} ${icon}  ${label}${update_notice}`
-	}).join('\n')
+	}).filter((s: string) => !s.includes('⋯')).join('\n')
 }
 
 function render_wallet(wallet: WalletState, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
@@ -223,7 +223,7 @@ function render_adventure(a: Adventure, options: RenderingOptions = DEFAULT_REND
 	)
 
 	const raw_message = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display)
-	res += raw_message.trim().replace('\n', ' ')
+	res += raw_message.split('\n').map((s: string) => s.trim()).join(' ')
 
 	// TODO loot
 	if (a.gains.weapon)
