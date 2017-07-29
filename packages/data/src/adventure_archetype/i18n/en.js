@@ -16,9 +16,10 @@ You gained {formattedCoins} coins!`,
 		ate_bacon: `
 You ate some bacon.
 You gained +{level} level!`,
+		/* too bland
 		ate_mushroom: `
 You ate a mushroom.
-You gained +{level} level!`,
+You gained +{level} level!`,*/
 		ate_zombie: `
 You ate a zombie.
 You gained +{mana} mana!`,
@@ -37,6 +38,29 @@ You gained +{wisdom} wisdom!`,
 		found_green_mushroom: `
 You found a green mushroom.
 You gained +{level} level!`,
+
+		// from me, inferred
+		found_red_mushroom: `
+You found a red mushroom.
+You gained +{health} health!`,
+		found_blue_mushroom: `
+You found a blue mushroom.
+You gained +{mana} mana!`,
+		found_white_mushroom: `
+You found a white mushroom.
+You gained +{strength} strength!`,
+		found_yellow_mushroom: `
+You found a yellow mushroom.
+You gained +{agility} agility!`,
+		found_orange_mushroom: `
+You found a orange mushroom.
+You gained +{vitality} vitality!`,
+		found_black_mushroom: `
+You found a black mushroom.
+You gained +{wisdom} wisdom!`,
+		found_rainbow_mushroom: `
+You found a glowing rainbow mushroom.
+You gained +{luck} luck!`,
 
 		// from me
 		meet_old_wizard: `
@@ -113,7 +137,6 @@ before your fireball incinerate him.
 Fortunately, gold doesn't burn: +{formattedCoins} coins!`,
 		// don't remember the source for this one
 		princess: `
-
 « You won't take back the princess! » yell the terrible black mage,
 as you reach his throne room.
 You reassure him: you are only here for loot.

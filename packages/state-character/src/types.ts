@@ -34,13 +34,15 @@ type CharacterClass = Enum<typeof CharacterClass>
 
 interface Characteristics {
 	level: number
+
 	health: number
 	mana: number
-	agility: number
-	luck: number
+
 	strength: number
+	agility: number
 	vitality: number
 	wisdom: number
+	luck: number
 }
 
 interface State {
