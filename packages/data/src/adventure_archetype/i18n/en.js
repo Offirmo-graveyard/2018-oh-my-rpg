@@ -79,6 +79,7 @@ Shameful, you roam around the country, accepting quests after quests to train yo
 Unfortunately, he also trained and beat you again!
 Well, the +{level} level will always be useful…`,
 		// paintraincomic.com
+		// http://paintraincomic.com/comic/cemetery/
 		useless: `
 Arriving at the village, the mayor testify that the neighborhood is no longer dangerous.
 The sorceress find herself someone and no longer curses anyone.
@@ -87,41 +88,47 @@ The giant is helping the farmers in the fields.
 You feel useless and reflect on your role in the world. +{wisdom} wisdom!`,
 		// memecenter.com
 		escort: `
-Vous devez escorter un NPC important.
-Hélas, si vous marchez il va plus vite que vous, mais si vous courrez c’est vous qui allez trop vite !
-En zigzagant et en tournant en rond ça passe. +1 en vitalité grâce à tous ces efforts !`,
+You are escorting an important NPC.
+Unfortunately, if you walk, he's faster thant you.
+However, if you run, you're faster than him!
+By slaloming and running into circles, you manage.
++{vitality} vitality thanks to those efforts!`,
 		// memecenter.com
 		rare_goods_seller: `
-Vous croisez sur la route un vieil homme habillé de façon excentrique.
-Gagné, c’est un vendeur d’objets rares ! Il vous fait un très bon prix pour une [TODO weapon]`,
+You come across an old man with excentric apparel.
+Score! It's a rare item seller!
+He gives you a good price for a {formattedItem}.`,
 		// memecenter.com
 		progress_loop: `
-Il vous faudrait un meilleur équipement pour pouvoir monter en niveau.
-Mais il faudrait monter en niveau pour pouvoir gagner un meilleur équipement.
-Cruel dilemne ! Heureusement, vous trouvez un [TODO weapon] au fond d’un puit !`,
+You would need better gear to level up.
+But you'd need to level up to get better gear.
+Cruel dilemma !
+Fortunately, you find a {formattedItem} at the bottom of a well!`,
 		// memecenter.com/motohorse
 		idiot_bandits: `
-On parle de vous après que vous ayez tué le dragon et la sorcière maléfique.
-Des bandits vous tendent une embuscade. Quelle drôle d’idée !
-À voir ses yeux, le dernier l’a presque compris une fraction de seconde avant que
-votre boule de feu ne le réduise en cendre.
-Heureusement, les pièces d’or ne brûlent pas : +33 écus !`,
+You are being talked about since you slayed the dragon and defeated the sorceress.
+Bandits embush you, aiming for your wealth. What a silly idea!
+You read in the eyes of last one that he realizes it on moment
+before your fireball incinerate him.
+Fortunately, gold doesn't burn: +{formattedCoins} coins!`,
 		// don't remember the source for this one
 		princess: `
-« Vous n’emporterez pas la princesse ! » vous crie le terrible mage noir,
-alors que vous parvenez dans sa salle du trône.
-Vous le rassurez : seul le butin vous intéresse.
-Il vous laisse vous servir (+234 écus) et enchante même une arme pour vous ! ([TODO weapon])`,
+
+« You won't take back the princess! » yell the terrible black mage,
+as you reach his throne room.
+You reassure him: you are only here for loot.
+He let you help yourself (+{formattedCoins} coins)
+and enchant your weapon!`,
 		// DM of the ring
 		bad_village: `
-Vous arrivez dans un village. Il n’y a pas de marchand d’armes.
-Pas de marchand de potions non plus ! Et l’auberge ne propose pas de quêtes !!
-C’en est trop : sur votre ordre, les éclairs et les météorites rasent ce lieu inutile.
-Au passage, bon occasion de pratiquer votre magie : +1 mana.`,
+You reach a new village. There is no weapon shop.
+No potion shop either! And no quests at the inn!!
+That's too much. At your call, lightnings and meteors wipe this useless place.
+Good opportunity to practice your magic: +{mana} mana.`,
 		// ?
 		mana_mana: `
 « Mah na mah na » « To to to do do »
-+1 mana!`,
++{mana} mana!`,
 
 		/*
 		 // "make friends" necromancy

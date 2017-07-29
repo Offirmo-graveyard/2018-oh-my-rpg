@@ -9,10 +9,13 @@ const state_prng_1 = require("@oh-my-rpg/state-prng");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
 const logic_armors_1 = require("@oh-my-rpg/logic-armors");
 const logic_adventures_1 = require("@oh-my-rpg/logic-adventures");
+const types_1 = require("./types");
+exports.VERSION = types_1.VERSION;
 /////////////////////
 function factory() {
     let state = {
-        characteristics: state_character_1.factory(),
+        version: types_1.VERSION,
+        avatar: state_character_1.factory(),
         inventory: state_inventory_1.factory(),
         wallet: state_wallet_1.factory(),
         prng: state_prng_1.factory(),
@@ -43,6 +46,14 @@ function factory() {
     return state;
 }
 exports.factory = factory;
+function migrate_to_latest(state) {
+    const src_version = state.version;
+    if (src_version === types_1.VERSION)
+        return state;
+    // TODO migrate when out of beta
+    return factory();
+}
+exports.migrate_to_latest = migrate_to_latest;
 /////////////////////
 function instantiate_adventure_archetype(rng, aa, player_level, inventory) {
     const { hid, good, post: { gains: { level: should_gain_a_level, agility, health, luck, mana, strength, vitality, wisdom, coins: coins_gain, tokens, armor: should_receive_armor, weapon: should_receive_weapon, armor_improvement: improved_armor, weapon_improvement: improved_weapon, } } } = aa;
@@ -75,7 +86,7 @@ function instantiate_adventure_archetype(rng, aa, player_level, inventory) {
     };
 }
 function receive_stat_increase(state, stat, amount = 1) {
-    state.characteristics = state_character_1.increase_stat(state.characteristics, stat, amount);
+    state.avatar = state_character_1.increase_stat(state.avatar, stat, amount);
     return state;
 }
 function receive_item(state, item) {
@@ -97,7 +108,7 @@ function play_good(state, explicit_adventure_archetype_hid) {
     const aa = explicit_adventure_archetype_hid
         ? logic_adventures_1.get_archetype(explicit_adventure_archetype_hid)
         : logic_adventures_1.pick_random_good_archetype(rng);
-    const adventure = instantiate_adventure_archetype(rng, aa, state.characteristics.level, state.inventory);
+    const adventure = instantiate_adventure_archetype(rng, aa, state.avatar.characteristics.level, state.inventory);
     state.last_adventure = adventure;
     const { gains: { level, health, mana, strength, agility, vitality, wisdom, luck, coins, tokens, weapon, armor, improved_weapon, improved_armor, } } = adventure;
     // TODO store hid for no repetition

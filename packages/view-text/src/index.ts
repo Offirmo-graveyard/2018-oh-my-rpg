@@ -129,7 +129,7 @@ function render_characteristics(state: CharacterState, options: RenderingOptions
 	return CHARACTER_STATS.map((stat: CharacterStat) => {
 		const icon = get_characteristic_icon_for(stat)
 		const label = stat
-		const value = state[stat]
+		const value = state.characteristics[stat]
 
 		const padded_label = `${label}............`.slice(0, 11)
 		const padded_human_values = `.......${value}`.slice(-4)
@@ -185,7 +185,7 @@ function render_inventory(inventory: InventoryState, options: RenderingOptions =
 		)
 
 		return `${padded_human_index} ${icon}  ${label}${update_notice}`
-	}).filter((s: string) => !s.includes('⋯')).join('\n')
+	}).join('\n')
 }
 
 function render_wallet(wallet: WalletState, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
@@ -212,13 +212,19 @@ function render_adventure(a: Adventure, options: RenderingOptions = DEFAULT_REND
 
 	const g = options.globalize
 
+
+	const formattedWeapon = a.gains.weapon ? render_item(a.gains.weapon, options) : ''
+	const formattedArmor = a.gains.armor ? render_item(a.gains.armor, options) : ''
+	const formattedItem = formattedWeapon || formattedArmor
+
 	const gains_for_display = Object.assign(
 		{},
 		a.gains,
 		{
 			formattedCoins: a.gains.coins ? g.formatNumber(a.gains.coins) : '',
-			formattedWeapon: a.gains.weapon ? render_item(a.gains.weapon, options) : '',
-			formattedArmor: a.gains.armor ? render_item(a.gains.armor, options) : '',
+			formattedWeapon,
+			formattedArmor,
+			formattedItem,
 		}
 	)
 

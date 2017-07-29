@@ -113,7 +113,7 @@ function render_characteristics(state, options = DEFAULT_RENDERING_OPTIONS) {
     return state_character_1.CHARACTER_STATS.map((stat) => {
         const icon = get_characteristic_icon_for(stat);
         const label = stat;
-        const value = state[stat];
+        const value = state.characteristics[stat];
         const padded_label = `${label}............`.slice(0, 11);
         const padded_human_values = `.......${value}`.slice(-4);
         const update_notice = options.stylize(types_1.TextStyle.change_outline, la && la.gains && la.gains[stat]
@@ -151,7 +151,7 @@ function render_inventory(inventory, options = DEFAULT_RENDERING_OPTIONS) {
             ? ` new! 🎁`
             : '');
         return `${padded_human_index} ${icon}  ${label}${update_notice}`;
-    }).filter((s) => !s.includes('⋯')).join('\n');
+    }).join('\n');
 }
 exports.render_inventory = render_inventory;
 function render_wallet(wallet, options = DEFAULT_RENDERING_OPTIONS) {
@@ -170,10 +170,14 @@ function render_adventure(a, options = DEFAULT_RENDERING_OPTIONS) {
     const icon = '📃'; //'⚔'
     let res = `${icon}  `;
     const g = options.globalize;
+    const formattedWeapon = a.gains.weapon ? render_item(a.gains.weapon, options) : '';
+    const formattedArmor = a.gains.armor ? render_item(a.gains.armor, options) : '';
+    const formattedItem = formattedWeapon || formattedArmor;
     const gains_for_display = Object.assign({}, a.gains, {
         formattedCoins: a.gains.coins ? g.formatNumber(a.gains.coins) : '',
-        formattedWeapon: a.gains.weapon ? render_item(a.gains.weapon, options) : '',
-        formattedArmor: a.gains.armor ? render_item(a.gains.armor, options) : '',
+        formattedWeapon,
+        formattedArmor,
+        formattedItem,
     });
     const raw_message = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display);
     res += raw_message.split('\n').map((s) => s.trim()).join(' ');

@@ -65,6 +65,7 @@ import {
 } from '@oh-my-rpg/logic-adventures'
 
 import {
+	VERSION,
 	State,
 	Adventure,
 } from './types'
@@ -73,7 +74,8 @@ import {
 
 function factory(): State {
 	let state: State = {
-		characteristics: character_state_factory(),
+		version: VERSION,
+		avatar: character_state_factory(),
 		inventory: inventory_state_factory(),
 		wallet: wallet_state_factory(),
 		prng: prng_state_factory(),
@@ -107,6 +109,16 @@ function factory(): State {
 	//state.prng = prng_update_use_count(state.prng, rng)
 
 	return state
+}
+
+function migrate_to_latest(state: any): State {
+	const src_version = state.version
+
+	if (src_version === VERSION)
+		return state as State
+
+	// TODO migrate when out of beta
+	return factory()
 }
 
 /////////////////////
@@ -160,7 +172,7 @@ function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, pl
 }
 
 function receive_stat_increase(state: State, stat: CharacterStat, amount = 1): State {
-	state.characteristics = increase_stat(state.characteristics, stat, amount)
+	state.avatar = increase_stat(state.avatar, stat, amount)
 	return state
 }
 
@@ -191,7 +203,7 @@ function play_good(state: State, explicit_adventure_archetype_hid?: string): Sta
 	const adventure = instantiate_adventure_archetype(
 		rng,
 		aa,
-		state.characteristics.level,
+		state.avatar.characteristics.level,
 		state.inventory,
 	)
 	state.last_adventure = adventure
@@ -278,9 +290,11 @@ function sell_item(state: State, coordinates: InventoryCoordinates): State {
 /////////////////////
 
 export {
+	VERSION,
 	Adventure,
 	State,
 	factory,
+	migrate_to_latest,
 	play,
 	equip_item,
 	unequip_item,

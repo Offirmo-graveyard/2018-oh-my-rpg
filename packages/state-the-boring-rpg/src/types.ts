@@ -31,7 +31,8 @@ interface Adventure {
 }
 
 interface State {
-	characteristics: CharacterState
+	version: number
+	avatar: CharacterState
 	inventory: InventoryState
 	wallet: WalletState
 	prng: PRNGState
@@ -40,9 +41,12 @@ interface State {
 	good_click_count: number
 }
 
+const VERSION = 7
+
 /////////////////////
 
 export {
+	VERSION,
 	Adventure,
 	State,
 }

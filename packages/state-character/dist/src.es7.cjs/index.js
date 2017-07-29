@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const types_1 = require("./types");
 exports.CharacterStat = types_1.CharacterStat;
+exports.CharacterClass = types_1.CharacterClass;
 /////////////////////
 const CHARACTER_STATS = [
     types_1.CharacterStat.level,
@@ -18,22 +19,34 @@ exports.CHARACTER_STATS = CHARACTER_STATS;
 ///////
 function factory() {
     return {
-        level: 1,
-        health: 1,
-        mana: 0,
-        strength: 1,
-        agility: 1,
-        vitality: 1,
-        wisdom: 1,
-        luck: 1
+        name: 'unknown',
+        klass: types_1.CharacterClass.novice,
+        characteristics: {
+            level: 1,
+            // TODO improve this
+            health: 1,
+            mana: 0,
+            strength: 1,
+            agility: 1,
+            vitality: 1,
+            wisdom: 1,
+            luck: 1
+        }
     };
 }
 exports.factory = factory;
 /////////////////////
+function rename(state, new_name) {
+    if (!new_name)
+        throw new Error(`Error while renaming to "${new_name}: invalid value!`);
+    state.name = new_name;
+    return state;
+}
 function increase_stat(state, stat, amount = 1) {
     if (amount <= 0)
         throw new Error(`Error while increasing stat "${stat}: invalid amount!`);
-    state[stat] += amount;
+    // TODO stats caps
+    state.characteristics[stat] += amount;
     return state;
 }
 exports.increase_stat = increase_stat;

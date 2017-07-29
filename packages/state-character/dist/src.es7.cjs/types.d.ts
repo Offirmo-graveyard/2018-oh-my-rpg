@@ -10,7 +10,22 @@ declare const CharacterStat: {
     wisdom: "wisdom";
 };
 declare type CharacterStat = Enum<typeof CharacterStat>;
-interface State {
+declare const CharacterClass: {
+    novice: "novice";
+    warrior: "warrior";
+    barbarian: "barbarian";
+    paladin: "paladin";
+    sculptor: "sculptor";
+    pirate: "pirate";
+    ninja: "ninja";
+    rogue: "rogue";
+    wizard: "wizard";
+    hunter: "hunter";
+    druid: "druid";
+    priest: "priest";
+};
+declare type CharacterClass = Enum<typeof CharacterClass>;
+interface Characteristics {
     level: number;
     health: number;
     mana: number;
@@ -20,4 +35,9 @@ interface State {
     vitality: number;
     wisdom: number;
 }
-export { CharacterStat, State };
+interface State {
+    name: string;
+    klass: CharacterClass;
+    characteristics: Characteristics;
+}
+export { CharacterStat, CharacterClass, Characteristics, State };

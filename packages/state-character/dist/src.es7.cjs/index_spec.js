@@ -6,14 +6,18 @@ describe('🤕 ❤️  Character stats logic', function () {
         it('should have correct defaults', function () {
             const state = _1.factory();
             expect(state).to.deep.equal({
-                level: 1,
-                health: 1,
-                mana: 0,
-                strength: 1,
-                agility: 1,
-                vitality: 1,
-                wisdom: 1,
-                luck: 1
+                name: 'unknown',
+                klass: _1.CharacterClass.novice,
+                characteristics: {
+                    level: 1,
+                    health: 1,
+                    mana: 0,
+                    strength: 1,
+                    agility: 1,
+                    vitality: 1,
+                    wisdom: 1,
+                    luck: 1
+                }
             });
         });
     });
@@ -32,8 +36,8 @@ describe('🤕 ❤️  Character stats logic', function () {
         it('should work in nominal case', function () {
             let state = _1.factory();
             state = _1.increase_stat(state, _1.CharacterStat.agility);
-            expect(state.agility).to.equal(2);
-            expect(state).to.deep.equal({
+            expect(state.characteristics.agility).to.equal(2);
+            expect(state.characteristics).to.deep.equal({
                 level: 1,
                 health: 1,
                 mana: 0,
@@ -44,8 +48,8 @@ describe('🤕 ❤️  Character stats logic', function () {
                 luck: 1
             });
             state = _1.increase_stat(state, _1.CharacterStat.agility, 2);
-            expect(state.agility).to.equal(4);
-            expect(state).to.deep.equal({
+            expect(state.characteristics.agility).to.equal(4);
+            expect(state.characteristics).to.deep.equal({
                 level: 1,
                 health: 1,
                 mana: 0,
@@ -56,8 +60,8 @@ describe('🤕 ❤️  Character stats logic', function () {
                 luck: 1
             });
             state = _1.increase_stat(state, _1.CharacterStat.agility);
-            expect(state.agility).to.equal(5);
-            expect(state).to.deep.equal({
+            expect(state.characteristics.agility).to.equal(5);
+            expect(state.characteristics).to.deep.equal({
                 level: 1,
                 health: 1,
                 mana: 0,

@@ -2049,6 +2049,7 @@ exports.InventorySlot = InventorySlot;
 Object.defineProperty(exports, "__esModule", { value: true });
 const types_1 = __webpack_require__(104);
 exports.CharacterStat = types_1.CharacterStat;
+exports.CharacterClass = types_1.CharacterClass;
 /////////////////////
 const CHARACTER_STATS = [
     types_1.CharacterStat.level,
@@ -2064,22 +2065,34 @@ exports.CHARACTER_STATS = CHARACTER_STATS;
 ///////
 function factory() {
     return {
-        level: 1,
-        health: 1,
-        mana: 0,
-        strength: 1,
-        agility: 1,
-        vitality: 1,
-        wisdom: 1,
-        luck: 1
+        name: 'unknown',
+        klass: types_1.CharacterClass.novice,
+        characteristics: {
+            level: 1,
+            // TODO improve this
+            health: 1,
+            mana: 0,
+            strength: 1,
+            agility: 1,
+            vitality: 1,
+            wisdom: 1,
+            luck: 1
+        }
     };
 }
 exports.factory = factory;
 /////////////////////
+function rename(state, new_name) {
+    if (!new_name)
+        throw new Error(`Error while renaming to "${new_name}: invalid value!`);
+    state.name = new_name;
+    return state;
+}
 function increase_stat(state, stat, amount = 1) {
     if (amount <= 0)
         throw new Error(`Error while increasing stat "${stat}: invalid amount!`);
-    state[stat] += amount;
+    // TODO stats caps
+    state.characteristics[stat] += amount;
     return state;
 }
 exports.increase_stat = increase_stat;
@@ -2416,6 +2429,7 @@ const linewrap = __webpack_require__(99)
 
 const {
 	factory,
+	migrate_to_latest,
 	play,
 } = __webpack_require__(101)
 
@@ -2428,9 +2442,9 @@ const {
 	render_inventory,
 	render_wallet,
 	render_adventure,
-} = __webpack_require__(128)
+} = __webpack_require__(129)
 
-const { version } = __webpack_require__(132)
+const { version } = __webpack_require__(133)
 const MINIMAL_TERMINAL_WIDTH = 80
 const MANY_SPACES = '                                                                                                                                                      '
 
@@ -2452,12 +2466,16 @@ console.log(
 
 const config = new Conf({
 	configName: 'state',
-	defaults: factory(),
+	defaults: { version: -1 }, // will trigger a reset to default through the migration system
 })
 
-if (verbose) console.log('config', prettifyJson(config))
+if (verbose) console.log('config path:', config.path)
+if (verbose) console.log('loaded state\n', prettifyJson(config.store))
 
-let state = config.store
+let state = migrate_to_latest(config.store)
+config.clear()
+if (verbose) console.log('migrated state\n', prettifyJson(state))
+
 //console.log(prettifyJson(state))
 
 state = play(state)
@@ -2525,7 +2543,7 @@ function boxifyAlt(position, s) {
 console.log(boxifyAlt('top',
 	//stylizeString.bold('🙂  CHARACTERISTICS 💗\n')
 	stylizeString.bold('CHARACTERISTICS:\n')
-	+ render_characteristics(state.characteristics, rendering_options),
+	+ render_characteristics(state.avatar, rendering_options),
 	{borderStyle: 'single'}
 ))
 console.log(boxifyAlt('middle',
@@ -19880,6 +19898,7 @@ Shameful, you roam around the country, accepting quests after quests to train yo
 Unfortunately, he also trained and beat you again!
 Well, the +{level} level will always be useful…`,
 		// paintraincomic.com
+		// http://paintraincomic.com/comic/cemetery/
 		useless: `
 Arriving at the village, the mayor testify that the neighborhood is no longer dangerous.
 The sorceress find herself someone and no longer curses anyone.
@@ -19888,41 +19907,47 @@ The giant is helping the farmers in the fields.
 You feel useless and reflect on your role in the world. +{wisdom} wisdom!`,
 		// memecenter.com
 		escort: `
-Vous devez escorter un NPC important.
-Hélas, si vous marchez il va plus vite que vous, mais si vous courrez c’est vous qui allez trop vite !
-En zigzagant et en tournant en rond ça passe. +1 en vitalité grâce à tous ces efforts !`,
+You are escorting an important NPC.
+Unfortunately, if you walk, he's faster thant you.
+However, if you run, you're faster than him!
+By slaloming and running into circles, you manage.
++{vitality} vitality thanks to those efforts!`,
 		// memecenter.com
 		rare_goods_seller: `
-Vous croisez sur la route un vieil homme habillé de façon excentrique.
-Gagné, c’est un vendeur d’objets rares ! Il vous fait un très bon prix pour une [TODO weapon]`,
+You come across an old man with excentric apparel.
+Score! It's a rare item seller!
+He gives you a good price for a {formattedItem}.`,
 		// memecenter.com
 		progress_loop: `
-Il vous faudrait un meilleur équipement pour pouvoir monter en niveau.
-Mais il faudrait monter en niveau pour pouvoir gagner un meilleur équipement.
-Cruel dilemne ! Heureusement, vous trouvez un [TODO weapon] au fond d’un puit !`,
+You would need better gear to level up.
+But you'd need to level up to get better gear.
+Cruel dilemma !
+Fortunately, you find a {formattedItem} at the bottom of a well!`,
 		// memecenter.com/motohorse
 		idiot_bandits: `
-On parle de vous après que vous ayez tué le dragon et la sorcière maléfique.
-Des bandits vous tendent une embuscade. Quelle drôle d’idée !
-À voir ses yeux, le dernier l’a presque compris une fraction de seconde avant que
-votre boule de feu ne le réduise en cendre.
-Heureusement, les pièces d’or ne brûlent pas : +33 écus !`,
+You are being talked about since you slayed the dragon and defeated the sorceress.
+Bandits embush you, aiming for your wealth. What a silly idea!
+You read in the eyes of last one that he realizes it on moment
+before your fireball incinerate him.
+Fortunately, gold doesn't burn: +{formattedCoins} coins!`,
 		// don't remember the source for this one
 		princess: `
-« Vous n’emporterez pas la princesse ! » vous crie le terrible mage noir,
-alors que vous parvenez dans sa salle du trône.
-Vous le rassurez : seul le butin vous intéresse.
-Il vous laisse vous servir (+234 écus) et enchante même une arme pour vous ! ([TODO weapon])`,
+
+« You won't take back the princess! » yell the terrible black mage,
+as you reach his throne room.
+You reassure him: you are only here for loot.
+He let you help yourself (+{formattedCoins} coins)
+and enchant your weapon!`,
 		// DM of the ring
 		bad_village: `
-Vous arrivez dans un village. Il n’y a pas de marchand d’armes.
-Pas de marchand de potions non plus ! Et l’auberge ne propose pas de quêtes !!
-C’en est trop : sur votre ordre, les éclairs et les météorites rasent ce lieu inutile.
-Au passage, bon occasion de pratiquer votre magie : +1 mana.`,
+You reach a new village. There is no weapon shop.
+No potion shop either! And no quests at the inn!!
+That's too much. At your call, lightnings and meteors wipe this useless place.
+Good opportunity to practice your magic: +{mana} mana.`,
 		// ?
 		mana_mana: `
 « Mah na mah na » « To to to do do »
-+1 mana!`,
++{mana} mana!`,
 
 		/*
 		 // "make friends" necromancy
@@ -20653,7 +20678,7 @@ exports.getMaxIndexLength = function(input) {
 /* 41 */
 /***/ (function(module, exports) {
 
-module.exports = {"_from":"prettyjson@^1","_id":"prettyjson@1.2.1","_inBundle":false,"_integrity":"sha1-/P+rQdGcq0365eV15kJGYZsS0ok=","_location":"/prettyjson","_phantomChildren":{},"_requested":{"type":"range","registry":true,"raw":"prettyjson@^1","name":"prettyjson","escapedName":"prettyjson","rawSpec":"^1","saveSpec":null,"fetchSpec":"^1"},"_requiredBy":["/@offirmo/cli-toolbox"],"_resolved":"https://registry.npmjs.org/prettyjson/-/prettyjson-1.2.1.tgz","_shasum":"fcffab41d19cab4dfae5e575e64246619b12d289","_spec":"prettyjson@^1","_where":"/Users/sam/work/src/oh-my-rpg/packages/the-npm-rpg/node_modules/@offirmo/cli-toolbox","author":{"name":"Rafael de Oleza","email":"rafeca@gmail.com","url":"https://github.com/rafeca"},"bin":{"prettyjson":"./bin/prettyjson"},"bugs":{"url":"https://github.com/rafeca/prettyjson/issues"},"bundleDependencies":false,"dependencies":{"colors":"^1.1.2","minimist":"^1.2.0"},"deprecated":false,"description":"Package for formatting JSON data in a coloured YAML-style, perfect for CLI output","devDependencies":{"coveralls":"^2.11.15","istanbul":"^0.4.5","jshint":"^2.9.4","mocha":"^3.1.2","mocha-lcov-reporter":"^1.2.0","should":"^11.1.1"},"homepage":"http://rafeca.com/prettyjson","keywords":["json","cli","formatting","colors"],"license":"MIT","main":"./lib/prettyjson","name":"prettyjson","repository":{"type":"git","url":"git+https://github.com/rafeca/prettyjson.git"},"scripts":{"changelog":"git log $(git describe --tags --abbrev=0)..HEAD --pretty='* %s' --first-parent","coverage":"istanbul cover _mocha --report lcovonly -- -R spec","coveralls":"npm run coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage","jshint":"jshint lib/*.js test/*.js","test":"npm run jshint && mocha --reporter spec","testwin":"node ./node_modules/mocha/bin/mocha --reporter spec"},"version":"1.2.1"}
+module.exports = {"_from":"prettyjson@^1","_id":"prettyjson@1.2.1","_inBundle":false,"_integrity":"sha1-/P+rQdGcq0365eV15kJGYZsS0ok=","_location":"/prettyjson","_phantomChildren":{},"_requested":{"type":"range","registry":true,"raw":"prettyjson@^1","name":"prettyjson","escapedName":"prettyjson","rawSpec":"^1","saveSpec":null,"fetchSpec":"^1"},"_requiredBy":["/@offirmo/cli-toolbox"],"_resolved":"https://registry.npmjs.org/prettyjson/-/prettyjson-1.2.1.tgz","_shasum":"fcffab41d19cab4dfae5e575e64246619b12d289","_spec":"prettyjson@^1","_where":"/Users/sam/work/src/online-adventures/oh-my-rpg/packages/the-npm-rpg/node_modules/@offirmo/cli-toolbox","author":{"name":"Rafael de Oleza","email":"rafeca@gmail.com","url":"https://github.com/rafeca"},"bin":{"prettyjson":"./bin/prettyjson"},"bugs":{"url":"https://github.com/rafeca/prettyjson/issues"},"bundleDependencies":false,"dependencies":{"colors":"^1.1.2","minimist":"^1.2.0"},"deprecated":false,"description":"Package for formatting JSON data in a coloured YAML-style, perfect for CLI output","devDependencies":{"coveralls":"^2.11.15","istanbul":"^0.4.5","jshint":"^2.9.4","mocha":"^3.1.2","mocha-lcov-reporter":"^1.2.0","should":"^11.1.1"},"homepage":"http://rafeca.com/prettyjson","keywords":["json","cli","formatting","colors"],"license":"MIT","main":"./lib/prettyjson","name":"prettyjson","repository":{"type":"git","url":"git+https://github.com/rafeca/prettyjson.git"},"scripts":{"changelog":"git log $(git describe --tags --abbrev=0)..HEAD --pretty='* %s' --first-parent","coverage":"istanbul cover _mocha --report lcovonly -- -R spec","coveralls":"npm run coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage","jshint":"jshint lib/*.js test/*.js","test":"npm run jshint && mocha --reporter spec","testwin":"node ./node_modules/mocha/bin/mocha --reporter spec"},"version":"1.2.1"}
 
 /***/ }),
 /* 42 */
@@ -25084,10 +25109,13 @@ const state_prng_1 = __webpack_require__(109);
 const logic_weapons_1 = __webpack_require__(17);
 const logic_armors_1 = __webpack_require__(18);
 const logic_adventures_1 = __webpack_require__(122);
+const types_1 = __webpack_require__(128);
+exports.VERSION = types_1.VERSION;
 /////////////////////
 function factory() {
     let state = {
-        characteristics: state_character_1.factory(),
+        version: types_1.VERSION,
+        avatar: state_character_1.factory(),
         inventory: state_inventory_1.factory(),
         wallet: state_wallet_1.factory(),
         prng: state_prng_1.factory(),
@@ -25118,6 +25146,14 @@ function factory() {
     return state;
 }
 exports.factory = factory;
+function migrate_to_latest(state) {
+    const src_version = state.version;
+    if (src_version === types_1.VERSION)
+        return state;
+    // TODO migrate when out of beta
+    return factory();
+}
+exports.migrate_to_latest = migrate_to_latest;
 /////////////////////
 function instantiate_adventure_archetype(rng, aa, player_level, inventory) {
     const { hid, good, post: { gains: { level: should_gain_a_level, agility, health, luck, mana, strength, vitality, wisdom, coins: coins_gain, tokens, armor: should_receive_armor, weapon: should_receive_weapon, armor_improvement: improved_armor, weapon_improvement: improved_weapon, } } } = aa;
@@ -25150,7 +25186,7 @@ function instantiate_adventure_archetype(rng, aa, player_level, inventory) {
     };
 }
 function receive_stat_increase(state, stat, amount = 1) {
-    state.characteristics = state_character_1.increase_stat(state.characteristics, stat, amount);
+    state.avatar = state_character_1.increase_stat(state.avatar, stat, amount);
     return state;
 }
 function receive_item(state, item) {
@@ -25172,7 +25208,7 @@ function play_good(state, explicit_adventure_archetype_hid) {
     const aa = explicit_adventure_archetype_hid
         ? logic_adventures_1.get_archetype(explicit_adventure_archetype_hid)
         : logic_adventures_1.pick_random_good_archetype(rng);
-    const adventure = instantiate_adventure_archetype(rng, aa, state.characteristics.level, state.inventory);
+    const adventure = instantiate_adventure_archetype(rng, aa, state.avatar.characteristics.level, state.inventory);
     state.last_adventure = adventure;
     const { gains: { level, health, mana, strength, agility, vitality, wisdom, luck, coins, tokens, weapon, armor, improved_weapon, improved_armor, } } = adventure;
     // TODO store hid for no repetition
@@ -25492,6 +25528,8 @@ const typescript_string_enums_1 = __webpack_require__(105);
 /////////////////////
 const CharacterStat = typescript_string_enums_1.Enum('agility', 'health', 'level', 'luck', 'mana', 'strength', 'vitality', 'wisdom');
 exports.CharacterStat = CharacterStat;
+const CharacterClass = typescript_string_enums_1.Enum('novice', 'warrior', 'barbarian', 'paladin', 'sculptor', 'pirate', 'ninja', 'rogue', 'wizard', 'hunter', 'druid', 'priest');
+exports.CharacterClass = CharacterClass;
 /////////////////////
 //# sourceMappingURL=types.js.map
 
@@ -29062,15 +29100,27 @@ exports.Enum = Enum;
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+const VERSION = 7;
+exports.VERSION = VERSION;
+/////////////////////
+//# sourceMappingURL=types.js.map
+
+/***/ }),
+/* 129 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const lodash_1 = __webpack_require__(129);
+const lodash_1 = __webpack_require__(130);
 const definitions_1 = __webpack_require__(2);
 const logic_weapons_1 = __webpack_require__(17);
 const logic_armors_1 = __webpack_require__(18);
 const state_inventory_1 = __webpack_require__(16);
 const state_character_1 = __webpack_require__(15);
-const types_1 = __webpack_require__(130);
+const types_1 = __webpack_require__(131);
 exports.TextStyle = types_1.TextStyle;
 const DEFAULT_RENDERING_OPTIONS = {
     globalize: {
@@ -29176,7 +29226,7 @@ function render_characteristics(state, options = DEFAULT_RENDERING_OPTIONS) {
     return state_character_1.CHARACTER_STATS.map((stat) => {
         const icon = get_characteristic_icon_for(stat);
         const label = stat;
-        const value = state[stat];
+        const value = state.characteristics[stat];
         const padded_label = `${label}............`.slice(0, 11);
         const padded_human_values = `.......${value}`.slice(-4);
         const update_notice = options.stylize(types_1.TextStyle.change_outline, la && la.gains && la.gains[stat]
@@ -29214,7 +29264,7 @@ function render_inventory(inventory, options = DEFAULT_RENDERING_OPTIONS) {
             ? ` new! 🎁`
             : '');
         return `${padded_human_index} ${icon}  ${label}${update_notice}`;
-    }).filter((s) => !s.includes('⋯')).join('\n');
+    }).join('\n');
 }
 exports.render_inventory = render_inventory;
 function render_wallet(wallet, options = DEFAULT_RENDERING_OPTIONS) {
@@ -29233,10 +29283,14 @@ function render_adventure(a, options = DEFAULT_RENDERING_OPTIONS) {
     const icon = '📃'; //'⚔'
     let res = `${icon}  `;
     const g = options.globalize;
+    const formattedWeapon = a.gains.weapon ? render_item(a.gains.weapon, options) : '';
+    const formattedArmor = a.gains.armor ? render_item(a.gains.armor, options) : '';
+    const formattedItem = formattedWeapon || formattedArmor;
     const gains_for_display = Object.assign({}, a.gains, {
         formattedCoins: a.gains.coins ? g.formatNumber(a.gains.coins) : '',
-        formattedWeapon: a.gains.weapon ? render_item(a.gains.weapon, options) : '',
-        formattedArmor: a.gains.armor ? render_item(a.gains.armor, options) : '',
+        formattedWeapon,
+        formattedArmor,
+        formattedItem,
     });
     const raw_message = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display);
     res += raw_message.split('\n').map((s) => s.trim()).join(' ');
@@ -29252,7 +29306,7 @@ exports.render_adventure = render_adventure;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -46344,14 +46398,14 @@ exports.render_adventure = render_adventure;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)(module)))
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 /////////////////////
-const typescript_string_enums_1 = __webpack_require__(131);
+const typescript_string_enums_1 = __webpack_require__(132);
 /////////////////////
 const TextStyle = typescript_string_enums_1.Enum('item_quality_common', 'item_quality_uncommon', 'item_quality_rare', 'item_quality_epic', 'item_quality_legendary', 'item_quality_artifact', 'change_outline');
 exports.TextStyle = TextStyle;
@@ -46359,7 +46413,7 @@ exports.TextStyle = TextStyle;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46414,7 +46468,7 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports) {
 
 module.exports = {"name":"the-npm-rpg","version":"0.0.6","description":"The Boring RPG, a command line RPG game. Just `npx the-npm-rpg`!","main":"index.js","author":"Offirmo <offirmo.net@gmail.com>","license":"UNLICENSED","repository":{"type":"git","url":"git+https://github.com/online-adventures/oh-my-rpg.git"},"bin":"./bin/index.js","scripts":{"start":"node index.js","bin":"bin/index.js","build":"webpack --config meta/webpack.config.ts"},"dependencies":{"cldr-data":"^31.0.2","conf":"^1.1.2","globalize":"^1.3.0","iana-tz-data":"^2017.1.0"},"devDependencies":{"@oh-my-rpg/data":"^0.0.1","@offirmo/cli-toolbox":"^1.0.0","@oh-my-rpg/state-the-boring-rpg":"^0.0.1","@oh-my-rpg/view-text":"^0.0.1","globalize-webpack-plugin":"^1.1.1","tslib":"^1.7.1","webpack":"^3.3.0"}}

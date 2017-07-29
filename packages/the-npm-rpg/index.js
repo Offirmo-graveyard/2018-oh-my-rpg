@@ -19,6 +19,7 @@ const linewrap = require('@offirmo/cli-toolbox/string/linewrap')
 
 const {
 	factory,
+	migrate_to_latest,
 	play,
 } = require('@oh-my-rpg/state-the-boring-rpg')
 
@@ -55,12 +56,16 @@ console.log(
 
 const config = new Conf({
 	configName: 'state',
-	defaults: factory(),
+	defaults: { version: -1 }, // will trigger a reset to default through the migration system
 })
 
-if (verbose) console.log('config', prettifyJson(config))
+if (verbose) console.log('config path:', config.path)
+if (verbose) console.log('loaded state\n', prettifyJson(config.store))
 
-let state = config.store
+let state = migrate_to_latest(config.store)
+config.clear()
+if (verbose) console.log('migrated state\n', prettifyJson(state))
+
 //console.log(prettifyJson(state))
 
 state = play(state)
@@ -128,7 +133,7 @@ function boxifyAlt(position, s) {
 console.log(boxifyAlt('top',
 	//stylizeString.bold('🙂  CHARACTERISTICS 💗\n')
 	stylizeString.bold('CHARACTERISTICS:\n')
-	+ render_characteristics(state.characteristics, rendering_options),
+	+ render_characteristics(state.avatar, rendering_options),
 	{borderStyle: 'single'}
 ))
 console.log(boxifyAlt('middle',
