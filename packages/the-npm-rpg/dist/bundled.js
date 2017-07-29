@@ -2442,9 +2442,9 @@ const {
 	render_inventory,
 	render_wallet,
 	render_adventure,
-} = __webpack_require__(129)
+} = __webpack_require__(128)
 
-const { version } = __webpack_require__(133)
+const { version } = __webpack_require__(132)
 const MINIMAL_TERMINAL_WIDTH = 80
 const MANY_SPACES = '                                                                                                                                                      '
 
@@ -19835,9 +19835,10 @@ You gained {formattedCoins} coins!`,
 		ate_bacon: `
 You ate some bacon.
 You gained +{level} level!`,
+		/* too bland
 		ate_mushroom: `
 You ate a mushroom.
-You gained +{level} level!`,
+You gained +{level} level!`,*/
 		ate_zombie: `
 You ate a zombie.
 You gained +{mana} mana!`,
@@ -19856,6 +19857,29 @@ You gained +{wisdom} wisdom!`,
 		found_green_mushroom: `
 You found a green mushroom.
 You gained +{level} level!`,
+
+		// from me, inferred
+		found_red_mushroom: `
+You found a red mushroom.
+You gained +{health} health!`,
+		found_blue_mushroom: `
+You found a blue mushroom.
+You gained +{mana} mana!`,
+		found_white_mushroom: `
+You found a white mushroom.
+You gained +{strength} strength!`,
+		found_yellow_mushroom: `
+You found a yellow mushroom.
+You gained +{agility} agility!`,
+		found_orange_mushroom: `
+You found a orange mushroom.
+You gained +{vitality} vitality!`,
+		found_black_mushroom: `
+You found a black mushroom.
+You gained +{wisdom} wisdom!`,
+		found_rainbow_mushroom: `
+You found a glowing rainbow mushroom.
+You gained +{luck} luck!`,
 
 		// from me
 		meet_old_wizard: `
@@ -19932,7 +19956,6 @@ before your fireball incinerate him.
 Fortunately, gold doesn't burn: +{formattedCoins} coins!`,
 		// don't remember the source for this one
 		princess: `
-
 « You won't take back the princess! » yell the terrible black mage,
 as you reach his throne room.
 You reassure him: you are only here for loot.
@@ -25109,7 +25132,7 @@ const state_prng_1 = __webpack_require__(109);
 const logic_weapons_1 = __webpack_require__(17);
 const logic_armors_1 = __webpack_require__(18);
 const logic_adventures_1 = __webpack_require__(122);
-const types_1 = __webpack_require__(128);
+const types_1 = __webpack_require__(127);
 exports.VERSION = types_1.VERSION;
 /////////////////////
 function factory() {
@@ -28214,7 +28237,7 @@ exports.Enum = Enum;
 Object.defineProperty(exports, "__esModule", { value: true });
 const random_1 = __webpack_require__(123);
 const static_adventure_data = __webpack_require__(124);
-const types_1 = __webpack_require__(126);
+const types_1 = __webpack_require__(125);
 exports.CoinsGain = types_1.CoinsGain;
 /////////////////////
 const ALL_ADVENTURE_ARCHETYPES = static_adventure_data.map((paa) => {
@@ -29012,27 +29035,62 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
 
 /***/ }),
 /* 124 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-const set = __webpack_require__(125).entries
+const entries = [
+	{ good: false, hid: 'bad_default', post: {}},
 
-module.exports = set
+	{ good: true, hid: 'bored_log',             post: { gains: { strength: 1 }}},
+	{ good: true, hid: 'caravan',               post: { gains: { coins: 'small' }}},
+	{ good: true, hid: 'dying_man',             post: { gains: { coins: 'medium' }}},
+	{ good: true, hid: 'ate_bacon',             post: { gains: { level: 1 }}},
+	//{ good: true, hid: 'ate_mushroom',          post: { gains: { level: 1 }}},
+	{ good: true, hid: 'ate_zombie',             post: { gains: { mana: 1 }}},
+	{ good: true, hid: 'refreshing_nap',         post: { gains: { vitality: 1 }}},
+	{ good: true, hid: 'older',                  post: { gains: { level: 1 }}},
+	{ good: true, hid: 'stare_cup',              post: { gains: { mana: 2 }}},
+	{ good: true, hid: 'nuclear_fusion_paper',   post: { gains: { wisdom: 1 }}},
+	{ good: true, hid: 'found_green_mushroom',   post: { gains: { level: 1 }}},
+
+	{ good: true, hid: 'found_red_mushroom',     post: { gains: { health: 1 }}},
+	{ good: true, hid: 'found_blue_mushroom',    post: { gains: { mana: 1 }}},
+	{ good: true, hid: 'found_white_mushroom',   post: { gains: { strength: 1 }}},
+	{ good: true, hid: 'found_yellow_mushroom',  post: { gains: { agility: 1 }}},
+	{ good: true, hid: 'found_orange_mushroom',  post: { gains: { vitality: 1 }}},
+	{ good: true, hid: 'found_black_mushroom',   post: { gains: { wisdom: 1 }}},
+	{ good: true, hid: 'found_rainbow_mushroom', post: { gains: { luck: 1 }}},
+
+	{ good: true, hid: 'meet_old_wizard',       post: { gains: { wisdom: 1 }}},
+	{ good: true, hid: 'good_necromancer',      post: { gains: { agility: 1 }}},
+	{ good: true, hid: 'talk_to_all_villagers', post: { gains: { mana: 1 }}},
+	{ good: true, hid: 'always_keep_potions',   post: { gains: { vitality: 1 }}},
+	{ good: true, hid: 'lost',                  post: { gains: { vitality: 1 }}},
+	{ good: true, hid: 'fate_sword',            post: { gains: { coins: 'small' }}},
+	{ good: true, hid: 'grinding',              post: { gains: { level: 1 }}},
+	{ good: true, hid: 'so_many_potions',       post: { gains: { strength: 1 }}},
+	{ good: true, hid: 'rematch',               post: { gains: { level: 1 }}},
+	{ good: true, hid: 'useless',               post: { gains: { wisdom: 1 }}},
+	{ good: true, hid: 'escort',                post: { gains: { vitality: 1 }}},
+	{ good: true, hid: 'rare_goods_seller',     post: { gains: { weapon: true }}},
+	{ good: true, hid: 'progress_loop',         post: { gains: { weapon: true }}},
+	{ good: true, hid: 'idiot_bandits',         post: { gains: { coins: 'medium' }}},
+	{ good: true, hid: 'princess',              post: { gains: { coins: 'medium', 'weapon_improvement': true }}},
+	{ good: true, hid: 'bad_village',           post: { gains: { mana: 1 }}},
+	{ good: true, hid: 'mana_mana',             post: { gains: { mana: 1 }}}
+]
+
+
+module.exports = entries
 
 
 /***/ }),
 /* 125 */
-/***/ (function(module, exports) {
-
-module.exports = {"entries":[{"good":false,"hid":"bad_default","post":{}},{"good":true,"hid":"bored_log","post":{"gains":{"strength":1}}},{"good":true,"hid":"caravan","post":{"gains":{"coins":"small"}}},{"good":true,"hid":"dying_man","post":{"gains":{"coins":"medium"}}},{"good":true,"hid":"ate_bacon","post":{"gains":{"level":1}}},{"good":true,"hid":"ate_mushroom","post":{"gains":{"level":1}}},{"good":true,"hid":"ate_zombie","post":{"gains":{"mana":1}}},{"good":true,"hid":"refreshing_nap","post":{"gains":{"vitality":1}}},{"good":true,"hid":"older","post":{"gains":{"level":1}}},{"good":true,"hid":"stare_cup","post":{"gains":{"mana":2}}},{"good":true,"hid":"nuclear_fusion_paper","post":{"gains":{"wisdom":1}}},{"good":true,"hid":"found_green_mushroom","post":{"gains":{"level":1}}},{"good":true,"hid":"meet_old_wizard","post":{"gains":{"wisdom":1}}},{"good":true,"hid":"good_necromancer","post":{"gains":{"agility":1}}},{"good":true,"hid":"talk_to_all_villagers","post":{"gains":{"mana":1}}},{"good":true,"hid":"always_keep_potions","post":{"gains":{"vitality":1}}},{"good":true,"hid":"lost","post":{"gains":{"vitality":1}}},{"good":true,"hid":"fate_sword","post":{"gains":{"coins":"small"}}},{"good":true,"hid":"grinding","post":{"gains":{"level":1}}},{"good":true,"hid":"so_many_potions","post":{"gains":{"strength":1}}},{"good":true,"hid":"rematch","post":{"gains":{"level":1}}},{"good":true,"hid":"useless","post":{"gains":{"wisdom":1}}},{"good":true,"hid":"escort","post":{"gains":{"vitality":1}}},{"good":true,"hid":"rare_goods_seller","post":{"gains":{"weapon":true}}},{"good":true,"hid":"progress_loop","post":{"gains":{"weapon":true}}},{"good":true,"hid":"idiot_bandits","post":{"gains":{"coins":"medium"}}},{"good":true,"hid":"princess","post":{"gains":{"coins":"medium","weapon_improvement":true}}},{"good":true,"hid":"bad_village","post":{"gains":{"mana":1}}},{"good":true,"hid":"mana_mana","post":{"gains":{"mana":1}}}]}
-
-/***/ }),
-/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(127);
+const typescript_string_enums_1 = __webpack_require__(126);
 /////////////////////
 const CoinsGain = typescript_string_enums_1.Enum('none', 'small', 'medium', 'big', 'huge');
 exports.CoinsGain = CoinsGain;
@@ -29040,7 +29098,7 @@ exports.CoinsGain = CoinsGain;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29095,7 +29153,7 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29107,20 +29165,20 @@ exports.VERSION = VERSION;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const lodash_1 = __webpack_require__(130);
+const lodash_1 = __webpack_require__(129);
 const definitions_1 = __webpack_require__(2);
 const logic_weapons_1 = __webpack_require__(17);
 const logic_armors_1 = __webpack_require__(18);
 const state_inventory_1 = __webpack_require__(16);
 const state_character_1 = __webpack_require__(15);
-const types_1 = __webpack_require__(131);
+const types_1 = __webpack_require__(130);
 exports.TextStyle = types_1.TextStyle;
 const DEFAULT_RENDERING_OPTIONS = {
     globalize: {
@@ -29306,7 +29364,7 @@ exports.render_adventure = render_adventure;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 130 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -46398,14 +46456,14 @@ exports.render_adventure = render_adventure;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)(module)))
 
 /***/ }),
-/* 131 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 /////////////////////
-const typescript_string_enums_1 = __webpack_require__(132);
+const typescript_string_enums_1 = __webpack_require__(131);
 /////////////////////
 const TextStyle = typescript_string_enums_1.Enum('item_quality_common', 'item_quality_uncommon', 'item_quality_rare', 'item_quality_epic', 'item_quality_legendary', 'item_quality_artifact', 'change_outline');
 exports.TextStyle = TextStyle;
@@ -46413,7 +46471,7 @@ exports.TextStyle = TextStyle;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 132 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46468,10 +46526,10 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 133 */
+/* 132 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"the-npm-rpg","version":"0.0.6","description":"The Boring RPG, a command line RPG game. Just `npx the-npm-rpg`!","main":"index.js","author":"Offirmo <offirmo.net@gmail.com>","license":"UNLICENSED","repository":{"type":"git","url":"git+https://github.com/online-adventures/oh-my-rpg.git"},"bin":"./bin/index.js","scripts":{"start":"node index.js","bin":"bin/index.js","build":"webpack --config meta/webpack.config.ts"},"dependencies":{"cldr-data":"^31.0.2","conf":"^1.1.2","globalize":"^1.3.0","iana-tz-data":"^2017.1.0"},"devDependencies":{"@oh-my-rpg/data":"^0.0.1","@offirmo/cli-toolbox":"^1.0.0","@oh-my-rpg/state-the-boring-rpg":"^0.0.1","@oh-my-rpg/view-text":"^0.0.1","globalize-webpack-plugin":"^1.1.1","tslib":"^1.7.1","webpack":"^3.3.0"}}
+module.exports = {"name":"the-npm-rpg","version":"0.0.7","description":"The Boring RPG, a command line RPG game. Just `npx the-npm-rpg`!","main":"index.js","author":"Offirmo <offirmo.net@gmail.com>","license":"UNLICENSED","repository":{"type":"git","url":"git+https://github.com/online-adventures/oh-my-rpg.git"},"bin":"./bin/index.js","scripts":{"start":"node index.js","bin":"bin/index.js","build":"webpack --config meta/webpack.config.ts"},"dependencies":{"cldr-data":"^31.0.2","conf":"^1.1.2","globalize":"^1.3.0","iana-tz-data":"^2017.1.0"},"devDependencies":{"@oh-my-rpg/data":"^0.0.1","@offirmo/cli-toolbox":"^1.0.0","@oh-my-rpg/state-the-boring-rpg":"^0.0.1","@oh-my-rpg/view-text":"^0.0.1","globalize-webpack-plugin":"^1.1.1","tslib":"^1.7.1","webpack":"^3.3.0"}}
 
 /***/ })
 /******/ ]);
