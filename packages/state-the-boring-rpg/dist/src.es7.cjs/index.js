@@ -49,7 +49,9 @@ exports.factory = factory;
 function migrate_to_latest(state) {
     const src_version = state.version;
     if (src_version === types_1.VERSION)
-        return state;
+        return Promise.resolve(state);
+    if (src_version > types_1.VERSION)
+        return Promise.reject(new Error('xxx'));
     // TODO migrate when out of beta
     return factory();
 }

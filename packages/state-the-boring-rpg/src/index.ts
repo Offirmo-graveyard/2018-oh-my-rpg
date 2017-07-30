@@ -111,11 +111,14 @@ function factory(): State {
 	return state
 }
 
-function migrate_to_latest(state: any): State {
+function migrate_to_latest(state: any): Promise<State> {
 	const src_version = state.version
 
 	if (src_version === VERSION)
-		return state as State
+		return Promise.resolve(state as State)
+
+	if (src_version > VERSION)
+		return Promise.reject(new Error('xxx'))
 
 	// TODO migrate when out of beta
 	return factory()
