@@ -28,12 +28,17 @@ interface Item {
 	quality: ItemQuality
 }
 
+///////
+
+type ReportUp = (event: string, options: Object) => boolean
+
 /////////////////////
 
 export {
 	ItemQuality,
 	InventorySlot,
 	Item,
+	ReportUp,
 }
 
 /////////////////////
