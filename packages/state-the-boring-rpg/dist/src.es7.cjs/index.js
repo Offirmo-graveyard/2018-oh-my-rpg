@@ -49,9 +49,9 @@ exports.factory = factory;
 function migrate_to_latest(state) {
     const src_version = state.version;
     if (src_version === types_1.VERSION)
-        return Promise.resolve(state);
+        return state;
     if (src_version > types_1.VERSION)
-        return Promise.reject(new Error('xxx'));
+        throw new Error('You saved game was is from a more recent version of this game. Please update!');
     // TODO migrate when out of beta
     return factory();
 }

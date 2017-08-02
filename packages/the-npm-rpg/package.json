@@ -11,7 +11,7 @@
 	},
 	"bin": "./bin/index.js",
 	"scripts": {
-		"start": "node index.js",
+		"start": "node src/index.js",
 		"bin": "bin/index.js",
 		"build": "webpack --config meta/webpack.config.ts"
 	},
@@ -22,15 +22,19 @@
 		"iana-tz-data": "^2017.1.0"
 	},
 	"devDependencies": {
-		"@offirmo/cli-toolbox": "^1.0.0",
 		"@oh-my-rpg/data": "^0.0.1",
 		"@oh-my-rpg/state-the-boring-rpg": "^0.0.1",
 		"@oh-my-rpg/view-text": "^0.0.1",
+		"ansi-escapes": "^2.0.0",
+		"boxen": "^1.2.1",
+		"chalk": "^2.0.1",
 		"env-paths": "^1.0.0",
 		"fetchival": "^0.3.2",
 		"globalize-webpack-plugin": "^1.1.1",
 		"latest-version": "^3.1.0",
+		"linewrap": "^0.2.1",
 		"package-json": "^4.0.1",
+		"prettyjson": "^1.2.1",
 		"tslib": "^1.7.1",
 		"universal-analytics": "^0.4.13",
 		"username": "^3.0.0",
