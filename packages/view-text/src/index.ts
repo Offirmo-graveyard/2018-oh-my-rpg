@@ -208,7 +208,7 @@ function render_wallet(wallet: WalletState, options: RenderingOptions = DEFAULT_
 
 function render_adventure(a: Adventure, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
 	const icon = '📃' //'⚔'
-	let res = `${icon}  `
+	let res = ''
 
 	const g = options.globalize
 

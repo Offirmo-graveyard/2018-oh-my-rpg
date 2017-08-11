@@ -18,4 +18,5 @@ interface Item {
     slot: InventorySlot;
     quality: ItemQuality;
 }
-export { ItemQuality, InventorySlot, Item };
+declare type ReportUp = (event: string, options: Object) => boolean;
+export { ItemQuality, InventorySlot, Item, ReportUp };

@@ -14,6 +14,33 @@ describe('⚔ 👑 😪  The Boring RPG', function () {
             expect(state_inventory_1.get_unequiped_item_count(state.inventory), 'unequipped').to.equal(0);
         });
     });
+    describe('XXX savegame migration', function () {
+        context('when the version is more recent', function () {
+            it('should throw with a meaningful error', () => {
+                function load() {
+                    _1.migrate_to_latest({
+                        version: 99999
+                    });
+                }
+                expect(load).to.throw('more recent version');
+            });
+        });
+        context('when the version is up to date', function () {
+            it('should return the state without change', () => {
+                const state = {
+                    version: _1.VERSION,
+                    foo: 42
+                };
+                expect(_1.migrate_to_latest(state)).to.deep.equal({
+                    version: _1.VERSION,
+                    foo: 42
+                });
+            });
+        });
+        context('when the version is outdated', function () {
+            it('should migrate to latest version');
+        });
+    });
     describe('👆🏾 user actions', function () {
         describe('🤘🏽 play', function () {
             context('🚫 when the cooldown has NOT passed', function () {

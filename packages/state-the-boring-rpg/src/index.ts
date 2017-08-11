@@ -111,14 +111,14 @@ function factory(): State {
 	return state
 }
 
-function migrate_to_latest(state: any): Promise<State> {
+function migrate_to_latest(state: any): State {
 	const src_version = state.version
 
 	if (src_version === VERSION)
-		return Promise.resolve(state as State)
+		return state as State
 
 	if (src_version > VERSION)
-		return Promise.reject(new Error('xxx'))
+		throw new Error('You saved game was is from a more recent version of this game. Please update!')
 
 	// TODO migrate when out of beta
 	return factory()

@@ -1,32 +1,26 @@
-require('@offirmo/cli-toolbox/stdout/clear-cli')()
+
 
 const _ = require('lodash')
 const Conf = require('conf')
 const Globalize = require('globalize')
 const CLDRData = require('cldr-data')
 
+const {
+	prettifyJson,
+	boxify,
+	stylizeString,
+	wrapLines,
+	clearCli,
+} = require('./deps')
 
 const en_adventures = require('@oh-my-rpg/data/src/adventure_archetype/i18n').en
 
-//const displayInAsciiArtFont = require('@offirmo/cli-toolbox/stdout/display_in_ascii_art_font')
-const prettifyJson = require('@offirmo/cli-toolbox/string/prettify-json')
-const boxify = require('@offirmo/cli-toolbox/string/boxify')
-const stylizeString = require('@offirmo/cli-toolbox/string/stylize')
-const linewrap = require('@offirmo/cli-toolbox/string/linewrap')
-//const json = require('@offirmo/cli-toolbox/fs/json')
-//const arrayify = require('@offirmo/cli-toolbox/string/arrayify')
-//const columnify = require('@offirmo/cli-toolbox/string/columnify')
-
 const {
-	factory,
 	migrate_to_latest,
 	play,
 } = require('@oh-my-rpg/state-the-boring-rpg')
 
 const {
-	render_weapon,
-	render_armor,
-	render_item,
 	render_characteristics,
 	render_equipment,
 	render_inventory,
@@ -34,11 +28,12 @@ const {
 	render_adventure,
 } = require('@oh-my-rpg/view-text')
 
-const { version } = require('./package.json')
+const { version } = require('../package.json')
 const MINIMAL_TERMINAL_WIDTH = 80
 const MANY_SPACES = '                                                                                                                                                      '
 
-let verbose = false
+let verbose = true
+clearCli()
 
 Globalize.load(CLDRData.entireSupplemental())
 Globalize.load(CLDRData.entireMainFor('en', 'fr'))
@@ -46,8 +41,6 @@ Globalize.load(CLDRData.entireMainFor('en', 'fr'))
 Globalize.loadMessages({en: en_adventures})
 
 
-//console.log(boxify('𝐓he 𝐁oring 𝐑𝐏𝐆 𝑟𝑒𝑙𝑜𝑎𝑑𝑒𝑑 ', {padding: 1, margin: 1, borderStyle: 'double'}))
-//console.log(boxify('𝐓𝐡𝐞 𝐁𝐨𝐫𝐢𝐧𝐠 𝐑𝐏𝐆 𝑟𝑒𝑙𝑜𝑎𝑑𝑒𝑑 ', {padding: 2, margin: 1, borderStyle: 'double', borderColor: 'red'}))
 console.log(
 	stylizeString.bold('The npm RPG')
 	+ ` - v${version} - `
@@ -102,7 +95,7 @@ const rendering_options = {
 console.log(
 	boxify(''
 		+ ('You continue your adventures...' + MANY_SPACES).slice(0, MINIMAL_TERMINAL_WIDTH - 4) + '\n\n'
-		+ linewrap(MINIMAL_TERMINAL_WIDTH - 4)(''
+		+ wrapLines(MINIMAL_TERMINAL_WIDTH - 4)(''
 			//+ `Click #${state.good_click_count}\n\n`
 			+ stylizeString.bold(render_adventure(state.last_adventure, rendering_options))
 		),

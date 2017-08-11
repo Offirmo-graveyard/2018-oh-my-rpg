@@ -1,6 +1,9 @@
 The npm RPG ⚔🛡💰
 ===========
 
+https://www.npmjs.com/package/the-npm-rpg
+
+
 This is a simple command-line RPG. Every time you launch the command, something happens!
 
 **NOTE: very early stage of development**
