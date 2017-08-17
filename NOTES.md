@@ -29,3 +29,7 @@ TODO:
 "typescript-string-enums": "^0.3.4"
 spacetime
 
+
+
+
+http://paizo.com/pathfinderRPG

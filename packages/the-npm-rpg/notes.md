@@ -10,12 +10,6 @@ https://games.slashdot.org/story/17/05/29/0632250/esr-announces-the-open-sourcin
 https://gamedevelopment.tutsplus.com/categories/game-design
 
 
-Analytics
-https://github.com/sindresorhus/username
-https://github.com/beaugunderson/github-current-user/
-https://github.com/sindresorhus/public-ip
-https://github.com/nogizhopaboroda/iponmap
-
 
 Stories
 - épée dans rocher

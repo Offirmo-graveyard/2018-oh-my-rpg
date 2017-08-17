@@ -17,6 +17,6 @@
 		"@types/lodash": "^4.14.71",
 		"lerna": "^2.0.0",
 		"lodash": "^4.17.4",
-		"typescript": "^2.4.2"
+		"typescript": "^2.5.0-dev.20170808"
 	}
 }

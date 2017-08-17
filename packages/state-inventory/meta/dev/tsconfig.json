@@ -30,7 +30,7 @@
 
 		"outDir": "../../dist/src.es7.cjs",
 		"module": "commonjs",
-		"target": "ES2017",
+		"target": "es2017",
 		"newLine": "lf",
 		"sourceMap": true
 	},
