@@ -9,7 +9,7 @@ import { Armor, get_damage_reduction_interval as get_armor_damage_reduction_inte
 import { State as InventoryState, iterables_unslotted, get_item_in_slot } from '@oh-my-rpg/state-inventory'
 import { State as WalletState, Currency, get_currency_amount } from '@oh-my-rpg/state-wallet'
 import { State as CharacterState, CharacterStat, CHARACTER_STATS } from '@oh-my-rpg/state-character'
-import { Adventure } from '@oh-my-rpg/state-the-boring-rpg'
+import { Adventure, GainType } from '@oh-my-rpg/state-the-boring-rpg'
 
 import { TextStyle, RenderingOptions } from './types'
 
@@ -158,8 +158,8 @@ function render_equipment(inventory: InventoryState, options: RenderingOptions =
 
 		const update_notice = options.stylize(TextStyle.change_outline,
 			i && la && la.gains && (
-					(la.gains.improved_weapon && i.slot === 'weapon')
-				|| (la.gains.improved_armor && i.slot === 'armor')
+					(la.gains.weapon_improvement && i.slot === 'weapon')
+				|| (la.gains.armor_improvement && i.slot === 'armor')
 			)
 			? ` enhanced! 🆙`
 			: ''
@@ -206,17 +206,40 @@ function render_wallet(wallet: WalletState, options: RenderingOptions = DEFAULT_
 💠  ${wallet.token_count} tokens${tokens_update_notice}`
 }
 
+function render_adventure_gain(a: Adventure, gain_type: GainType, gains_for_display: {[k:string]: string}): string {
+	switch(gain_type) {
+		case 'weapon':
+			return `New item: ${gains_for_display.formattedWeapon}`
+		case 'armor':
+			return `New item: ${gains_for_display.formattedArmor}`
+		case 'coins':
+			return `Received ${gains_for_display.formattedCoins} coins`
+		case 'level':
+			return `Levelled up!`
+		case 'health':
+		case 'mana':
+		case 'strength':
+		case 'agility':
+		case 'vitality':
+		case 'wisdom':
+		case 'luck':
+			return `${gain_type} increased!`
+		default:
+			return `TODO gain message for ${gain_type}`
+	}
+}
+
 function render_adventure(a: Adventure, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
 	const icon = '📃' //'⚔'
 	let res = ''
 
 	const g = options.globalize
 
-
 	const formattedWeapon = a.gains.weapon ? render_item(a.gains.weapon, options) : ''
 	const formattedArmor = a.gains.armor ? render_item(a.gains.armor, options) : ''
 	const formattedItem = formattedWeapon || formattedArmor
 
+	// formatting to natural language
 	const gains_for_display = Object.assign(
 		{},
 		a.gains,
@@ -228,16 +251,16 @@ function render_adventure(a: Adventure, options: RenderingOptions = DEFAULT_REND
 		}
 	)
 
-	const raw_message = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display)
-	res += raw_message.split('\n').map((s: string) => s.trim()).join(' ')
+	const raw_message_multiline = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display)
+	const raw_message = raw_message_multiline.split('\n').map((s: string) => s.trim()).join(' ')
+	const msg_parts = [
+		raw_message,
+		...Object.keys(a.gains)
+			.filter((gain_type: GainType) => !!a.gains[gain_type])
+			.map((gain_type: GainType) => render_adventure_gain(a, gain_type, gains_for_display))
+		]
 
-	// TODO loot
-	if (a.gains.weapon)
-		res += `\nNew item: ` + gains_for_display.formattedWeapon
-	if (a.gains.armor)
-		res += `\nNew item: ` + gains_for_display.formattedArmor
-
-	return res
+	return msg_parts.join('\n')
 }
 
 /////////////////////

@@ -9,6 +9,17 @@ describe('⚔ 👑 😪  The Boring RPG', function () {
     describe('🆕 initial state', function () {
         it('should be correct', function () {
             const state = _1.factory();
+            // check presence of sub-states
+            expect(state).to.have.property('meta');
+            expect(state).to.have.property('avatar');
+            expect(state).to.have.property('inventory');
+            expect(state).to.have.property('wallet');
+            expect(state).to.have.property('prng');
+            // init of custom values
+            expect(state).to.have.property('click_count', 0);
+            expect(state).to.have.property('good_click_count', 0);
+            expect(state).to.have.property('meaningful_interaction_count', 0);
+            expect(state.last_adventure).to.be.null;
             // check our 2 predefined items are present and equipped
             expect(state_inventory_1.get_equiped_item_count(state.inventory), 'equipped').to.equal(2);
             expect(state_inventory_1.get_unequiped_item_count(state.inventory), 'unequipped').to.equal(0);
@@ -38,7 +49,7 @@ describe('⚔ 👑 😪  The Boring RPG', function () {
             });
         });
         context('when the version is outdated', function () {
-            it('should migrate to latest version');
+            it('TODO should migrate to latest version');
         });
     });
     describe('👆🏾 user actions', function () {
@@ -54,6 +65,12 @@ describe('⚔ 👑 😪  The Boring RPG', function () {
                     const state = _1.play(_1.factory());
                     expect(state.last_adventure).not.to.be.null;
                     expect(state.last_adventure.good).to.be.true;
+                });
+                it('should correctly increment counters', () => {
+                    const state = _1.play(_1.factory());
+                    expect(state).to.have.property('click_count', 1);
+                    expect(state).to.have.property('good_click_count', 1);
+                    expect(state).to.have.property('meaningful_interaction_count', 1);
                 });
                 it('should sometime generate a battle adventure');
                 context('when the adventure is a story', function () {

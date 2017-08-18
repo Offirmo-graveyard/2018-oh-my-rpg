@@ -9,6 +9,11 @@ import {
 } from '@oh-my-rpg/definitions'
 
 import {
+	State as MetaState,
+	factory as meta_state_factory,
+} from '@oh-my-rpg/state-meta'
+
+import {
 	CharacterStat,
 	State as CharacterState,
 	factory as character_state_factory,
@@ -67,6 +72,7 @@ import {
 import {
 	VERSION,
 	State,
+	GainType,
 	Adventure,
 } from './types'
 
@@ -75,13 +81,16 @@ import {
 function factory(): State {
 	let state: State = {
 		version: VERSION,
+		meta: meta_state_factory(),
 		avatar: character_state_factory(),
 		inventory: inventory_state_factory(),
 		wallet: wallet_state_factory(),
 		prng: prng_state_factory(),
+
 		last_adventure: null,
 		click_count: 0,
 		good_click_count: 0,
+		meaningful_interaction_count: 0,
 	}
 
 	let rng = get_prng(state.prng)
@@ -120,7 +129,10 @@ function migrate_to_latest(state: any): State {
 	if (src_version > VERSION)
 		throw new Error('You saved game was is from a more recent version of this game. Please update!')
 
+	console.warn(`migrating data from v${src_version} to ${VERSION}...`)
+
 	// TODO migrate when out of beta
+	console.error(`beta: migrating through full reset !`)
 	return factory()
 }
 
@@ -140,8 +152,8 @@ function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, pl
 		tokens,
 		armor: should_receive_armor,
 		weapon: should_receive_weapon,
-		armor_improvement: improved_armor,
-		weapon_improvement: improved_weapon,
+		armor_improvement,
+		weapon_improvement,
 	}}} = aa
 
 	const new_player_level = player_level + (should_gain_a_level ? 1 : 0)
@@ -168,8 +180,8 @@ function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, pl
 			tokens,
 			weapon,
 			armor,
-			improved_weapon,
-			improved_armor,
+			armor_improvement,
+			weapon_improvement,
 		}
 	}
 }
@@ -197,6 +209,7 @@ function receive_tokens(state: State, amount: number): State {
 
 function play_good(state: State, explicit_adventure_archetype_hid?: string): State {
 	state.good_click_count++
+	state.meaningful_interaction_count++;
 
 	let rng = get_prng(state.prng)
 
@@ -224,8 +237,8 @@ function play_good(state: State, explicit_adventure_archetype_hid?: string): Sta
 		tokens,
 		weapon,
 		armor,
-		improved_weapon,
-		improved_armor,
+		weapon_improvement,
+		armor_improvement,
 	}} = adventure
 
 	// TODO store hid for no repetition
@@ -245,14 +258,14 @@ function play_good(state: State, explicit_adventure_archetype_hid?: string): Sta
 	if (weapon) state = receive_item(state, weapon)
 	if (armor) state = receive_item(state, armor)
 
-	if (improved_weapon) {
+	if (weapon_improvement) {
 		let weapon_to_enhance = get_item_in_slot(state.inventory, InventorySlot.weapon) as Weapon
 		if (weapon_to_enhance && weapon_to_enhance.enhancement_level < MAX_WEAPON_ENHANCEMENT_LEVEL)
 			enhance_weapon(weapon_to_enhance)
 		// TODO enhance another weapon as fallback
 	}
 
-	if (improved_armor) {
+	if (armor_improvement) {
 		const armor_to_enhance = get_item_in_slot(state.inventory, InventorySlot.armor) as Armor
 		if (armor_to_enhance && armor_to_enhance.enhancement_level < MAX_ARMOR_ENHANCEMENT_LEVEL)
 			enhance_armor(armor_to_enhance)
@@ -294,6 +307,7 @@ function sell_item(state: State, coordinates: InventoryCoordinates): State {
 
 export {
 	VERSION,
+	GainType,
 	Adventure,
 	State,
 	factory,

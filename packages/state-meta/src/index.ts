@@ -1,6 +1,6 @@
 /////////////////////
 
-//import * as uuidv4 from 'uuid/v4'
+import * as uuidv4 from 'uuid/v4'
 
 import {
 	State,
@@ -14,7 +14,7 @@ const DEFAULT_NAME = 'anonymous'
 
 function factory(): State {
 	return {
-		//uuid: uuidv4() as string,
+		uuid: uuidv4(), // ok this breaks functional programming, nevermind
 		name: DEFAULT_NAME,
 		email: null,
 		allow_telemetry: true,

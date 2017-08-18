@@ -62,8 +62,8 @@ describe('🔠  view to text', function() {
 					tokens: 0,
 					weapon: null,
 					armor: null,
-					improved_weapon: false,
-					improved_armor: false,
+					weapon_improvement: false,
+					armor_improvement: false,
 				}
 			}, {
 				globalize: Globalize('en'),

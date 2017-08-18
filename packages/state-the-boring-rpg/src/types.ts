@@ -1,6 +1,9 @@
+import { Enum } from 'typescript-string-enums'
+
 import { Weapon } from '@oh-my-rpg/logic-weapons'
 import { Armor } from '@oh-my-rpg/logic-armors'
 
+import { State as MetaState } from '@oh-my-rpg/state-meta'
 import { State as CharacterState } from '@oh-my-rpg/state-character'
 import { State as InventoryState } from '@oh-my-rpg/state-inventory'
 import { State as WalletState } from '@oh-my-rpg/state-wallet'
@@ -8,6 +11,25 @@ import { State as WalletState } from '@oh-my-rpg/state-wallet'
 import { State as PRNGState } from '@oh-my-rpg/state-prng'
 
 /////////////////////
+
+const GainType = Enum(
+	'level',
+	'health',
+	'mana',
+	'strength',
+	'agility',
+	'vitality',
+	'wisdom',
+	'luck',
+	'coins',
+	'tokens',
+	'weapon',
+	'armor',
+	'weapon_improvement',
+	'armor_improvement'
+)
+type GainType = Enum<typeof GainType>
+
 
 interface Adventure {
 	hid: string
@@ -25,12 +47,13 @@ interface Adventure {
 		tokens: number
 		weapon: null | Weapon
 		armor: null | Armor
-		improved_weapon: boolean
-		improved_armor: boolean
+		weapon_improvement: boolean,
+		armor_improvement: boolean,
 	}
 }
 
 interface State {
+	meta: MetaState
 	version: number
 	avatar: CharacterState
 	inventory: InventoryState
@@ -39,14 +62,16 @@ interface State {
 	last_adventure: Adventure | null
 	click_count: number
 	good_click_count: number
+	meaningful_interaction_count: number
 }
 
-const VERSION = 7
+const VERSION = 8
 
 /////////////////////
 
 export {
 	VERSION,
+	GainType,
 	Adventure,
 	State,
 }

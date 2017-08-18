@@ -132,8 +132,8 @@ function render_equipment(inventory, options = DEFAULT_RENDERING_OPTIONS) {
             return `${padded_slot}: -`;
         const icon = get_item_icon_for(i);
         const label = render_item(i, options);
-        const update_notice = options.stylize(types_1.TextStyle.change_outline, i && la && la.gains && ((la.gains.improved_weapon && i.slot === 'weapon')
-            || (la.gains.improved_armor && i.slot === 'armor'))
+        const update_notice = options.stylize(types_1.TextStyle.change_outline, i && la && la.gains && ((la.gains.weapon_improvement && i.slot === 'weapon')
+            || (la.gains.armor_improvement && i.slot === 'armor'))
             ? ` enhanced! 🆙`
             : '');
         return `${padded_slot}: ${icon}  ${label}${update_notice}`;
@@ -166,6 +166,28 @@ function render_wallet(wallet, options = DEFAULT_RENDERING_OPTIONS) {
 💠  ${wallet.token_count} tokens${tokens_update_notice}`;
 }
 exports.render_wallet = render_wallet;
+function render_adventure_gain(a, gain_type, gains_for_display) {
+    switch (gain_type) {
+        case 'weapon':
+            return `New item: ${gains_for_display.formattedWeapon}`;
+        case 'armor':
+            return `New item: ${gains_for_display.formattedArmor}`;
+        case 'coins':
+            return `Received ${gains_for_display.formattedCoins} coins`;
+        case 'level':
+            return `Levelled up!`;
+        case 'health':
+        case 'mana':
+        case 'strength':
+        case 'agility':
+        case 'vitality':
+        case 'wisdom':
+        case 'luck':
+            return `${gain_type} increased!`;
+        default:
+            return `TODO gain message for ${gain_type}`;
+    }
+}
 function render_adventure(a, options = DEFAULT_RENDERING_OPTIONS) {
     const icon = '📃'; //'⚔'
     let res = '';
@@ -173,20 +195,22 @@ function render_adventure(a, options = DEFAULT_RENDERING_OPTIONS) {
     const formattedWeapon = a.gains.weapon ? render_item(a.gains.weapon, options) : '';
     const formattedArmor = a.gains.armor ? render_item(a.gains.armor, options) : '';
     const formattedItem = formattedWeapon || formattedArmor;
+    // formatting to natural language
     const gains_for_display = Object.assign({}, a.gains, {
         formattedCoins: a.gains.coins ? g.formatNumber(a.gains.coins) : '',
         formattedWeapon,
         formattedArmor,
         formattedItem,
     });
-    const raw_message = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display);
-    res += raw_message.split('\n').map((s) => s.trim()).join(' ');
-    // TODO loot
-    if (a.gains.weapon)
-        res += `\nNew item: ` + gains_for_display.formattedWeapon;
-    if (a.gains.armor)
-        res += `\nNew item: ` + gains_for_display.formattedArmor;
-    return res;
+    const raw_message_multiline = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display);
+    const raw_message = raw_message_multiline.split('\n').map((s) => s.trim()).join(' ');
+    const msg_parts = [
+        raw_message,
+        ...Object.keys(a.gains)
+            .filter((gain_type) => !!a.gains[gain_type])
+            .map((gain_type) => render_adventure_gain(a, gain_type, gains_for_display))
+    ];
+    return msg_parts.join('\n');
 }
 exports.render_adventure = render_adventure;
 /////////////////////

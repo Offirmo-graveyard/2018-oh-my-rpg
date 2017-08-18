@@ -1,13 +1,14 @@
 "use strict";
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
+const uuidv4 = require("uuid/v4");
 /////////////////////
 const DEFAULT_NAME = 'anonymous';
 exports.DEFAULT_NAME = DEFAULT_NAME;
 ///////
 function factory() {
     return {
-        //uuid: uuidv4() as string,
+        uuid: uuidv4(),
         name: DEFAULT_NAME,
         email: null,
         allow_telemetry: true,

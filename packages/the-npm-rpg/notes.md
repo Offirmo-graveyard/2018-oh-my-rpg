@@ -19,3 +19,6 @@ https://github.com/sindresorhus/npm-home
 
 https://github.com/sindresorhus/latest-version
 https://github.com/sindresorhus/package-json
+
+
+TODO https://www.sideprojectchecklist.com/marketing-checklist/

@@ -32,7 +32,7 @@ const { version } = require('../package.json')
 const MINIMAL_TERMINAL_WIDTH = 80
 const MANY_SPACES = '                                                                                                                                                      '
 
-let verbose = true
+let verbose = false
 clearCli()
 
 Globalize.load(CLDRData.entireSupplemental())
@@ -123,6 +123,7 @@ function boxifyAlt(position, s) {
 	return boxified_lines.join('\n')
 }
 
+/*
 console.log(boxifyAlt('top',
 	//stylizeString.bold('🙂  CHARACTERISTICS 💗\n')
 	stylizeString.bold('CHARACTERISTICS:\n')
@@ -135,6 +136,7 @@ console.log(boxifyAlt('middle',
 	+ render_equipment(state.inventory, rendering_options),
 	{borderStyle: 'single'}
 ))
+
 console.log(boxifyAlt('bottom',
 	//stylizeString.bold('📦  INVENTORY 💰 \n')
 	stylizeString.bold('INVENTORY:\n')
@@ -143,6 +145,7 @@ console.log(boxifyAlt('bottom',
 	+ render_inventory(state.inventory, rendering_options),
 	{borderStyle: 'single'}
 ))
+*/
 
 //console.log('You can play again in...')
 console.log('\n')

@@ -1,0 +1,24 @@
+{
+	"name": "nood-env-snooper",
+	"version": "0.0.1",
+	"description": "Snoop various user infos from his/her environment",
+	"author": "Offirmo <offirmo.net@gmail.com>",
+	"license": "UNLICENSED",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/online-adventures/oh-my-rpg.git"
+	},
+	"scripts": {
+		"start": "node src/index.js",
+		"bin": "bin/index.js",
+		"build": "webpack --config meta/webpack.config.ts"
+	},
+	"dependencies": {
+		"env-paths": "^1.0.0",
+		"username": "^3.0.0"
+	},
+	"devDependencies": {
+		"tslib": "^1.7.1",
+		"webpack": "^3.3.0"
+	}
+}
