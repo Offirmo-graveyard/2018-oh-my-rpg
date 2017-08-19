@@ -22,3 +22,12 @@ https://github.com/sindresorhus/package-json
 
 
 TODO https://www.sideprojectchecklist.com/marketing-checklist/
+
+
+const {
+	prettifyJson,
+	boxify,
+	stylizeString,
+	wrapLines,
+	clearCli,
+} = require('./deps')
