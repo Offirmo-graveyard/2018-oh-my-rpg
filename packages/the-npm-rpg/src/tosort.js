@@ -17,33 +17,9 @@ const MANY_SPACES = '                                                           
 
 
 
-function stylize_tbrpg_string(style, s) {
-	switch(style) {
-		case 'item_quality_common':
-			return stylizeString.gray(s)
-		case 'item_quality_uncommon':
-			return stylizeString.green(s)
-		case 'item_quality_rare':
-			return stylizeString.blue(s)
-		case 'item_quality_epic':
-			return stylizeString.magenta(s)
-		case 'item_quality_legendary':
-			return stylizeString.red(s)
-		case 'item_quality_artifact':
-			return stylizeString.yellow(s)
-		case 'change_outline':
-			return stylizeString.italic.bold.red(s)
-		default:
-			return `[XXX unkwown style ${style}]`+ stylizeString.bold.red(s)
-	}
-}
 
-const rendering_options = {
-	mode: 'ansi',
-	globalize: Globalize('en'),
-	stylize: stylize_tbrpg_string,
-	last_adventure: state.last_adventure
-}
+
+
 
 console.log(
 	boxify(''

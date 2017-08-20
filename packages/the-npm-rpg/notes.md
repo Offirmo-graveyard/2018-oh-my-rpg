@@ -31,3 +31,7 @@ const {
 	wrapLines,
 	clearCli,
 } = require('./deps')
+
+
+neverending
+unknown
