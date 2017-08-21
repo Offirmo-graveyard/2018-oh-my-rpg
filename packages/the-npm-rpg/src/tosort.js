@@ -11,7 +11,6 @@ const {
 	render_adventure,
 } = require('@oh-my-rpg/view-text')
 
-const MINIMAL_TERMINAL_WIDTH = 80
 const MANY_SPACES = '                                                                                                                                                      '
 
 

@@ -5,8 +5,12 @@ const {
 
 /////////////////////////////////////////////////
 
-function render_header({mayClearScreen, version}) {
-	if (mayClearScreen)
+const render_adventure_screen = require('./adventure').render
+
+/////////////////////////////////////////////////
+
+function render_header({may_clear_screen, version}) {
+	if (may_clear_screen)
 		clearCli()
 	else
 		console.log('\n---------------------------------------------------------------\n')
@@ -47,8 +51,8 @@ A great saga just started...`
 		wisdom,
 		luck,
 	} = state.avatar.characteristics
-	console.log(`Episode #${good_click_count}
-The great saga of ${stylizeString.bold(state.avatar.name)}, ${state.avatar.klass} LVL${level}
+	console.log(
+`The great saga of ${stylizeString.bold(state.avatar.name)}, ${state.avatar.klass} LVL${level}
 HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS:${wisdom} LUCK:${luck}
 `)
 }
@@ -58,4 +62,5 @@ HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS
 module.exports = {
 	render_header,
 	render_recap,
+	render_adventure_screen,
 }

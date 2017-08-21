@@ -1,20 +1,25 @@
 const { version } = require('../package.json')
-const { render_header, render_recap } = require('./screens')
+const { stylizeString } = require('./deps')
+const { render_header, render_recap, render_adventure_screen } = require('./screens')
 const { init_globalize, init_savegame } = require('./init')
-const { play } = require('@oh-my-rpg/state-the-boring-rpg')
+const { play } = require('./actions')
 const { render_cta_relaunch_game } = require('./calls-to-action')
 
 /////////////////////////////////////////////////
 
+const MINIMAL_TERMINAL_WIDTH = 80
+
 const options = {
 	version,
 	verbose: false,
-	isInteractive: true,
-	mayClearScreen: true,
+	is_interactive: true,
+	may_clear_screen: true,
+	term_width: MINIMAL_TERMINAL_WIDTH,
 }
 
-options.isInteractive = false //!!process.stdout.isTTY // TODO read params also
-options.mayClearScreen = options.isInteractive
+
+options.is_interactive = false //!!process.stdout.isTTY // TODO read params also
+options.may_clear_screen = options.is_interactive
 options.globalize = init_globalize(options)
 options.config = init_savegame(options)
 options.rendering_options = {
@@ -54,13 +59,13 @@ render_recap(options)
 
 /////////////////////////////////////////////////
 
-if (options.isInteractive)
+if (options.is_interactive)
 	return console.log('TODO')
 
 /////////////////////////////////////////////////
 
-const state = play(options.config.store)
-options.config.set(state)
+play(options)
+render_adventure_screen(options)
 
 // TODO print advices (equip, sell...)
 render_cta_relaunch_game(options)
