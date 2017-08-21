@@ -169,13 +169,13 @@ exports.render_wallet = render_wallet;
 function render_adventure_gain(a, gain_type, gains_for_display) {
     switch (gain_type) {
         case 'weapon':
-            return `New item: ${gains_for_display.formattedWeapon}`;
+            return `⚔  New item: ${gains_for_display.formattedWeapon}`;
         case 'armor':
-            return `New item: ${gains_for_display.formattedArmor}`;
+            return `🛡  New item: ${gains_for_display.formattedArmor}`;
         case 'coins':
-            return `Received ${gains_for_display.formattedCoins} coins`;
+            return `💰  Received ${gains_for_display.formattedCoins} coins`;
         case 'level':
-            return `Levelled up!`;
+            return `🆙  Levelled up!`;
         case 'health':
         case 'mana':
         case 'strength':
@@ -183,14 +183,12 @@ function render_adventure_gain(a, gain_type, gains_for_display) {
         case 'charisma':
         case 'wisdom':
         case 'luck':
-            return `${gain_type} increased!`;
+            return `💪  ${gain_type} increased!`;
         default:
-            return `TODO gain message for ${gain_type}`;
+            return `💠  TODO gain message for ${gain_type}`;
     }
 }
 function render_adventure(a, options = DEFAULT_RENDERING_OPTIONS) {
-    const icon = '📃'; //'⚔'
-    let res = '';
     const g = options.globalize;
     const formattedWeapon = a.gains.weapon ? render_item(a.gains.weapon, options) : '';
     const formattedArmor = a.gains.armor ? render_item(a.gains.armor, options) : '';
@@ -203,9 +201,14 @@ function render_adventure(a, options = DEFAULT_RENDERING_OPTIONS) {
         formattedItem,
     });
     const raw_message_multiline = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display);
-    const raw_message = raw_message_multiline.split('\n').map((s) => s.trim()).join(' ');
+    const raw_message = raw_message_multiline
+        .split('\n')
+        .map((s) => s.trim())
+        .filter((s) => !!s)
+        .join(' ');
     const msg_parts = [
         raw_message,
+        '',
         ...Object.keys(a.gains)
             .filter((gain_type) => !!a.gains[gain_type])
             .map((gain_type) => render_adventure_gain(a, gain_type, gains_for_display))

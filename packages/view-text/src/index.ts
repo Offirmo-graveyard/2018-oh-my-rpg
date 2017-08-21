@@ -209,13 +209,13 @@ function render_wallet(wallet: WalletState, options: RenderingOptions = DEFAULT_
 function render_adventure_gain(a: Adventure, gain_type: GainType, gains_for_display: {[k:string]: string}): string {
 	switch(gain_type) {
 		case 'weapon':
-			return `New item: ${gains_for_display.formattedWeapon}`
+			return `⚔  New item: ${gains_for_display.formattedWeapon}`
 		case 'armor':
-			return `New item: ${gains_for_display.formattedArmor}`
+			return `🛡  New item: ${gains_for_display.formattedArmor}`
 		case 'coins':
-			return `Received ${gains_for_display.formattedCoins} coins`
+			return `💰  Received ${gains_for_display.formattedCoins} coins`
 		case 'level':
-			return `Levelled up!`
+			return `🆙  Levelled up!`
 		case 'health':
 		case 'mana':
 		case 'strength':
@@ -223,16 +223,13 @@ function render_adventure_gain(a: Adventure, gain_type: GainType, gains_for_disp
 		case 'charisma':
 		case 'wisdom':
 		case 'luck':
-			return `${gain_type} increased!`
+			return `💪  ${gain_type} increased!`
 		default:
-			return `TODO gain message for ${gain_type}`
+			return `💠  TODO gain message for ${gain_type}`
 	}
 }
 
 function render_adventure(a: Adventure, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
-	const icon = '📃' //'⚔'
-	let res = ''
-
 	const g = options.globalize
 
 	const formattedWeapon = a.gains.weapon ? render_item(a.gains.weapon, options) : ''
@@ -252,9 +249,15 @@ function render_adventure(a: Adventure, options: RenderingOptions = DEFAULT_REND
 	)
 
 	const raw_message_multiline = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display)
-	const raw_message = raw_message_multiline.split('\n').map((s: string) => s.trim()).join(' ')
+	const raw_message = raw_message_multiline
+		.split('\n')
+		.map((s: string) => s.trim())
+		.filter((s: string) => !!s)
+		.join(' ')
+
 	const msg_parts = [
 		raw_message,
+		'',
 		...Object.keys(a.gains)
 			.filter((gain_type: GainType) => !!a.gains[gain_type])
 			.map((gain_type: GainType) => render_adventure_gain(a, gain_type, gains_for_display))
