@@ -9,7 +9,7 @@ const CharacterStat = Enum(
 	'luck',
 	'mana',
 	'strength',
-	'vitality',
+	'charisma',
 	'wisdom',
 )
 type CharacterStat = Enum<typeof CharacterStat>
@@ -40,7 +40,7 @@ interface Characteristics {
 
 	strength: number
 	agility: number
-	vitality: number
+	charisma: number
 	wisdom: number
 	luck: number
 }

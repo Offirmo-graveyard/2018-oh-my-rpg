@@ -11,7 +11,7 @@ const CHARACTER_STATS = [
     types_1.CharacterStat.mana,
     types_1.CharacterStat.strength,
     types_1.CharacterStat.agility,
-    types_1.CharacterStat.vitality,
+    types_1.CharacterStat.charisma,
     types_1.CharacterStat.wisdom,
     types_1.CharacterStat.luck,
 ];
@@ -19,7 +19,7 @@ exports.CHARACTER_STATS = CHARACTER_STATS;
 ///////
 function factory() {
     return {
-        name: 'unknown',
+        name: '[anonymous]',
         klass: types_1.CharacterClass.novice,
         characteristics: {
             level: 1,
@@ -28,7 +28,7 @@ function factory() {
             mana: 0,
             strength: 1,
             agility: 1,
-            vitality: 1,
+            charisma: 1,
             wisdom: 1,
             luck: 1
         }

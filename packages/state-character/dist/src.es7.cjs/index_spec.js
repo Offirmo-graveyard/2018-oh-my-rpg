@@ -6,7 +6,7 @@ describe('🤕 ❤️  Character stats logic', function () {
         it('should have correct defaults', function () {
             const state = _1.factory();
             expect(state).to.deep.equal({
-                name: 'unknown',
+                name: '[anonymous]',
                 klass: _1.CharacterClass.novice,
                 characteristics: {
                     level: 1,
@@ -14,7 +14,7 @@ describe('🤕 ❤️  Character stats logic', function () {
                     mana: 0,
                     strength: 1,
                     agility: 1,
-                    vitality: 1,
+                    charisma: 1,
                     wisdom: 1,
                     luck: 1
                 }
@@ -43,7 +43,7 @@ describe('🤕 ❤️  Character stats logic', function () {
                 mana: 0,
                 strength: 1,
                 agility: 2,
-                vitality: 1,
+                charisma: 1,
                 wisdom: 1,
                 luck: 1
             });
@@ -55,7 +55,7 @@ describe('🤕 ❤️  Character stats logic', function () {
                 mana: 0,
                 strength: 1,
                 agility: 4,
-                vitality: 1,
+                charisma: 1,
                 wisdom: 1,
                 luck: 1
             });
@@ -67,7 +67,7 @@ describe('🤕 ❤️  Character stats logic', function () {
                 mana: 0,
                 strength: 1,
                 agility: 5,
-                vitality: 1,
+                charisma: 1,
                 wisdom: 1,
                 luck: 1
             });

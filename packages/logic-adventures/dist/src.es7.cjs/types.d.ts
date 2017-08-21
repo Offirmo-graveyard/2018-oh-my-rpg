@@ -17,7 +17,7 @@ interface AdventureArchetype {
             mana: number;
             strength: number;
             agility: number;
-            vitality: number;
+            charisma: number;
             wisdom: number;
             luck: number;
             coins: CoinsGain;

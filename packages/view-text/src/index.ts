@@ -72,7 +72,7 @@ function get_characteristic_icon_for(stat: CharacterStat): string {
 		case CharacterStat.strength:
 			// 💪
 			return '🏋'
-		case CharacterStat.vitality:
+		case CharacterStat.charisma:
 			return '🏊'
 		case CharacterStat.wisdom:
 			// '🙏'
@@ -220,7 +220,7 @@ function render_adventure_gain(a: Adventure, gain_type: GainType, gains_for_disp
 		case 'mana':
 		case 'strength':
 		case 'agility':
-		case 'vitality':
+		case 'charisma':
 		case 'wisdom':
 		case 'luck':
 			return `${gain_type} increased!`

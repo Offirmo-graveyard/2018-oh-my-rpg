@@ -15,7 +15,7 @@ declare const GainType: {
     luck: "luck";
     mana: "mana";
     strength: "strength";
-    vitality: "vitality";
+    charisma: "charisma";
     wisdom: "wisdom";
     coins: "coins";
     tokens: "tokens";
@@ -32,7 +32,7 @@ interface Adventure {
         mana: number;
         strength: number;
         agility: number;
-        vitality: number;
+        charisma: number;
         wisdom: number;
         luck: number;
         coins: number;

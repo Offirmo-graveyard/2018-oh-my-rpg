@@ -6,7 +6,7 @@ declare const CharacterStat: {
     luck: "luck";
     mana: "mana";
     strength: "strength";
-    vitality: "vitality";
+    charisma: "charisma";
     wisdom: "wisdom";
 };
 declare type CharacterStat = Enum<typeof CharacterStat>;
@@ -31,7 +31,7 @@ interface Characteristics {
     mana: number;
     strength: number;
     agility: number;
-    vitality: number;
+    charisma: number;
     wisdom: number;
     luck: number;
 }

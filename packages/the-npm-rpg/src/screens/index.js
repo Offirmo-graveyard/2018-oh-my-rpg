@@ -20,7 +20,8 @@ function render_header({mayClearScreen, version}) {
 }
 
 function render_recap({config}) {
-	const {good_click_count, avatar: { name }} = config.store
+	const state = config.store
+	const {good_click_count} = state
 
 	if (good_click_count === 0)
 		return console.log(
@@ -28,15 +29,28 @@ stylizeString.bold(`Congratulations, adventurer!\n`)
 + `Your are more courageous, cunning and curious than your peers:
 You dared to enter this unknown realm, for glory and adventures! (and loot 💰 ;)
 
-Undoubtly, you'll make a name in this world and fulfill your destiny.
 Great sages prophetized your coming,
 commoners are waiting for their hero
-and kings are trembling from fear of change.
+and kings are trembling from fear of change...
+..undoubtly, you'll make a name in this world and fulfill your destiny!
 
 A great saga just started...`
 	)
 
-	console.log(`The great saga of ${name}, episode #${good_click_count}:`)
+	const {
+		level,
+		health,
+		mana,
+		strength,
+		agility,
+		charisma,
+		wisdom,
+		luck,
+	} = state.avatar.characteristics
+	console.log(`Episode #${good_click_count}
+The great saga of ${stylizeString.bold(state.avatar.name)}, ${state.avatar.klass} LVL${level}
+HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS:${wisdom} LUCK:${luck}
+`)
 }
 
 /////////////////////////////////////////////////

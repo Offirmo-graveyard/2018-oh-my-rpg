@@ -25,7 +25,7 @@ You ate a zombie.
 You gained +{mana} mana!`,
 		refreshing_nap: `
 You took a nap and feel refreshed.
-You gained +{vitality} vitality!`,
+You gained +{health} health!`,
 		older: `
 You feel a little older.
 You gained +{level} level!`,
@@ -54,7 +54,7 @@ You found a yellow mushroom.
 You gained +{agility} agility!`,
 		found_orange_mushroom: `
 You found a orange mushroom.
-You gained +{vitality} vitality!`,
+You gained +{charisma} charisma!`,
 		found_black_mushroom: `
 You found a black mushroom.
 You gained +{wisdom} wisdom!`,
@@ -81,7 +81,7 @@ Being a good adventurer, you kept a health potion "just in case":
 Well done, your health is top-notch!`,
 		lost: `
 With all those quests, you forgot where you had to go…
-But circling around the whole map is good for your health: +{vitality} vitality!`,
+But circling around the whole map is good for your health: +{health} health!`,
 		// DK
 		fate_sword: `
 To thank you for saving his wife and his children, the farmer offer you "Destiny",
@@ -116,7 +116,7 @@ You are escorting an important NPC.
 Unfortunately, if you walk, he's faster thant you.
 However, if you run, you're faster than him!
 By slaloming and running into circles, you manage.
-+{vitality} vitality thanks to those efforts!`,
++{health} health thanks to those efforts!`,
 		// memecenter.com
 		rare_goods_seller: `
 You come across an old man with excentric apparel.

@@ -9,7 +9,7 @@ TODO switch to hjson ?
 		{ "good": true, "hid": "",      "post": { "gains": { "mana": 1 }}},
 		{ "good": true, "hid": "",      "post": { "gains": { "strength": 1 }}},
 		{ "good": true, "hid": "",      "post": { "gains": { "agility": 1 }}},
-		{ "good": true, "hid": "",      "post": { "gains": { "vitality": 1 }}},
+		{ "good": true, "hid": "",      "post": { "gains": { "charisma": 1 }}},
 		{ "good": true, "hid": "",      "post": { "gains": { "wisdom": 1 }}},
 		{ "good": true, "hid": "",      "post": { "gains": { "luck": 1 }}},
 		{ "good": true, "hid": "",      "post": { "gains": { "weapon": true }}},

@@ -123,6 +123,11 @@ function factory(): State {
 function migrate_to_latest(state: any): State {
 	const src_version = state.version
 
+	if (!state.version) {
+		// new game
+		return factory()
+	}
+
 	if (src_version === VERSION)
 		return state as State
 
@@ -131,7 +136,7 @@ function migrate_to_latest(state: any): State {
 
 	console.warn(`migrating data from v${src_version} to ${VERSION}...`)
 
-	// TODO migrate when out of beta
+	// TODO migrate properly when out of beta
 	console.error(`beta: migrating through full reset !`)
 	return factory()
 }
@@ -146,7 +151,7 @@ function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, pl
 		luck,
 		mana,
 		strength,
-		vitality,
+		charisma,
 		wisdom,
 		coins: coins_gain,
 		tokens,
@@ -173,7 +178,7 @@ function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, pl
 			mana,
 			strength,
 			agility,
-			vitality,
+			charisma,
 			wisdom,
 			luck,
 			coins: generate_random_coin_gain(rng, coins_gain, new_player_level),
@@ -230,7 +235,7 @@ function play_good(state: State, explicit_adventure_archetype_hid?: string): Sta
 		mana,
 		strength,
 		agility,
-		vitality,
+		charisma,
 		wisdom,
 		luck,
 		coins,
@@ -248,7 +253,7 @@ function play_good(state: State, explicit_adventure_archetype_hid?: string): Sta
 	if (mana) state = receive_stat_increase(state, CharacterStat.mana, mana)
 	if (strength) state = receive_stat_increase(state, CharacterStat.strength, strength)
 	if (agility) state = receive_stat_increase(state, CharacterStat.agility, agility)
-	if (vitality) state = receive_stat_increase(state, CharacterStat.vitality, vitality)
+	if (charisma) state = receive_stat_increase(state, CharacterStat.charisma, charisma)
 	if (wisdom) state = receive_stat_increase(state, CharacterStat.wisdom, wisdom)
 	if (luck) state = receive_stat_increase(state, CharacterStat.luck, luck)
 

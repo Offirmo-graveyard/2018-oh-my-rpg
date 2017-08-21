@@ -16,7 +16,7 @@ const CHARACTER_STATS = [
 
 	CharacterStat.strength,
 	CharacterStat.agility,
-	CharacterStat.vitality,
+	CharacterStat.charisma,
 	CharacterStat.wisdom,
 	CharacterStat.luck,
 ]
@@ -25,7 +25,7 @@ const CHARACTER_STATS = [
 
 function factory(): State {
 	return {
-		name: 'unknown',
+		name: '[anonymous]',
 		klass: CharacterClass.novice,
 		characteristics: {
 			level: 1,
@@ -36,7 +36,7 @@ function factory(): State {
 
 			strength: 1,
 			agility: 1,
-			vitality: 1,
+			charisma: 1,
 			wisdom: 1,
 			luck: 1
 		}

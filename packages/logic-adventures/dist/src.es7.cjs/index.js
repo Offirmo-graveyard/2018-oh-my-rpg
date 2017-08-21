@@ -15,7 +15,7 @@ const ALL_ADVENTURE_ARCHETYPES = static_adventure_data.map((paa) => {
     gains.luck = gains.luck || 0;
     gains.mana = gains.mana || 0;
     gains.strength = gains.strength || 0;
-    gains.vitality = gains.vitality || 0;
+    gains.charisma = gains.charisma || 0;
     gains.wisdom = gains.wisdom || 0;
     gains.coins = gains.coins || types_1.CoinsGain.none;
     gains.tokens = gains.tokens || 0;

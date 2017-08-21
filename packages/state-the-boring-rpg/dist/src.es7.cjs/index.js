@@ -64,7 +64,7 @@ function migrate_to_latest(state) {
 exports.migrate_to_latest = migrate_to_latest;
 /////////////////////
 function instantiate_adventure_archetype(rng, aa, player_level, inventory) {
-    const { hid, good, post: { gains: { level: should_gain_a_level, agility, health, luck, mana, strength, vitality, wisdom, coins: coins_gain, tokens, armor: should_receive_armor, weapon: should_receive_weapon, armor_improvement, weapon_improvement, } } } = aa;
+    const { hid, good, post: { gains: { level: should_gain_a_level, agility, health, luck, mana, strength, charisma, wisdom, coins: coins_gain, tokens, armor: should_receive_armor, weapon: should_receive_weapon, armor_improvement, weapon_improvement, } } } = aa;
     const new_player_level = player_level + (should_gain_a_level ? 1 : 0);
     const weapon = should_receive_weapon
         ? logic_weapons_1.factory(rng)
@@ -81,7 +81,7 @@ function instantiate_adventure_archetype(rng, aa, player_level, inventory) {
             mana,
             strength,
             agility,
-            vitality,
+            charisma,
             wisdom,
             luck,
             coins: logic_adventures_1.generate_random_coin_gain(rng, coins_gain, new_player_level),
@@ -119,7 +119,7 @@ function play_good(state, explicit_adventure_archetype_hid) {
         : logic_adventures_1.pick_random_good_archetype(rng);
     const adventure = instantiate_adventure_archetype(rng, aa, state.avatar.characteristics.level, state.inventory);
     state.last_adventure = adventure;
-    const { gains: { level, health, mana, strength, agility, vitality, wisdom, luck, coins, tokens, weapon, armor, weapon_improvement, armor_improvement, } } = adventure;
+    const { gains: { level, health, mana, strength, agility, charisma, wisdom, luck, coins, tokens, weapon, armor, weapon_improvement, armor_improvement, } } = adventure;
     // TODO store hid for no repetition
     if (level)
         state = receive_stat_increase(state, state_character_1.CharacterStat.level);
@@ -131,8 +131,8 @@ function play_good(state, explicit_adventure_archetype_hid) {
         state = receive_stat_increase(state, state_character_1.CharacterStat.strength, strength);
     if (agility)
         state = receive_stat_increase(state, state_character_1.CharacterStat.agility, agility);
-    if (vitality)
-        state = receive_stat_increase(state, state_character_1.CharacterStat.vitality, vitality);
+    if (charisma)
+        state = receive_stat_increase(state, state_character_1.CharacterStat.charisma, charisma);
     if (wisdom)
         state = receive_stat_increase(state, state_character_1.CharacterStat.wisdom, wisdom);
     if (luck)

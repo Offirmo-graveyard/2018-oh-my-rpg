@@ -24,7 +24,7 @@ function init_globalize() {
 function init_savegame({verbose}) {
 	const config = new Conf({
 		configName: 'state',
-		defaults: { version: -1 }, // will trigger a reset to default through the migration system
+		defaults: {},
 	})
 
 	if (verbose) console.log('config path:', config.path)

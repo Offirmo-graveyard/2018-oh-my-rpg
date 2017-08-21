@@ -27,7 +27,7 @@ describe('🔠  view to text', function () {
                     mana: 0,
                     strength: 0,
                     agility: 0,
-                    vitality: 0,
+                    charisma: 0,
                     wisdom: 0,
                     luck: 0,
                     coins: 1234,

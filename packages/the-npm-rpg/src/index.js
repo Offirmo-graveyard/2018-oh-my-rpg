@@ -61,7 +61,7 @@ if (options.isInteractive)
 
 const state = play(options.config.store)
 options.config.set(state)
-//render_recap(options)
+
 // TODO print advices (equip, sell...)
 render_cta_relaunch_game(options)
 

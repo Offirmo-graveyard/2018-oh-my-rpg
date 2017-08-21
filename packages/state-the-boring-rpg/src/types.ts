@@ -18,7 +18,7 @@ const GainType = Enum(
 	'mana',
 	'strength',
 	'agility',
-	'vitality',
+	'charisma',
 	'wisdom',
 	'luck',
 	'coins',
@@ -40,7 +40,7 @@ interface Adventure {
 		mana: number
 		strength: number
 		agility: number
-		vitality: number
+		charisma: number
 		wisdom: number
 		luck: number
 		coins: number
