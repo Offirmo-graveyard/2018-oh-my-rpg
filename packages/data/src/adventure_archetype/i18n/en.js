@@ -106,7 +106,7 @@ Well, the +{level} level will always be useful…`,
 		// http://paintraincomic.com/comic/cemetery/
 		useless: `
 Arriving at the village, the mayor testify that the neighborhood is no longer dangerous.
-The sorceress find herself someone and no longer curses anyone.
+The sorceress find herself someone and no longer curses people.
 The haunted cemetery was a pet cemetery, villagers are happy to have them back.
 The giant is helping the farmers in the fields.
 You feel useless and reflect on your role in the world. +{wisdom} wisdom!`,

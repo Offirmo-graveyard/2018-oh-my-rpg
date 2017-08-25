@@ -1,15 +1,6 @@
 
 
-const _ = require('lodash')
 
-
-const {
-	render_characteristics,
-	render_equipment,
-	render_inventory,
-	render_wallet,
-	render_adventure,
-} = require('@oh-my-rpg/view-text')
 
 const MANY_SPACES = '                                                                                                                                                      '
 
@@ -74,6 +65,3 @@ console.log(boxifyAlt('bottom',
 	{borderStyle: 'single'}
 ))
 */
-
-
-config.set(state)

@@ -32,6 +32,17 @@ const {
 	clearCli,
 } = require('./deps')
 
+const _ = require('lodash')
+
+
+const {
+	render_characteristics,
+	render_equipment,
+	render_inventory,
+	render_wallet,
+	render_adventure,
+} = require('@oh-my-rpg/view-text')
+
 
 neverending
 unknown

@@ -13,12 +13,24 @@ function render_cta_relaunch_game() {
 }
 
 
+function render_cta({is_interactive, config}) {
+	let state = config.store
 
-// TODO print advices (equip, sell...)
+	// just restart ?
+
+	// better weapon ?
+
+
+	// TODO print advices (equip, sell...)
+
+	if (!is_interactive)
+		render_cta_relaunch_game()
+}
 
 
 /////////////////////////////////////////////////
 
 module.exports = {
 	render_cta_relaunch_game,
+	render_cta,
 }

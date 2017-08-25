@@ -3,7 +3,8 @@ const { stylizeString } = require('./deps')
 const { render_header, render_recap, render_adventure_screen } = require('./screens')
 const { init_globalize, init_savegame } = require('./init')
 const { play } = require('./actions')
-const { render_cta_relaunch_game } = require('./calls-to-action')
+const { render_cta } = require('./calls-to-action')
+const { start_loop } = require('./interactive')
 
 /////////////////////////////////////////////////
 
@@ -18,7 +19,8 @@ const options = {
 }
 
 
-options.is_interactive = false //!!process.stdout.isTTY // TODO read params also
+options.is_interactive = !!process.stdout.isTTY // TODO read params also
+//options.is_interactive = false
 options.may_clear_screen = options.is_interactive
 options.globalize = init_globalize(options)
 options.config = init_savegame(options)
@@ -59,16 +61,16 @@ render_recap(options)
 
 /////////////////////////////////////////////////
 
-if (options.is_interactive)
-	return console.log('TODO')
+if (options.is_interactive) {
+	start_loop(options)
+}
 
 /////////////////////////////////////////////////
 
-play(options)
-render_adventure_screen(options)
-
-// TODO print advices (equip, sell...)
-render_cta_relaunch_game(options)
+if (!options.is_interactive) {
+	play(options)
+	render_adventure_screen(options)
+	render_cta(options)
+}
 
 console.log('\n---------------------------------------------------------------\n')
-
