@@ -6,14 +6,19 @@ const {
 /////////////////////////////////////////////////
 
 const render_adventure_screen = require('./adventure').render
+const render_inventory_screen = require('./inventory').render
 
 /////////////////////////////////////////////////
+
+function divide() {
+	console.log('\n---------------------------------------------------------------\n')
+}
 
 function render_header({may_clear_screen, version}) {
 	if (may_clear_screen)
 		clearCli()
 	else
-		console.log('\n---------------------------------------------------------------\n')
+		divide()
 
 	console.log(
 		stylizeString.bold('The npm RPG')
@@ -53,14 +58,43 @@ A great saga just started...`
 	} = state.avatar.characteristics
 	console.log(
 `The great saga of ${stylizeString.bold(state.avatar.name)}, ${state.avatar.klass} LVL${level}
-HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS:${wisdom} LUCK:${luck}
-`)
+HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS:${wisdom} LUCK:${luck}`)
+}
+
+function render_interactive_before(screen, options) {
+	render_header(options)
+	render_recap(options)
+	divide()
+}
+function render_interactive_after(screen, options) {
+	switch(screen) {
+		case 'main':
+			render_adventure_screen(options)
+			break
+
+		case 'inventory':
+			render_inventory_screen(options)
+			break
+
+		default:
+			console.error(`Screen "${screen}" not implemented!`)
+	}
+	divide()
+}
+
+function render_non_interactive_before(options) {
+	render_header(options)
+	render_recap(options)
+}
+function render_non_interactive_after(options) {
+	render_adventure_screen(options)
 }
 
 /////////////////////////////////////////////////
 
 module.exports = {
-	render_header,
-	render_recap,
-	render_adventure_screen,
+	render_interactive_before,
+	render_interactive_after,
+	render_non_interactive_before,
+	render_non_interactive_after,
 }

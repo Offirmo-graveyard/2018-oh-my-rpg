@@ -1,6 +1,6 @@
 const { version } = require('../package.json')
 const { stylizeString } = require('./deps')
-const { render_header, render_recap, render_adventure_screen } = require('./screens')
+const { render_non_interactive_before, render_non_interactive_after } = require('./screens')
 const { init_globalize, init_savegame } = require('./init')
 const { play } = require('./actions')
 const { render_cta } = require('./calls-to-action')
@@ -56,11 +56,6 @@ function stylize_tbrpg_string(style, s) {
 
 /////////////////////////////////////////////////
 
-render_header(options)
-render_recap(options)
-
-/////////////////////////////////////////////////
-
 if (options.is_interactive) {
 	start_loop(options)
 }
@@ -68,8 +63,9 @@ if (options.is_interactive) {
 /////////////////////////////////////////////////
 
 if (!options.is_interactive) {
+	render_non_interactive_before(options)
 	play(options)
-	render_adventure_screen(options)
+	render_non_interactive_after(options)
 	render_cta(options)
 }
 
