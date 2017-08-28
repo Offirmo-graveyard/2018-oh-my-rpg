@@ -6,7 +6,11 @@ const {
 /////////////////////////////////////////////////
 
 const render_adventure_screen = require('./adventure').render
-const render_inventory_screen = require('./inventory').render
+const render_character_screen = require('./character').render
+const {
+	render: render_inventory_screen,
+	render_selected_item: render_inventory_selected_item
+} = require('./inventory')
 
 /////////////////////////////////////////////////
 
@@ -20,12 +24,12 @@ function render_header({may_clear_screen, version}) {
 	else
 		divide()
 
-	console.log(
+	console.log(stylizeString.dim(
 		stylizeString.bold('The npm RPG')
 		+ ` - v${version} - `
 		+ stylizeString.underline('http://www.online-adventur.es/the-npm-rpg')
 		+ '\n'
-	)
+	))
 }
 
 function render_recap({config}) {
@@ -61,23 +65,32 @@ A great saga just started...`
 HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS:${wisdom} LUCK:${luck}`)
 }
 
-function render_interactive_before(screen, options) {
+function render_interactive_before({options}) {
 	render_header(options)
 	render_recap(options)
 	divide()
 }
-function render_interactive_after(screen, options) {
-	switch(screen) {
-		case 'main':
-			render_adventure_screen(options)
+function render_interactive_after({current_screen_id, selected_item_coordinates, options: {config, rendering_options}}) {
+	switch(current_screen_id) {
+		case 'adventure':
+			render_adventure_screen({config, rendering_options})
+			break
+
+		case 'character':
+			render_character_screen({config, rendering_options})
 			break
 
 		case 'inventory':
-			render_inventory_screen(options)
+			render_inventory_screen({config, rendering_options})
+			break
+
+		case 'inventory_select':
+			render_inventory_screen({config, rendering_options})
+			render_inventory_selected_item({config, rendering_options, selected_item_coordinates})
 			break
 
 		default:
-			console.error(`Screen "${screen}" not implemented!`)
+			console.error(`Screen "${current_screen_id}" not implemented!`)
 	}
 	divide()
 }

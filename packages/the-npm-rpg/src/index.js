@@ -1,10 +1,10 @@
 const { version } = require('../package.json')
-const { stylizeString } = require('./deps')
+const { prettifyJson, stylizeString } = require('./deps')
 const { render_non_interactive_before, render_non_interactive_after } = require('./screens')
 const { init_globalize, init_savegame } = require('./init')
 const { play } = require('./actions')
 const { render_cta } = require('./calls-to-action')
-const { start_loop } = require('./interactive')
+const { start_loop } = require('./interactive_mode')
 
 /////////////////////////////////////////////////
 
@@ -12,7 +12,7 @@ const MINIMAL_TERMINAL_WIDTH = 80
 
 const options = {
 	version,
-	verbose: false,
+	verbose: true, // XXX
 	is_interactive: true,
 	may_clear_screen: true,
 	term_width: MINIMAL_TERMINAL_WIDTH,
@@ -58,6 +58,10 @@ function stylize_tbrpg_string(style, s) {
 
 if (options.is_interactive) {
 	start_loop(options)
+		.catch(e => console.error('Error:\n' + stylizeString.red(prettifyJson(e))))
+		// TODO report
+		.then(() => console.log('Quitting...'))
+
 }
 
 /////////////////////////////////////////////////

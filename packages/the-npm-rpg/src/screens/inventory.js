@@ -1,4 +1,4 @@
-const { wrapLines, stylizeString } = require('../deps')
+const { stylizeString } = require('../deps')
 
 const {
 	render_equipment,
@@ -10,7 +10,7 @@ const {
 
 
 
-function render({term_width, config, rendering_options}) {
+function render({config, rendering_options}) {
 	const state = config.store
 
 	console.log(''
@@ -26,8 +26,12 @@ function render({term_width, config, rendering_options}) {
 	)
 }
 
+function render_selected_item({config, rendering_options, selected_item_coordinates}) {
+	console.log('TODO render_selected_item')
+}
 /////////////////////////////////////////////////
 
 module.exports = {
 	render,
+	render_selected_item,
 }

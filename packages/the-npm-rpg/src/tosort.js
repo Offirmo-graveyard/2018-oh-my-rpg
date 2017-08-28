@@ -49,19 +49,3 @@ console.log(boxifyAlt('top',
 	+ render_characteristics(state.avatar, rendering_options),
 	{borderStyle: 'single'}
 ))
-console.log(boxifyAlt('middle',
-	//stylizeString.bold('⚔  ACTIVE EQUIPMENT 🛡 \n')
-	stylizeString.bold('ACTIVE EQUIPMENT:\n')
-	+ render_equipment(state.inventory, rendering_options),
-	{borderStyle: 'single'}
-))
-
-console.log(boxifyAlt('bottom',
-	//stylizeString.bold('📦  INVENTORY 💰 \n')
-	stylizeString.bold('INVENTORY:\n')
-	+ render_wallet(state.wallet, rendering_options)
-	+ '\n'
-	+ render_inventory(state.inventory, rendering_options),
-	{borderStyle: 'single'}
-))
-*/

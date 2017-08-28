@@ -28,10 +28,10 @@ function init_savegame({verbose}) {
 	})
 
 	if (verbose) console.log('config path:', config.path)
-	if (verbose) console.log('loaded state\n', prettifyJson(config.store))
+	if (verbose) console.log('loaded state:\n-------\n', prettifyJson(config.store), '\n-------\n')
 
 	const state = migrate_to_latest(config.store)
-	if (verbose) console.log('migrated state\n', prettifyJson(state))
+	if (verbose) console.log('migrated state:\n-------\n', prettifyJson(state), '\n-------\n')
 
 	config.clear()
 	config.set(state)

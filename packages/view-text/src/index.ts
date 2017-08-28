@@ -176,7 +176,7 @@ function render_inventory(inventory: InventoryState, options: RenderingOptions =
 	return misc_items.map((i: Item, index: number) => {
 		const icon = get_item_icon_for(i)
 		const label = render_item(i, options)
-		const padded_human_index = `  ${index + 1}.`.slice(-3)
+		const padded_human_index = `  ${'abcdefghijklmnopqrstuvwxyz'[index]}.`.slice(-3)
 
 		const update_notice = options.stylize(TextStyle.change_outline,
 			i && la && (la.gains.weapon === i || la.gains.armor === i)
