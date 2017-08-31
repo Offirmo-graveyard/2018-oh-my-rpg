@@ -15,9 +15,12 @@ import {
 
 import {
 	CharacterStat,
+	CharacterClass,
 	State as CharacterState,
 	factory as character_state_factory,
 	increase_stat,
+	rename,
+	switch_class,
 } from '@oh-my-rpg/state-character'
 
 import {
@@ -293,6 +296,7 @@ function play(state: State, explicit_adventure_archetype_hid?: string): State {
 }
 
 function equip_item(state: State, coordinates: InventoryCoordinates): State {
+	// TODO count it as a meaningful interaction if positive (or with a limit)
 	state.inventory = inventory_equip_item(state.inventory, coordinates)
 	return state
 }
@@ -305,6 +309,19 @@ function unequip_item(state: State, slot: InventorySlot): State {
 
 function sell_item(state: State, coordinates: InventoryCoordinates): State {
 	// TODO
+	// TODO count it as a meaningful interaction if positive (or with a limit)
+	return state
+}
+
+function rename_avatar(state: State, new_name: string): State {
+	// TODO count it as a meaningful interaction once
+	state.avatar = rename(state.avatar, new_name)
+	return state
+}
+
+function change_avatar_class(state: State, klass: CharacterClass): State {
+	// TODO make this have an effect (in v2 ?)
+	state.avatar = switch_class(state.avatar, klass)
 	return state
 }
 
@@ -321,6 +338,8 @@ export {
 	equip_item,
 	unequip_item,
 	sell_item,
+	rename_avatar,
+	change_avatar_class,
 }
 
 /////////////////////

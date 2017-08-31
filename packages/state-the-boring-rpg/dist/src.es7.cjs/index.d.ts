@@ -1,4 +1,5 @@
 import { InventorySlot } from '@oh-my-rpg/definitions';
+import { CharacterClass } from '@oh-my-rpg/state-character';
 import { InventoryCoordinates } from '@oh-my-rpg/state-inventory';
 import { VERSION, State, GainType, Adventure } from './types';
 declare function factory(): State;
@@ -7,4 +8,6 @@ declare function play(state: State, explicit_adventure_archetype_hid?: string): 
 declare function equip_item(state: State, coordinates: InventoryCoordinates): State;
 declare function unequip_item(state: State, slot: InventorySlot): State;
 declare function sell_item(state: State, coordinates: InventoryCoordinates): State;
-export { VERSION, GainType, Adventure, State, factory, migrate_to_latest, play, equip_item, unequip_item, sell_item };
+declare function rename_avatar(state: State, new_name: string): State;
+declare function change_avatar_class(state: State, klass: CharacterClass): State;
+export { VERSION, GainType, Adventure, State, factory, migrate_to_latest, play, equip_item, unequip_item, sell_item, rename_avatar, change_avatar_class };

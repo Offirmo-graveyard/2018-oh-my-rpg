@@ -54,6 +54,12 @@ function rename(state: State, new_name: string): State {
 	return state
 }
 
+function switch_class(state: State, klass: CharacterClass): State {
+	state.klass = klass
+
+	return state
+}
+
 function increase_stat(state: State, stat: CharacterStat, amount = 1): State {
 	if (amount <= 0)
 		throw new Error(`Error while increasing stat "${stat}: invalid amount!`)
@@ -73,6 +79,8 @@ export {
 
 	CHARACTER_STATS,
 	factory,
+	rename,
+	switch_class,
 	increase_stat,
 }
 

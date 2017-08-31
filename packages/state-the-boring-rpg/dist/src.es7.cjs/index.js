@@ -52,12 +52,16 @@ function factory() {
 exports.factory = factory;
 function migrate_to_latest(state) {
     const src_version = state.version;
+    if (!state.version) {
+        // new game
+        return factory();
+    }
     if (src_version === types_1.VERSION)
         return state;
     if (src_version > types_1.VERSION)
         throw new Error('You saved game was is from a more recent version of this game. Please update!');
     console.warn(`migrating data from v${src_version} to ${types_1.VERSION}...`);
-    // TODO migrate when out of beta
+    // TODO migrate properly when out of beta
     console.error(`beta: migrating through full reset !`);
     return factory();
 }
@@ -169,6 +173,7 @@ function play(state, explicit_adventure_archetype_hid) {
 }
 exports.play = play;
 function equip_item(state, coordinates) {
+    // TODO count it as a meaningful interaction if positive (or with a limit)
     state.inventory = state_inventory_1.equip_item(state.inventory, coordinates);
     return state;
 }
@@ -181,8 +186,21 @@ function unequip_item(state, slot) {
 exports.unequip_item = unequip_item;
 function sell_item(state, coordinates) {
     // TODO
+    // TODO count it as a meaningful interaction if positive (or with a limit)
     return state;
 }
 exports.sell_item = sell_item;
+function rename_avatar(state, new_name) {
+    // TODO count it as a meaningful interaction once
+    state.avatar = state_character_1.rename(state.avatar, new_name);
+    return state;
+}
+exports.rename_avatar = rename_avatar;
+function change_avatar_class(state, klass) {
+    // TODO make this have an effect (in v2 ?)
+    state.avatar = state_character_1.switch_class(state.avatar, klass);
+    return state;
+}
+exports.change_avatar_class = change_avatar_class;
 /////////////////////
 //# sourceMappingURL=index.js.map

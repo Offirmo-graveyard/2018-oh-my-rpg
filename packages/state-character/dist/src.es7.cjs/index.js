@@ -42,6 +42,12 @@ function rename(state, new_name) {
     state.name = new_name;
     return state;
 }
+exports.rename = rename;
+function switch_class(state, klass) {
+    state.klass = klass;
+    return state;
+}
+exports.switch_class = switch_class;
 function increase_stat(state, stat, amount = 1) {
     if (amount <= 0)
         throw new Error(`Error while increasing stat "${stat}: invalid amount!`);

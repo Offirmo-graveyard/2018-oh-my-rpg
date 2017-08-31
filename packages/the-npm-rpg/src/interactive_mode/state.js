@@ -3,8 +3,9 @@
 function factory({options}) {
 	return {
 		options,
-
 		version: options.version,
+
+		ignore_key_events: false, // sometime we have to temporarily pause listening to keys
 		current_screen_id: 'adventure',
 		selected_item_coordinates: null,
 		last_displayed_episode: -1,

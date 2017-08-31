@@ -3,11 +3,12 @@ const {
 	prettifyJson,
 	stylizeString,
 } = require('../deps')
+const { ask_question: raw_ask_question } = require('./ask_question')
 
 /////////////////////////////////////////////////
 
 const ui = require('./state')
-const { play, equip_item } = require('../actions')
+const { play, equip_item, rename_avatar, change_class } = require('../actions')
 const { render_interactive_before, render_interactive_after } = require('../screens')
 
 
@@ -35,18 +36,19 @@ function start_loop(options) {
 			adventure: [
 				{
 					key: 'p',
+					strong: true,
 					description: 'Play',
 					cb() { play(options) }
 				},
 				{
-					key: 'i',
-					description: 'Inventory',
-					cb() { ui_state = ui.switch_screen(ui_state, 'inventory') }
+					key: 'c',
+					description: 'Character sheet (rename, change class...)',
+					cb() { ui_state = ui.switch_screen(ui_state, 'character') }
 				},
 				{
-					key: 'c',
-					description: 'Character sheet',
-					cb() { ui_state = ui.switch_screen(ui_state, 'character') }
+					key: 'i',
+					description: 'Inventory (equip, sell...)',
+					cb() { ui_state = ui.switch_screen(ui_state, 'inventory') }
 				},
 			],
 			inventory: [
@@ -85,6 +87,29 @@ function start_loop(options) {
 			],
 			character: [
 				{
+					key: 'c',
+					description: 'Change hero class',
+					cb() { ui_state = ui.switch_screen(ui_state, 'character_class_select') },
+				},
+				{
+					key: 'r',
+					description: 'Rename hero',
+					cb() {
+						// TODO allow aborting!
+						return ask_question('Under which name do you want to make history and be remembered forever?')
+							.then(new_name => {
+								rename_avatar(options, new_name)
+							})
+					},
+				},
+				{
+					key: 'x',
+					description: 'go back to adventure',
+					cb() { ui_state = ui.switch_screen(ui_state, 'adventure') }
+				},
+			],
+			character_class_select: [
+				{
 					key: 'r',
 					description: 'Rename hero',
 					cb() {
@@ -106,12 +131,31 @@ function start_loop(options) {
 			]
 		}
 
-		function render_command({key, key_for_display,description}) {
-			console.log(`${stylizeString.inverse(' ' + (key_for_display?key_for_display:key).toUpperCase() + ' ')} → ${description}`)
+		function render_command({key, key_for_display, description, strong}) {
+			const icon = !!strong
+				? stylizeString.red.bold('→')
+				: stylizeString.blue('→')
+			console.log(icon + ` ${stylizeString.inverse(' ' + (key_for_display?key_for_display:key).toUpperCase() + ' ')} → ${description}`)
 		}
 
 		readline.emitKeypressEvents(process.stdin)
 		process.stdin.setRawMode(true)
+
+		function ask_question(q) {
+			process.stdin.setRawMode(false)
+			ui_state.ignore_key_events = true
+			return raw_ask_question(q)
+				.then(answer => {
+					process.stdin.setRawMode(true)
+					ui_state.ignore_key_events = false
+					return answer
+				})
+				.catch(e => {
+					process.stdin.setRawMode(true)
+					ui_state.ignore_key_events = false
+					throw e
+				})
+		}
 
 		function render_commands() {
 			//console.log(get_commands_for_screen(current_screen_id))
@@ -123,13 +167,16 @@ function start_loop(options) {
 
 		//if (options.verbose) console.log('current UI state:\n-------\n', prettifyJson(ui_state), '\n-------\n')
 		process.stdin.on('keypress', (str, key_pressed) => {
-			if (options.verbose) console.log(`key pressed:\n${prettifyJson(key_pressed)}\n`)
-
-			if (!key_pressed)
-				throw new Error('keypress: Y U no key?!')
+			if (options.verbose && !ui_state.ignore_key_events)
+				console.log(`key pressed:\n${prettifyJson(key_pressed)}\n`)
 
 			if (key_pressed.ctrl) // ctrl C, ctrl D, whatever
 				process.kill(process.pid, 'SIGINT');
+
+			if (ui_state.ignore_key_events) return;
+
+			if (!key_pressed)
+				return console.error('keypress: Y U no key?!')
 
 			const {current_screen_id} = ui_state
 			if (!current_screen_id)
@@ -138,17 +185,22 @@ function start_loop(options) {
 			if (!COMMANDS_FOR_SCREEN[current_screen_id])
 				throw new Error('keypress: no key mappings for current screen!')
 
-			const current_keymap = get_commands_for_screen(current_screen_id).find(({key}) => !!key_pressed.name.match(key))
+			const current_keymap = get_commands_for_screen(current_screen_id)
+				.find(({key}) => !!key_pressed.name.match(key))
 			if (!current_keymap) {
-				console.log(`unrecognized key: ${key_pressed.name}`)
+				console.log(`unrecognized key: "${key_pressed.name}"`)
 			}
 			else {
 				render_interactive_before(ui_state)
-				if (options.verbose) console.log(`key pressed:\n${prettifyJson(key_pressed)}\n mapped to:\n${prettifyJson(current_keymap)}\n`)
-				current_keymap.cb(key_pressed.name)
-				render_interactive_after(ui_state)
-				render_commands()
-				//if (options.verbose) console.log('current UI state:\n-------\n', prettifyJson(ui_state), '\n-------\n')
+				if (options.verbose) console.log(`key pressed:\n${prettifyJson(key_pressed)}\nmapped to:\n${prettifyJson(current_keymap)}\n`)
+				const res = current_keymap.cb(key_pressed.name)
+				Promise.resolve(res)
+					.then(() => {
+						if (options.verbose) console.log(`[action resolved]`)
+						render_interactive_after(ui_state)
+						render_commands()
+						//if (options.verbose) console.log('current UI state:\n-------\n', prettifyJson(ui_state), '\n-------\n')
+					})
 			}
 		})
 	})

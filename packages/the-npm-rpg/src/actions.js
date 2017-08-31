@@ -12,14 +12,21 @@ function equip_item({config}, coordinates) {
 	config.set(state)
 }
 
-function rename_hero({config}, new_name) {
+function rename_avatar({config}, new_name) {
 	let state = config.store
-	state = tbrpg.equip_item(state, coordinates)
+	state = tbrpg.rename_avatar(state, new_name)
 	config.set(state)
 }
 
+function change_class({config}, new_class) {
+	let state = config.store
+	state = tbrpg.change_avatar_class(state, new_class)
+	config.set(state)
+}
 
 module.exports = {
 	play,
 	equip_item,
+	rename_avatar,
+	change_class,
 }
