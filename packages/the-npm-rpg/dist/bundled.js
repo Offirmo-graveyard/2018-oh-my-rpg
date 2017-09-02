@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 21);
+/******/ 	return __webpack_require__(__webpack_require__.s = 25);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,11 +73,11 @@ module.exports = require("crypto");
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const prettyjson = __webpack_require__(23)
-const boxify = __webpack_require__(36)
-const stylizeString = __webpack_require__(7)
-const wrapLines = __webpack_require__(91)
-const ansiEscapes = __webpack_require__(92)
+const prettyjson = __webpack_require__(27)
+const boxify = __webpack_require__(40)
+const stylizeString = __webpack_require__(8)
+const wrapLines = __webpack_require__(95)
+const ansiEscapes = __webpack_require__(96)
 
 /////////////////////////////////////////////////
 
@@ -138,10 +138,10 @@ module['exports'] = colors;
 
 colors.themes = {};
 
-var ansiStyles = colors.styles = __webpack_require__(25);
+var ansiStyles = colors.styles = __webpack_require__(29);
 var defineProps = Object.defineProperties;
 
-colors.supportsColor = __webpack_require__(26);
+colors.supportsColor = __webpack_require__(30);
 
 if (typeof colors.enabled === "undefined") {
   colors.enabled = colors.supportsColor;
@@ -271,15 +271,15 @@ var sequencer = function sequencer (map, str) {
 };
 
 // custom formatter methods
-colors.trap = __webpack_require__(28);
-colors.zalgo = __webpack_require__(29);
+colors.trap = __webpack_require__(32);
+colors.zalgo = __webpack_require__(33);
 
 // maps
 colors.maps = {};
-colors.maps.america = __webpack_require__(30);
-colors.maps.zebra = __webpack_require__(31);
-colors.maps.rainbow = __webpack_require__(32);
-colors.maps.random = __webpack_require__(33)
+colors.maps.america = __webpack_require__(34);
+colors.maps.zebra = __webpack_require__(35);
+colors.maps.rainbow = __webpack_require__(36);
+colors.maps.random = __webpack_require__(37)
 
 for (var map in colors.maps) {
   (function(map){
@@ -299,8 +299,8 @@ defineProps(colors, init());
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = __webpack_require__(97);
-const types_1 = __webpack_require__(15);
+const tslib_1 = __webpack_require__(99);
+const types_1 = __webpack_require__(17);
 const ITEM_QUALITIES = [
     types_1.ItemQuality.common,
     types_1.ItemQuality.uncommon,
@@ -316,7 +316,7 @@ const ITEM_SLOTS = [
 ];
 exports.ITEM_SLOTS = ITEM_SLOTS;
 /////////////////////
-tslib_1.__exportStar(__webpack_require__(15), exports);
+tslib_1.__exportStar(__webpack_require__(17), exports);
 /////////////////////
 //# sourceMappingURL=index.js.map
 
@@ -338,8 +338,234 @@ module.exports = require("fs");
 
 "use strict";
 
-const stripAnsi = __webpack_require__(37);
-const isFullwidthCodePoint = __webpack_require__(39);
+/////////////////////
+Object.defineProperty(exports, "__esModule", { value: true });
+const lodash_1 = __webpack_require__(98);
+const definitions_1 = __webpack_require__(3);
+const logic_weapons_1 = __webpack_require__(18);
+const logic_armors_1 = __webpack_require__(19);
+const state_inventory_1 = __webpack_require__(20);
+const state_character_1 = __webpack_require__(21);
+const types_1 = __webpack_require__(114);
+exports.TextStyle = types_1.TextStyle;
+const DEFAULT_RENDERING_OPTIONS = {
+    globalize: {
+        formatMessage: (s) => s,
+        formatNumber: (n) => `${n}`,
+    },
+    stylize: (style, s) => s
+};
+exports.DEFAULT_RENDERING_OPTIONS = DEFAULT_RENDERING_OPTIONS;
+/////////////////////
+function get_style_for_quality(quality) {
+    switch (quality) {
+        case definitions_1.ItemQuality.common:
+            return types_1.TextStyle.item_quality_common;
+        case definitions_1.ItemQuality.uncommon:
+            return types_1.TextStyle.item_quality_uncommon;
+        case definitions_1.ItemQuality.rare:
+            return types_1.TextStyle.item_quality_rare;
+        case definitions_1.ItemQuality.epic:
+            return types_1.TextStyle.item_quality_epic;
+        case definitions_1.ItemQuality.legendary:
+            return types_1.TextStyle.item_quality_legendary;
+        case definitions_1.ItemQuality.artifact:
+            return types_1.TextStyle.item_quality_artifact;
+        default:
+            throw new Error(`get_style_for_quality(): Unknown ItemQuality : ${quality}`);
+    }
+}
+function get_item_icon_for(i) {
+    if (!i)
+        return '⋯';
+    switch (i.slot) {
+        case definitions_1.InventorySlot.weapon:
+            return '⚔';
+        case definitions_1.InventorySlot.armor:
+            return '🛡';
+        default:
+            throw new Error(`get_item_icon_for(): no icon for slot "${i.slot}" !`);
+    }
+}
+function get_characteristic_icon_for(stat) {
+    switch (stat) {
+        case state_character_1.CharacterStat.level:
+            return '👶';
+        case state_character_1.CharacterStat.health:
+            return '💗';
+        case state_character_1.CharacterStat.mana:
+            return '💙';
+        case state_character_1.CharacterStat.agility:
+            return '🤸';
+        case state_character_1.CharacterStat.luck:
+            return '🤹';
+        case state_character_1.CharacterStat.strength:
+            // 💪
+            return '🏋';
+        case state_character_1.CharacterStat.charisma:
+            return '🏊';
+        case state_character_1.CharacterStat.wisdom:
+            // '🙏'
+            return '👵';
+        default:
+            throw new Error(`get_characteristic_icon_for(): no icon for stat "${stat}" !`);
+    }
+}
+///////
+function render_weapon(w, options = DEFAULT_RENDERING_OPTIONS) {
+    if (w.slot !== definitions_1.InventorySlot.weapon)
+        throw new Error(`render_weapon(): can't render a ${w.slot} !`);
+    const name = `${w.qualifier1_hid}.${w.base_hid}.of.the.${w.qualifier2_hid}`;
+    const enhancement_level = w.enhancement_level
+        ? ` +${w.enhancement_level}`
+        : '';
+    const [min_damage, max_damage] = logic_weapons_1.get_damage_interval(w);
+    return options.stylize(get_style_for_quality(w.quality), `${name}${enhancement_level}`) + ` [${min_damage} ↔ ${max_damage}]`;
+}
+exports.render_weapon = render_weapon;
+function render_armor(a, options = DEFAULT_RENDERING_OPTIONS) {
+    if (a.slot !== definitions_1.InventorySlot.armor)
+        throw new Error(`render_armor(): can't render a ${a.slot} !`);
+    const name = `${a.qualifier1_hid}.${a.base_hid}.of.the.${a.qualifier2_hid}`;
+    const enhancement_level = a.enhancement_level
+        ? ` +${a.enhancement_level}`
+        : '';
+    const [min_dmg_reduc, max_dmg_reduc] = logic_armors_1.get_damage_reduction_interval(a);
+    return options.stylize(get_style_for_quality(a.quality), `${name}${enhancement_level}`) + ` [${min_dmg_reduc} ↔ ${max_dmg_reduc}]`;
+}
+exports.render_armor = render_armor;
+function render_item(i, options = DEFAULT_RENDERING_OPTIONS) {
+    if (!i)
+        return '';
+    switch (i.slot) {
+        case definitions_1.InventorySlot.weapon:
+            return render_weapon(i, options);
+        case definitions_1.InventorySlot.armor:
+            return render_armor(i, options);
+        default:
+            throw new Error(`render_item(): don't know how to render a "${i.slot}" !`);
+    }
+}
+exports.render_item = render_item;
+function render_characteristics(state, options = DEFAULT_RENDERING_OPTIONS) {
+    const { last_adventure: la } = options;
+    return state_character_1.CHARACTER_STATS.map((stat) => {
+        const icon = get_characteristic_icon_for(stat);
+        const label = stat;
+        const value = state.characteristics[stat];
+        const padded_label = `${label}............`.slice(0, 11);
+        const padded_human_values = `.......${value}`.slice(-4);
+        const update_notice = options.stylize(types_1.TextStyle.change_outline, la && la.gains && la.gains[stat]
+            ? ` recently increased by ${la.gains[stat]}! 🆙 `
+            : '');
+        return `${icon}  ${padded_label}${padded_human_values}${update_notice}`;
+    }).join('\n');
+}
+exports.render_characteristics = render_characteristics;
+function render_equipment(inventory, options = DEFAULT_RENDERING_OPTIONS) {
+    const equiped_items = definitions_1.ITEM_SLOTS.map(lodash_1.partial(state_inventory_1.get_item_in_slot, inventory));
+    const { last_adventure: la } = options;
+    return equiped_items.map((i, index) => {
+        const padded_slot = `${definitions_1.ITEM_SLOTS[index]}  `.slice(0, 6);
+        if (!i)
+            return `${padded_slot}: -`;
+        const icon = get_item_icon_for(i);
+        const label = render_item(i, options);
+        const update_notice = options.stylize(types_1.TextStyle.change_outline, i && la && la.gains && ((la.gains.weapon_improvement && i.slot === 'weapon')
+            || (la.gains.armor_improvement && i.slot === 'armor'))
+            ? ` enhanced! 🆙 `
+            : '');
+        return `${padded_slot}: ${icon}  ${label}${update_notice}`;
+    }).join('\n');
+}
+exports.render_equipment = render_equipment;
+function render_inventory(inventory, options = DEFAULT_RENDERING_OPTIONS) {
+    const misc_items = Array.from(state_inventory_1.iterables_unslotted(inventory));
+    const { last_adventure: la } = options;
+    return misc_items.map((i, index) => {
+        const icon = get_item_icon_for(i);
+        const label = render_item(i, options);
+        const padded_human_index = `  ${'abcdefghijklmnopqrstuvwxyz'[index]}.`.slice(-3);
+        const update_notice = options.stylize(types_1.TextStyle.change_outline, i && la && (la.gains.weapon === i || la.gains.armor === i)
+            ? ` new! 🎁`
+            : '');
+        return `${padded_human_index} ${icon}  ${label}${update_notice}`;
+    }).join('\n');
+}
+exports.render_inventory = render_inventory;
+function render_wallet(wallet, options = DEFAULT_RENDERING_OPTIONS) {
+    const { last_adventure: la } = options;
+    const coins_update_notice = options.stylize(types_1.TextStyle.change_outline, la && la.gains.coins
+        ? ` gained ${la.gains.coins}! 🆙 `
+        : '');
+    const tokens_update_notice = options.stylize(types_1.TextStyle.change_outline, la && la.gains.tokens
+        ? ` gained ${la.gains.tokens}! 🆙 `
+        : '');
+    return `💰  ${wallet.coin_count} coins${coins_update_notice}
+💠  ${wallet.token_count} tokens${tokens_update_notice}`;
+}
+exports.render_wallet = render_wallet;
+function render_adventure_gain(a, gain_type, gains_for_display) {
+    switch (gain_type) {
+        case 'weapon':
+            return `⚔  New item: ${gains_for_display.formattedWeapon}`;
+        case 'armor':
+            return `🛡  New item: ${gains_for_display.formattedArmor}`;
+        case 'coins':
+            return `💰  Received ${gains_for_display.formattedCoins} coins`;
+        case 'level':
+            return `🆙  Leveled up!`;
+        case 'health':
+        case 'mana':
+        case 'strength':
+        case 'agility':
+        case 'charisma':
+        case 'wisdom':
+        case 'luck':
+            return `🆙  ${gain_type} increased!`;
+        default:
+            return `💠  TODO gain message for ${gain_type}`;
+    }
+}
+function render_adventure(a, options = DEFAULT_RENDERING_OPTIONS) {
+    const g = options.globalize;
+    const formattedWeapon = a.gains.weapon ? render_item(a.gains.weapon, options) : '';
+    const formattedArmor = a.gains.armor ? render_item(a.gains.armor, options) : '';
+    const formattedItem = formattedWeapon || formattedArmor;
+    // formatting to natural language
+    const gains_for_display = Object.assign({}, a.gains, {
+        formattedCoins: a.gains.coins ? g.formatNumber(a.gains.coins) : '',
+        formattedWeapon,
+        formattedArmor,
+        formattedItem,
+    });
+    const raw_message_multiline = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display);
+    const raw_message = raw_message_multiline
+        .split('\n')
+        .map((s) => s.trim())
+        .filter((s) => !!s)
+        .join(' ');
+    const msg_parts = [
+        raw_message,
+        '',
+        ...Object.keys(a.gains)
+            .filter((gain_type) => !!a.gains[gain_type])
+            .map((gain_type) => render_adventure_gain(a, gain_type, gains_for_display))
+    ];
+    return msg_parts.join('\n');
+}
+exports.render_adventure = render_adventure;
+/////////////////////
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+const stripAnsi = __webpack_require__(41);
+const isFullwidthCodePoint = __webpack_require__(43);
 
 module.exports = str => {
 	if (typeof str !== 'string' || str.length === 0) {
@@ -376,16 +602,16 @@ module.exports = str => {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const escapeStringRegexp = __webpack_require__(40);
-const ansiStyles = __webpack_require__(41);
-const supportsColor = __webpack_require__(45);
+const escapeStringRegexp = __webpack_require__(44);
+const ansiStyles = __webpack_require__(45);
+const supportsColor = __webpack_require__(49);
 
-const template = __webpack_require__(48);
+const template = __webpack_require__(52);
 
 const isSimpleWindowsTerm = process.platform === 'win32' && !(process.env.TERM || '').toLowerCase().startsWith('xterm');
 
@@ -603,7 +829,7 @@ module.exports.supportsColor = supportsColor;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -631,11 +857,11 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* MIT license */
-var cssKeywords = __webpack_require__(43);
+var cssKeywords = __webpack_require__(47);
 
 // NOTE: conversions should only return primitive values (i.e. arrays, or
 //       values that give correct `typeof` results).
@@ -1498,27 +1724,27 @@ convert.rgb.gray = function (rgb) {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 module.exports = require("child_process");
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = require("util");
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var path = __webpack_require__(4);
-var which = __webpack_require__(64);
-var LRU = __webpack_require__(13);
+var which = __webpack_require__(68);
+var LRU = __webpack_require__(14);
 
 var commandCache = new LRU({ max: 50, maxAge: 30 * 1000 });  // Cache just for 30sec
 
@@ -1548,7 +1774,7 @@ module.exports = resolveCommand;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1558,11 +1784,11 @@ module.exports = LRUCache
 
 // This will be a proper iterable 'Map' in engines that support it,
 // or a fakey-fake PseudoMap in older versions.
-var Map = __webpack_require__(68)
-var util = __webpack_require__(11)
+var Map = __webpack_require__(72)
+var util = __webpack_require__(12)
 
 // A linked list to keep track of recently-used-ness
-var Yallist = __webpack_require__(70)
+var Yallist = __webpack_require__(74)
 
 // use symbols if possible, otherwise just _props
 var hasSymbol = typeof Symbol === 'function'
@@ -2022,7 +2248,7 @@ function Entry (key, value, length, now, maxAge) {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2059,13 +2285,133 @@ module.exports = escapeArgument;
 
 
 /***/ }),
-/* 15 */
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {
+	stylizeString,
+	clearCli,
+} = __webpack_require__(1)
+
+/////////////////////////////////////////////////
+
+const render_adventure_screen = __webpack_require__(97).render
+const render_character_screen = __webpack_require__(116).render
+const {
+	render: render_inventory_screen,
+	render_selected_item: render_inventory_selected_item
+} = __webpack_require__(117)
+
+/////////////////////////////////////////////////
+
+function divide() {
+	console.log('\n---------------------------------------------------------------\n')
+}
+
+function render_header({may_clear_screen, version}) {
+	if (may_clear_screen)
+		clearCli()
+	else
+		divide()
+
+	console.log(stylizeString.dim(
+		stylizeString.bold('The npm RPG')
+		+ ` - v${version} - `
+		+ stylizeString.underline('http://www.online-adventur.es/the-npm-rpg')
+		+ '\n'
+	))
+}
+
+function render_recap({config}) {
+	const state = config.store
+	const {good_click_count} = state
+
+	if (good_click_count === 0)
+		return console.log(
+stylizeString.bold(`Congratulations, adventurer!\n`)
++ `Your are more courageous, cunning and curious than your peers:
+You dared to enter this unknown realm, for glory and adventures! (and loot 💰 ;)
+
+Great sages prophetized your coming,
+commoners are waiting for their hero
+and kings are trembling from fear of change...
+..undoubtly, you'll make a name in this world and fulfill your destiny!
+
+A great saga just started...`
+	)
+
+	const {
+		level,
+		health,
+		mana,
+		strength,
+		agility,
+		charisma,
+		wisdom,
+		luck,
+	} = state.avatar.characteristics
+	console.log(
+`The great saga of ${stylizeString.bold(state.avatar.name)}, ${state.avatar.klass} LVL${level}
+HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS:${wisdom} LUCK:${luck}`)
+}
+
+function render_interactive_before({options}) {
+	render_header(options)
+	render_recap(options)
+	divide()
+}
+function render_interactive_after({current_screen_id, selected_item_coordinates, options: {config, rendering_options}}) {
+	switch(current_screen_id) {
+		case 'adventure':
+			render_adventure_screen({config, rendering_options})
+			break
+
+		case 'character':
+		case 'character_class_select':
+			render_character_screen({config, rendering_options})
+			break
+
+		case 'inventory':
+			render_inventory_screen({config, rendering_options})
+			break
+
+		case 'inventory_select':
+			render_inventory_screen({config, rendering_options})
+			render_inventory_selected_item({config, rendering_options, selected_item_coordinates})
+			break
+
+		default:
+			console.error(`Screen "${current_screen_id}" not implemented!`)
+	}
+	divide()
+}
+
+function render_non_interactive_before(options) {
+	render_header(options)
+	render_recap(options)
+}
+function render_non_interactive_after(options) {
+	render_adventure_screen(options)
+}
+
+/////////////////////////////////////////////////
+
+module.exports = {
+	render_interactive_before,
+	render_interactive_after,
+	render_non_interactive_before,
+	render_non_interactive_after,
+}
+
+
+/***/ }),
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(98);
+const typescript_string_enums_1 = __webpack_require__(100);
 /////////////////////
 const ItemQuality = typescript_string_enums_1.Enum('common', 'uncommon', 'rare', 'epic', 'legendary', 'artifact');
 exports.ItemQuality = ItemQuality;
@@ -2076,19 +2422,19 @@ exports.InventorySlot = InventorySlot;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const random_1 = __webpack_require__(99);
+const random_1 = __webpack_require__(101);
 const definitions_1 = __webpack_require__(3);
-const static_weapon_data = __webpack_require__(100);
-const types_1 = __webpack_require__(102);
+const static_weapon_data = __webpack_require__(102);
+const types_1 = __webpack_require__(104);
 exports.WeaponPartType = types_1.WeaponPartType;
-const constants_1 = __webpack_require__(104);
+const constants_1 = __webpack_require__(106);
 const WEAPON_BASES = static_weapon_data.filter((weapon_component) => weapon_component.type === types_1.WeaponPartType.base);
 const WEAPON_QUALIFIERS1 = static_weapon_data.filter((weapon_component) => weapon_component.type === types_1.WeaponPartType.qualifier1);
 const WEAPON_QUALIFIERS2 = static_weapon_data.filter((weapon_component) => weapon_component.type === types_1.WeaponPartType.qualifier2);
@@ -2174,17 +2520,17 @@ exports.get_medium_damage = get_medium_damage;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const random_1 = __webpack_require__(105);
+const random_1 = __webpack_require__(107);
 const definitions_1 = __webpack_require__(3);
-const static_armor_data = __webpack_require__(106);
-const types_1 = __webpack_require__(108);
+const static_armor_data = __webpack_require__(108);
+const types_1 = __webpack_require__(110);
 exports.ArmorPartType = types_1.ArmorPartType;
 const ARMOR_BASES = static_armor_data.filter((armor_component) => armor_component.type === types_1.ArmorPartType.base);
 const ARMOR_QUALIFIERS1 = static_armor_data.filter((armor_component) => armor_component.type === types_1.ArmorPartType.qualifier1);
@@ -2257,7 +2603,7 @@ exports.get_damage_reduction_interval = get_damage_reduction_interval;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2381,14 +2727,14 @@ exports.iterables_unslotted = iterables_unslotted;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const types_1 = __webpack_require__(110);
+const types_1 = __webpack_require__(112);
 exports.CharacterStat = types_1.CharacterStat;
 exports.CharacterClass = types_1.CharacterClass;
 /////////////////////
@@ -2429,6 +2775,12 @@ function rename(state, new_name) {
     state.name = new_name;
     return state;
 }
+exports.rename = rename;
+function switch_class(state, klass) {
+    state.klass = klass;
+    return state;
+}
+exports.switch_class = switch_class;
 function increase_stat(state, stat, amount = 1) {
     if (amount <= 0)
         throw new Error(`Error while increasing stat "${stat}: invalid amount!`);
@@ -2441,7 +2793,7 @@ exports.increase_stat = increase_stat;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2449,15 +2801,15 @@ exports.increase_stat = increase_stat;
 Object.defineProperty(exports, "__esModule", { value: true });
 /////////////////////
 const definitions_1 = __webpack_require__(3);
-const state_meta_1 = __webpack_require__(118);
-const state_character_1 = __webpack_require__(19);
-const state_wallet_1 = __webpack_require__(122);
-const state_inventory_1 = __webpack_require__(18);
-const state_prng_1 = __webpack_require__(125);
-const logic_weapons_1 = __webpack_require__(16);
-const logic_armors_1 = __webpack_require__(17);
-const logic_adventures_1 = __webpack_require__(127);
-const types_1 = __webpack_require__(132);
+const state_meta_1 = __webpack_require__(122);
+const state_character_1 = __webpack_require__(21);
+const state_wallet_1 = __webpack_require__(126);
+const state_inventory_1 = __webpack_require__(20);
+const state_prng_1 = __webpack_require__(129);
+const logic_weapons_1 = __webpack_require__(18);
+const logic_armors_1 = __webpack_require__(19);
+const logic_adventures_1 = __webpack_require__(131);
+const types_1 = __webpack_require__(136);
 exports.VERSION = types_1.VERSION;
 exports.GainType = types_1.GainType;
 /////////////////////
@@ -2499,12 +2851,16 @@ function factory() {
 exports.factory = factory;
 function migrate_to_latest(state) {
     const src_version = state.version;
+    if (!state.version) {
+        // new game
+        return factory();
+    }
     if (src_version === types_1.VERSION)
         return state;
     if (src_version > types_1.VERSION)
         throw new Error('You saved game was is from a more recent version of this game. Please update!');
     console.warn(`migrating data from v${src_version} to ${types_1.VERSION}...`);
-    // TODO migrate when out of beta
+    // TODO migrate properly when out of beta
     console.error(`beta: migrating through full reset !`);
     return factory();
 }
@@ -2616,6 +2972,7 @@ function play(state, explicit_adventure_archetype_hid) {
 }
 exports.play = play;
 function equip_item(state, coordinates) {
+    // TODO count it as a meaningful interaction if positive (or with a limit)
     state.inventory = state_inventory_1.equip_item(state.inventory, coordinates);
     return state;
 }
@@ -2628,22 +2985,80 @@ function unequip_item(state, slot) {
 exports.unequip_item = unequip_item;
 function sell_item(state, coordinates) {
     // TODO
+    // TODO count it as a meaningful interaction if positive (or with a limit)
     return state;
 }
 exports.sell_item = sell_item;
+function rename_avatar(state, new_name) {
+    // TODO count it as a meaningful interaction once
+    state.avatar = state_character_1.rename(state.avatar, new_name);
+    return state;
+}
+exports.rename_avatar = rename_avatar;
+function change_avatar_class(state, klass) {
+    // TODO make this have an effect (in v2 ?)
+    state.avatar = state_character_1.switch_class(state.avatar, klass);
+    return state;
+}
+exports.change_avatar_class = change_avatar_class;
 /////////////////////
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { version } = __webpack_require__(22)
-const { stylizeString } = __webpack_require__(1)
-const { render_header, render_recap, render_adventure_screen } = __webpack_require__(93)
-const { init_globalize, init_savegame } = __webpack_require__(114)
-const { play } = __webpack_require__(136)
-const { render_cta } = __webpack_require__(137)
+const tbrpg = __webpack_require__(22)
+
+function play({config}) {
+	let state = config.store
+	state = tbrpg.play(state)
+	config.set(state)
+}
+
+function equip_item({config}, coordinates) {
+	let state = config.store
+	state = tbrpg.equip_item(state, coordinates)
+	config.set(state)
+}
+
+function rename_avatar({config}, new_name) {
+	let state = config.store
+	state = tbrpg.rename_avatar(state, new_name)
+	config.set(state)
+}
+
+function change_class({config}, new_class) {
+	let state = config.store
+	state = tbrpg.change_avatar_class(state, new_class)
+	config.set(state)
+}
+
+module.exports = {
+	play,
+	equip_item,
+	rename_avatar,
+	change_class,
+}
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+module.exports = require("readline");
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { version } = __webpack_require__(26)
+const { prettifyJson, stylizeString } = __webpack_require__(1)
+const { render_non_interactive_before, render_non_interactive_after } = __webpack_require__(16)
+const { init_globalize, init_savegame } = __webpack_require__(118)
+const { play } = __webpack_require__(23)
+const { render_cta } = __webpack_require__(140)
+const { start_loop } = __webpack_require__(141)
 
 /////////////////////////////////////////////////
 
@@ -2651,14 +3066,15 @@ const MINIMAL_TERMINAL_WIDTH = 80
 
 const options = {
 	version,
-	verbose: false,
+	verbose: false, // XXX
 	is_interactive: true,
 	may_clear_screen: true,
 	term_width: MINIMAL_TERMINAL_WIDTH,
 }
 
 
-options.is_interactive = false //!!process.stdout.isTTY // TODO read params also
+options.is_interactive = !!process.stdout.isTTY // TODO read params also
+//options.is_interactive = false
 options.may_clear_screen = options.is_interactive
 options.globalize = init_globalize(options)
 options.config = init_savegame(options)
@@ -2694,20 +3110,19 @@ function stylize_tbrpg_string(style, s) {
 
 /////////////////////////////////////////////////
 
-render_header(options)
-render_recap(options)
-
-/////////////////////////////////////////////////
-
 if (options.is_interactive) {
-	console.log('TODO')
+	start_loop(options)
+		.catch(e => console.error('Error:\n' + stylizeString.red(prettifyJson(e))))
+		// TODO report
+		.then(() => console.log('Quitting...'))
 }
 
 /////////////////////////////////////////////////
 
 if (!options.is_interactive) {
+	render_non_interactive_before(options)
 	play(options)
-	render_adventure_screen(options)
+	render_non_interactive_after(options)
 	render_cta(options)
 }
 
@@ -2715,23 +3130,23 @@ console.log('\n---------------------------------------------------------------\n
 
 
 /***/ }),
-/* 22 */
+/* 26 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"the-npm-rpg","version":"0.0.8","description":"The Boring RPG, a command line RPG game. Just `npx the-npm-rpg`!","main":"src/index.js","author":"Offirmo <offirmo.net@gmail.com>","license":"UNLICENSED","repository":{"type":"git","url":"git+https://github.com/online-adventures/oh-my-rpg.git"},"bin":"./bin/index.js","scripts":{"start":"node src/index.js","bin":"bin/index.js","build":"webpack --config meta/webpack.config.ts"},"dependencies":{"cldr-data":"^31.0.2","conf":"^1.1.2","globalize":"^1.3.0","iana-tz-data":"^2017.1.0"},"devDependencies":{"@oh-my-rpg/data":"^0.0.1","@oh-my-rpg/state-the-boring-rpg":"^0.0.1","@oh-my-rpg/view-text":"^0.0.1","ansi-escapes":"^2.0.0","boxen":"^1.2.1","chalk":"^2.0.1","env-paths":"^1.0.0","fetchival":"^0.3.2","globalize-webpack-plugin":"^1.1.1","latest-version":"^3.1.0","linewrap":"^0.2.1","package-json":"^4.0.1","prettyjson":"^1.2.1","tslib":"^1.7.1","universal-analytics":"^0.4.13","username":"^3.0.0","webpack":"^3.3.0"}}
+module.exports = {"name":"the-npm-rpg","version":"0.1.0","description":"The Boring RPG, a command line RPG game. Just `npx the-npm-rpg`!","main":"src/index.js","author":"Offirmo <offirmo.net@gmail.com>","license":"UNLICENSED","repository":{"type":"git","url":"git+https://github.com/online-adventures/oh-my-rpg.git"},"bin":"./bin/index.js","scripts":{"start":"node src/index.js","bin":"bin/index.js","build":"webpack --config meta/webpack.config.ts"},"dependencies":{"conf":"^1.1.2"},"devDependencies":{"@oh-my-rpg/data":"^0.0.1","@oh-my-rpg/state-the-boring-rpg":"^0.0.1","@oh-my-rpg/view-text":"^0.0.1","ansi-escapes":"^2.0.0","boxen":"^1.2.1","chalk":"^2.0.1","cldr-data":"^31.0.2","env-paths":"^1.0.0","fetchival":"^0.3.2","globalize":"^1.3.0","iana-tz-data":"^2017.1.0","latest-version":"^3.1.0","linewrap":"^0.2.1","package-json":"^4.0.1","prettyjson":"^1.2.1","tslib":"^1.7.1","universal-analytics":"^0.4.13","username":"^3.0.0","webpack":"^3.3.0"}}
 
 /***/ }),
-/* 23 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 // ### Module dependencies
-var colors = __webpack_require__(24);
-var Utils = __webpack_require__(34);
+var colors = __webpack_require__(28);
+var Utils = __webpack_require__(38);
 
-exports.version = __webpack_require__(35).version;
+exports.version = __webpack_require__(39).version;
 
 // Helper function to detect if an object can be directly serializable
 var isSerializable = function(input, onlyPrimitives, options) {
@@ -2991,7 +3406,7 @@ exports.renderString = function renderString(data, options, indentation) {
 
 
 /***/ }),
-/* 24 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -3005,7 +3420,7 @@ var colors = __webpack_require__(2);
 module['exports'] = colors;
 
 /***/ }),
-/* 25 */
+/* 29 */
 /***/ (function(module, exports) {
 
 /*
@@ -3087,7 +3502,7 @@ Object.keys(codes).forEach(function (key) {
 });
 
 /***/ }),
-/* 26 */
+/* 30 */
 /***/ (function(module, exports) {
 
 /*
@@ -3153,7 +3568,7 @@ module.exports = (function () {
 })();
 
 /***/ }),
-/* 27 */
+/* 31 */
 /***/ (function(module, exports) {
 
 function webpackEmptyContext(req) {
@@ -3162,10 +3577,10 @@ function webpackEmptyContext(req) {
 webpackEmptyContext.keys = function() { return []; };
 webpackEmptyContext.resolve = webpackEmptyContext;
 module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 27;
+webpackEmptyContext.id = 31;
 
 /***/ }),
-/* 28 */
+/* 32 */
 /***/ (function(module, exports) {
 
 module['exports'] = function runTheTrap (text, options) {
@@ -3216,7 +3631,7 @@ module['exports'] = function runTheTrap (text, options) {
 
 
 /***/ }),
-/* 29 */
+/* 33 */
 /***/ (function(module, exports) {
 
 // please no
@@ -3326,7 +3741,7 @@ module['exports'] = function zalgo(text, options) {
 
 
 /***/ }),
-/* 30 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var colors = __webpack_require__(2);
@@ -3343,7 +3758,7 @@ module['exports'] = (function() {
 })();
 
 /***/ }),
-/* 31 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var colors = __webpack_require__(2);
@@ -3353,7 +3768,7 @@ module['exports'] = function (letter, i, exploded) {
 };
 
 /***/ }),
-/* 32 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var colors = __webpack_require__(2);
@@ -3372,7 +3787,7 @@ module['exports'] = (function () {
 
 
 /***/ }),
-/* 33 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var colors = __webpack_require__(2);
@@ -3385,7 +3800,7 @@ module['exports'] = (function () {
 })();
 
 /***/ }),
-/* 34 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3417,24 +3832,24 @@ exports.getMaxIndexLength = function(input) {
 
 
 /***/ }),
-/* 35 */
+/* 39 */
 /***/ (function(module, exports) {
 
 module.exports = {"_from":"prettyjson@^1.2.1","_id":"prettyjson@1.2.1","_inBundle":false,"_integrity":"sha1-/P+rQdGcq0365eV15kJGYZsS0ok=","_location":"/prettyjson","_phantomChildren":{},"_requested":{"type":"range","registry":true,"raw":"prettyjson@^1.2.1","name":"prettyjson","escapedName":"prettyjson","rawSpec":"^1.2.1","saveSpec":null,"fetchSpec":"^1.2.1"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/prettyjson/-/prettyjson-1.2.1.tgz","_shasum":"fcffab41d19cab4dfae5e575e64246619b12d289","_spec":"prettyjson@^1.2.1","_where":"/Users/yjutard/work/src/oa/oh-my-rpg/packages/the-npm-rpg","author":{"name":"Rafael de Oleza","email":"rafeca@gmail.com","url":"https://github.com/rafeca"},"bin":{"prettyjson":"./bin/prettyjson"},"bugs":{"url":"https://github.com/rafeca/prettyjson/issues"},"bundleDependencies":false,"dependencies":{"colors":"^1.1.2","minimist":"^1.2.0"},"deprecated":false,"description":"Package for formatting JSON data in a coloured YAML-style, perfect for CLI output","devDependencies":{"coveralls":"^2.11.15","istanbul":"^0.4.5","jshint":"^2.9.4","mocha":"^3.1.2","mocha-lcov-reporter":"^1.2.0","should":"^11.1.1"},"homepage":"http://rafeca.com/prettyjson","keywords":["json","cli","formatting","colors"],"license":"MIT","main":"./lib/prettyjson","name":"prettyjson","repository":{"type":"git","url":"git+https://github.com/rafeca/prettyjson.git"},"scripts":{"changelog":"git log $(git describe --tags --abbrev=0)..HEAD --pretty='* %s' --first-parent","coverage":"istanbul cover _mocha --report lcovonly -- -R spec","coveralls":"npm run coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage","jshint":"jshint lib/*.js test/*.js","test":"npm run jshint && mocha --reporter spec","testwin":"node ./node_modules/mocha/bin/mocha --reporter spec"},"version":"1.2.1"}
 
 /***/ }),
-/* 36 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const stringWidth = __webpack_require__(6);
-const chalk = __webpack_require__(7);
-const widestLine = __webpack_require__(49);
-const cliBoxes = __webpack_require__(56);
-const camelCase = __webpack_require__(58);
-const ansiAlign = __webpack_require__(59);
-const termSize = __webpack_require__(60);
+const stringWidth = __webpack_require__(7);
+const chalk = __webpack_require__(8);
+const widestLine = __webpack_require__(53);
+const cliBoxes = __webpack_require__(60);
+const camelCase = __webpack_require__(62);
+const ansiAlign = __webpack_require__(63);
+const termSize = __webpack_require__(64);
 
 const getObject = detail => {
 	let obj;
@@ -3568,18 +3983,18 @@ module.exports._borderStyles = cliBoxes;
 
 
 /***/ }),
-/* 37 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const ansiRegex = __webpack_require__(38);
+const ansiRegex = __webpack_require__(42);
 
 module.exports = input => typeof input === 'string' ? input.replace(ansiRegex(), '') : input;
 
 
 /***/ }),
-/* 38 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3596,7 +4011,7 @@ module.exports = () => {
 
 
 /***/ }),
-/* 39 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3649,7 +4064,7 @@ module.exports = x => {
 
 
 /***/ }),
-/* 40 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3667,12 +4082,12 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 41 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(module) {
-const colorConvert = __webpack_require__(42);
+const colorConvert = __webpack_require__(46);
 
 const wrapAnsi16 = (fn, offset) => function () {
 	const code = fn.apply(colorConvert, arguments);
@@ -3824,14 +4239,14 @@ Object.defineProperty(module, 'exports', {
 	get: assembleStyles
 });
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
 
 /***/ }),
-/* 42 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var conversions = __webpack_require__(9);
-var route = __webpack_require__(44);
+var conversions = __webpack_require__(10);
+var route = __webpack_require__(48);
 
 var convert = {};
 
@@ -3911,7 +4326,7 @@ module.exports = convert;
 
 
 /***/ }),
-/* 43 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4070,10 +4485,10 @@ module.exports = {
 
 
 /***/ }),
-/* 44 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var conversions = __webpack_require__(9);
+var conversions = __webpack_require__(10);
 
 /*
 	this function routes a model to all other models.
@@ -4174,13 +4589,13 @@ module.exports = function (fromModel) {
 
 
 /***/ }),
-/* 45 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const os = __webpack_require__(46);
-const hasFlag = __webpack_require__(47);
+const os = __webpack_require__(50);
+const hasFlag = __webpack_require__(51);
 
 const env = process.env;
 
@@ -4244,7 +4659,7 @@ let supportLevel = (() => {
 	}
 
 	if ('CI' in env) {
-		if ('TRAVIS' in env || env.CI === 'Travis' || 'CIRCLECI' in env) {
+		if (['TRAVIS', 'CIRCLECI', 'APPVEYOR', 'GITLAB_CI'].some(sign => sign in env) || env.CI_NAME === 'codeship') {
 			return 1;
 		}
 
@@ -4269,7 +4684,7 @@ let supportLevel = (() => {
 		}
 	}
 
-	if (/^(screen|xterm)-256(?:color)?/.test(env.TERM)) {
+	if (/-256(color)?$/i.test(env.TERM)) {
 		return 2;
 	}
 
@@ -4296,13 +4711,13 @@ module.exports = process && support(supportLevel);
 
 
 /***/ }),
-/* 46 */
+/* 50 */
 /***/ (function(module, exports) {
 
 module.exports = require("os");
 
 /***/ }),
-/* 47 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4319,7 +4734,7 @@ module.exports = function (flag, argv) {
 
 
 /***/ }),
-/* 48 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4454,12 +4869,12 @@ module.exports = (chalk, tmp) => {
 
 
 /***/ }),
-/* 49 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var stringWidth = __webpack_require__(50);
+var stringWidth = __webpack_require__(54);
 
 module.exports = function (str) {
 	return Math.max.apply(null, str.split('\n').map(function (x) {
@@ -4470,14 +4885,14 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 50 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var stripAnsi = __webpack_require__(51);
-var codePointAt = __webpack_require__(53);
-var isFullwidthCodePoint = __webpack_require__(54);
+var stripAnsi = __webpack_require__(55);
+var codePointAt = __webpack_require__(57);
+var isFullwidthCodePoint = __webpack_require__(58);
 
 // https://github.com/nodejs/io.js/blob/cff7300a578be1b10001f2d967aaedc88aee6402/lib/readline.js#L1345
 module.exports = function (str) {
@@ -4514,12 +4929,12 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 51 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var ansiRegex = __webpack_require__(52)();
+var ansiRegex = __webpack_require__(56)();
 
 module.exports = function (str) {
 	return typeof str === 'string' ? str.replace(ansiRegex, '') : str;
@@ -4527,7 +4942,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 52 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4538,7 +4953,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 53 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4577,12 +4992,12 @@ module.exports = function (str, pos) {
 
 
 /***/ }),
-/* 54 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var numberIsNan = __webpack_require__(55);
+var numberIsNan = __webpack_require__(59);
 
 module.exports = function (x) {
 	if (numberIsNan(x)) {
@@ -4630,7 +5045,7 @@ module.exports = function (x) {
 
 
 /***/ }),
-/* 55 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4641,22 +5056,22 @@ module.exports = Number.isNaN || function (x) {
 
 
 /***/ }),
-/* 56 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-module.exports = __webpack_require__(57);
+module.exports = __webpack_require__(61);
 
 
 /***/ }),
-/* 57 */
+/* 61 */
 /***/ (function(module, exports) {
 
 module.exports = {"single":{"topLeft":"┌","topRight":"┐","bottomRight":"┘","bottomLeft":"└","vertical":"│","horizontal":"─"},"double":{"topLeft":"╔","topRight":"╗","bottomRight":"╝","bottomLeft":"╚","vertical":"║","horizontal":"═"},"round":{"topLeft":"╭","topRight":"╮","bottomRight":"╯","bottomLeft":"╰","vertical":"│","horizontal":"─"},"single-double":{"topLeft":"╓","topRight":"╖","bottomRight":"╜","bottomLeft":"╙","vertical":"║","horizontal":"─"},"double-single":{"topLeft":"╒","topRight":"╕","bottomRight":"╛","bottomLeft":"╘","vertical":"│","horizontal":"═"},"classic":{"topLeft":"+","topRight":"+","bottomRight":"+","bottomLeft":"+","vertical":"|","horizontal":"-"}}
 
 /***/ }),
-/* 58 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4727,13 +5142,13 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 59 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-const stringWidth = __webpack_require__(6)
+const stringWidth = __webpack_require__(7)
 
 function ansiAlign (text, opts) {
   if (!text) return text
@@ -4795,13 +5210,13 @@ function fullDiff (maxWidth, curWidth) {
 
 
 /***/ }),
-/* 60 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(__dirname) {
 const path = __webpack_require__(4);
-const execa = __webpack_require__(61);
+const execa = __webpack_require__(65);
 
 const create = (columns, rows) => ({
 	columns: parseInt(columns, 10),
@@ -4873,22 +5288,22 @@ module.exports = () => {
 /* WEBPACK VAR INJECTION */}.call(exports, "/"))
 
 /***/ }),
-/* 61 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const childProcess = __webpack_require__(10);
-const util = __webpack_require__(11);
-const crossSpawn = __webpack_require__(62);
-const stripEof = __webpack_require__(77);
-const npmRunPath = __webpack_require__(78);
-const isStream = __webpack_require__(80);
-const _getStream = __webpack_require__(81);
-const pFinally = __webpack_require__(84);
-const onExit = __webpack_require__(85);
-const errname = __webpack_require__(89);
-const stdio = __webpack_require__(90);
+const childProcess = __webpack_require__(11);
+const util = __webpack_require__(12);
+const crossSpawn = __webpack_require__(66);
+const stripEof = __webpack_require__(81);
+const npmRunPath = __webpack_require__(82);
+const isStream = __webpack_require__(84);
+const _getStream = __webpack_require__(85);
+const pFinally = __webpack_require__(88);
+const onExit = __webpack_require__(89);
+const errname = __webpack_require__(93);
+const stdio = __webpack_require__(94);
 
 const TEN_MEGABYTES = 1000 * 1000 * 10;
 
@@ -5189,15 +5604,15 @@ module.exports.spawn = util.deprecate(module.exports, 'execa.spawn() is deprecat
 
 
 /***/ }),
-/* 62 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var cp = __webpack_require__(10);
-var parse = __webpack_require__(63);
-var enoent = __webpack_require__(76);
+var cp = __webpack_require__(11);
+var parse = __webpack_require__(67);
+var enoent = __webpack_require__(80);
 
 var cpSpawnSync = cp.spawnSync;
 
@@ -5255,17 +5670,17 @@ module.exports._enoent = enoent;
 
 
 /***/ }),
-/* 63 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var resolveCommand = __webpack_require__(12);
-var hasEmptyArgumentBug = __webpack_require__(71);
-var escapeArgument = __webpack_require__(14);
-var escapeCommand = __webpack_require__(72);
-var readShebang = __webpack_require__(73);
+var resolveCommand = __webpack_require__(13);
+var hasEmptyArgumentBug = __webpack_require__(75);
+var escapeArgument = __webpack_require__(15);
+var escapeCommand = __webpack_require__(76);
+var readShebang = __webpack_require__(77);
 
 var isWin = process.platform === 'win32';
 var skipShellRegExp = /\.(?:com|exe)$/i;
@@ -5375,7 +5790,7 @@ module.exports = parse;
 
 
 /***/ }),
-/* 64 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = which
@@ -5387,7 +5802,7 @@ var isWindows = process.platform === 'win32' ||
 
 var path = __webpack_require__(4)
 var COLON = isWindows ? ';' : ':'
-var isexe = __webpack_require__(65)
+var isexe = __webpack_require__(69)
 
 function getNotFoundError (cmd) {
   var er = new Error('not found: ' + cmd)
@@ -5516,15 +5931,15 @@ function whichSync (cmd, opt) {
 
 
 /***/ }),
-/* 65 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var fs = __webpack_require__(5)
 var core
 if (process.platform === 'win32' || global.TESTING_WINDOWS) {
-  core = __webpack_require__(66)
+  core = __webpack_require__(70)
 } else {
-  core = __webpack_require__(67)
+  core = __webpack_require__(71)
 }
 
 module.exports = isexe
@@ -5579,7 +5994,7 @@ function sync (path, options) {
 
 
 /***/ }),
-/* 66 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = isexe
@@ -5627,7 +6042,7 @@ function sync (path, options) {
 
 
 /***/ }),
-/* 67 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = isexe
@@ -5674,7 +6089,7 @@ function checkMode (stat, options) {
 
 
 /***/ }),
-/* 68 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 if (process.env.npm_package_name === 'pseudomap' &&
@@ -5684,12 +6099,12 @@ if (process.env.npm_package_name === 'pseudomap' &&
 if (typeof Map === 'function' && !process.env.TEST_PSEUDOMAP) {
   module.exports = Map
 } else {
-  module.exports = __webpack_require__(69)
+  module.exports = __webpack_require__(73)
 }
 
 
 /***/ }),
-/* 69 */
+/* 73 */
 /***/ (function(module, exports) {
 
 var hasOwnProperty = Object.prototype.hasOwnProperty
@@ -5808,7 +6223,7 @@ function set (data, k, v) {
 
 
 /***/ }),
-/* 70 */
+/* 74 */
 /***/ (function(module, exports) {
 
 module.exports = Yallist
@@ -6184,7 +6599,7 @@ function Node (value, prev, next, list) {
 
 
 /***/ }),
-/* 71 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6209,13 +6624,13 @@ module.exports = hasEmptyArgumentBug();
 
 
 /***/ }),
-/* 72 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var escapeArgument = __webpack_require__(14);
+var escapeArgument = __webpack_require__(15);
 
 function escapeCommand(command) {
     // Do not escape if this command is not dangerous..
@@ -6228,15 +6643,15 @@ module.exports = escapeCommand;
 
 
 /***/ }),
-/* 73 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var fs = __webpack_require__(5);
-var LRU = __webpack_require__(13);
-var shebangCommand = __webpack_require__(74);
+var LRU = __webpack_require__(14);
+var shebangCommand = __webpack_require__(78);
 
 var shebangCache = new LRU({ max: 50, maxAge: 30 * 1000 });  // Cache just for 30sec
 
@@ -6272,12 +6687,12 @@ module.exports = readShebang;
 
 
 /***/ }),
-/* 74 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var shebangRegex = __webpack_require__(75);
+var shebangRegex = __webpack_require__(79);
 
 module.exports = function (str) {
 	var match = str.match(shebangRegex);
@@ -6298,7 +6713,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 75 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6307,14 +6722,14 @@ module.exports = /^#!.*/;
 
 
 /***/ }),
-/* 76 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var isWin = process.platform === 'win32';
-var resolveCommand = __webpack_require__(12);
+var resolveCommand = __webpack_require__(13);
 
 var isNode10 = process.version.indexOf('v0.10.') === 0;
 
@@ -6387,7 +6802,7 @@ module.exports.notFoundError = notFoundError;
 
 
 /***/ }),
-/* 77 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6409,13 +6824,13 @@ module.exports = function (x) {
 
 
 /***/ }),
-/* 78 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 const path = __webpack_require__(4);
-const pathKey = __webpack_require__(79);
+const pathKey = __webpack_require__(83);
 
 module.exports = opts => {
 	opts = Object.assign({
@@ -6455,7 +6870,7 @@ module.exports.env = opts => {
 
 
 /***/ }),
-/* 79 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6475,7 +6890,7 @@ module.exports = opts => {
 
 
 /***/ }),
-/* 80 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6503,12 +6918,12 @@ isStream.transform = function (stream) {
 
 
 /***/ }),
-/* 81 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const bufferStream = __webpack_require__(82);
+const bufferStream = __webpack_require__(86);
 
 function getStream(inputStream, opts) {
 	if (!inputStream) {
@@ -6561,12 +6976,12 @@ module.exports.array = (stream, opts) => getStream(stream, Object.assign({}, opt
 
 
 /***/ }),
-/* 82 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const PassThrough = __webpack_require__(83).PassThrough;
+const PassThrough = __webpack_require__(87).PassThrough;
 
 module.exports = opts => {
 	opts = Object.assign({}, opts);
@@ -6619,13 +7034,13 @@ module.exports = opts => {
 
 
 /***/ }),
-/* 83 */
+/* 87 */
 /***/ (function(module, exports) {
 
 module.exports = require("stream");
 
 /***/ }),
-/* 84 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6647,16 +7062,16 @@ module.exports = (promise, onFinally) => {
 
 
 /***/ }),
-/* 85 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Note: since nyc uses this module to output coverage, any lines
 // that are in the direct sync flow of nyc's outputCoverage are
 // ignored, since we can never get coverage for them.
-var assert = __webpack_require__(86)
-var signals = __webpack_require__(87)
+var assert = __webpack_require__(90)
+var signals = __webpack_require__(91)
 
-var EE = __webpack_require__(88)
+var EE = __webpack_require__(92)
 /* istanbul ignore if */
 if (typeof EE !== 'function') {
   EE = EE.EventEmitter
@@ -6810,13 +7225,13 @@ function processEmit (ev, arg) {
 
 
 /***/ }),
-/* 86 */
+/* 90 */
 /***/ (function(module, exports) {
 
 module.exports = require("assert");
 
 /***/ }),
-/* 87 */
+/* 91 */
 /***/ (function(module, exports) {
 
 // This is not the set of all possible signals.
@@ -6875,13 +7290,13 @@ if (process.platform === 'linux') {
 
 
 /***/ }),
-/* 88 */
+/* 92 */
 /***/ (function(module, exports) {
 
 module.exports = require("events");
 
 /***/ }),
-/* 89 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6925,7 +7340,7 @@ module.exports.__test__ = errname;
 
 
 /***/ }),
-/* 90 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6973,7 +7388,7 @@ module.exports = opts => {
 
 
 /***/ }),
-/* 91 */
+/* 95 */
 /***/ (function(module, exports) {
 
 
@@ -7764,7 +8179,7 @@ linewrap.wrap = function(text/*, start, stop, params*/) {
 
 
 /***/ }),
-/* 92 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7869,84 +8284,12 @@ x.iTerm.setCwd = cwd => '\u001B]50;CurrentDir=' + (cwd || process.cwd()) + '\u00
 
 
 /***/ }),
-/* 93 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {
-	stylizeString,
-	clearCli,
-} = __webpack_require__(1)
-
-/////////////////////////////////////////////////
-
-const render_adventure_screen = __webpack_require__(94).render
-
-/////////////////////////////////////////////////
-
-function render_header({may_clear_screen, version}) {
-	if (may_clear_screen)
-		clearCli()
-	else
-		console.log('\n---------------------------------------------------------------\n')
-
-	console.log(
-		stylizeString.bold('The npm RPG')
-		+ ` - v${version} - `
-		+ stylizeString.underline('http://www.online-adventur.es/the-npm-rpg')
-		+ '\n'
-	)
-}
-
-function render_recap({config}) {
-	const state = config.store
-	const {good_click_count} = state
-
-	if (good_click_count === 0)
-		return console.log(
-stylizeString.bold(`Congratulations, adventurer!\n`)
-+ `Your are more courageous, cunning and curious than your peers:
-You dared to enter this unknown realm, for glory and adventures! (and loot 💰 ;)
-
-Great sages prophetized your coming,
-commoners are waiting for their hero
-and kings are trembling from fear of change...
-..undoubtly, you'll make a name in this world and fulfill your destiny!
-
-A great saga just started...`
-	)
-
-	const {
-		level,
-		health,
-		mana,
-		strength,
-		agility,
-		charisma,
-		wisdom,
-		luck,
-	} = state.avatar.characteristics
-	console.log(
-`The great saga of ${stylizeString.bold(state.avatar.name)}, ${state.avatar.klass} LVL${level}
-HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS:${wisdom} LUCK:${luck}
-`)
-}
-
-/////////////////////////////////////////////////
-
-module.exports = {
-	render_header,
-	render_recap,
-	render_adventure_screen,
-}
-
-
-/***/ }),
-/* 94 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const { wrapLines, stylizeString } = __webpack_require__(1)
 
-const { render_adventure } = __webpack_require__(95)
+const { render_adventure } = __webpack_require__(6)
 
 /////////////////////////////////////////////////
 
@@ -7972,233 +8315,7 @@ module.exports = {
 
 
 /***/ }),
-/* 95 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/////////////////////
-Object.defineProperty(exports, "__esModule", { value: true });
-const lodash_1 = __webpack_require__(96);
-const definitions_1 = __webpack_require__(3);
-const logic_weapons_1 = __webpack_require__(16);
-const logic_armors_1 = __webpack_require__(17);
-const state_inventory_1 = __webpack_require__(18);
-const state_character_1 = __webpack_require__(19);
-const types_1 = __webpack_require__(112);
-exports.TextStyle = types_1.TextStyle;
-const DEFAULT_RENDERING_OPTIONS = {
-    globalize: {
-        formatMessage: (s) => s,
-        formatNumber: (n) => `${n}`,
-    },
-    stylize: (style, s) => s
-};
-exports.DEFAULT_RENDERING_OPTIONS = DEFAULT_RENDERING_OPTIONS;
-/////////////////////
-function get_style_for_quality(quality) {
-    switch (quality) {
-        case definitions_1.ItemQuality.common:
-            return types_1.TextStyle.item_quality_common;
-        case definitions_1.ItemQuality.uncommon:
-            return types_1.TextStyle.item_quality_uncommon;
-        case definitions_1.ItemQuality.rare:
-            return types_1.TextStyle.item_quality_rare;
-        case definitions_1.ItemQuality.epic:
-            return types_1.TextStyle.item_quality_epic;
-        case definitions_1.ItemQuality.legendary:
-            return types_1.TextStyle.item_quality_legendary;
-        case definitions_1.ItemQuality.artifact:
-            return types_1.TextStyle.item_quality_artifact;
-        default:
-            throw new Error(`get_style_for_quality(): Unknown ItemQuality : ${quality}`);
-    }
-}
-function get_item_icon_for(i) {
-    if (!i)
-        return '⋯';
-    switch (i.slot) {
-        case definitions_1.InventorySlot.weapon:
-            return '⚔';
-        case definitions_1.InventorySlot.armor:
-            return '🛡';
-        default:
-            throw new Error(`get_item_icon_for(): no icon for slot "${i.slot}" !`);
-    }
-}
-function get_characteristic_icon_for(stat) {
-    switch (stat) {
-        case state_character_1.CharacterStat.level:
-            return '👶';
-        case state_character_1.CharacterStat.health:
-            return '💗';
-        case state_character_1.CharacterStat.mana:
-            return '💙';
-        case state_character_1.CharacterStat.agility:
-            return '🤸';
-        case state_character_1.CharacterStat.luck:
-            return '🤹';
-        case state_character_1.CharacterStat.strength:
-            // 💪
-            return '🏋';
-        case state_character_1.CharacterStat.charisma:
-            return '🏊';
-        case state_character_1.CharacterStat.wisdom:
-            // '🙏'
-            return '👵';
-        default:
-            throw new Error(`get_characteristic_icon_for(): no icon for stat "${stat}" !`);
-    }
-}
-///////
-function render_weapon(w, options = DEFAULT_RENDERING_OPTIONS) {
-    if (w.slot !== definitions_1.InventorySlot.weapon)
-        throw new Error(`render_weapon(): can't render a ${w.slot} !`);
-    const name = `${w.qualifier1_hid}.${w.base_hid}.of.the.${w.qualifier2_hid}`;
-    const enhancement_level = w.enhancement_level
-        ? ` +${w.enhancement_level}`
-        : '';
-    const [min_damage, max_damage] = logic_weapons_1.get_damage_interval(w);
-    return options.stylize(get_style_for_quality(w.quality), `${name}${enhancement_level}`) + ` [${min_damage} ↔ ${max_damage}]`;
-}
-exports.render_weapon = render_weapon;
-function render_armor(a, options = DEFAULT_RENDERING_OPTIONS) {
-    if (a.slot !== definitions_1.InventorySlot.armor)
-        throw new Error(`render_armor(): can't render a ${a.slot} !`);
-    const name = `${a.qualifier1_hid}.${a.base_hid}.of.the.${a.qualifier2_hid}`;
-    const enhancement_level = a.enhancement_level
-        ? ` +${a.enhancement_level}`
-        : '';
-    const [min_dmg_reduc, max_dmg_reduc] = logic_armors_1.get_damage_reduction_interval(a);
-    return options.stylize(get_style_for_quality(a.quality), `${name}${enhancement_level}`) + ` [${min_dmg_reduc} ↔ ${max_dmg_reduc}]`;
-}
-exports.render_armor = render_armor;
-function render_item(i, options = DEFAULT_RENDERING_OPTIONS) {
-    if (!i)
-        return '';
-    switch (i.slot) {
-        case definitions_1.InventorySlot.weapon:
-            return render_weapon(i, options);
-        case definitions_1.InventorySlot.armor:
-            return render_armor(i, options);
-        default:
-            throw new Error(`render_item(): don't know how to render a "${i.slot}" !`);
-    }
-}
-exports.render_item = render_item;
-function render_characteristics(state, options = DEFAULT_RENDERING_OPTIONS) {
-    const { last_adventure: la } = options;
-    return state_character_1.CHARACTER_STATS.map((stat) => {
-        const icon = get_characteristic_icon_for(stat);
-        const label = stat;
-        const value = state.characteristics[stat];
-        const padded_label = `${label}............`.slice(0, 11);
-        const padded_human_values = `.......${value}`.slice(-4);
-        const update_notice = options.stylize(types_1.TextStyle.change_outline, la && la.gains && la.gains[stat]
-            ? ` increased by ${la.gains[stat]}! 🆙`
-            : '');
-        return `${icon}  ${padded_label}${padded_human_values}${update_notice}`;
-    }).join('\n');
-}
-exports.render_characteristics = render_characteristics;
-function render_equipment(inventory, options = DEFAULT_RENDERING_OPTIONS) {
-    const equiped_items = definitions_1.ITEM_SLOTS.map(lodash_1.partial(state_inventory_1.get_item_in_slot, inventory));
-    const { last_adventure: la } = options;
-    return equiped_items.map((i, index) => {
-        const padded_slot = `${definitions_1.ITEM_SLOTS[index]}  `.slice(0, 6);
-        if (!i)
-            return `${padded_slot}: -`;
-        const icon = get_item_icon_for(i);
-        const label = render_item(i, options);
-        const update_notice = options.stylize(types_1.TextStyle.change_outline, i && la && la.gains && ((la.gains.weapon_improvement && i.slot === 'weapon')
-            || (la.gains.armor_improvement && i.slot === 'armor'))
-            ? ` enhanced! 🆙`
-            : '');
-        return `${padded_slot}: ${icon}  ${label}${update_notice}`;
-    }).join('\n');
-}
-exports.render_equipment = render_equipment;
-function render_inventory(inventory, options = DEFAULT_RENDERING_OPTIONS) {
-    const misc_items = Array.from(state_inventory_1.iterables_unslotted(inventory));
-    const { last_adventure: la } = options;
-    return misc_items.map((i, index) => {
-        const icon = get_item_icon_for(i);
-        const label = render_item(i, options);
-        const padded_human_index = `  ${index + 1}.`.slice(-3);
-        const update_notice = options.stylize(types_1.TextStyle.change_outline, i && la && (la.gains.weapon === i || la.gains.armor === i)
-            ? ` new! 🎁`
-            : '');
-        return `${padded_human_index} ${icon}  ${label}${update_notice}`;
-    }).join('\n');
-}
-exports.render_inventory = render_inventory;
-function render_wallet(wallet, options = DEFAULT_RENDERING_OPTIONS) {
-    const { last_adventure: la } = options;
-    const coins_update_notice = options.stylize(types_1.TextStyle.change_outline, la && la.gains.coins
-        ? ` gained ${la.gains.coins}! 🆙`
-        : '');
-    const tokens_update_notice = options.stylize(types_1.TextStyle.change_outline, la && la.gains.tokens
-        ? ` gained ${la.gains.tokens}! 🆙`
-        : '');
-    return `💰  ${wallet.coin_count} coins${coins_update_notice}
-💠  ${wallet.token_count} tokens${tokens_update_notice}`;
-}
-exports.render_wallet = render_wallet;
-function render_adventure_gain(a, gain_type, gains_for_display) {
-    switch (gain_type) {
-        case 'weapon':
-            return `⚔  New item: ${gains_for_display.formattedWeapon}`;
-        case 'armor':
-            return `🛡  New item: ${gains_for_display.formattedArmor}`;
-        case 'coins':
-            return `💰  Received ${gains_for_display.formattedCoins} coins`;
-        case 'level':
-            return `🆙  Levelled up!`;
-        case 'health':
-        case 'mana':
-        case 'strength':
-        case 'agility':
-        case 'charisma':
-        case 'wisdom':
-        case 'luck':
-            return `💪  ${gain_type} increased!`;
-        default:
-            return `💠  TODO gain message for ${gain_type}`;
-    }
-}
-function render_adventure(a, options = DEFAULT_RENDERING_OPTIONS) {
-    const g = options.globalize;
-    const formattedWeapon = a.gains.weapon ? render_item(a.gains.weapon, options) : '';
-    const formattedArmor = a.gains.armor ? render_item(a.gains.armor, options) : '';
-    const formattedItem = formattedWeapon || formattedArmor;
-    // formatting to natural language
-    const gains_for_display = Object.assign({}, a.gains, {
-        formattedCoins: a.gains.coins ? g.formatNumber(a.gains.coins) : '',
-        formattedWeapon,
-        formattedArmor,
-        formattedItem,
-    });
-    const raw_message_multiline = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display);
-    const raw_message = raw_message_multiline
-        .split('\n')
-        .map((s) => s.trim())
-        .filter((s) => !!s)
-        .join(' ');
-    const msg_parts = [
-        raw_message,
-        '',
-        ...Object.keys(a.gains)
-            .filter((gain_type) => !!a.gains[gain_type])
-            .map((gain_type) => render_adventure_gain(a, gain_type, gains_for_display))
-    ];
-    return msg_parts.join('\n');
-}
-exports.render_adventure = render_adventure;
-/////////////////////
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 96 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -25287,10 +25404,10 @@ exports.render_adventure = render_adventure;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
 
 /***/ }),
-/* 97 */
+/* 99 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25474,7 +25591,7 @@ function __asyncValues(o) {
 }
 
 /***/ }),
-/* 98 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25529,7 +25646,7 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 99 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
@@ -26259,28 +26376,28 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
 
 
 /***/ }),
-/* 100 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const set = __webpack_require__(101).entries
+const set = __webpack_require__(103).entries
 
 module.exports = set
 
 
 /***/ }),
-/* 101 */
+/* 103 */
 /***/ (function(module, exports) {
 
 module.exports = {"entries":[{"type":"base","hid":"axe"},{"type":"base","hid":"bow"},{"type":"base","hid":"claw"},{"type":"base","hid":"dagger"},{"type":"base","hid":"grimoire"},{"type":"base","hid":"harp"},{"type":"base","hid":"knife"},{"type":"base","hid":"longbow"},{"type":"base","hid":"longsword"},{"type":"base","hid":"luth"},{"type":"base","hid":"mace"},{"type":"base","hid":"scythe"},{"type":"base","hid":"spear"},{"type":"base","hid":"spoon"},{"type":"base","hid":"staff"},{"type":"base","hid":"sword"},{"type":"base","hid":"wand"},{"type":"qualifier1","hid":"admirable"},{"type":"qualifier1","hid":"arcanic"},{"type":"qualifier1","hid":"bestial"},{"type":"qualifier1","hid":"bone"},{"type":"qualifier1","hid":"brass"},{"type":"qualifier1","hid":"cardboard"},{"type":"qualifier1","hid":"complex"},{"type":"qualifier1","hid":"composite"},{"type":"qualifier1","hid":"consecrated"},{"type":"qualifier1","hid":"crafted"},{"type":"qualifier1","hid":"cruel"},{"type":"qualifier1","hid":"cunning"},{"type":"qualifier1","hid":"cursed"},{"type":"qualifier1","hid":"emerald"},{"type":"qualifier1","hid":"engraved"},{"type":"qualifier1","hid":"forbidden"},{"type":"qualifier1","hid":"forgotten"},{"type":"qualifier1","hid":"ghost"},{"type":"qualifier1","hid":"golden"},{"type":"qualifier1","hid":"heavy"},{"type":"qualifier1","hid":"heroic"},{"type":"qualifier1","hid":"holy"},{"type":"qualifier1","hid":"inflexible"},{"type":"qualifier1","hid":"invincible"},{"type":"qualifier1","hid":"iron"},{"type":"qualifier1","hid":"jade"},{"type":"qualifier1","hid":"light"},{"type":"qualifier1","hid":"living"},{"type":"qualifier1","hid":"lost"},{"type":"qualifier1","hid":"mechanical"},{"type":"qualifier1","hid":"mysterious"},{"type":"qualifier1","hid":"old"},{"type":"qualifier1","hid":"onyx"},{"type":"qualifier1","hid":"overrated"},{"type":"qualifier1","hid":"powerful"},{"type":"qualifier1","hid":"practical"},{"type":"qualifier1","hid":"proven"},{"type":"qualifier1","hid":"raging"},{"type":"qualifier1","hid":"robust"},{"type":"qualifier1","hid":"sapphire"},{"type":"qualifier1","hid":"savage"},{"type":"qualifier1","hid":"silver"},{"type":"qualifier1","hid":"simple"},{"type":"qualifier1","hid":"sinister"},{"type":"qualifier1","hid":"skeleton"},{"type":"qualifier1","hid":"solid"},{"type":"qualifier1","hid":"steel"},{"type":"qualifier1","hid":"strange"},{"type":"qualifier1","hid":"subtile"},{"type":"qualifier1","hid":"swift"},{"type":"qualifier1","hid":"unwavering"},{"type":"qualifier1","hid":"used"},{"type":"qualifier1","hid":"whirling"},{"type":"qualifier1","hid":"wooden"},{"type":"qualifier2","hid":"adjudicator"},{"type":"qualifier2","hid":"ambassador"},{"type":"qualifier2","hid":"ancients"},{"type":"qualifier2","hid":"apprentice"},{"type":"qualifier2","hid":"assaulting"},{"type":"qualifier2","hid":"beginner"},{"type":"qualifier2","hid":"brave"},{"type":"qualifier2","hid":"conqueror"},{"type":"qualifier2","hid":"cruel_tyrant"},{"type":"qualifier2","hid":"defender"},{"type":"qualifier2","hid":"destructor"},{"type":"qualifier2","hid":"dwarven"},{"type":"qualifier2","hid":"elite"},{"type":"qualifier2","hid":"elven"},{"type":"qualifier2","hid":"executioner"},{"type":"qualifier2","hid":"expert"},{"type":"qualifier2","hid":"explorer"},{"type":"qualifier2","hid":"gladiator"},{"type":"qualifier2","hid":"goddess"},{"type":"qualifier2","hid":"guard"},{"type":"qualifier2","hid":"hunter"},{"type":"qualifier2","hid":"judgement"},{"type":"qualifier2","hid":"king"},{"type":"qualifier2","hid":"mediator"},{"type":"qualifier2","hid":"mercenary"},{"type":"qualifier2","hid":"militia"},{"type":"qualifier2","hid":"nightmare"},{"type":"qualifier2","hid":"noble"},{"type":"qualifier2","hid":"noob"},{"type":"qualifier2","hid":"pilgrim"},{"type":"qualifier2","hid":"pioneer"},{"type":"qualifier2","hid":"pirate"},{"type":"qualifier2","hid":"profane"},{"type":"qualifier2","hid":"ranger"},{"type":"qualifier2","hid":"sorcerer"},{"type":"qualifier2","hid":"tormentor"},{"type":"qualifier2","hid":"training"},{"type":"qualifier2","hid":"traveler"},{"type":"qualifier2","hid":"twink"},{"type":"qualifier2","hid":"tyrant"},{"type":"qualifier2","hid":"upholder"},{"type":"qualifier2","hid":"warfield_king"},{"type":"qualifier2","hid":"warfield"},{"type":"qualifier2","hid":"warrior"},{"type":"qualifier2","hid":"wise"},{"type":"qualifier2","hid":"woodsman"}]}
 
 /***/ }),
-/* 102 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(103);
+const typescript_string_enums_1 = __webpack_require__(105);
 /////////////////////
 const WeaponPartType = typescript_string_enums_1.Enum('base', 'qualifier1', 'qualifier2');
 exports.WeaponPartType = WeaponPartType;
@@ -26288,7 +26405,7 @@ exports.WeaponPartType = WeaponPartType;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 103 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26343,7 +26460,7 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 104 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26386,7 +26503,7 @@ exports.ENHANCEMENT_MULTIPLIER = ENHANCEMENT_MULTIPLIER;
 //# sourceMappingURL=constants.js.map
 
 /***/ }),
-/* 105 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
@@ -27116,88 +27233,19 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
 
 
 /***/ }),
-/* 106 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const set = __webpack_require__(107).entries
+const set = __webpack_require__(109).entries
 
 module.exports = set
 
 
 /***/ }),
-/* 107 */
+/* 109 */
 /***/ (function(module, exports) {
 
 module.exports = {"entries":[{"type":"base","hid":"armguards"},{"type":"base","hid":"belt"},{"type":"base","hid":"boots"},{"type":"base","hid":"bracers"},{"type":"base","hid":"breatplate"},{"type":"base","hid":"cloak"},{"type":"base","hid":"crown"},{"type":"base","hid":"gauntlets"},{"type":"base","hid":"gloves"},{"type":"base","hid":"greaves"},{"type":"base","hid":"hat"},{"type":"base","hid":"helmet"},{"type":"base","hid":"leggings"},{"type":"base","hid":"mantle"},{"type":"base","hid":"pants"},{"type":"base","hid":"robe"},{"type":"base","hid":"shield"},{"type":"base","hid":"shoes"},{"type":"base","hid":"shoulders"},{"type":"base","hid":"socks"},{"type":"qualifier1","hid":"bone"},{"type":"qualifier1","hid":"brass"},{"type":"qualifier1","hid":"embroidered"},{"type":"qualifier1","hid":"cardboard"},{"type":"qualifier1","hid":"composite"},{"type":"qualifier1","hid":"consecrated"},{"type":"qualifier1","hid":"crafted"},{"type":"qualifier1","hid":"cursed"},{"type":"qualifier1","hid":"emerald"},{"type":"qualifier1","hid":"engraved"},{"type":"qualifier1","hid":"golden"},{"type":"qualifier1","hid":"heavy"},{"type":"qualifier1","hid":"holy"},{"type":"qualifier1","hid":"invincible"},{"type":"qualifier1","hid":"iron"},{"type":"qualifier1","hid":"jade"},{"type":"qualifier1","hid":"light"},{"type":"qualifier1","hid":"mechanical"},{"type":"qualifier1","hid":"mysterious"},{"type":"qualifier1","hid":"old"},{"type":"qualifier1","hid":"onyx"},{"type":"qualifier1","hid":"powerful"},{"type":"qualifier1","hid":"practical"},{"type":"qualifier1","hid":"proven"},{"type":"qualifier1","hid":"robust"},{"type":"qualifier1","hid":"sapphire"},{"type":"qualifier1","hid":"scale"},{"type":"qualifier1","hid":"silver"},{"type":"qualifier1","hid":"simple"},{"type":"qualifier1","hid":"skeleton"},{"type":"qualifier1","hid":"solid"},{"type":"qualifier1","hid":"steel"},{"type":"qualifier1","hid":"strange"},{"type":"qualifier1","hid":"subtile"},{"type":"qualifier1","hid":"swift"},{"type":"qualifier1","hid":"unwavering"},{"type":"qualifier1","hid":"used"},{"type":"qualifier1","hid":"wooden"},{"type":"qualifier2","hid":"ancients"},{"type":"qualifier2","hid":"apprentice"},{"type":"qualifier2","hid":"beginner"},{"type":"qualifier2","hid":"brave"},{"type":"qualifier2","hid":"conqueror"},{"type":"qualifier2","hid":"cruel_tyrant"},{"type":"qualifier2","hid":"defender"},{"type":"qualifier2","hid":"destructor"},{"type":"qualifier2","hid":"dwarven"},{"type":"qualifier2","hid":"elite"},{"type":"qualifier2","hid":"elven"},{"type":"qualifier2","hid":"expert"},{"type":"qualifier2","hid":"explorer"},{"type":"qualifier2","hid":"gladiator"},{"type":"qualifier2","hid":"goddess"},{"type":"qualifier2","hid":"guard"},{"type":"qualifier2","hid":"judgement"},{"type":"qualifier2","hid":"king"},{"type":"qualifier2","hid":"mediator"},{"type":"qualifier2","hid":"mercenary"},{"type":"qualifier2","hid":"militia"},{"type":"qualifier2","hid":"nightmare"},{"type":"qualifier2","hid":"noble"},{"type":"qualifier2","hid":"noob"},{"type":"qualifier2","hid":"pilgrim"},{"type":"qualifier2","hid":"pioneer"},{"type":"qualifier2","hid":"profane"},{"type":"qualifier2","hid":"sorcerer"},{"type":"qualifier2","hid":"tormentor"},{"type":"qualifier2","hid":"training"},{"type":"qualifier2","hid":"twink"},{"type":"qualifier2","hid":"tyrant"},{"type":"qualifier2","hid":"upholder"},{"type":"qualifier2","hid":"warfield_king"},{"type":"qualifier2","hid":"warfield"},{"type":"qualifier2","hid":"warrior"},{"type":"qualifier2","hid":"wise"}]}
-
-/***/ }),
-/* 108 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(109);
-/////////////////////
-const ArmorPartType = typescript_string_enums_1.Enum('base', 'qualifier1', 'qualifier2');
-exports.ArmorPartType = ArmorPartType;
-/////////////////////
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 109 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-function Enum() {
-    var values = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        values[_i] = arguments[_i];
-    }
-    if (typeof values[0] === "string") {
-        var result = {};
-        for (var _a = 0, values_1 = values; _a < values_1.length; _a++) {
-            var value = values_1[_a];
-            result[value] = value;
-        }
-        return result;
-    }
-    else {
-        return values[0];
-    }
-}
-exports.Enum = Enum;
-(function (Enum) {
-    function ofKeys(e) {
-        var result = {};
-        for (var _i = 0, _a = Object.keys(e); _i < _a.length; _i++) {
-            var key = _a[_i];
-            result[key] = key;
-        }
-        return result;
-    }
-    Enum.ofKeys = ofKeys;
-    function keys(e) {
-        return Object.keys(e);
-    }
-    Enum.keys = keys;
-    function values(e) {
-        var result = [];
-        for (var _i = 0, _a = Object.keys(e); _i < _a.length; _i++) {
-            var key = _a[_i];
-            result.push(e[key]);
-        }
-        return result;
-    }
-    Enum.values = values;
-    function isType(e, value) {
-        return values(e).indexOf(value) !== -1;
-    }
-    Enum.isType = isType;
-})(Enum = exports.Enum || (exports.Enum = {}));
-//# sourceMappingURL=index.js.map
 
 /***/ }),
 /* 110 */
@@ -27208,10 +27256,8 @@ exports.Enum = Enum;
 Object.defineProperty(exports, "__esModule", { value: true });
 const typescript_string_enums_1 = __webpack_require__(111);
 /////////////////////
-const CharacterStat = typescript_string_enums_1.Enum('agility', 'health', 'level', 'luck', 'mana', 'strength', 'charisma', 'wisdom');
-exports.CharacterStat = CharacterStat;
-const CharacterClass = typescript_string_enums_1.Enum('novice', 'warrior', 'barbarian', 'paladin', 'sculptor', 'pirate', 'ninja', 'rogue', 'wizard', 'hunter', 'druid', 'priest');
-exports.CharacterClass = CharacterClass;
+const ArmorPartType = typescript_string_enums_1.Enum('base', 'qualifier1', 'qualifier2');
+exports.ArmorPartType = ArmorPartType;
 /////////////////////
 //# sourceMappingURL=types.js.map
 
@@ -27277,11 +27323,12 @@ exports.Enum = Enum;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-/////////////////////
 const typescript_string_enums_1 = __webpack_require__(113);
 /////////////////////
-const TextStyle = typescript_string_enums_1.Enum('item_quality_common', 'item_quality_uncommon', 'item_quality_rare', 'item_quality_epic', 'item_quality_legendary', 'item_quality_artifact', 'change_outline');
-exports.TextStyle = TextStyle;
+const CharacterStat = typescript_string_enums_1.Enum('agility', 'health', 'level', 'luck', 'mana', 'strength', 'charisma', 'wisdom');
+exports.CharacterStat = CharacterStat;
+const CharacterClass = typescript_string_enums_1.Enum('novice', 'warrior', 'barbarian', 'paladin', 'sculptor', 'pirate', 'ninja', 'rogue', 'wizard', 'hunter', 'druid', 'priest');
+exports.CharacterClass = CharacterClass;
 /////////////////////
 //# sourceMappingURL=types.js.map
 
@@ -27344,18 +27391,165 @@ exports.Enum = Enum;
 /* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Conf = __webpack_require__(115)
-const Globalize = __webpack_require__(116)
-const CLDRData = __webpack_require__(117)
+"use strict";
 
-const { migrate_to_latest } = __webpack_require__(20)
+Object.defineProperty(exports, "__esModule", { value: true });
+/////////////////////
+const typescript_string_enums_1 = __webpack_require__(115);
+/////////////////////
+const TextStyle = typescript_string_enums_1.Enum('item_quality_common', 'item_quality_uncommon', 'item_quality_rare', 'item_quality_epic', 'item_quality_legendary', 'item_quality_artifact', 'change_outline');
+exports.TextStyle = TextStyle;
+/////////////////////
+//# sourceMappingURL=types.js.map
+
+/***/ }),
+/* 115 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+function Enum() {
+    var values = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        values[_i] = arguments[_i];
+    }
+    if (typeof values[0] === "string") {
+        var result = {};
+        for (var _a = 0, values_1 = values; _a < values_1.length; _a++) {
+            var value = values_1[_a];
+            result[value] = value;
+        }
+        return result;
+    }
+    else {
+        return values[0];
+    }
+}
+exports.Enum = Enum;
+(function (Enum) {
+    function ofKeys(e) {
+        var result = {};
+        for (var _i = 0, _a = Object.keys(e); _i < _a.length; _i++) {
+            var key = _a[_i];
+            result[key] = key;
+        }
+        return result;
+    }
+    Enum.ofKeys = ofKeys;
+    function keys(e) {
+        return Object.keys(e);
+    }
+    Enum.keys = keys;
+    function values(e) {
+        var result = [];
+        for (var _i = 0, _a = Object.keys(e); _i < _a.length; _i++) {
+            var key = _a[_i];
+            result.push(e[key]);
+        }
+        return result;
+    }
+    Enum.values = values;
+    function isType(e, value) {
+        return values(e).indexOf(value) !== -1;
+    }
+    Enum.isType = isType;
+})(Enum = exports.Enum || (exports.Enum = {}));
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { stylizeString } = __webpack_require__(1)
+
+const {
+	render_characteristics
+} = __webpack_require__(6)
+
+/////////////////////////////////////////////////
+
+
+
+function render({config, rendering_options}) {
+	const state = config.store
+
+	console.log(''
+		//stylizeString.bold('🙂  CHARACTERISTICS 💗\n')
+		+ 'name:  ' + stylizeString.bold(state.avatar.name) + '\n'
+		+ 'class: ' + stylizeString.bold(state.avatar.klass) + '\n'
+		+ '\n'
+		+ stylizeString.bold('CHARACTERISTICS:\n')
+		+ render_characteristics(state.avatar, rendering_options)
+	)
+}
+
+/////////////////////////////////////////////////
+
+module.exports = {
+	render,
+}
+
+
+/***/ }),
+/* 117 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { stylizeString } = __webpack_require__(1)
+
+const {
+	render_equipment,
+	render_wallet,
+	render_inventory
+} = __webpack_require__(6)
+
+/////////////////////////////////////////////////
+
+
+
+function render({config, rendering_options}) {
+	const state = config.store
+
+	console.log(''
+		//stylizeString.bold('⚔  ACTIVE EQUIPMENT 🛡 \n')
+		+ stylizeString.bold('ACTIVE EQUIPMENT:\n')
+		+ render_equipment(state.inventory, rendering_options)
+		+ '\n\n'
+		+ stylizeString.bold('WALLET:\n')
+		+ render_wallet(state.wallet, rendering_options)
+		+ '\n\n'
+		+ stylizeString.bold('INVENTORY:\n')
+		+ render_inventory(state.inventory, rendering_options)
+	)
+}
+
+function render_selected_item({config, rendering_options, selected_item_coordinates}) {
+	console.log('TODO render_selected_item')
+}
+/////////////////////////////////////////////////
+
+module.exports = {
+	render,
+	render_selected_item,
+}
+
+
+/***/ }),
+/* 118 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Conf = __webpack_require__(119)
+const Globalize = __webpack_require__(120)
+const CLDRData = __webpack_require__(121)
+
+const { migrate_to_latest } = __webpack_require__(22)
 const { prettifyJson } = __webpack_require__(1)
 
 /////////////////////////////////////////////////
 
 function init_globalize() {
 	const en = Object.assign({},
-		__webpack_require__(134).en
+		__webpack_require__(138).en
 	)
 
 	Globalize.load(CLDRData.entireSupplemental())
@@ -27374,10 +27568,10 @@ function init_savegame({verbose}) {
 	})
 
 	if (verbose) console.log('config path:', config.path)
-	if (verbose) console.log('loaded state\n', prettifyJson(config.store))
+	if (verbose) console.log('loaded state:\n-------\n', prettifyJson(config.store), '\n-------\n')
 
 	const state = migrate_to_latest(config.store)
-	if (verbose) console.log('migrated state\n', prettifyJson(state))
+	if (verbose) console.log('migrated state:\n-------\n', prettifyJson(state), '\n-------\n')
 
 	config.clear()
 	config.set(state)
@@ -27394,32 +27588,32 @@ module.exports = {
 
 
 /***/ }),
-/* 115 */
+/* 119 */
 /***/ (function(module, exports) {
 
 module.exports = require("conf");
 
 /***/ }),
-/* 116 */
+/* 120 */
 /***/ (function(module, exports) {
 
 module.exports = require("globalize");
 
 /***/ }),
-/* 117 */
+/* 121 */
 /***/ (function(module, exports) {
 
 module.exports = require("cldr-data");
 
 /***/ }),
-/* 118 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const uuidv4 = __webpack_require__(119);
+const uuidv4 = __webpack_require__(123);
 /////////////////////
 const DEFAULT_NAME = 'anonymous';
 exports.DEFAULT_NAME = DEFAULT_NAME;
@@ -27452,11 +27646,11 @@ exports.set_email = set_email;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 119 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var rng = __webpack_require__(120);
-var bytesToUuid = __webpack_require__(121);
+var rng = __webpack_require__(124);
+var bytesToUuid = __webpack_require__(125);
 
 function v4(options, buf, offset) {
   var i = buf && offset || 0;
@@ -27487,7 +27681,7 @@ module.exports = v4;
 
 
 /***/ }),
-/* 120 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Unique ID creation requires a high quality random # generator.  In node.js
@@ -27503,7 +27697,7 @@ module.exports = rng;
 
 
 /***/ }),
-/* 121 */
+/* 125 */
 /***/ (function(module, exports) {
 
 /**
@@ -27532,14 +27726,14 @@ module.exports = bytesToUuid;
 
 
 /***/ }),
-/* 122 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const types_1 = __webpack_require__(123);
+const types_1 = __webpack_require__(127);
 exports.Currency = types_1.Currency;
 /////////////////////
 const ALL_CURRENCIES = [
@@ -27599,13 +27793,13 @@ exports.iterables_currency = iterables_currency;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 123 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(124);
+const typescript_string_enums_1 = __webpack_require__(128);
 /////////////////////
 const Currency = typescript_string_enums_1.Enum('coin', 'token');
 exports.Currency = Currency;
@@ -27613,7 +27807,7 @@ exports.Currency = Currency;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 124 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27668,14 +27862,14 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 125 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const random_1 = __webpack_require__(126);
+const random_1 = __webpack_require__(130);
 /////////////////////
 const DEFAULT_SEED = 987;
 exports.DEFAULT_SEED = DEFAULT_SEED;
@@ -27747,7 +27941,7 @@ exports.xxx_internal_reset_prng_cache = xxx_internal_reset_prng_cache;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 126 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
@@ -28477,16 +28671,16 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
 
 
 /***/ }),
-/* 127 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const random_1 = __webpack_require__(128);
-const static_adventure_data = __webpack_require__(129);
-const types_1 = __webpack_require__(130);
+const random_1 = __webpack_require__(132);
+const static_adventure_data = __webpack_require__(133);
+const types_1 = __webpack_require__(134);
 exports.CoinsGain = types_1.CoinsGain;
 /////////////////////
 const ALL_ADVENTURE_ARCHETYPES = static_adventure_data.map((paa) => {
@@ -28553,7 +28747,7 @@ exports.generate_random_coin_gain = generate_random_coin_gain;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 128 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
@@ -29283,7 +29477,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
 
 
 /***/ }),
-/* 129 */
+/* 133 */
 /***/ (function(module, exports) {
 
 const entries = [
@@ -29333,13 +29527,13 @@ module.exports = entries
 
 
 /***/ }),
-/* 130 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(131);
+const typescript_string_enums_1 = __webpack_require__(135);
 /////////////////////
 const CoinsGain = typescript_string_enums_1.Enum('none', 'small', 'medium', 'big', 'huge');
 exports.CoinsGain = CoinsGain;
@@ -29347,7 +29541,7 @@ exports.CoinsGain = CoinsGain;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 131 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29402,13 +29596,13 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 132 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(133);
+const typescript_string_enums_1 = __webpack_require__(137);
 /////////////////////
 const GainType = typescript_string_enums_1.Enum('level', 'health', 'mana', 'strength', 'agility', 'charisma', 'wisdom', 'luck', 'coins', 'tokens', 'weapon', 'armor', 'weapon_improvement', 'armor_improvement');
 exports.GainType = GainType;
@@ -29418,7 +29612,7 @@ exports.VERSION = VERSION;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 133 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29473,10 +29667,10 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 134 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const en = __webpack_require__(135)
+const en = __webpack_require__(139)
 
 module.exports = {
 	en
@@ -29484,7 +29678,7 @@ module.exports = {
 
 
 /***/ }),
-/* 135 */
+/* 139 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -29542,7 +29736,7 @@ You gained +{strength} strength!`,
 You found a yellow mushroom.
 You gained +{agility} agility!`,
 		found_orange_mushroom: `
-You found a orange mushroom.
+You found an orange mushroom.
 You gained +{charisma} charisma!`,
 		found_black_mushroom: `
 You found a black mushroom.
@@ -29560,7 +29754,7 @@ Before giving you the quest, he tells you his loooong story : Vous gain +{wisdom
 You meet a child weeping over his dead hamster pet… Thanks to necromancy, you reanimate it an a hamster-zombie!
 Oddly, the child cries even more while running away.
 Fortunately, you gain +{agility} agility for avoiding the stones thrown by the villagers.`,
-		// dorkly
+		// dorkly TODO turn to Charisma
 		talk_to_all_villagers: `
 You spoke to all villagers in the village : no quest may have escaped you!
 On the other hand, your head aches for discussing so much.
@@ -29661,24 +29855,7 @@ Good opportunity to practice your magic: +{mana} mana.`,
 
 
 /***/ }),
-/* 136 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const tbrpg = __webpack_require__(20)
-
-function play({config}) {
-	let state = config.store
-	state = tbrpg.play(state)
-	config.set(state)
-}
-
-module.exports = {
-	play,
-}
-
-
-/***/ }),
-/* 137 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const { stylizeString } = __webpack_require__(1)
@@ -29696,10 +29873,18 @@ function render_cta_relaunch_game() {
 }
 
 
-function render_cta({config}) {
+function render_cta({is_interactive, config}) {
 	let state = config.store
+
+	// just restart ?
+
+	// better weapon ?
+
+
 	// TODO print advices (equip, sell...)
-	render_cta_relaunch_game()
+
+	if (!is_interactive)
+		render_cta_relaunch_game()
 }
 
 
@@ -29708,6 +29893,303 @@ function render_cta({config}) {
 module.exports = {
 	render_cta_relaunch_game,
 	render_cta,
+}
+
+
+/***/ }),
+/* 141 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const readline = __webpack_require__(24)
+const {
+	prettifyJson,
+	stylizeString,
+} = __webpack_require__(1)
+const { ask_question: raw_ask_question } = __webpack_require__(142)
+
+/////////////////////////////////////////////////
+
+const ui = __webpack_require__(143)
+const { play, equip_item, rename_avatar, change_class } = __webpack_require__(23)
+const { render_interactive_before, render_interactive_after } = __webpack_require__(16)
+
+
+/////////////////////////////////////////////////
+
+function start_loop(options) {
+	return new Promise((resolve, reject) => {
+		if (!process.stdout.isTTY)
+			throw new Error('start_loop: current term is not a tty !')
+
+		let ui_state = ui.factory({options})
+
+		const COMMANDS_FOR_SCREEN = {
+			'*': [
+				{
+					key: '!',
+					key_for_display: 'Ctrl+C',
+					description: 'quit (game is automatically saved)',
+					cb() {
+						// we'll never arrive here anyway...
+						console.log('good bye!')
+						resolve()
+					}
+				}
+			],
+			adventure: [
+				{
+					key: 'p',
+					strong: true,
+					description: 'Play',
+					cb() { play(options) }
+				},
+				{
+					key: 'c',
+					description: 'Character sheet (rename, change class…)',
+					cb() { ui_state = ui.switch_screen(ui_state, 'character') }
+				},
+				{
+					key: 'i',
+					description: 'Inventory (equip, sell…)',
+					cb() { ui_state = ui.switch_screen(ui_state, 'inventory') }
+				},
+			],
+			inventory: [
+				{
+					key: '[a-t]',
+					key_for_display: 'a↔t',
+					description: 'select inventory slot a…t for equipping, selling…',
+					cb(key) {
+						const selected_item_index = key.charCodeAt(0) - 97
+						ui_state = ui.select_item(ui_state, selected_item_index)
+						ui_state = ui.switch_screen(ui_state, 'inventory_select')
+					},
+				},
+				{
+					key: 'x',
+					description: 'go back to adventuring!',
+					cb() { ui_state = ui.switch_screen(ui_state, 'adventure') }
+				},
+			],
+			inventory_select: [
+				{
+					key: 'e',
+					description: 'equip',
+					cb() { equip_item(options, ui_state.selected_item_coordinates) }
+				},
+				{
+					key: 's',
+					description: 'sell',
+					cb() { console.log(`sell item TODO`) }
+				},
+				{
+					key: 'x',
+					description: 'do nothing, back to inventory',
+					cb() { ui_state = ui.switch_screen(ui_state, 'inventory') }
+				},
+			],
+			character: [
+				{
+					key: 'c',
+					description: 'Change hero class',
+					cb() { ui_state = ui.switch_screen(ui_state, 'character_class_select') },
+				},
+				{
+					key: 'r',
+					description: 'Rename hero',
+					cb() {
+						// TODO allow aborting!
+						return ask_question('Under which name do you want to make history and be remembered forever?')
+							.then(new_name => {
+								rename_avatar(options, new_name)
+							})
+					},
+				},
+				{
+					key: 'x',
+					description: 'go back to adventuring!',
+					cb() { ui_state = ui.switch_screen(ui_state, 'adventure') }
+				},
+			],
+			character_class_select: [
+				{ key: 'a', description: 'Switch class to wizard',    cb() { change_class(options, 'wizard'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'b', description: 'Switch class to warrior',   cb() { change_class(options, 'warrior'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'c', description: 'Switch class to rogue',     cb() { change_class(options, 'rogue'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'd', description: 'Switch class to paladin',   cb() { change_class(options, 'paladin'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'e', description: 'Switch class to priest',    cb() { change_class(options, 'priest'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'f', description: 'Switch class to druid',     cb() { change_class(options, 'druid'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'g', description: 'Switch class to barbarian', cb() { change_class(options, 'barbarian'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'h', description: 'Switch class to hunter',    cb() { change_class(options, 'hunter'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'i', description: 'Switch class to barbarian', cb() { change_class(options, 'barbarian'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'j', description: 'Switch class to ninja',     cb() { change_class(options, 'ninja'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'k', description: 'Switch class to pirate',    cb() { change_class(options, 'pirate'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'l', description: 'Switch class to sculptor',  cb() { change_class(options, 'sculptor'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{
+					key: 'x',
+					description: 'exit to character sheet',
+					cb() { ui_state = ui.switch_screen(ui_state, 'adventure') }
+				},
+			],
+		}
+
+		function get_commands_for_screen(screen_id) {
+			return [
+				...COMMANDS_FOR_SCREEN[screen_id],
+				...COMMANDS_FOR_SCREEN['*'],
+			]
+		}
+
+		function render_command({key, key_for_display, description, strong}) {
+			const icon = !!strong
+				? stylizeString.red.bold('→')
+				: stylizeString.blue('→')
+			console.log(icon + ` ${stylizeString.inverse(' ' + (key_for_display?key_for_display:key).toUpperCase() + ' ')} → ${description}`)
+		}
+
+		readline.emitKeypressEvents(process.stdin)
+		process.stdin.setRawMode(true)
+
+		function ask_question(q) {
+			process.stdin.setRawMode(false)
+			ui_state.ignore_key_events = true
+			return raw_ask_question(q)
+				.then(answer => {
+					process.stdin.setRawMode(true)
+					ui_state.ignore_key_events = false
+					return answer
+				})
+				.catch(e => {
+					process.stdin.setRawMode(true)
+					ui_state.ignore_key_events = false
+					throw e
+				})
+		}
+
+		function render_commands() {
+			//console.log(get_commands_for_screen(current_screen_id))
+			console.log('What do you want to do?')
+			get_commands_for_screen(ui_state.current_screen_id).forEach(render_command)
+		}
+		render_interactive_before(ui_state)
+		render_commands()
+
+		//if (options.verbose) console.log('current UI state:\n-------\n', prettifyJson(ui_state), '\n-------\n')
+		process.stdin.on('keypress', (str, key_pressed) => {
+			if (options.verbose && !ui_state.ignore_key_events)
+				console.log(`key pressed:\n${prettifyJson(key_pressed)}\n`)
+
+			if (key_pressed.ctrl) {// ctrl C, ctrl D, whatever
+				if (options.verbose) console.log(`Ctrl + key pressed:\n${prettifyJson(key_pressed)}\nExiting...`)
+				return resolve()
+			}
+
+			if (ui_state.ignore_key_events) return;
+
+			if (!key_pressed)
+				return console.error('keypress: Y U no key?!')
+
+			const {current_screen_id} = ui_state
+			if (!current_screen_id)
+				throw new Error('keypress: unknown current screen!')
+
+			if (!COMMANDS_FOR_SCREEN[current_screen_id])
+				throw new Error('keypress: no key mappings for current screen!')
+
+			const key = key_pressed.name || key_pressed.sequence
+			if (!key)
+				return console.error('keypress: could not read pressed key?!')
+
+			const current_keymap = get_commands_for_screen(current_screen_id)
+				.find(({key: command_key}) => !!key.match(command_key))
+			if (!current_keymap) {
+				console.log(`unrecognized key: "${key}"`)
+			}
+			else {
+				render_interactive_before(ui_state)
+				if (options.verbose) console.log(`key pressed:\n${prettifyJson(key_pressed)}\nmapped to:\n${prettifyJson(current_keymap)}\n`)
+				const res = current_keymap.cb(key)
+				Promise.resolve(res)
+					.then(() => {
+						if (options.verbose) console.log(`[action resolved]`)
+						render_interactive_after(ui_state)
+						render_commands()
+						//if (options.verbose) console.log('current UI state:\n-------\n', prettifyJson(ui_state), '\n-------\n')
+					})
+			}
+		})
+	})
+}
+
+module.exports = {
+	start_loop
+}
+
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://nodejs.org/api/readline.html
+const readline = __webpack_require__(24)
+
+let rli = readline.createInterface({
+	input: process.stdin,
+	output: process.stdout
+})
+
+function ask_question(question) {
+	return new Promise((resolve, reject) => {
+		rli.clearLine(process.stdout, 0)
+		rli.question(question + '\n', answer => {
+			console.log(`[You entered: "${answer}"]`)
+			//rl.close()
+			resolve(answer)
+		})
+	})
+}
+
+
+module.exports = {
+	ask_question,
+}
+
+
+/***/ }),
+/* 143 */
+/***/ (function(module, exports) {
+
+
+
+function factory({options}) {
+	return {
+		options,
+		version: options.version,
+
+		ignore_key_events: false, // sometime we have to temporarily pause listening to keys
+		current_screen_id: 'adventure',
+		selected_item_coordinates: null,
+		last_displayed_episode: -1,
+	}
+}
+
+function switch_screen(state, screen_id) {
+	state.current_screen_id = screen_id
+
+	if (screen_id !== 'inventory_select')
+		state.selected_item_coordinates = null
+
+	return state
+}
+
+function select_item(state, item_coordinates) {
+	state.selected_item_coordinates = item_coordinates
+	return state
+}
+
+module.exports = {
+	factory,
+	switch_screen,
+	select_item,
 }
 
 

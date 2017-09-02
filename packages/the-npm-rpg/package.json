@@ -1,6 +1,6 @@
 {
 	"name": "the-npm-rpg",
-	"version": "0.0.8",
+	"version": "0.1.0",
 	"description": "The Boring RPG, a command line RPG game. Just `npx the-npm-rpg`!",
 	"main": "src/index.js",
 	"author": "Offirmo <offirmo.net@gmail.com>",
@@ -18,9 +18,7 @@
 	"dependencies": {
 		"cldr-data": "^31.0.2",
 		"conf": "^1.1.2",
-		"globalize": "^1.3.0",
-		"iana-tz-data": "^2017.1.0",
-		"keypress": "^0.2.1"
+		"globalize": "^1.3.0"
 	},
 	"devDependencies": {
 		"@oh-my-rpg/data": "^0.0.1",
@@ -31,7 +29,7 @@
 		"chalk": "^2.0.1",
 		"env-paths": "^1.0.0",
 		"fetchival": "^0.3.2",
-		"globalize-webpack-plugin": "^1.1.1",
+		"iana-tz-data": "^2017.1.0",
 		"latest-version": "^3.1.0",
 		"linewrap": "^0.2.1",
 		"package-json": "^4.0.1",

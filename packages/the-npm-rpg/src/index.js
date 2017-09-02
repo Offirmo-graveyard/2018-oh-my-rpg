@@ -12,7 +12,7 @@ const MINIMAL_TERMINAL_WIDTH = 80
 
 const options = {
 	version,
-	verbose: true, // XXX
+	verbose: false, // XXX
 	is_interactive: true,
 	may_clear_screen: true,
 	term_width: MINIMAL_TERMINAL_WIDTH,
