@@ -77,6 +77,7 @@ function render_interactive_after({current_screen_id, selected_item_coordinates,
 			break
 
 		case 'character':
+		case 'character_class_select':
 			render_character_screen({config, rendering_options})
 			break
 

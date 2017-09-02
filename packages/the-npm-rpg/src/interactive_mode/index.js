@@ -43,12 +43,12 @@ function start_loop(options) {
 				},
 				{
 					key: 'c',
-					description: 'Character sheet (rename, change class...)',
+					description: 'Character sheet (rename, change class…)',
 					cb() { ui_state = ui.switch_screen(ui_state, 'character') }
 				},
 				{
 					key: 'i',
-					description: 'Inventory (equip, sell...)',
+					description: 'Inventory (equip, sell…)',
 					cb() { ui_state = ui.switch_screen(ui_state, 'inventory') }
 				},
 			],
@@ -56,7 +56,7 @@ function start_loop(options) {
 				{
 					key: '[a-t]',
 					key_for_display: 'a↔t',
-					description: 'select inventory slot a...t',
+					description: 'select inventory slot a…t for equipping, selling…',
 					cb(key) {
 						const selected_item_index = key.charCodeAt(0) - 97
 						ui_state = ui.select_item(ui_state, selected_item_index)
@@ -65,7 +65,7 @@ function start_loop(options) {
 				},
 				{
 					key: 'x',
-					description: 'back to adventure!',
+					description: 'go back to adventuring!',
 					cb() { ui_state = ui.switch_screen(ui_state, 'adventure') }
 				},
 			],
@@ -105,21 +105,26 @@ function start_loop(options) {
 				},
 				{
 					key: 'x',
-					description: 'go back to adventure',
+					description: 'go back to adventuring!',
 					cb() { ui_state = ui.switch_screen(ui_state, 'adventure') }
 				},
 			],
 			character_class_select: [
-				{
-					key: 'r',
-					description: 'Rename hero',
-					cb() {
-						console.error('TODO')
-					},
-				},
+				{ key: 'a', description: 'Switch class to wizard',    cb() { change_class(options, 'wizard'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'b', description: 'Switch class to warrior',   cb() { change_class(options, 'warrior'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'c', description: 'Switch class to rogue',     cb() { change_class(options, 'rogue'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'd', description: 'Switch class to paladin',   cb() { change_class(options, 'paladin'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'e', description: 'Switch class to priest',    cb() { change_class(options, 'priest'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'f', description: 'Switch class to druid',     cb() { change_class(options, 'druid'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'g', description: 'Switch class to barbarian', cb() { change_class(options, 'barbarian'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'h', description: 'Switch class to hunter',    cb() { change_class(options, 'hunter'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'i', description: 'Switch class to barbarian', cb() { change_class(options, 'barbarian'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'j', description: 'Switch class to ninja',     cb() { change_class(options, 'ninja'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'k', description: 'Switch class to pirate',    cb() { change_class(options, 'pirate'); ui_state = ui.switch_screen(ui_state, 'character') },},
+				{ key: 'l', description: 'Switch class to sculptor',  cb() { change_class(options, 'sculptor'); ui_state = ui.switch_screen(ui_state, 'character') },},
 				{
 					key: 'x',
-					description: 'exit',
+					description: 'exit to character sheet',
 					cb() { ui_state = ui.switch_screen(ui_state, 'adventure') }
 				},
 			],
