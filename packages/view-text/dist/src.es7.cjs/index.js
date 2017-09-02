@@ -76,7 +76,14 @@ function get_characteristic_icon_for(stat) {
 function render_weapon(w, options = DEFAULT_RENDERING_OPTIONS) {
     if (w.slot !== definitions_1.InventorySlot.weapon)
         throw new Error(`render_weapon(): can't render a ${w.slot} !`);
-    const name = `${w.qualifier1_hid}.${w.base_hid}.of.the.${w.qualifier2_hid}`;
+    const g = options.globalize;
+    const b = g.formatMessage(`weapon/base/${w.base_hid}`, {});
+    const q1 = g.formatMessage(`weapon/qualifier1/${w.qualifier1_hid}`, {});
+    const q2 = g.formatMessage(`weapon/qualifier2/${w.qualifier2_hid}`, {});
+    const parts = q2.startsWith('of')
+        ? [q1, b, q2]
+        : [q2, q1, b];
+    const name = parts.map(lodash_1.capitalize).join(' ');
     const enhancement_level = w.enhancement_level
         ? ` +${w.enhancement_level}`
         : '';

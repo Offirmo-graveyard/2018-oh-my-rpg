@@ -1,6 +1,6 @@
 /////////////////////
 
-import { partial } from 'lodash'
+import { partial, capitalize } from 'lodash'
 
 import { Random, Engine } from '@offirmo/random'
 import { ItemQuality, InventorySlot, Item, ITEM_SLOTS } from '@oh-my-rpg/definitions'
@@ -88,7 +88,17 @@ function get_characteristic_icon_for(stat: CharacterStat): string {
 function render_weapon(w: Weapon, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
 	if (w.slot !== InventorySlot.weapon) throw new Error(`render_weapon(): can't render a ${w.slot} !`)
 
-	const name = `${w.qualifier1_hid}.${w.base_hid}.of.the.${w.qualifier2_hid}`
+	const g = options.globalize
+
+	const b = g.formatMessage(`weapon/base/${w.base_hid}`, {})
+	const q1 = g.formatMessage(`weapon/qualifier1/${w.qualifier1_hid}`, {})
+	const q2 = g.formatMessage(`weapon/qualifier2/${w.qualifier2_hid}`, {})
+
+	const parts = q2.startsWith('of')
+		? [q1, b, q2]
+		: [q2, q1, b]
+
+	const name = parts.map(capitalize).join(' ')
 	const enhancement_level = w.enhancement_level
 		? ` +${w.enhancement_level}`
 		: ''

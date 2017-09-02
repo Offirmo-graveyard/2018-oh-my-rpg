@@ -5,6 +5,7 @@ import { InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
 import { generate_random_demo_weapon } from '@oh-my-rpg/logic-weapons'
 import { generate_random_demo_armor } from '@oh-my-rpg/logic-armors'
 import { en as en_adventures } from '@oh-my-rpg/data/src/adventure_archetype/i18n'
+import { en as en_weapons } from '@oh-my-rpg/data/src/weapon_component/i18n'
 
 import {
 	State as InventoryState,
@@ -39,9 +40,16 @@ declare const console: any // XXX
 describe('🔠  view to text', function() {
 	before(function init_globalize() {
 		Globalize.load(CLDRData.entireSupplemental())
-		Globalize.load(CLDRData.entireMainFor('en', 'fr'))
+		Globalize.load(CLDRData.entireMainFor('en'))
 		//Globalize.loadTimeZone(require('iana-tz-data'))
-		Globalize.loadMessages({en: en_adventures})
+		const messages = {
+			en: {
+				...en_adventures,
+				...en_weapons,
+			}
+		}
+		//console.log(messages)
+		Globalize.loadMessages(messages)
 	})
 
 	describe('📃  adventure rendering', function() {
@@ -88,11 +96,14 @@ describe('🔠  view to text', function() {
 					quality: ItemQuality.legendary,
 					base_strength: 14,
 					enhancement_level: 0,
+				}, {
+					globalize: Globalize('en'),
+					stylize: (style: string, s: string) => s
 				})
 				expect(str).to.be.a.string
-				expect(str).to.include('luth')
-				expect(str).to.include('simple')
-				expect(str).to.include('mercenary')
+				expect(str).to.include('Luth')
+				expect(str).to.include('Simple')
+				expect(str).to.include('Mercenary')
 				expect(str).not.to.include('+')
 			})
 		})
@@ -108,11 +119,14 @@ describe('🔠  view to text', function() {
 					quality: ItemQuality.legendary,
 					base_strength: 14,
 					enhancement_level: 3,
+				}, {
+					globalize: Globalize('en'),
+					stylize: (style: string, s: string) => s
 				})
 				expect(str).to.be.a.string
-				expect(str).to.include('longsword')
-				expect(str).to.include('onyx')
-				expect(str).to.include('warfield_king')
+				expect(str).to.include('Long sword')
+				expect(str).to.include('Onyx')
+				expect(str).to.include('Warfield king’s')
 				expect(str).to.include('+3')
 			})
 		})
@@ -131,6 +145,9 @@ describe('🔠  view to text', function() {
 					quality: ItemQuality.legendary,
 					base_strength: 14,
 					enhancement_level: 0
+				}, {
+					globalize: Globalize('en'),
+					stylize: (style: string, s: string) => s
 				})
 				expect(str).to.be.a.string
 				expect(str).to.include('socks')
@@ -151,6 +168,9 @@ describe('🔠  view to text', function() {
 					quality: ItemQuality.legendary,
 					base_strength: 14,
 					enhancement_level: 5
+				}, {
+					globalize: Globalize('en'),
+					stylize: (style: string, s: string) => s
 				})
 				expect(str).to.be.a.string
 				expect(str).to.include('mantle')
@@ -167,7 +187,10 @@ describe('🔠  view to text', function() {
 
 			it('should render properly', () => {
 				let inventory = inventory_factory()
-				const str = render_equipment(inventory)
+				const str = render_equipment(inventory, {
+					globalize: Globalize('en'),
+					stylize: (style: string, s: string) => s
+				})
 				expect(str).to.be.a.string
 			})
 		})
@@ -181,7 +204,10 @@ describe('🔠  view to text', function() {
 				inventory = equip_item(inventory, 0)
 				inventory = equip_item(inventory, 1)
 
-				const str = render_equipment(inventory)
+				const str = render_equipment(inventory, {
+					globalize: Globalize('en'),
+					stylize: (style: string, s: string) => s
+				})
 				expect(str).to.be.a.string
 			})
 		})
@@ -193,11 +219,17 @@ describe('🔠  view to text', function() {
 
 			it('should render properly', () => {
 				let inventory = inventory_factory()
-				const str = render_inventory(inventory)
+				const str = render_inventory(inventory, {
+					globalize: Globalize('en'),
+					stylize: (style: string, s: string) => s
+				})
 				expect(str).to.be.a.string
-				expect(str).to.contain(' 1.')
+				expect(str).to.contain('a.')
+				expect(str).to.contain('t.')
+				expect(str).not.to.contain('u.')
+				expect(str).not.to.contain(' 1.')
 				expect(str).not.to.contain(' 0.')
-				expect(str).to.contain('20.')
+				expect(str).not.to.contain('20.')
 			})
 		})
 
@@ -213,10 +245,13 @@ describe('🔠  view to text', function() {
 				inventory = add_item(inventory, generate_random_demo_armor())
 				inventory = remove_item(inventory, 4)
 
-				const str = render_inventory(inventory)
+				const str = render_inventory(inventory, {
+					globalize: Globalize('en'),
+					stylize: (style: string, s: string) => s
+				})
 				expect(str).to.be.a.string
-				expect(str).to.contain(' 1.')
-				expect(str).to.contain('20.')
+				expect(str).to.contain('a.')
+				expect(str).to.contain('t.')
 			})
 		})
 	})
@@ -250,5 +285,4 @@ describe('🔠  view to text', function() {
 			})
 		})
 	})
-
 })

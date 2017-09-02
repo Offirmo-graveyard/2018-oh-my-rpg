@@ -9,7 +9,8 @@ const { prettifyJson } = require('./deps')
 
 function init_globalize() {
 	const en = Object.assign({},
-		require('@oh-my-rpg/data/src/adventure_archetype/i18n').en
+		require('@oh-my-rpg/data/src/adventure_archetype/i18n').en,
+		require('@oh-my-rpg/data/src/weapon_component/i18n').en,
 	)
 
 	Globalize.load(CLDRData.entireSupplemental())
