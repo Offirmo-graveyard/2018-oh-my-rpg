@@ -13,6 +13,9 @@ function render({config, rendering_options}) {
 
 	console.log(''
 		//stylizeString.bold('🙂  CHARACTERISTICS 💗\n')
+		+ 'name:  ' + stylizeString.bold(state.avatar.name) + '\n'
+		+ 'class: ' + stylizeString.bold(state.avatar.klass) + '\n'
+		+ '\n'
 		+ stylizeString.bold('CHARACTERISTICS:\n')
 		+ render_characteristics(state.avatar, rendering_options)
 	)

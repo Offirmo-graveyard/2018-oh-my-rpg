@@ -53,7 +53,7 @@ You gained +{strength} strength!`,
 You found a yellow mushroom.
 You gained +{agility} agility!`,
 		found_orange_mushroom: `
-You found a orange mushroom.
+You found an orange mushroom.
 You gained +{charisma} charisma!`,
 		found_black_mushroom: `
 You found a black mushroom.
@@ -71,7 +71,7 @@ Before giving you the quest, he tells you his loooong story : Vous gain +{wisdom
 You meet a child weeping over his dead hamster pet… Thanks to necromancy, you reanimate it an a hamster-zombie!
 Oddly, the child cries even more while running away.
 Fortunately, you gain +{agility} agility for avoiding the stones thrown by the villagers.`,
-		// dorkly
+		// dorkly TODO turn to Charisma
 		talk_to_all_villagers: `
 You spoke to all villagers in the village : no quest may have escaped you!
 On the other hand, your head aches for discussing so much.

@@ -61,7 +61,6 @@ if (options.is_interactive) {
 		.catch(e => console.error('Error:\n' + stylizeString.red(prettifyJson(e))))
 		// TODO report
 		.then(() => console.log('Quitting...'))
-
 }
 
 /////////////////////////////////////////////////

@@ -1,17 +1,17 @@
 // https://nodejs.org/api/readline.html
 const readline = require('readline')
 
+let rli = readline.createInterface({
+	input: process.stdin,
+	output: process.stdout
+})
 
 function ask_question(question) {
 	return new Promise((resolve, reject) => {
-		const rl = readline.createInterface({
-			input: process.stdin,
-			output: process.stdout
-		})
-
-		rl.question(question + '\n', answer => {
+		rli.clearLine(process.stdout, 0)
+		rli.question(question + '\n', answer => {
 			console.log(`[You entered: "${answer}"]`)
-			rl.close()
+			//rl.close()
 			resolve(answer)
 		})
 	})

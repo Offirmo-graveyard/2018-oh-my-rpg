@@ -28,6 +28,7 @@ function start_loop(options) {
 					key_for_display: 'Ctrl+C',
 					description: 'quit (game is automatically saved)',
 					cb() {
+						// we'll never arrive here anyway...
 						console.log('good bye!')
 						resolve()
 					}
@@ -170,8 +171,10 @@ function start_loop(options) {
 			if (options.verbose && !ui_state.ignore_key_events)
 				console.log(`key pressed:\n${prettifyJson(key_pressed)}\n`)
 
-			if (key_pressed.ctrl) // ctrl C, ctrl D, whatever
-				process.kill(process.pid, 'SIGINT');
+			if (key_pressed.ctrl) {// ctrl C, ctrl D, whatever
+				if (options.verbose) console.log(`Ctrl + key pressed:\n${prettifyJson(key_pressed)}\nExiting...`)
+				return resolve()
+			}
 
 			if (ui_state.ignore_key_events) return;
 
@@ -185,15 +188,19 @@ function start_loop(options) {
 			if (!COMMANDS_FOR_SCREEN[current_screen_id])
 				throw new Error('keypress: no key mappings for current screen!')
 
+			const key = key_pressed.name || key_pressed.sequence
+			if (!key)
+				return console.error('keypress: could not read pressed key?!')
+
 			const current_keymap = get_commands_for_screen(current_screen_id)
-				.find(({key}) => !!key_pressed.name.match(key))
+				.find(({key: command_key}) => !!key.match(command_key))
 			if (!current_keymap) {
-				console.log(`unrecognized key: "${key_pressed.name}"`)
+				console.log(`unrecognized key: "${key}"`)
 			}
 			else {
 				render_interactive_before(ui_state)
 				if (options.verbose) console.log(`key pressed:\n${prettifyJson(key_pressed)}\nmapped to:\n${prettifyJson(current_keymap)}\n`)
-				const res = current_keymap.cb(key_pressed.name)
+				const res = current_keymap.cb(key)
 				Promise.resolve(res)
 					.then(() => {
 						if (options.verbose) console.log(`[action resolved]`)

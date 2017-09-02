@@ -136,7 +136,7 @@ function render_characteristics(state: CharacterState, options: RenderingOptions
 
 		const update_notice = options.stylize(TextStyle.change_outline,
 			la && la.gains && la.gains[stat]
-			? ` increased by ${la.gains[stat]}! 🆙`
+			? ` recently increased by ${la.gains[stat]}! 🆙 `
 			: ''
 		)
 
@@ -161,7 +161,7 @@ function render_equipment(inventory: InventoryState, options: RenderingOptions =
 					(la.gains.weapon_improvement && i.slot === 'weapon')
 				|| (la.gains.armor_improvement && i.slot === 'armor')
 			)
-			? ` enhanced! 🆙`
+			? ` enhanced! 🆙 `
 			: ''
 		)
 
@@ -193,12 +193,12 @@ function render_wallet(wallet: WalletState, options: RenderingOptions = DEFAULT_
 
 	const coins_update_notice = options.stylize(TextStyle.change_outline,
 		la && la.gains.coins
-		? ` gained ${la.gains.coins}! 🆙`
+		? ` gained ${la.gains.coins}! 🆙 `
 		: ''
 	)
 	const tokens_update_notice = options.stylize(TextStyle.change_outline,
 		la && la.gains.tokens
-		? ` gained ${la.gains.tokens}! 🆙`
+		? ` gained ${la.gains.tokens}! 🆙 `
 		: ''
 	)
 
@@ -215,7 +215,7 @@ function render_adventure_gain(a: Adventure, gain_type: GainType, gains_for_disp
 		case 'coins':
 			return `💰  Received ${gains_for_display.formattedCoins} coins`
 		case 'level':
-			return `🆙  Levelled up!`
+			return `🆙  Leveled up!`
 		case 'health':
 		case 'mana':
 		case 'strength':
@@ -223,7 +223,7 @@ function render_adventure_gain(a: Adventure, gain_type: GainType, gains_for_disp
 		case 'charisma':
 		case 'wisdom':
 		case 'luck':
-			return `💪  ${gain_type} increased!`
+			return `🆙  ${gain_type} increased!`
 		default:
 			return `💠  TODO gain message for ${gain_type}`
 	}
