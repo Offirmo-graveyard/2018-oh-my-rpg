@@ -16,7 +16,7 @@ You gained {formattedCoins} coins!`,
 		ate_bacon: `
 You ate some bacon.
 You gained +{level} level!`,
-		/* too bland
+		/* too bland, please!
 		ate_mushroom: `
 You ate a mushroom.
 You gained +{level} level!`,*/
@@ -61,6 +61,9 @@ You gained +{wisdom} wisdom!`,
 		found_rainbow_mushroom: `
 You found a glowing rainbow mushroom.
 You gained +{luck} luck!`,
+		found_random_mushroom: `
+You found a golden mushroom.
+You gained +{charac} {charac_name}!`,
 
 		// from me
 		meet_old_wizard: `
@@ -71,11 +74,11 @@ Before giving you the quest, he tells you his loooong story : Vous gain +{wisdom
 You meet a child weeping over his dead hamster pet… Thanks to necromancy, you reanimate it an a hamster-zombie!
 Oddly, the child cries even more while running away.
 Fortunately, you gain +{agility} agility for avoiding the stones thrown by the villagers.`,
-		// dorkly TODO turn to Charisma
+		// dorkly
 		talk_to_all_villagers: `
 You spoke to all villagers in the village : no quest may have escaped you!
 On the other hand, your head aches for discussing so much.
-+{mana} mana thanks to this mental training!`,
++{charisma} charisma thanks to this training!`,
 		always_keep_potions: `
 Being a good adventurer, you kept a health potion "just in case":
 Well done, your health is top-notch!`,

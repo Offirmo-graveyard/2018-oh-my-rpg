@@ -21,4 +21,4 @@ declare const before: any
 declare const after: any
 //declare const sinon: any
 */
-declare const expect: any
+declare const expect: any;

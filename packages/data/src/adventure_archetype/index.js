@@ -20,10 +20,11 @@ const entries = [
 	{ good: true, hid: 'found_orange_mushroom',  post: { gains: { charisma: 1 }}},
 	{ good: true, hid: 'found_black_mushroom',   post: { gains: { wisdom: 1 }}},
 	{ good: true, hid: 'found_rainbow_mushroom', post: { gains: { luck: 1 }}},
+	{ good: true, hid: 'found_random_mushroom',  post: { gains: { luck: 1 }}, published: false},
 
 	{ good: true, hid: 'meet_old_wizard',       post: { gains: { wisdom: 1 }}},
 	{ good: true, hid: 'good_necromancer',      post: { gains: { agility: 1 }}},
-	{ good: true, hid: 'talk_to_all_villagers', post: { gains: { mana: 1 }}},
+	{ good: true, hid: 'talk_to_all_villagers', post: { gains: { charisma: 1 }}},
 	{ good: true, hid: 'always_keep_potions',   post: { gains: { health: 1 }}},
 	{ good: true, hid: 'lost',                  post: { gains: { health: 1 }}},
 	{ good: true, hid: 'fate_sword',            post: { gains: { coins: 'small' }}},

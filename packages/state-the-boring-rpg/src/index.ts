@@ -147,7 +147,7 @@ function migrate_to_latest(state: any): State {
 /////////////////////
 
 function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, player_level: number, inventory: InventoryState): Adventure {
-	const {hid, good, post: { gains : {
+	let {hid, good, post: { gains : {
 		level: should_gain_a_level,
 		agility,
 		health,
@@ -160,9 +160,26 @@ function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, pl
 		tokens,
 		armor: should_receive_armor,
 		weapon: should_receive_weapon,
+		armor_or_weapon: should_receive_armor_or_weapon,
 		armor_improvement,
 		weapon_improvement,
+		armor_or_weapon_improvement,
 	}}} = aa
+
+	// instantiate the random gains
+	// TODO take into account the inventory
+	if (should_receive_armor_or_weapon) {
+		if (Random.bool()(rng))
+			should_receive_armor = true
+		else
+			should_receive_weapon = true
+	}
+	if (armor_or_weapon_improvement) {
+		if (Random.bool()(rng))
+			armor_improvement = true
+		else
+			weapon_improvement = true
+	}
 
 	const new_player_level = player_level + (should_gain_a_level ? 1 : 0)
 	const weapon = should_receive_weapon
@@ -243,30 +260,68 @@ function play_good(state: State, explicit_adventure_archetype_hid?: string): Sta
 		luck,
 		coins,
 		tokens,
-		weapon,
 		armor,
-		weapon_improvement,
+		weapon,
 		armor_improvement,
+		weapon_improvement,
 	}} = adventure
 
 	// TODO store hid for no repetition
 
-	if (level) state = receive_stat_increase(state, CharacterStat.level)
-	if (health) state = receive_stat_increase(state, CharacterStat.health, health)
-	if (mana) state = receive_stat_increase(state, CharacterStat.mana, mana)
-	if (strength) state = receive_stat_increase(state, CharacterStat.strength, strength)
-	if (agility) state = receive_stat_increase(state, CharacterStat.agility, agility)
-	if (charisma) state = receive_stat_increase(state, CharacterStat.charisma, charisma)
-	if (wisdom) state = receive_stat_increase(state, CharacterStat.wisdom, wisdom)
-	if (luck) state = receive_stat_increase(state, CharacterStat.luck, luck)
+	let gain_count = 0
+	if (level) {
+		gain_count++
+		state = receive_stat_increase(state, CharacterStat.level)
+	}
+	if (health) {
+		gain_count++
+		state = receive_stat_increase(state, CharacterStat.health, health)
+	}
+	if (mana) {
+		gain_count++
+		state = receive_stat_increase(state, CharacterStat.mana, mana)
+	}
+	if (strength) {
+		gain_count++
+		state = receive_stat_increase(state, CharacterStat.strength, strength)
+	}
+	if (agility) {
+		gain_count++
+		state = receive_stat_increase(state, CharacterStat.agility, agility)
+	}
+	if (charisma) {
+		gain_count++
+		state = receive_stat_increase(state, CharacterStat.charisma, charisma)
+	}
+	if (wisdom) {
+		gain_count++
+		state = receive_stat_increase(state, CharacterStat.wisdom, wisdom)
+	}
+	if (luck) {
+		gain_count++
+		state = receive_stat_increase(state, CharacterStat.luck, luck)
+	}
 
-	if (coins) state = receive_coins(state, coins)
-	if (tokens) state = receive_tokens(state, tokens)
+	if (coins) {
+		gain_count++
+		state = receive_coins(state, coins)
+	}
+	if (tokens) {
+		gain_count++
+		state = receive_tokens(state, tokens)
+	}
 
-	if (weapon) state = receive_item(state, weapon)
-	if (armor) state = receive_item(state, armor)
+	if (weapon) {
+		gain_count++
+		state = receive_item(state, weapon)
+	}
+	if (armor) {
+		gain_count++
+		state = receive_item(state, armor)
+	}
 
 	if (weapon_improvement) {
+		gain_count++
 		let weapon_to_enhance = get_item_in_slot(state.inventory, InventorySlot.weapon) as Weapon
 		if (weapon_to_enhance && weapon_to_enhance.enhancement_level < MAX_WEAPON_ENHANCEMENT_LEVEL)
 			enhance_weapon(weapon_to_enhance)
@@ -274,6 +329,7 @@ function play_good(state: State, explicit_adventure_archetype_hid?: string): Sta
 	}
 
 	if (armor_improvement) {
+		gain_count++
 		const armor_to_enhance = get_item_in_slot(state.inventory, InventorySlot.armor) as Armor
 		if (armor_to_enhance && armor_to_enhance.enhancement_level < MAX_ARMOR_ENHANCEMENT_LEVEL)
 			enhance_armor(armor_to_enhance)

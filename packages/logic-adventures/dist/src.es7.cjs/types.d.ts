@@ -20,12 +20,17 @@ interface AdventureArchetype {
             charisma: number;
             wisdom: number;
             luck: number;
+            random_charac: number;
+            class_main_charac: number;
+            class_secondary_charac: number;
             coins: CoinsGain;
             tokens: number;
             armor: boolean;
             weapon: boolean;
+            armor_or_weapon: boolean;
             armor_improvement: boolean;
             weapon_improvement: boolean;
+            armor_or_weapon_improvement: boolean;
         };
     };
 }

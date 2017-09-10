@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const random_1 = require("@offirmo/random");
 /////////////////////
 const definitions_1 = require("@oh-my-rpg/definitions");
 const state_meta_1 = require("@oh-my-rpg/state-meta");
@@ -68,7 +69,21 @@ function migrate_to_latest(state) {
 exports.migrate_to_latest = migrate_to_latest;
 /////////////////////
 function instantiate_adventure_archetype(rng, aa, player_level, inventory) {
-    const { hid, good, post: { gains: { level: should_gain_a_level, agility, health, luck, mana, strength, charisma, wisdom, coins: coins_gain, tokens, armor: should_receive_armor, weapon: should_receive_weapon, armor_improvement, weapon_improvement, } } } = aa;
+    let { hid, good, post: { gains: { level: should_gain_a_level, agility, health, luck, mana, strength, charisma, wisdom, coins: coins_gain, tokens, armor: should_receive_armor, weapon: should_receive_weapon, armor_or_weapon: should_receive_armor_or_weapon, armor_improvement, weapon_improvement, armor_or_weapon_improvement, } } } = aa;
+    // instantiate the random gains
+    // TODO take into account the inventory
+    if (should_receive_armor_or_weapon) {
+        if (random_1.Random.bool()(rng))
+            should_receive_armor = true;
+        else
+            should_receive_weapon = true;
+    }
+    if (armor_or_weapon_improvement) {
+        if (random_1.Random.bool()(rng))
+            armor_improvement = true;
+        else
+            weapon_improvement = true;
+    }
     const new_player_level = player_level + (should_gain_a_level ? 1 : 0);
     const weapon = should_receive_weapon
         ? logic_weapons_1.factory(rng)
@@ -123,39 +138,66 @@ function play_good(state, explicit_adventure_archetype_hid) {
         : logic_adventures_1.pick_random_good_archetype(rng);
     const adventure = instantiate_adventure_archetype(rng, aa, state.avatar.characteristics.level, state.inventory);
     state.last_adventure = adventure;
-    const { gains: { level, health, mana, strength, agility, charisma, wisdom, luck, coins, tokens, weapon, armor, weapon_improvement, armor_improvement, } } = adventure;
+    const { gains: { level, health, mana, strength, agility, charisma, wisdom, luck, coins, tokens, armor, weapon, armor_improvement, weapon_improvement, } } = adventure;
     // TODO store hid for no repetition
-    if (level)
+    let gain_count = 0;
+    if (level) {
+        gain_count++;
         state = receive_stat_increase(state, state_character_1.CharacterStat.level);
-    if (health)
+    }
+    if (health) {
+        gain_count++;
         state = receive_stat_increase(state, state_character_1.CharacterStat.health, health);
-    if (mana)
+    }
+    if (mana) {
+        gain_count++;
         state = receive_stat_increase(state, state_character_1.CharacterStat.mana, mana);
-    if (strength)
+    }
+    if (strength) {
+        gain_count++;
         state = receive_stat_increase(state, state_character_1.CharacterStat.strength, strength);
-    if (agility)
+    }
+    if (agility) {
+        gain_count++;
         state = receive_stat_increase(state, state_character_1.CharacterStat.agility, agility);
-    if (charisma)
+    }
+    if (charisma) {
+        gain_count++;
         state = receive_stat_increase(state, state_character_1.CharacterStat.charisma, charisma);
-    if (wisdom)
+    }
+    if (wisdom) {
+        gain_count++;
         state = receive_stat_increase(state, state_character_1.CharacterStat.wisdom, wisdom);
-    if (luck)
+    }
+    if (luck) {
+        gain_count++;
         state = receive_stat_increase(state, state_character_1.CharacterStat.luck, luck);
-    if (coins)
+    }
+    if (coins) {
+        gain_count++;
         state = receive_coins(state, coins);
-    if (tokens)
+    }
+    if (tokens) {
+        gain_count++;
         state = receive_tokens(state, tokens);
-    if (weapon)
+    }
+    if (weapon) {
+        gain_count++;
         state = receive_item(state, weapon);
-    if (armor)
+    }
+    if (armor) {
+        gain_count++;
         state = receive_item(state, armor);
+    }
     if (weapon_improvement) {
+        gain_count++;
         let weapon_to_enhance = state_inventory_1.get_item_in_slot(state.inventory, definitions_1.InventorySlot.weapon);
         if (weapon_to_enhance && weapon_to_enhance.enhancement_level < logic_weapons_1.MAX_ENHANCEMENT_LEVEL)
             logic_weapons_1.enhance(weapon_to_enhance);
         // TODO enhance another weapon as fallback
     }
     if (armor_improvement) {
+        gain_count++;
         const armor_to_enhance = state_inventory_1.get_item_in_slot(state.inventory, definitions_1.InventorySlot.armor);
         if (armor_to_enhance && armor_to_enhance.enhancement_level < logic_armors_1.MAX_ENHANCEMENT_LEVEL)
             logic_armors_1.enhance(armor_to_enhance);

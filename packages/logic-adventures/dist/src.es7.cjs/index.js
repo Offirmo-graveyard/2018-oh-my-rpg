@@ -17,12 +17,17 @@ const ALL_ADVENTURE_ARCHETYPES = static_adventure_data.map((paa) => {
     gains.strength = gains.strength || 0;
     gains.charisma = gains.charisma || 0;
     gains.wisdom = gains.wisdom || 0;
+    gains.random_charac = gains.random_charac || 0;
+    gains.class_main_charac = gains.class_main_charac || 0;
+    gains.class_secondary_charac = gains.class_secondary_charac || 0;
     gains.coins = gains.coins || types_1.CoinsGain.none;
     gains.tokens = gains.tokens || 0;
     gains.armor = !!gains.armor;
     gains.weapon = !!gains.weapon;
+    gains.armor_or_weapon = !!gains.armor_or_weapon;
     gains.armor_improvement = !!gains.armor_improvement;
     gains.weapon_improvement = !!gains.weapon_improvement;
+    gains.armor_or_weapon_improvement = !!gains.armor_or_weapon_improvement;
     return {
         hid: paa.hid,
         good: paa.good,

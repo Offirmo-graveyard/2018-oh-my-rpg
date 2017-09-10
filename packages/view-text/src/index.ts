@@ -235,7 +235,7 @@ function render_adventure_gain(a: Adventure, gain_type: GainType, gains_for_disp
 		case 'luck':
 			return `🆙  ${gain_type} increased!`
 		default:
-			return `💠  TODO gain message for ${gain_type}`
+			return `🔥  TODO gain message for ${gain_type}`
 	}
 }
 
@@ -245,6 +245,7 @@ function render_adventure(a: Adventure, options: RenderingOptions = DEFAULT_REND
 	const formattedWeapon = a.gains.weapon ? render_item(a.gains.weapon, options) : ''
 	const formattedArmor = a.gains.armor ? render_item(a.gains.armor, options) : ''
 	const formattedItem = formattedWeapon || formattedArmor
+
 
 	// formatting to natural language
 	const gains_for_display = Object.assign(
