@@ -22,6 +22,7 @@
 	},
 	"devDependencies": {
 		"@oh-my-rpg/data": "^0.0.1",
+		"@oh-my-rpg/state-inventory": "^0.0.1",
 		"@oh-my-rpg/state-the-boring-rpg": "^0.0.1",
 		"@oh-my-rpg/view-text": "^0.0.1",
 		"ansi-escapes": "^2.0.0",

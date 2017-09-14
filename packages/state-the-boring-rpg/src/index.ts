@@ -37,7 +37,9 @@ import {
 	factory as inventory_state_factory,
 	add_item as inventory_add_item,
 	equip_item as inventory_equip_item,
+	remove_item as inventory_remove_item,
 	get_item_in_slot,
+	get_item_at_coordinates,
 } from '@oh-my-rpg/state-inventory'
 
 import {
@@ -60,6 +62,10 @@ import {
 	enhance as enhance_armor,
 	MAX_ENHANCEMENT_LEVEL as MAX_ARMOR_ENHANCEMENT_LEVEL,
 } from '@oh-my-rpg/logic-armors'
+
+import {
+	appraise,
+} from '@oh-my-rpg/logic-shop'
 
 import {
 	CoinsGain,
@@ -340,6 +346,13 @@ function play_good(state: State, explicit_adventure_archetype_hid?: string): Sta
 	return state
 }
 
+function appraise_item_at_coordinates(state: Readonly<State>, coordinates: InventoryCoordinates): number {
+	const item_to_sell = get_item_at_coordinates(state.inventory, coordinates)
+	if (!item_to_sell)
+		throw new Error('Sell: No item!')
+
+	return appraise(item_to_sell)
+}
 /////////////////////
 
 // allow passing an explicit adventure archetype for testing !
@@ -357,7 +370,11 @@ function equip_item(state: State, coordinates: InventoryCoordinates): State {
 }
 
 function sell_item(state: State, coordinates: InventoryCoordinates): State {
-	// TODO
+	const price = appraise_item_at_coordinates(state, coordinates)
+
+	state.inventory = inventory_remove_item(state.inventory, coordinates)
+	state.wallet = wallet_add_amount(state.wallet, Currency.coin, price)
+
 	// TODO count it as a meaningful interaction if positive (or with a limit)
 	return state
 }
@@ -388,6 +405,7 @@ export {
 	sell_item,
 	rename_avatar,
 	change_avatar_class,
+	appraise_item_at_coordinates,
 }
 
 /////////////////////

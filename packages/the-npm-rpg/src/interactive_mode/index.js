@@ -8,7 +8,7 @@ const { ask_question: raw_ask_question } = require('./ask_question')
 /////////////////////////////////////////////////
 
 const ui = require('./state')
-const { play, equip_item, rename_avatar, change_class } = require('../actions')
+const { play, equip_item, sell_item, does_item_exist_at_coordinate, rename_avatar, change_class } = require('../actions')
 const { render_interactive_before, render_interactive_after } = require('../screens')
 
 
@@ -59,6 +59,8 @@ function start_loop(options) {
 					description: 'select inventory slot a…t for equipping, selling…',
 					cb(key) {
 						const selected_item_index = key.charCodeAt(0) - 97
+						if (!does_item_exist_at_coordinate(options, selected_item_index))
+							return
 						ui_state = ui.select_item(ui_state, selected_item_index)
 						ui_state = ui.switch_screen(ui_state, 'inventory_select')
 					},
@@ -73,12 +75,18 @@ function start_loop(options) {
 				{
 					key: 'e',
 					description: 'equip',
-					cb() { equip_item(options, ui_state.selected_item_coordinates) }
+					cb() {
+						equip_item(options, ui_state.selected_item_coordinates)
+						ui_state = ui.switch_screen(ui_state, 'inventory')
+					}
 				},
 				{
 					key: 's',
 					description: 'sell',
-					cb() { console.log(`sell item TODO`) }
+					cb() {
+						sell_item(options, ui_state.selected_item_coordinates)
+						ui_state = ui.switch_screen(ui_state, 'inventory')
+					}
 				},
 				{
 					key: 'x',

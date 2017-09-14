@@ -36,7 +36,7 @@ Example: see `packages/the-npm-rpg`
 ```bash
 lerna clean --yes
 rm -f package-lock.json & lerna exec -- rm -f package-lock.json
-lerna bootstrap
+lerna bootstrap --hoist
 lerna exec -- rm -rf dist
 lerna run build:dev
 lerna run build
