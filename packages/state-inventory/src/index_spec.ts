@@ -97,8 +97,9 @@ describe('📦 📦 📦  Inventory logic', function() {
 			state = remove_item(state, 0)
 			state = add_item(state, item2)
 			expect(get_item_count(state), 'item count').to.equal(2)
-			expect(get_item_at_coordinates(state, 0)).to.equal(item2)
-			expect(get_item_at_coordinates(state, 1)).to.equal(item1)
+			// note: state was auto-sorted
+			expect(get_item_at_coordinates(state, 0)).to.equal(item1)
+			expect(get_item_at_coordinates(state, 1)).to.equal(item2)
 		})
 	})
 
@@ -119,7 +120,8 @@ describe('📦 📦 📦  Inventory logic', function() {
 			state = add_item(state, item)
 			state = remove_item(state, 0)
 			expect(get_item_count(state), 'item count').to.equal(1)
-			expect(get_item_at_coordinates(state, 0)).to.be.null
+			expect(get_item_at_coordinates(state, 1)).to.be.null
+			expect(get_item_at_coordinates(state, 2)).to.be.null
 		})
 	})
 
@@ -239,20 +241,22 @@ describe('📦 📦 📦  Inventory logic', function() {
 	describe('misc items iteration', function() {
 
 		it('should yield all unequiped slots', () => {
-			const item1: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
-			const item2: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
+			const item1: Item = { slot: InventorySlot.armor, quality: ItemQuality.common }
+			const item2: Item = { slot: InventorySlot.weapon, quality: ItemQuality.common }
+			const item3: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
 			let state = factory()
 
 			state = add_item(state, item1)
-			state = add_item(state, item1)
 			state = add_item(state, item2)
+			state = add_item(state, item3)
 			state = remove_item(state, 0)
 
 			const yielded_items = Array.from(iterables_unslotted(state))
+			console.log(yielded_items)
 			expect(yielded_items).to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH)
-			expect(yielded_items[0]).to.be.null
-			expect(yielded_items[1]).to.equal(item1)
-			expect(yielded_items[2]).to.equal(item2)
+			expect(yielded_items[0]).to.equal(item2)
+			expect(yielded_items[1]).to.equal(item3)
+			expect(yielded_items[2]).to.be.null
 			expect(yielded_items[3]).to.be.null
 			expect(yielded_items[EXPECTED_UNSLOTTED_INVENTORY_LENGTH-1]).to.be.null
 		})

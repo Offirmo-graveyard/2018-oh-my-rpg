@@ -33,10 +33,10 @@ const entries = [
 	{ good: true, hid: 'rematch',               post: { gains: { level: 1 }}},
 	{ good: true, hid: 'useless',               post: { gains: { wisdom: 1 }}},
 	{ good: true, hid: 'escort',                post: { gains: { health: 1 }}},
-	{ good: true, hid: 'rare_goods_seller',     post: { gains: { weapon: true }}},
-	{ good: true, hid: 'progress_loop',         post: { gains: { weapon: true }}},
+	{ good: true, hid: 'rare_goods_seller',     post: { gains: { armor_or_weapon: true }}},
+	{ good: true, hid: 'progress_loop',         post: { gains: { armor_or_weapon: true }}},
 	{ good: true, hid: 'idiot_bandits',         post: { gains: { coins: 'medium' }}},
-	{ good: true, hid: 'princess',              post: { gains: { coins: 'medium', 'weapon_improvement': true }}},
+	{ good: true, hid: 'princess',              post: { gains: { coins: 'medium', armor_or_weapon_improvement: true }}},
 	{ good: true, hid: 'bad_village',           post: { gains: { mana: 1 }}},
 	{ good: true, hid: 'mana_mana',             post: { gains: { mana: 1 }}}
 ]

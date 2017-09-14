@@ -49,7 +49,7 @@ function find_unused_coordinates(state: Readonly<State>, item: Readonly<Item>): 
 }
 
 function auto_sort(state: State): State {
-	// no auto-sort for now
+	state.unslotted.sort()
 	return state
 }
 

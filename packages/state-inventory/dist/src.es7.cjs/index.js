@@ -39,7 +39,7 @@ function find_unused_coordinates(state, item) {
     return state.unslotted.findIndex(item => !item);
 }
 function auto_sort(state) {
-    // no auto-sort for now
+    state.unslotted.sort();
     return state;
 }
 /////////////////////
