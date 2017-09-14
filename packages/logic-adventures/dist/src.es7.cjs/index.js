@@ -6,7 +6,9 @@ const static_adventure_data = require("@oh-my-rpg/data/src/adventure_archetype")
 const types_1 = require("./types");
 exports.CoinsGain = types_1.CoinsGain;
 /////////////////////
-const ALL_ADVENTURE_ARCHETYPES = static_adventure_data.map((paa) => {
+const ALL_ADVENTURE_ARCHETYPES = static_adventure_data
+    .filter((paa) => paa.published !== false)
+    .map((paa) => {
     const gains = (paa.post || {}).gains || {};
     // type fields
     gains.level = !!gains.level;

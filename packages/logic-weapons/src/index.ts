@@ -10,12 +10,7 @@ import {
 	Weapon,
 } from './types'
 
-import {
-	QUALITY_STRENGTH_BONUS_AT_GENERATION,
-	QUALITY_STRENGTH_MULTIPLIER,
-	QUALITY_STRENGTH_SPREAD,
-	ENHANCEMENT_MULTIPLIER,
-} from './constants'
+import { get_interval } from './constants'
 
 const WEAPON_BASES: {type: 'base', hid: string}[] =
 	static_weapon_data.filter((weapon_component: any) => weapon_component.type === WeaponPartType.base)
@@ -91,23 +86,16 @@ function enhance(weapon: Weapon): Weapon {
 ///////
 
 function get_damage_interval(weapon: Weapon): [number, number] {
-	const spread = QUALITY_STRENGTH_SPREAD[weapon.quality]
-	const strength_multiplier = QUALITY_STRENGTH_MULTIPLIER[weapon.quality]
-	const enhancement_multiplier = (1 + ENHANCEMENT_MULTIPLIER * weapon.enhancement_level)
-
-	// constrain interval
-	const min_strength = Math.max(weapon.base_strength - spread, 1)
-	const max_strength = Math.min(weapon.base_strength + spread, 20)
-
-	return [
-		Math.round(min_strength * strength_multiplier * enhancement_multiplier),
-		Math.round(max_strength * strength_multiplier * enhancement_multiplier)
-	]
+	return get_interval(
+		weapon.base_strength,
+		weapon.quality,
+		weapon.enhancement_level
+	)
 }
 
 function get_medium_damage(weapon: Weapon): number {
 	const damage_range = get_damage_interval(weapon)
-	return (damage_range[0] + damage_range[1]) / 2
+	return Math.round((damage_range[0] + damage_range[1]) / 2)
 }
 
 /////////////////////

@@ -3,19 +3,24 @@
 import { Random, Engine } from '@offirmo/random'
 import { ItemQuality, InventorySlot } from '@oh-my-rpg/definitions'
 
-import * as static_armor_data from '@oh-my-rpg/data/src/armor_component'
+import { i18n_messages, ENTRIES as static_armor_data } from './data'
 
 import {
 	ArmorPartType,
 	Armor,
 } from './types'
 
-const ARMOR_BASES: {type: 'base', hid: string}[] =
-	static_armor_data.filter((armor_component: any) => armor_component.type === ArmorPartType.base)
-const ARMOR_QUALIFIERS1: {type: 'qualifier1', hid: string}[] =
-	static_armor_data.filter((armor_component: any) => armor_component.type === ArmorPartType.qualifier1)
-const ARMOR_QUALIFIERS2: {type: 'qualifier2', hid: string}[] =
-	static_armor_data.filter((armor_component: any) => armor_component.type === ArmorPartType.qualifier2)
+import { get_interval } from './constants'
+
+const ARMOR_BASES =
+	static_armor_data.filter((armor_component: any) => armor_component.type === ArmorPartType.base) as
+		{type: 'base', hid: string}[]
+const ARMOR_QUALIFIERS1 =
+	static_armor_data.filter((armor_component: any) => armor_component.type === ArmorPartType.qualifier1) as
+		{type: 'qualifier1', hid: string}[]
+const ARMOR_QUALIFIERS2 =
+	static_armor_data.filter((armor_component: any) => armor_component.type === ArmorPartType.qualifier2) as
+		{type: 'qualifier2', hid: string}[]
 
 const MAX_ENHANCEMENT_LEVEL = 8
 const MIN_STRENGTH = 1
@@ -82,8 +87,18 @@ function enhance(armor: Armor): Armor {
 }
 
 function get_damage_reduction_interval(armor: Armor): [number, number] {
-	// TODO
-	return [0, 1]
+	const ATTACK_VS_DEFENSE_RATIO = 0.5
+	return get_interval(
+		armor.base_strength,
+		armor.quality,
+		armor.enhancement_level,
+		ATTACK_VS_DEFENSE_RATIO,
+	)
+}
+
+function get_medium_damage_reduction(armor: Armor): number {
+	const reduction_range = get_damage_reduction_interval(armor)
+	return Math.round((reduction_range[0] + reduction_range[1]) / 2)
 }
 
 /////////////////////
@@ -98,6 +113,9 @@ export {
 	generate_random_demo_armor,
 	enhance,
 	get_damage_reduction_interval,
+	get_medium_damage_reduction,
+	i18n_messages,
+	static_armor_data,
 }
 
 /////////////////////

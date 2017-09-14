@@ -71,21 +71,12 @@ function enhance(weapon) {
 exports.enhance = enhance;
 ///////
 function get_damage_interval(weapon) {
-    const spread = constants_1.QUALITY_STRENGTH_SPREAD[weapon.quality];
-    const strength_multiplier = constants_1.QUALITY_STRENGTH_MULTIPLIER[weapon.quality];
-    const enhancement_multiplier = (1 + constants_1.ENHANCEMENT_MULTIPLIER * weapon.enhancement_level);
-    // constrain interval
-    const min_strength = Math.max(weapon.base_strength - spread, 1);
-    const max_strength = Math.min(weapon.base_strength + spread, 20);
-    return [
-        Math.round(min_strength * strength_multiplier * enhancement_multiplier),
-        Math.round(max_strength * strength_multiplier * enhancement_multiplier)
-    ];
+    return constants_1.get_interval(weapon.base_strength, weapon.quality, weapon.enhancement_level);
 }
 exports.get_damage_interval = get_damage_interval;
 function get_medium_damage(weapon) {
     const damage_range = get_damage_interval(weapon);
-    return (damage_range[0] + damage_range[1]) / 2;
+    return Math.round((damage_range[0] + damage_range[1]) / 2);
 }
 exports.get_medium_damage = get_medium_damage;
 /////////////////////

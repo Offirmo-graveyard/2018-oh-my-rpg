@@ -1,4 +1,5 @@
 import { Engine } from '@offirmo/random';
+import { i18n_messages, ENTRIES as static_armor_data } from './data';
 import { ArmorPartType, Armor } from './types';
 declare const MAX_ENHANCEMENT_LEVEL = 8;
 declare const MIN_STRENGTH = 1;
@@ -7,4 +8,5 @@ declare function factory(rng: Engine, hints?: Partial<Armor>): Armor;
 declare function generate_random_demo_armor(): Armor;
 declare function enhance(armor: Armor): Armor;
 declare function get_damage_reduction_interval(armor: Armor): [number, number];
-export { ArmorPartType, Armor, MAX_ENHANCEMENT_LEVEL, MIN_STRENGTH, MAX_STRENGTH, factory, generate_random_demo_armor, enhance, get_damage_reduction_interval };
+declare function get_medium_damage_reduction(armor: Armor): number;
+export { ArmorPartType, Armor, MAX_ENHANCEMENT_LEVEL, MIN_STRENGTH, MAX_STRENGTH, factory, generate_random_demo_armor, enhance, get_damage_reduction_interval, get_medium_damage_reduction, i18n_messages, static_armor_data };

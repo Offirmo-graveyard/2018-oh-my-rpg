@@ -7,6 +7,8 @@ import {
 	factory,
 	generate_random_demo_armor,
 	enhance,
+	get_damage_reduction_interval,
+	get_medium_damage_reduction,
 } from '.'
 
 describe('🛡 👕  armor logic:', function() {
@@ -77,6 +79,55 @@ describe('🛡 👕  armor logic:', function() {
 			}
 
 			expect(attempt_enhance).to.throw('maximal enhancement level!')
+		})
+	})
+
+	describe('damage reduction', function() {
+		const ATTACK_VS_DEFENSE_RATIO = 0.5
+
+		describe('interval', function() {
+
+			it('should work', () => {
+				const [min, max] = get_damage_reduction_interval({
+					slot: InventorySlot.armor,
+					base_hid: 'shield',
+					qualifier1_hid: 'simple',
+					qualifier2_hid: 'mercenary',
+					quality: 'legendary',
+					base_strength: 14,
+					enhancement_level: 3,
+				})
+				expect(min).to.be.a.number
+				expect(max).to.be.a.number
+				expect(max).to.be.above(min)
+
+				expect(min).to.be.above(291 * ATTACK_VS_DEFENSE_RATIO) // min for legend+3
+				expect(min).to.be.below(5824 * ATTACK_VS_DEFENSE_RATIO) // max for legend+3
+				expect(max).to.be.above(291 * ATTACK_VS_DEFENSE_RATIO) // min for legend+3
+				expect(max).to.be.below(5824 * ATTACK_VS_DEFENSE_RATIO) // max for legend+3
+
+				expect(min).to.equal(1747)
+				expect(max).to.equal(2330)
+			})
+		})
+
+		describe('medium', function() {
+
+			it('should work', () => {
+				const med = get_medium_damage_reduction({
+					slot: InventorySlot.weapon,
+					base_hid: 'shield',
+					qualifier1_hid: 'simple',
+					qualifier2_hid: 'mercenary',
+					quality: 'legendary',
+					base_strength: 14,
+					enhancement_level: 3,
+				})
+				expect(med).to.be.a.number
+				expect(med).to.be.above(291 * ATTACK_VS_DEFENSE_RATIO) // min for legend+3
+				expect(med).to.be.below(5824 * ATTACK_VS_DEFENSE_RATIO) // max for legend+3
+				expect(med).to.equal(Math.round((1747+ 2330) / 2))
+			})
 		})
 	})
 })

@@ -8,6 +8,7 @@ declare const CoinsGain: {
 };
 declare type CoinsGain = Enum<typeof CoinsGain>;
 interface AdventureArchetype {
+    published: boolean | undefined;
     hid: string;
     good: boolean;
     post: {

@@ -3,12 +3,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const random_1 = require("@offirmo/random");
 const definitions_1 = require("@oh-my-rpg/definitions");
-const static_armor_data = require("@oh-my-rpg/data/src/armor_component");
+const data_1 = require("./data");
+exports.i18n_messages = data_1.i18n_messages;
+exports.static_armor_data = data_1.ENTRIES;
 const types_1 = require("./types");
 exports.ArmorPartType = types_1.ArmorPartType;
-const ARMOR_BASES = static_armor_data.filter((armor_component) => armor_component.type === types_1.ArmorPartType.base);
-const ARMOR_QUALIFIERS1 = static_armor_data.filter((armor_component) => armor_component.type === types_1.ArmorPartType.qualifier1);
-const ARMOR_QUALIFIERS2 = static_armor_data.filter((armor_component) => armor_component.type === types_1.ArmorPartType.qualifier2);
+const constants_1 = require("./constants");
+const ARMOR_BASES = data_1.ENTRIES.filter((armor_component) => armor_component.type === types_1.ArmorPartType.base);
+const ARMOR_QUALIFIERS1 = data_1.ENTRIES.filter((armor_component) => armor_component.type === types_1.ArmorPartType.qualifier1);
+const ARMOR_QUALIFIERS2 = data_1.ENTRIES.filter((armor_component) => armor_component.type === types_1.ArmorPartType.qualifier2);
 const MAX_ENHANCEMENT_LEVEL = 8;
 exports.MAX_ENHANCEMENT_LEVEL = MAX_ENHANCEMENT_LEVEL;
 const MIN_STRENGTH = 1;
@@ -69,9 +72,14 @@ function enhance(armor) {
 }
 exports.enhance = enhance;
 function get_damage_reduction_interval(armor) {
-    // TODO
-    return [0, 1];
+    const ATTACK_VS_DEFENSE_RATIO = 0.5;
+    return constants_1.get_interval(armor.base_strength, armor.quality, armor.enhancement_level, ATTACK_VS_DEFENSE_RATIO);
 }
 exports.get_damage_reduction_interval = get_damage_reduction_interval;
+function get_medium_damage_reduction(armor) {
+    const reduction_range = get_damage_reduction_interval(armor);
+    return Math.round((reduction_range[0] + reduction_range[1]) / 2);
+}
+exports.get_medium_damage_reduction = get_medium_damage_reduction;
 /////////////////////
 //# sourceMappingURL=index.js.map

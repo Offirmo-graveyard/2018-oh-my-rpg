@@ -37,7 +37,6 @@ import {
 	factory as inventory_state_factory,
 	add_item as inventory_add_item,
 	equip_item as inventory_equip_item,
-	unequip_item as inventory_unequip_item,
 	get_item_in_slot,
 } from '@oh-my-rpg/state-inventory'
 
@@ -357,12 +356,6 @@ function equip_item(state: State, coordinates: InventoryCoordinates): State {
 	return state
 }
 
-// later, not often needed
-function unequip_item(state: State, slot: InventorySlot): State {
-	state.inventory = inventory_unequip_item(state.inventory, slot)
-	return state
-}
-
 function sell_item(state: State, coordinates: InventoryCoordinates): State {
 	// TODO
 	// TODO count it as a meaningful interaction if positive (or with a limit)
@@ -392,7 +385,6 @@ export {
 	migrate_to_latest,
 	play,
 	equip_item,
-	unequip_item,
 	sell_item,
 	rename_avatar,
 	change_avatar_class,
