@@ -2,6 +2,10 @@
 //console.log(boxify('𝐓𝐡𝐞 𝐁𝐨𝐫𝐢𝐧𝐠 𝐑𝐏𝐆 𝑟𝑒𝑙𝑜𝑎𝑑𝑒𝑑 ', {padding: 2, margin: 1, borderStyle: 'double', borderColor: 'red'}))
 
 
+Market:
+* https://asciinema.org/
+
+
 https://docs.npmjs.com/cli/deprecate
 
 
@@ -11,7 +15,6 @@ https://github.com/zkat/okimdone
 http://snipplr.com/view/4771/human-readable-millisecond-timestamp/
 https://games.slashdot.org/story/17/05/29/0632250/esr-announces-the-open-sourcing-of-the-worlds-first-text-adventure
 https://gamedevelopment.tutsplus.com/categories/game-design
-
 
 
 Stories
