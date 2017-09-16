@@ -5,6 +5,7 @@ const lodash_1 = require("lodash");
 const definitions_1 = require("@oh-my-rpg/definitions");
 const logic_armors_1 = require("@oh-my-rpg/logic-armors");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
+const logic_monsters_1 = require("@oh-my-rpg/logic-monsters");
 const state_inventory_1 = require("@oh-my-rpg/state-inventory");
 const state_character_1 = require("@oh-my-rpg/state-character");
 const types_1 = require("./types");
@@ -73,40 +74,46 @@ function get_characteristic_icon_for(stat) {
     }
 }
 ///////
-function render_armor(a, options = DEFAULT_RENDERING_OPTIONS) {
-    if (a.slot !== definitions_1.InventorySlot.armor)
-        throw new Error(`render_armor(): can't render a ${a.slot} !`);
+function render_armor(i, options = DEFAULT_RENDERING_OPTIONS) {
+    if (i.slot !== definitions_1.InventorySlot.armor)
+        throw new Error(`render_armor(): can't render a ${i.slot} !`);
     const g = options.globalize;
-    const b = g.formatMessage(`armor/base/${a.base_hid}`, {});
-    const q1 = g.formatMessage(`armor/qualifier1/${a.qualifier1_hid}`, {});
-    const q2 = g.formatMessage(`armor/qualifier2/${a.qualifier2_hid}`, {});
+    const b = g.formatMessage(`armor/base/${i.base_hid}`, {});
+    const q1 = g.formatMessage(`armor/qualifier1/${i.qualifier1_hid}`, {});
+    const q2 = g.formatMessage(`armor/qualifier2/${i.qualifier2_hid}`, {});
     const parts = q2.startsWith('of')
         ? [q1, b, q2]
         : [q2, q1, b];
     const name = parts.map(lodash_1.capitalize).join(' ');
-    const enhancement_level = a.enhancement_level
-        ? ` +${a.enhancement_level}`
+    const enhancement_level = i.enhancement_level
+        ? ` +${i.enhancement_level}`
         : '';
-    const [min_dmg_reduc, max_dmg_reduc] = logic_armors_1.get_damage_reduction_interval(a);
-    return options.stylize(get_style_for_quality(a.quality), `${name}${enhancement_level}`) + ` [${min_dmg_reduc} ↔ ${max_dmg_reduc}]`;
+    const [min, max] = logic_armors_1.get_damage_reduction_interval(i);
+    return options.stylize(get_style_for_quality(i.quality), `${i.quality} `
+        + options.stylize(types_1.TextStyle.important_part, name)
+        + `${enhancement_level}`)
+        + ` [${min} ↔ ${max}]`;
 }
 exports.render_armor = render_armor;
-function render_weapon(w, options = DEFAULT_RENDERING_OPTIONS) {
-    if (w.slot !== definitions_1.InventorySlot.weapon)
-        throw new Error(`render_weapon(): can't render a ${w.slot} !`);
+function render_weapon(i, options = DEFAULT_RENDERING_OPTIONS) {
+    if (i.slot !== definitions_1.InventorySlot.weapon)
+        throw new Error(`render_weapon(): can't render a ${i.slot} !`);
     const g = options.globalize;
-    const b = g.formatMessage(`weapon/base/${w.base_hid}`, {});
-    const q1 = g.formatMessage(`weapon/qualifier1/${w.qualifier1_hid}`, {});
-    const q2 = g.formatMessage(`weapon/qualifier2/${w.qualifier2_hid}`, {});
+    const b = g.formatMessage(`weapon/base/${i.base_hid}`, {});
+    const q1 = g.formatMessage(`weapon/qualifier1/${i.qualifier1_hid}`, {});
+    const q2 = g.formatMessage(`weapon/qualifier2/${i.qualifier2_hid}`, {});
     const parts = q2.startsWith('of')
         ? [q1, b, q2]
         : [q2, q1, b];
     const name = parts.map(lodash_1.capitalize).join(' ');
-    const enhancement_level = w.enhancement_level
-        ? ` +${w.enhancement_level}`
+    const enhancement_level = i.enhancement_level
+        ? ` +${i.enhancement_level}`
         : '';
-    const [min_damage, max_damage] = logic_weapons_1.get_damage_interval(w);
-    return options.stylize(get_style_for_quality(w.quality), `${name}${enhancement_level}`) + ` [${min_damage} ↔ ${max_damage}]`;
+    const [min, max] = logic_weapons_1.get_damage_interval(i);
+    return options.stylize(get_style_for_quality(i.quality), `${i.quality} `
+        + options.stylize(types_1.TextStyle.important_part, name)
+        + `${enhancement_level}`)
+        + ` [${min} ↔ ${max}]`;
 }
 exports.render_weapon = render_weapon;
 function render_item(i, options = DEFAULT_RENDERING_OPTIONS) {
@@ -123,8 +130,13 @@ function render_item(i, options = DEFAULT_RENDERING_OPTIONS) {
 }
 exports.render_item = render_item;
 function render_monster(m, options = DEFAULT_RENDERING_OPTIONS) {
-    const name = [m.rank, ...m.name.split(' ')].map(lodash_1.capitalize).join(' ');
-    return `${m.possible_emoji}  ${name} L${m.level}`;
+    const name = m.name.split(' ').map(lodash_1.capitalize).join(' ');
+    const icon = m.rank === logic_monsters_1.MonsterRank.boss
+        ? '👑  '
+        : m.rank === logic_monsters_1.MonsterRank.elite
+            ? options.stylize(types_1.TextStyle.elite_mark, '★ ')
+            : '';
+    return `${m.possible_emoji}  ${icon}${m.rank} ${options.stylize(types_1.TextStyle.important_part, name)} L${m.level}`;
 }
 exports.render_monster = render_monster;
 function render_characteristics(state, options = DEFAULT_RENDERING_OPTIONS) {

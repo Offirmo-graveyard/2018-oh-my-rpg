@@ -43,6 +43,10 @@ declare const console: any // XXX
 
 function stylize_tbrpg_string(style: any, s: string) {
 	switch(style) {
+		case 'important_part':
+			return stylizeString.bold(s)
+		case 'elite_mark':
+			return stylizeString.yellow.bold(s)
 		case 'item_quality_common':
 			return stylizeString.gray(s)
 		case 'item_quality_uncommon':
@@ -179,9 +183,9 @@ describe('🔠  view to text', function() {
 					stylize: (style: string, s: string) => s
 				})
 				expect(str).to.be.a.string
-				expect(str).to.include('socks')
-				expect(str).to.include('onyx')
-				expect(str).to.include('tormentor')
+				expect(str).to.include('Socks')
+				expect(str).to.include('Onyx')
+				expect(str).to.include('Tormentor')
 				expect(str).not.to.include('+')
 			})
 		})
@@ -202,9 +206,9 @@ describe('🔠  view to text', function() {
 					stylize: (style: string, s: string) => s
 				})
 				expect(str).to.be.a.string
-				expect(str).to.include('mantle')
-				expect(str).to.include('embroidered')
-				expect(str).to.include('warfield_king')
+				expect(str).to.include('Mantle')
+				expect(str).to.include('Embroidered')
+				expect(str).to.include('Warfield')
 				expect(str).to.include('+5')
 			})
 		})
@@ -231,7 +235,7 @@ describe('🔠  view to text', function() {
 				inventory = add_item(inventory, generate_random_demo_weapon())
 				inventory = add_item(inventory, generate_random_demo_armor())
 				inventory = equip_item(inventory, 0)
-				inventory = equip_item(inventory, 1)
+				inventory = equip_item(inventory, 0)
 
 				const str = render_equipment(inventory, {
 					globalize: Globalize('en'),
@@ -323,13 +327,13 @@ describe('🔠  view to text', function() {
 		it('shows off weapons', () => {
 			for(let i = 0; i < 10; ++i) {
 				const i = generate_random_demo_weapon()
-				console.log(`⚔  ${i.quality} ` + render_item(i, rendering_options))
+				console.log(`⚔  ` + render_item(i, rendering_options))
 			}
 		})
-		it.only('shows off armors', () => {
-			for(let i = 0; i < 100; ++i) {
+		it('shows off armors', () => {
+			for(let i = 0; i < 10; ++i) {
 				const i = generate_random_demo_armor()
-				console.log(`🛡  ${i.quality} ` + render_item(i, rendering_options))
+				console.log(`🛡  ` + render_item(i, rendering_options))
 			}
 		})
 	})

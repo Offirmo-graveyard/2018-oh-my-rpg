@@ -86,48 +86,58 @@ function get_characteristic_icon_for(stat: CharacterStat): string {
 
 ///////
 
-function render_armor(a: Armor, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
-	if (a.slot !== InventorySlot.armor) throw new Error(`render_armor(): can't render a ${a.slot} !`)
+function render_armor(i: Armor, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
+	if (i.slot !== InventorySlot.armor) throw new Error(`render_armor(): can't render a ${i.slot} !`)
 
 	const g = options.globalize
 
-	const b = g.formatMessage(`armor/base/${a.base_hid}`, {})
-	const q1 = g.formatMessage(`armor/qualifier1/${a.qualifier1_hid}`, {})
-	const q2 = g.formatMessage(`armor/qualifier2/${a.qualifier2_hid}`, {})
+	const b = g.formatMessage(`armor/base/${i.base_hid}`, {})
+	const q1 = g.formatMessage(`armor/qualifier1/${i.qualifier1_hid}`, {})
+	const q2 = g.formatMessage(`armor/qualifier2/${i.qualifier2_hid}`, {})
 
 	const parts = q2.startsWith('of')
 		? [q1, b, q2]
 		: [q2, q1, b]
 
 	const name = parts.map(capitalize).join(' ')
-	const enhancement_level = a.enhancement_level
-		? ` +${a.enhancement_level}`
+	const enhancement_level = i.enhancement_level
+		? ` +${i.enhancement_level}`
 		: ''
-	const [min_dmg_reduc, max_dmg_reduc] = get_armor_damage_reduction_interval(a)
+	const [min, max] = get_armor_damage_reduction_interval(i)
 
-	return options.stylize(get_style_for_quality(a.quality), `${name}${enhancement_level}`) + ` [${min_dmg_reduc} ↔ ${max_dmg_reduc}]`
+	return options.stylize(get_style_for_quality(i.quality),
+			`${i.quality} `
+			+ options.stylize(TextStyle.important_part, name)
+			+ `${enhancement_level}`
+		)
+		+ ` [${min} ↔ ${max}]`
 }
 
-function render_weapon(w: Weapon, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
-	if (w.slot !== InventorySlot.weapon) throw new Error(`render_weapon(): can't render a ${w.slot} !`)
+function render_weapon(i: Weapon, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
+	if (i.slot !== InventorySlot.weapon) throw new Error(`render_weapon(): can't render a ${i.slot} !`)
 
 	const g = options.globalize
 
-	const b = g.formatMessage(`weapon/base/${w.base_hid}`, {})
-	const q1 = g.formatMessage(`weapon/qualifier1/${w.qualifier1_hid}`, {})
-	const q2 = g.formatMessage(`weapon/qualifier2/${w.qualifier2_hid}`, {})
+	const b = g.formatMessage(`weapon/base/${i.base_hid}`, {})
+	const q1 = g.formatMessage(`weapon/qualifier1/${i.qualifier1_hid}`, {})
+	const q2 = g.formatMessage(`weapon/qualifier2/${i.qualifier2_hid}`, {})
 
 	const parts = q2.startsWith('of')
 		? [q1, b, q2]
 		: [q2, q1, b]
 
 	const name = parts.map(capitalize).join(' ')
-	const enhancement_level = w.enhancement_level
-		? ` +${w.enhancement_level}`
+	const enhancement_level = i.enhancement_level
+		? ` +${i.enhancement_level}`
 		: ''
-	const [min_damage, max_damage] = get_weapon_damage_interval(w)
+	const [min, max] = get_weapon_damage_interval(i)
 
-	return options.stylize(get_style_for_quality(w.quality), `${name}${enhancement_level}`) + ` [${min_damage} ↔ ${max_damage}]`
+	return options.stylize(get_style_for_quality(i.quality),
+		`${i.quality} `
+		+ options.stylize(TextStyle.important_part, name)
+		+ `${enhancement_level}`
+		)
+		+ ` [${min} ↔ ${max}]`
 }
 
 function render_item(i: Item | null, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
@@ -145,9 +155,15 @@ function render_item(i: Item | null, options: RenderingOptions = DEFAULT_RENDERI
 }
 
 function render_monster(m: Monster, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
-	const name = [ m.rank, ...m.name.split(' ') ].map(capitalize).join(' ')
+	const name = m.name.split(' ').map(capitalize).join(' ')
 
-	return `${m.possible_emoji}  ${name} L${m.level}`
+	const icon = m.rank === MonsterRank.boss
+		? '👑  '
+		: m.rank === MonsterRank.elite
+			? options.stylize(TextStyle.elite_mark, '★ ')
+			: ''
+
+	return `${m.possible_emoji}  ${icon}${m.rank} ${options.stylize(TextStyle.important_part, name)} L${m.level}`
 }
 
 function render_characteristics(state: CharacterState, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {

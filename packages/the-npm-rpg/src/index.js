@@ -35,6 +35,10 @@ options.rendering_options = {
 
 function stylize_tbrpg_string(style, s) {
 	switch(style) {
+		case 'important_part':
+			return stylizeString.bold(s)
+		case 'elite_mark':
+			return stylizeString.yellow.bold(s)
 		case 'item_quality_common':
 			return stylizeString.gray(s)
 		case 'item_quality_uncommon':

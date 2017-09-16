@@ -1,6 +1,8 @@
 import { Enum } from 'typescript-string-enums';
 import { Adventure } from '@oh-my-rpg/state-the-boring-rpg';
 declare const TextStyle: {
+    important_part: "important_part";
+    elite_mark: "elite_mark";
     item_quality_common: "item_quality_common";
     item_quality_uncommon: "item_quality_uncommon";
     item_quality_rare: "item_quality_rare";

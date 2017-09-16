@@ -8,6 +8,8 @@ import { Adventure } from '@oh-my-rpg/state-the-boring-rpg'
 /////////////////////
 
 const TextStyle = Enum(
+	'important_part',
+	'elite_mark',
 	'item_quality_common',
 	'item_quality_uncommon',
 	'item_quality_rare',

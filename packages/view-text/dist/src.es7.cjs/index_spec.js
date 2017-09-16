@@ -14,6 +14,10 @@ const state_wallet_1 = require("@oh-my-rpg/state-wallet");
 const _1 = require(".");
 function stylize_tbrpg_string(style, s) {
     switch (style) {
+        case 'important_part':
+            return stylizeString.bold(s);
+        case 'elite_mark':
+            return stylizeString.yellow.bold(s);
         case 'item_quality_common':
             return stylizeString.gray(s);
         case 'item_quality_uncommon':
@@ -136,9 +140,9 @@ describe('🔠  view to text', function () {
                     stylize: (style, s) => s
                 });
                 expect(str).to.be.a.string;
-                expect(str).to.include('socks');
-                expect(str).to.include('onyx');
-                expect(str).to.include('tormentor');
+                expect(str).to.include('Socks');
+                expect(str).to.include('Onyx');
+                expect(str).to.include('Tormentor');
                 expect(str).not.to.include('+');
             });
         });
@@ -157,9 +161,9 @@ describe('🔠  view to text', function () {
                     stylize: (style, s) => s
                 });
                 expect(str).to.be.a.string;
-                expect(str).to.include('mantle');
-                expect(str).to.include('embroidered');
-                expect(str).to.include('warfield_king');
+                expect(str).to.include('Mantle');
+                expect(str).to.include('Embroidered');
+                expect(str).to.include('Warfield');
                 expect(str).to.include('+5');
             });
         });
@@ -181,7 +185,7 @@ describe('🔠  view to text', function () {
                 inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
                 inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
                 inventory = state_inventory_1.equip_item(inventory, 0);
-                inventory = state_inventory_1.equip_item(inventory, 1);
+                inventory = state_inventory_1.equip_item(inventory, 0);
                 const str = _1.render_equipment(inventory, {
                     globalize: Globalize('en'),
                     stylize: (style, s) => s
@@ -257,13 +261,13 @@ describe('🔠  view to text', function () {
         it('shows off weapons', () => {
             for (let i = 0; i < 10; ++i) {
                 const i = logic_weapons_1.generate_random_demo_weapon();
-                console.log(`⚔  ${i.quality} ` + _1.render_item(i, rendering_options));
+                console.log(`⚔  ` + _1.render_item(i, rendering_options));
             }
         });
-        it.only('shows off armors', () => {
-            for (let i = 0; i < 100; ++i) {
+        it('shows off armors', () => {
+            for (let i = 0; i < 10; ++i) {
                 const i = logic_armors_1.generate_random_demo_armor();
-                console.log(`🛡  ${i.quality} ` + _1.render_item(i, rendering_options));
+                console.log(`🛡  ` + _1.render_item(i, rendering_options));
             }
         });
     });
