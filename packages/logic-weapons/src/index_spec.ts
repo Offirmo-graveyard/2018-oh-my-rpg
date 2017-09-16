@@ -24,14 +24,14 @@ describe('⚔ 🏹  weapon logic:', function() {
 				base_hid: 'luth',
 				qualifier1_hid: 'simple',
 				qualifier2_hid: 'mercenary',
-				quality: ItemQuality.legendary,
-				base_strength: 14,
+				quality: ItemQuality.uncommon,
+				base_strength: 17,
 				enhancement_level: 0
 			})
-			expect((rng as any).getUseCount()).to.equal(5)
+			expect((rng as any).getUseCount(), '# rng draws 1').to.equal(6)
 
 			const weapon2 = factory(rng)
-			expect((rng as any).getUseCount()).to.equal(10)
+			expect((rng as any).getUseCount(), '# rng draws 2').to.equal(11)
 			expect(weapon2).not.to.deep.equal(weapon1)
 		})
 
@@ -50,7 +50,7 @@ describe('⚔ 🏹  weapon logic:', function() {
 				base_strength: 19,
 				enhancement_level: 0
 			})
-			expect((rng as any).getUseCount()).to.equal(3) // 2 less random picks
+			expect((rng as any).getUseCount(), '# rng draws').to.equal(3) // 2 less random picks
 		})
 	})
 

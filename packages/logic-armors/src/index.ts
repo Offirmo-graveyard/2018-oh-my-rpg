@@ -29,17 +29,21 @@ const MAX_STRENGTH = 20
 /////////////////////
 
 function pick_random_quality(rng: Engine): ItemQuality {
-	// TODO make high qualities rarer
-	return Random.pick(rng, [
-		ItemQuality.common,
-		ItemQuality.uncommon,
-		ItemQuality.rare,
-		ItemQuality.epic,
-		ItemQuality.legendary,
-		ItemQuality.artifact,
-	])
+	// legendary =    1/1000
+	// epic:     =   10/1000
+	// rare:     =  200/1000
+	// uncommon  =  389/1000
+	// common    =  400/1000
+	return Random.bool(400, 1000)(rng)
+		? ItemQuality.common
+		: Random.bool(389, 600)(rng)
+			? ItemQuality.uncommon
+			: Random.bool(200, 211)(rng)
+				? ItemQuality.rare
+				: Random.bool(10, 11)(rng)
+					? ItemQuality.epic
+					: ItemQuality.legendary
 }
-
 function pick_random_base(rng: Engine): string {
 	return Random.pick(rng, ARMOR_BASES).hid
 }

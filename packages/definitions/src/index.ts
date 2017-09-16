@@ -16,6 +16,9 @@ const ITEM_SLOTS: InventorySlot[] = [
 	InventorySlot.armor,
 ]
 
+const MIN_LEVEL = 1
+const MAX_LEVEL = 9999
+
 /////////////////////
 
 export * from './types'
@@ -23,6 +26,8 @@ export * from './types'
 export {
 	ITEM_QUALITIES,
 	ITEM_SLOTS,
+	MIN_LEVEL,
+	MAX_LEVEL,
 }
 
 /////////////////////

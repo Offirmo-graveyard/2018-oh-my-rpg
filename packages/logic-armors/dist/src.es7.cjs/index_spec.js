@@ -13,13 +13,13 @@ describe('🛡 👕  armor logic:', function () {
                 base_hid: 'socks',
                 qualifier1_hid: 'onyx',
                 qualifier2_hid: 'tormentor',
-                quality: definitions_1.ItemQuality.legendary,
-                base_strength: 14,
+                quality: definitions_1.ItemQuality.uncommon,
+                base_strength: 17,
                 enhancement_level: 0
             });
-            expect(rng.getUseCount()).to.equal(5);
+            expect(rng.getUseCount(), '# rng draws 1').to.equal(6);
             const armor2 = _1.factory(rng);
-            expect(rng.getUseCount()).to.equal(10);
+            expect(rng.getUseCount(), '# rng draws 2').to.equal(11);
             expect(armor2).not.to.deep.equal(armor1);
         });
         it('should allow creating a partially predefined armor', function () {
@@ -37,7 +37,7 @@ describe('🛡 👕  armor logic:', function () {
                 base_strength: 19,
                 enhancement_level: 0
             });
-            expect(rng.getUseCount()).to.equal(3); // 2 less random picks
+            expect(rng.getUseCount(), '# rng draws').to.equal(3); // 2 less random picks
         });
     });
     describe('enhancement', function () {

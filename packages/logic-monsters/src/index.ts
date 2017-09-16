@@ -1,121 +1,75 @@
 /////////////////////
 
 import { Random, Engine } from '@offirmo/random'
-import { ItemQuality, InventorySlot } from '@oh-my-rpg/definitions'
-
-import { i18n_messages, ENTRIES as static_armor_data } from './data'
 
 import {
-	ArmorPartType,
-	Armor,
+	Monster,
+	MonsterRank,
 } from './types'
 
-import { get_interval } from './constants'
-
-const ARMOR_BASES =
-	static_armor_data.filter((armor_component: any) => armor_component.type === ArmorPartType.base) as
-		{type: 'base', hid: string}[]
-const ARMOR_QUALIFIERS1 =
-	static_armor_data.filter((armor_component: any) => armor_component.type === ArmorPartType.qualifier1) as
-		{type: 'qualifier1', hid: string}[]
-const ARMOR_QUALIFIERS2 =
-	static_armor_data.filter((armor_component: any) => armor_component.type === ArmorPartType.qualifier2) as
-		{type: 'qualifier2', hid: string}[]
-
-const MAX_ENHANCEMENT_LEVEL = 8
-const MIN_STRENGTH = 1
-const MAX_STRENGTH = 20
+import {
+	ENTRIES
+} from './data'
 
 /////////////////////
 
-function pick_random_quality(rng: Engine): ItemQuality {
-	// TODO make high qualities rarer
-	return Random.pick(rng, [
-		ItemQuality.common,
-		ItemQuality.uncommon,
-		ItemQuality.rare,
-		ItemQuality.epic,
-		ItemQuality.legendary,
-		ItemQuality.artifact,
-	])
+function pick_random_rank(rng: Engine): MonsterRank {
+	// on 10 times, 1 boss, 2 elites, 7 common
+	return Random.bool(0.7)(rng)
+		? MonsterRank.common
+		: Random.bool(0.66)(rng)
+			? MonsterRank.elite
+			: MonsterRank.boss
 }
-
-function pick_random_base(rng: Engine): string {
-	return Random.pick(rng, ARMOR_BASES).hid
-}
-function pick_random_qualifier1(rng: Engine): string {
-	return Random.pick(rng, ARMOR_QUALIFIERS1).hid
-}
-function pick_random_qualifier2(rng: Engine): string {
-	return Random.pick(rng, ARMOR_QUALIFIERS2).hid
-}
-const pick_random_base_strength = Random.integer(MIN_STRENGTH, MAX_STRENGTH)
 
 /////////////////////
 
-function factory(rng: Engine, hints: Partial<Armor> = {}): Armor {
-	// TODO add a check for hints to be in existing components
+const MONSTER_RELATIVE_LEVEL_SPREAD = 0.1
+const MAX_LEVEL = 9999 // TODO share that
+
+function factory(rng: Engine, hints: Partial<Monster> = {}): Monster {
+	const raw = hints.name
+		? ENTRIES.find(raw_monster => raw_monster.name === hints.name)
+		: Random.pick(rng, ENTRIES)
+
+	if (!raw)
+		throw new Error(`OMR Monster factory: can't find a monster corresponding to hint "${hints.name}"!`)
+
+	let level = -1
+	if (!hints.level)
+		level = Random.integer(1, MAX_LEVEL)(rng)
+	else {
+		// provide a little variation around the given level
+		const reference_level = hints.level
+		const variation = Math.round(Math.max(1, reference_level * MONSTER_RELATIVE_LEVEL_SPREAD))
+		level = Math.max(1, Math.min(MAX_LEVEL,
+			reference_level + Random.integer(-variation, variation)(rng)
+		))
+	}
+
 	return {
-		slot: InventorySlot.armor,
-		base_hid: hints.base_hid || pick_random_base(rng),
-		qualifier1_hid: hints.qualifier1_hid || pick_random_qualifier1(rng),
-		qualifier2_hid: hints.qualifier2_hid || pick_random_qualifier2(rng),
-		quality: hints.quality || pick_random_quality(rng),
-		base_strength: hints.base_strength || pick_random_base_strength(rng),
-		enhancement_level: hints.enhancement_level || 0,
+		name: raw.name,
+		level,
+		rank: hints.rank || pick_random_rank(rng),
+		possible_emoji: hints.possible_emoji || raw.emoji,
 	}
 }
 
 /////////////////////
 
 // for demo purpose, all characteristics having the same probability + also random enhancement level
-function generate_random_demo_armor(): Armor {
+function generate_random_demo_monster(): Monster {
 	const rng: Engine = Random.engines.mt19937().autoSeed()
-	return factory(rng, {
-		enhancement_level: Random.integer(0, MAX_ENHANCEMENT_LEVEL)(rng)
-	})
-}
-
-/////////////////////
-
-function enhance(armor: Armor): Armor {
-	if (armor.enhancement_level >= MAX_ENHANCEMENT_LEVEL)
-		throw new Error(`can't enhance an armor above the maximal enhancement level!`)
-
-	armor.enhancement_level++
-	return armor
-}
-
-function get_damage_reduction_interval(armor: Armor): [number, number] {
-	const ATTACK_VS_DEFENSE_RATIO = 0.5
-	return get_interval(
-		armor.base_strength,
-		armor.quality,
-		armor.enhancement_level,
-		ATTACK_VS_DEFENSE_RATIO,
-	)
-}
-
-function get_medium_damage_reduction(armor: Armor): number {
-	const reduction_range = get_damage_reduction_interval(armor)
-	return Math.round((reduction_range[0] + reduction_range[1]) / 2)
+	return factory(rng)
 }
 
 /////////////////////
 
 export {
-	ArmorPartType,
-	Armor,
-	MAX_ENHANCEMENT_LEVEL,
-	MIN_STRENGTH,
-	MAX_STRENGTH,
+	MonsterRank,
+	Monster,
 	factory,
-	generate_random_demo_armor,
-	enhance,
-	get_damage_reduction_interval,
-	get_medium_damage_reduction,
-	i18n_messages,
-	static_armor_data,
+	generate_random_demo_monster,
 }
 
 /////////////////////

@@ -1,18 +1,14 @@
 import { Enum } from 'typescript-string-enums';
-import { Item, InventorySlot, ItemQuality } from '@oh-my-rpg/definitions';
-declare const ArmorPartType: {
-    base: "base";
-    qualifier1: "qualifier1";
-    qualifier2: "qualifier2";
+declare const MonsterRank: {
+    common: "common";
+    elite: "elite";
+    boss: "boss";
 };
-declare type ArmorPartType = Enum<typeof ArmorPartType>;
-interface Armor extends Item {
-    slot: InventorySlot;
-    base_hid: string;
-    qualifier1_hid: string;
-    qualifier2_hid: string;
-    quality: ItemQuality;
-    base_strength: number;
-    enhancement_level: number;
+declare type MonsterRank = Enum<typeof MonsterRank>;
+interface Monster {
+    name: string;
+    level: number;
+    rank: MonsterRank;
+    possible_emoji: string;
 }
-export { ArmorPartType, Armor };
+export { MonsterRank, Monster };

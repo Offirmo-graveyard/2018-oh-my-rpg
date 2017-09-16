@@ -2,17 +2,22 @@
 	"name": "@oh-my-rpg/data",
 	"version": "0.0.1",
 	"description": "Oh My RPG static data",
-	"main": "src/index.js",
-	"typings": "src/index.d.ts",
+	"main": "dist/src.es7.cjs/index.js",
+	"typings": "dist/src.es7.cjs/index.js",
+	"author": "Offirmo <offirmo.net@gmail.com>",
+	"license": "UNLICENSED",
 	"scripts": {
 		"__dev": "~~~~~~~ DEVELOPMENT ~~~~~~~",
-		"build:dev": "echo 'no build phase yet for data'",
+		"build:dev": "../../node_modules/.bin/tsc --project meta/dev",
 		"build:dev:watch": "npm run build:dev -- --watch",
-		"test": "../../node_modules/.bin/mocha --opts ../../node_modules/@offirmo/unit-test-toolbox/mocha.opts ../../node_modules/@offirmo/unit-test-toolbox/mocha-chai-init-node.js 'dist/src.es7.amd/**/*spec.js'",
+		"test": "../../node_modules/.bin/mocha --opts ../../node_modules/@offirmo/unit-test-toolbox/mocha.opts ../../node_modules/@offirmo/unit-test-toolbox/mocha-chai-init-node.js 'dist/src.es7.cjs/**/*spec.js'",
 		"__helpers": "----------- Helpers -----------",
 		"dev": "npm run build:dev:watch"
 	},
 	"dependencies": {
-		"hjson": "^2.4.2"
+		"typescript-string-enums": "^0.3.4"
+	},
+	"devDependencies": {
+		"tslib": "^1.7.1"
 	}
 }

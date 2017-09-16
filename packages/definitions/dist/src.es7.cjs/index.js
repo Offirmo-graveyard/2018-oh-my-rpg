@@ -17,6 +17,10 @@ const ITEM_SLOTS = [
     types_1.InventorySlot.armor,
 ];
 exports.ITEM_SLOTS = ITEM_SLOTS;
+const MIN_LEVEL = 1;
+exports.MIN_LEVEL = MIN_LEVEL;
+const MAX_LEVEL = 9999;
+exports.MAX_LEVEL = MAX_LEVEL;
 /////////////////////
 tslib_1.__exportStar(require("./types"), exports);
 /////////////////////

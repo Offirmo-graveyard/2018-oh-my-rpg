@@ -1,9 +1,11 @@
 import * as Globalize from 'globalize'
 import * as CLDRData from 'cldr-data'
+import * as stylizeString from 'chalk'
 
 import { InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
 import { generate_random_demo_weapon } from '@oh-my-rpg/logic-weapons'
-import { generate_random_demo_armor } from '@oh-my-rpg/logic-armors'
+import { i18n_messages, generate_random_demo_armor } from '@oh-my-rpg/logic-armors'
+import { generate_random_demo_monster } from '@oh-my-rpg/logic-monsters'
 import { en as en_adventures } from '@oh-my-rpg/data/src/adventure_archetype/i18n'
 import { en as en_weapons } from '@oh-my-rpg/data/src/weapon_component/i18n'
 
@@ -25,9 +27,11 @@ import {
 import { Random, Engine } from '@offirmo/random'
 
 import {
+	RenderingOptions,
 	render_weapon,
 	render_armor,
 	render_item,
+	render_monster,
 	render_characteristics,
 	render_equipment,
 	render_inventory,
@@ -37,7 +41,29 @@ import {
 
 declare const console: any // XXX
 
+function stylize_tbrpg_string(style: any, s: string) {
+	switch(style) {
+		case 'item_quality_common':
+			return stylizeString.gray(s)
+		case 'item_quality_uncommon':
+			return stylizeString.green(s)
+		case 'item_quality_rare':
+			return stylizeString.blue(s)
+		case 'item_quality_epic':
+			return stylizeString.magenta(s)
+		case 'item_quality_legendary':
+			return stylizeString.red(s)
+		case 'item_quality_artifact':
+			return stylizeString.yellow(s)
+		case 'change_outline':
+			return stylizeString.italic.bold.red(s)
+		default:
+			return `[XXX unkwown style ${style}]`+ stylizeString.bold.red(s)
+	}
+}
+
 describe('🔠  view to text', function() {
+	const rendering_options: RenderingOptions = ({} as any)
 	before(function init_globalize() {
 		Globalize.load(CLDRData.entireSupplemental())
 		Globalize.load(CLDRData.entireMainFor('en'))
@@ -46,10 +72,13 @@ describe('🔠  view to text', function() {
 			en: {
 				...en_adventures,
 				...en_weapons,
+				...i18n_messages.en,
 			}
 		}
 		//console.log(messages)
 		Globalize.loadMessages(messages)
+		rendering_options.globalize = Globalize('en')
+		rendering_options.stylize = stylize_tbrpg_string
 	})
 
 	describe('📃  adventure rendering', function() {
@@ -283,6 +312,25 @@ describe('🔠  view to text', function() {
 				expect(str).to.contain('12')
 				expect(str).to.contain('34')
 			})
+		})
+	})
+
+	describe('demo', function() {
+		it('shows off monsters', () => {
+			for(let i = 0; i < 10; ++i)
+				console.log(render_monster(generate_random_demo_monster(), rendering_options))
+		})
+		it('shows off weapons', () => {
+			for(let i = 0; i < 10; ++i) {
+				const i = generate_random_demo_weapon()
+				console.log(`⚔  ${i.quality} ` + render_item(i, rendering_options))
+			}
+		})
+		it.only('shows off armors', () => {
+			for(let i = 0; i < 100; ++i) {
+				const i = generate_random_demo_armor()
+				console.log(`🛡  ${i.quality} ` + render_item(i, rendering_options))
+			}
 		})
 	})
 })

@@ -20,15 +20,20 @@ const MAX_STRENGTH = 20;
 exports.MAX_STRENGTH = MAX_STRENGTH;
 /////////////////////
 function pick_random_quality(rng) {
-    // TODO make high qualities rarer
-    return random_1.Random.pick(rng, [
-        definitions_1.ItemQuality.common,
-        definitions_1.ItemQuality.uncommon,
-        definitions_1.ItemQuality.rare,
-        definitions_1.ItemQuality.epic,
-        definitions_1.ItemQuality.legendary,
-        definitions_1.ItemQuality.artifact,
-    ]);
+    // legendary =    1/1000
+    // epic:     =   10/1000
+    // rare:     =  200/1000
+    // uncommon  =  389/1000
+    // common    =  400/1000
+    return random_1.Random.bool(400, 1000)(rng)
+        ? definitions_1.ItemQuality.common
+        : random_1.Random.bool(389, 600)(rng)
+            ? definitions_1.ItemQuality.uncommon
+            : random_1.Random.bool(200, 211)(rng)
+                ? definitions_1.ItemQuality.rare
+                : random_1.Random.bool(10, 11)(rng)
+                    ? definitions_1.ItemQuality.epic
+                    : definitions_1.ItemQuality.legendary;
 }
 function pick_random_base(rng) {
     return random_1.Random.pick(rng, ARMOR_BASES).hid;

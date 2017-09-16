@@ -4,8 +4,9 @@ import { partial, capitalize } from 'lodash'
 
 import { Random, Engine } from '@offirmo/random'
 import { ItemQuality, InventorySlot, Item, ITEM_SLOTS } from '@oh-my-rpg/definitions'
-import { Weapon, get_damage_interval as get_weapon_damage_interval } from '@oh-my-rpg/logic-weapons'
 import { Armor, get_damage_reduction_interval as get_armor_damage_reduction_interval } from '@oh-my-rpg/logic-armors'
+import { Weapon, get_damage_interval as get_weapon_damage_interval } from '@oh-my-rpg/logic-weapons'
+import { MonsterRank, Monster } from '@oh-my-rpg/logic-monsters'
 import { State as InventoryState, iterables_unslotted, get_item_in_slot } from '@oh-my-rpg/state-inventory'
 import { State as WalletState, Currency, get_currency_amount } from '@oh-my-rpg/state-wallet'
 import { State as CharacterState, CharacterStat, CHARACTER_STATS } from '@oh-my-rpg/state-character'
@@ -85,6 +86,28 @@ function get_characteristic_icon_for(stat: CharacterStat): string {
 
 ///////
 
+function render_armor(a: Armor, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
+	if (a.slot !== InventorySlot.armor) throw new Error(`render_armor(): can't render a ${a.slot} !`)
+
+	const g = options.globalize
+
+	const b = g.formatMessage(`armor/base/${a.base_hid}`, {})
+	const q1 = g.formatMessage(`armor/qualifier1/${a.qualifier1_hid}`, {})
+	const q2 = g.formatMessage(`armor/qualifier2/${a.qualifier2_hid}`, {})
+
+	const parts = q2.startsWith('of')
+		? [q1, b, q2]
+		: [q2, q1, b]
+
+	const name = parts.map(capitalize).join(' ')
+	const enhancement_level = a.enhancement_level
+		? ` +${a.enhancement_level}`
+		: ''
+	const [min_dmg_reduc, max_dmg_reduc] = get_armor_damage_reduction_interval(a)
+
+	return options.stylize(get_style_for_quality(a.quality), `${name}${enhancement_level}`) + ` [${min_dmg_reduc} ↔ ${max_dmg_reduc}]`
+}
+
 function render_weapon(w: Weapon, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
 	if (w.slot !== InventorySlot.weapon) throw new Error(`render_weapon(): can't render a ${w.slot} !`)
 
@@ -107,18 +130,6 @@ function render_weapon(w: Weapon, options: RenderingOptions = DEFAULT_RENDERING_
 	return options.stylize(get_style_for_quality(w.quality), `${name}${enhancement_level}`) + ` [${min_damage} ↔ ${max_damage}]`
 }
 
-function render_armor(a: Armor, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
-	if (a.slot !== InventorySlot.armor) throw new Error(`render_armor(): can't render a ${a.slot} !`)
-
-	const name = `${a.qualifier1_hid}.${a.base_hid}.of.the.${a.qualifier2_hid}`
-	const enhancement_level = a.enhancement_level
-		? ` +${a.enhancement_level}`
-		: ''
-	const [min_dmg_reduc, max_dmg_reduc] = get_armor_damage_reduction_interval(a)
-
-	return options.stylize(get_style_for_quality(a.quality), `${name}${enhancement_level}`) + ` [${min_dmg_reduc} ↔ ${max_dmg_reduc}]`
-}
-
 function render_item(i: Item | null, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
 	if (!i)
 		return ''
@@ -131,6 +142,12 @@ function render_item(i: Item | null, options: RenderingOptions = DEFAULT_RENDERI
 		default:
 			throw new Error(`render_item(): don't know how to render a "${i.slot}" !`)
 	}
+}
+
+function render_monster(m: Monster, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
+	const name = [ m.rank, ...m.name.split(' ') ].map(capitalize).join(' ')
+
+	return `${m.possible_emoji}  ${name} L${m.level}`
 }
 
 function render_characteristics(state: CharacterState, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
@@ -287,6 +304,7 @@ export {
 	render_weapon,
 	render_armor,
 	render_item,
+	render_monster,
 	render_characteristics,
 	render_equipment,
 	render_inventory,

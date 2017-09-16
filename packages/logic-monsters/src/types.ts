@@ -1,35 +1,33 @@
 import { Enum } from 'typescript-string-enums'
 
-import { Item, InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
+//import { Item, InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
 
 /////////////////////
 
-const ArmorPartType = Enum(
-	'base',
-	'qualifier1',
-	'qualifier2',
+const MonsterRank = Enum(
+	'common',
+	'elite',
+	'boss',
 )
-type ArmorPartType = Enum<typeof ArmorPartType>
+type MonsterRank = Enum<typeof MonsterRank>
+
+// TODO property, etc...
 
 ///////
 
-// TODO check extends
-interface Armor extends Item {
-	slot: InventorySlot
-	base_hid: string
-	qualifier1_hid: string
-	qualifier2_hid: string
-	quality: ItemQuality
-	base_strength: number
-	enhancement_level: number
+interface Monster {
+	name: string
+	level: number
+	rank: MonsterRank
+	possible_emoji: string
 }
 
 
 /////////////////////
 
 export {
-	ArmorPartType,
-	Armor,
+	MonsterRank,
+	Monster,
 }
 
 /////////////////////
