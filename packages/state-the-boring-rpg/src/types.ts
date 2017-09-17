@@ -2,6 +2,7 @@ import { Enum } from 'typescript-string-enums'
 
 import { Weapon } from '@oh-my-rpg/logic-weapons'
 import { Armor } from '@oh-my-rpg/logic-armors'
+import { Monster } from '@oh-my-rpg/logic-monsters'
 
 import { State as MetaState } from '@oh-my-rpg/state-meta'
 import { State as CharacterState } from '@oh-my-rpg/state-character'
@@ -34,6 +35,7 @@ type GainType = Enum<typeof GainType>
 interface Adventure {
 	hid: string
 	good: boolean
+	encounter?: Monster,
 	gains: {
 		level: number
 		health: number

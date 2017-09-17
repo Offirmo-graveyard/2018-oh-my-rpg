@@ -237,6 +237,8 @@ function receive_tokens(state: State, amount: number): State {
 	return state
 }
 
+const FIGHT_ENCOUNTER_RATIO = 0.33
+
 function play_good(state: State, explicit_adventure_archetype_hid?: string): State {
 	state.good_click_count++
 	state.meaningful_interaction_count++;
@@ -245,7 +247,12 @@ function play_good(state: State, explicit_adventure_archetype_hid?: string): Sta
 
 	const aa: AdventureArchetype = explicit_adventure_archetype_hid
 		? get_archetype(explicit_adventure_archetype_hid)
-		: pick_random_good_archetype(rng)
+		: Random.bool(FIGHT_ENCOUNTER_RATIO)
+			? pick_random_fight_archetype(rng)
+			: pick_random_good_archetype(rng)
+
+	const isFight =
+
 	const adventure = instantiate_adventure_archetype(
 		rng,
 		aa,

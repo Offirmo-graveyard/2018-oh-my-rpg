@@ -11,46 +11,58 @@ const CoinsGain = Enum(
 )
 type CoinsGain = Enum<typeof CoinsGain>
 
+
+
+
+const AdventureType = Enum(
+	'story',
+	'fight',
+)
+type AdventureType = Enum<typeof AdventureType>
+
+
 interface AdventureArchetype {
-	published: boolean | undefined
 	hid: string
+	type: AdventureType
 	good: boolean
-	post: {
-		gains: {
-			// keys must match characteristics
-			level: boolean
-			health: number
-			mana: number
+	outcome: {
+		level: boolean
+		health: boolean
+		mana: boolean
 
-			strength: number
-			agility: number
-			charisma: number
-			wisdom: number
-			luck: number
-			random_charac: number
-			class_main_charac: number
-			class_secondary_charac: number
+		strength: boolean
+		agility: boolean
+		charisma: boolean
+		wisdom: boolean
+		luck: boolean
+		random_charac: boolean
+		class_main_charac: boolean
+		class_secondary_charac: boolean
 
-			coins: CoinsGain
-			tokens: number
+		coins: CoinsGain
+		tokens: number
 
-			armor: boolean
-			weapon: boolean
-			armor_or_weapon: boolean
+		armor: boolean
+		weapon: boolean
+		armor_or_weapon: boolean
 
-			// key radix must match item slots
-			armor_improvement: boolean
-			weapon_improvement: boolean
-			armor_or_weapon_improvement: boolean
-		}
+		// key radix must match item slots
+		armor_improvement: boolean
+		weapon_improvement: boolean
+		armor_or_weapon_improvement: boolean
 	}
 }
+
+type Outcome = AdventureArchetype['outcome']
+
 
 /////////////////////
 
 export {
 	CoinsGain,
+	AdventureType,
 	AdventureArchetype,
+	Outcome,
 }
 
 /////////////////////

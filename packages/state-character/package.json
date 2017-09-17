@@ -16,7 +16,7 @@
  },
  "dependencies": {
   "@oh-my-rpg/definitions": "^0.0.1",
-  "typescript-string-enums": "^0.3.4"
+  "typescript-string-enums": "^0.3.5"
  },
  "devDependencies": {
   "tslib": "^1.7.1"
