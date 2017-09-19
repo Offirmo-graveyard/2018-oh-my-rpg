@@ -6,9 +6,9 @@ const stylizeString = require("chalk");
 const definitions_1 = require("@oh-my-rpg/definitions");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
 const logic_armors_1 = require("@oh-my-rpg/logic-armors");
+const i18n_1 = require("@oh-my-rpg/data/src/weapon_component/i18n");
+const logic_adventures_1 = require("@oh-my-rpg/logic-adventures");
 const logic_monsters_1 = require("@oh-my-rpg/logic-monsters");
-const i18n_1 = require("@oh-my-rpg/data/src/adventure_archetype/i18n");
-const i18n_2 = require("@oh-my-rpg/data/src/weapon_component/i18n");
 const state_inventory_1 = require("@oh-my-rpg/state-inventory");
 const state_wallet_1 = require("@oh-my-rpg/state-wallet");
 const _1 = require(".");
@@ -43,7 +43,7 @@ describe('🔠  view to text', function () {
         Globalize.load(CLDRData.entireMainFor('en'));
         //Globalize.loadTimeZone(require('iana-tz-data'))
         const messages = {
-            en: Object.assign({}, i18n_1.en, i18n_2.en, logic_armors_1.i18n_messages.en)
+            en: Object.assign({}, logic_armors_1.i18n_messages.en, logic_adventures_1.i18n_messages.en, i18n_1.en)
         };
         //console.log(messages)
         Globalize.loadMessages(messages);
@@ -75,6 +75,7 @@ describe('🔠  view to text', function () {
                 globalize: Globalize('en'),
                 stylize: (style, s) => s
             });
+            console.log(str);
             expect(str).to.be.a.string;
             expect(str).to.include('A dying man on the street left you everything he had.');
             expect(str).to.include('You gained 1,234 coins!');

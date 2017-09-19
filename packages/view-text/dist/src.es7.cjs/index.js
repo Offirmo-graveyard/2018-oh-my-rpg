@@ -2,12 +2,14 @@
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = require("lodash");
+const typescript_string_enums_1 = require("typescript-string-enums");
 const definitions_1 = require("@oh-my-rpg/definitions");
 const logic_armors_1 = require("@oh-my-rpg/logic-armors");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
 const logic_monsters_1 = require("@oh-my-rpg/logic-monsters");
 const state_inventory_1 = require("@oh-my-rpg/state-inventory");
 const state_character_1 = require("@oh-my-rpg/state-character");
+const state_the_boring_rpg_1 = require("@oh-my-rpg/state-the-boring-rpg");
 const types_1 = require("./types");
 exports.TextStyle = types_1.TextStyle;
 const DEFAULT_RENDERING_OPTIONS = {
@@ -136,7 +138,7 @@ function render_monster(m, options = DEFAULT_RENDERING_OPTIONS) {
         : m.rank === logic_monsters_1.MonsterRank.elite
             ? options.stylize(types_1.TextStyle.elite_mark, '★ ')
             : '';
-    return `${m.possible_emoji}  ${icon}${m.rank} ${options.stylize(types_1.TextStyle.important_part, name)} L${m.level}`;
+    return `L${m.level} ${m.rank} ${options.stylize(types_1.TextStyle.important_part, name)} ${m.possible_emoji} ${icon}`;
 }
 exports.render_monster = render_monster;
 function render_characteristics(state, options = DEFAULT_RENDERING_OPTIONS) {
@@ -216,7 +218,7 @@ function render_adventure_gain(a, gain_type, gains_for_display) {
         case 'luck':
             return `🆙  ${gain_type} increased!`;
         default:
-            return `🔥  TODO gain message for ${gain_type}`;
+            return `🔥  TODO gain message for "${gain_type}"`;
     }
 }
 function render_adventure(a, options = DEFAULT_RENDERING_OPTIONS) {
@@ -224,25 +226,31 @@ function render_adventure(a, options = DEFAULT_RENDERING_OPTIONS) {
     const formattedWeapon = a.gains.weapon ? render_item(a.gains.weapon, options) : '';
     const formattedArmor = a.gains.armor ? render_item(a.gains.armor, options) : '';
     const formattedItem = formattedWeapon || formattedArmor;
+    const charac_name = typescript_string_enums_1.Enum.keys(state_character_1.CharacterStat).find(stat => !!a.gains[stat]);
     // formatting to natural language
-    const gains_for_display = Object.assign({}, a.gains, {
-        formattedCoins: a.gains.coins ? g.formatNumber(a.gains.coins) : '',
-        formattedWeapon,
+    const gains_for_display = Object.assign({}, a.gains, { formattedCoins: a.gains.coins ? g.formatNumber(a.gains.coins) : '', formattedWeapon,
         formattedArmor,
         formattedItem,
-    });
-    const raw_message_multiline = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display);
+        charac_name, charac: a.gains[charac_name] });
+    const encounter = a.encounter ? render_monster(a.encounter, options) : '';
+    const raw_message_multiline = g.formatMessage(`adventures/${a.hid}`, Object.assign({ encounter }, gains_for_display));
     const raw_message = raw_message_multiline
         .split('\n')
         .map((s) => s.trim())
         .filter((s) => !!s)
         .join(' ');
+    const gained = Object.keys(a.gains)
+        .filter((gain_type) => !!a.gains[gain_type])
+        .map((gain_type) => {
+        if (!typescript_string_enums_1.Enum.isType(state_the_boring_rpg_1.GainType, gain_type))
+            throw new Error(`render_adventure(): unexpected gain type "${gain_type}"!`);
+        return gain_type;
+    });
+    //console.log({gained, gains_for_display})
     const msg_parts = [
         raw_message,
         '',
-        ...Object.keys(a.gains)
-            .filter((gain_type) => !!a.gains[gain_type])
-            .map((gain_type) => render_adventure_gain(a, gain_type, gains_for_display))
+        ...gained.map((gain_type) => render_adventure_gain(a, gain_type, gains_for_display))
     ];
     return msg_parts.join('\n');
 }

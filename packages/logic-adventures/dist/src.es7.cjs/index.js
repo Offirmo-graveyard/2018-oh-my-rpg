@@ -4,7 +4,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const random_1 = require("@offirmo/random");
 const types_1 = require("./types");
 exports.CoinsGain = types_1.CoinsGain;
+exports.AdventureType = types_1.AdventureType;
 const data_1 = require("./data");
+exports.i18n_messages = data_1.i18n_messages;
 /////////////////////
 const ALL_ADVENTURE_ARCHETYPES = data_1.ENTRIES
     .filter(paa => (paa.isPublished !== false))
@@ -20,6 +22,7 @@ const ALL_ADVENTURE_ARCHETYPES = data_1.ENTRIES
         charisma: !!raw_outcome.charisma,
         wisdom: !!raw_outcome.wisdom,
         random_charac: !!raw_outcome.random_charac,
+        lowest_charac: !!raw_outcome.lowest_charac,
         class_main_charac: !!raw_outcome.class_main_charac,
         class_secondary_charac: !!raw_outcome.class_secondary_charac,
         coins: raw_outcome.coins || types_1.CoinsGain.none,
@@ -34,17 +37,21 @@ const ALL_ADVENTURE_ARCHETYPES = data_1.ENTRIES
     const aa = {
         hid: paa.hid,
         good: paa.good,
-        type: types_1.AdventureType.story,
+        type: paa.type,
         outcome,
     };
     return aa;
 });
+exports.ALL_ADVENTURE_ARCHETYPES = ALL_ADVENTURE_ARCHETYPES;
 const ALL_BAD_ADVENTURE_ARCHETYPES = ALL_ADVENTURE_ARCHETYPES.filter(aa => !aa.good);
+exports.ALL_BAD_ADVENTURE_ARCHETYPES = ALL_BAD_ADVENTURE_ARCHETYPES;
 const ALL_GOOD_ADVENTURE_ARCHETYPES = ALL_ADVENTURE_ARCHETYPES.filter(aa => aa.good);
+exports.ALL_GOOD_ADVENTURE_ARCHETYPES = ALL_GOOD_ADVENTURE_ARCHETYPES;
 const GOOD_ADVENTURE_ARCHETYPES_BY_TYPE = {
     story: ALL_GOOD_ADVENTURE_ARCHETYPES.filter(aa => aa.type === types_1.AdventureType.story),
     fight: ALL_GOOD_ADVENTURE_ARCHETYPES.filter(aa => aa.type === types_1.AdventureType.fight),
 };
+exports.GOOD_ADVENTURE_ARCHETYPES_BY_TYPE = GOOD_ADVENTURE_ARCHETYPES_BY_TYPE;
 const COINS_GAIN_MULTIPLIER_PER_LEVEL = 1.1;
 const COINS_GAIN_RANGES = {
     none: [0, 0],
@@ -53,6 +60,22 @@ const COINS_GAIN_RANGES = {
     big: [500, 700],
     huge: [900, 2000],
 };
+(function checkDataSanity() {
+    if (ALL_ADVENTURE_ARCHETYPES.length < 20) {
+        console.error(ALL_ADVENTURE_ARCHETYPES);
+        throw new Error(`Data sanity failure: ALL_ADVENTURE_ARCHETYPES`);
+    }
+    if (ALL_BAD_ADVENTURE_ARCHETYPES.length !== 1)
+        throw new Error(`Data sanity failure: ALL_BAD_ADVENTURE_ARCHETYPES`);
+    if (ALL_GOOD_ADVENTURE_ARCHETYPES.length < 20)
+        throw new Error(`Data sanity failure: ALL_GOOD_ADVENTURE_ARCHETYPES`);
+    if (GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.fight.length !== 5) {
+        console.error(GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.fight);
+        throw new Error(`Data sanity failure: GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.fight`);
+    }
+    if (GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.story.length < 20)
+        throw new Error(`Data sanity failure: GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.story`);
+})();
 /////////////////////
 // useful for picking an exact archetype (ex. tests)
 function get_archetype(hid) {
@@ -62,9 +85,11 @@ function get_archetype(hid) {
     return aa;
 }
 exports.get_archetype = get_archetype;
+const FIGHT_ENCOUNTER_RATIO = 0.33;
 function pick_random_good_archetype(rng) {
-    // TODO
-    return random_1.Random.pick(rng, ALL_GOOD_ADVENTURE_ARCHETYPES);
+    return random_1.Random.bool(FIGHT_ENCOUNTER_RATIO)(rng)
+        ? random_1.Random.pick(rng, GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.fight)
+        : random_1.Random.pick(rng, GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.story);
 }
 exports.pick_random_good_archetype = pick_random_good_archetype;
 function pick_random_bad_archetype(rng) {

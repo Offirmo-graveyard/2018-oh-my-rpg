@@ -1,14 +1,19 @@
 /////////////////////
 
+import { Enum } from 'typescript-string-enums'
+
 import {
 	CharacterStat,
 	CharacterClass,
+	Characteristics,
 	State,
 } from './types'
 
 /////////////////////
 
-const CHARACTER_STATS = [
+const CHARACTER_STATS = Enum.keys(CharacterStat)
+
+/*
 	CharacterStat.level,
 
 	CharacterStat.health,
@@ -19,7 +24,7 @@ const CHARACTER_STATS = [
 	CharacterStat.charisma,
 	CharacterStat.wisdom,
 	CharacterStat.luck,
-]
+]*/
 
 ///////
 
@@ -75,6 +80,7 @@ function increase_stat(state: State, stat: CharacterStat, amount = 1): State {
 export {
 	CharacterStat,
 	CharacterClass,
+	Characteristics,
 	State,
 
 	CHARACTER_STATS,

@@ -4,10 +4,10 @@ import * as stylizeString from 'chalk'
 
 import { InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
 import { generate_random_demo_weapon } from '@oh-my-rpg/logic-weapons'
-import { i18n_messages, generate_random_demo_armor } from '@oh-my-rpg/logic-armors'
-import { generate_random_demo_monster } from '@oh-my-rpg/logic-monsters'
-import { en as en_adventures } from '@oh-my-rpg/data/src/adventure_archetype/i18n'
+import { i18n_messages as i18n_messages_armor, generate_random_demo_armor } from '@oh-my-rpg/logic-armors'
 import { en as en_weapons } from '@oh-my-rpg/data/src/weapon_component/i18n'
+import { i18n_messages as i18n_messages_adventure } from '@oh-my-rpg/logic-adventures'
+import { generate_random_demo_monster } from '@oh-my-rpg/logic-monsters'
 
 import {
 	State as InventoryState,
@@ -74,9 +74,9 @@ describe('🔠  view to text', function() {
 		//Globalize.loadTimeZone(require('iana-tz-data'))
 		const messages = {
 			en: {
-				...en_adventures,
+				...i18n_messages_armor.en,
+				...i18n_messages_adventure.en,
 				...en_weapons,
-				...i18n_messages.en,
 			}
 		}
 		//console.log(messages)
@@ -110,6 +110,7 @@ describe('🔠  view to text', function() {
 				globalize: Globalize('en'),
 				stylize: (style: string, s: string) => s
 			})
+			console.log(str)
 			expect(str).to.be.a.string
 			expect(str).to.include('A dying man on the street left you everything he had.')
 			expect(str).to.include('You gained 1,234 coins!')

@@ -1,8 +1,9 @@
 /////////////////////
 
 import { partial, capitalize } from 'lodash'
-
+import { Enum } from 'typescript-string-enums'
 import { Random, Engine } from '@offirmo/random'
+
 import { ItemQuality, InventorySlot, Item, ITEM_SLOTS } from '@oh-my-rpg/definitions'
 import { Armor, get_damage_reduction_interval as get_armor_damage_reduction_interval } from '@oh-my-rpg/logic-armors'
 import { Weapon, get_damage_interval as get_weapon_damage_interval } from '@oh-my-rpg/logic-weapons'
@@ -163,7 +164,7 @@ function render_monster(m: Monster, options: RenderingOptions = DEFAULT_RENDERIN
 			? options.stylize(TextStyle.elite_mark, '★ ')
 			: ''
 
-	return `${m.possible_emoji}  ${icon}${m.rank} ${options.stylize(TextStyle.important_part, name)} L${m.level}`
+	return `L${m.level} ${m.rank} ${options.stylize(TextStyle.important_part, name)} ${m.possible_emoji} ${icon}`
 }
 
 function render_characteristics(state: CharacterState, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
@@ -249,7 +250,7 @@ function render_wallet(wallet: WalletState, options: RenderingOptions = DEFAULT_
 💠  ${wallet.token_count} tokens${tokens_update_notice}`
 }
 
-function render_adventure_gain(a: Adventure, gain_type: GainType, gains_for_display: {[k:string]: string}): string {
+function render_adventure_gain(a: Adventure, gain_type: GainType, gains_for_display: {[k:string]: string | number}): string {
 	switch(gain_type) {
 		case 'weapon':
 			return `⚔  New item: ${gains_for_display.formattedWeapon}`
@@ -268,7 +269,7 @@ function render_adventure_gain(a: Adventure, gain_type: GainType, gains_for_disp
 		case 'luck':
 			return `🆙  ${gain_type} increased!`
 		default:
-			return `🔥  TODO gain message for ${gain_type}`
+			return `🔥  TODO gain message for "${gain_type}"`
 	}
 }
 
@@ -278,33 +279,45 @@ function render_adventure(a: Adventure, options: RenderingOptions = DEFAULT_REND
 	const formattedWeapon = a.gains.weapon ? render_item(a.gains.weapon, options) : ''
 	const formattedArmor = a.gains.armor ? render_item(a.gains.armor, options) : ''
 	const formattedItem = formattedWeapon || formattedArmor
-
+	const charac_name: string = Enum.keys(CharacterStat).find(stat => !!a.gains[stat]) as string
 
 	// formatting to natural language
-	const gains_for_display = Object.assign(
-		{},
-		a.gains,
-		{
-			formattedCoins: a.gains.coins ? g.formatNumber(a.gains.coins) : '',
-			formattedWeapon,
-			formattedArmor,
-			formattedItem,
-		}
-	)
+	const gains_for_display = {
+		...(a.gains as any), // ignore warning for weapons etc.
+		formattedCoins: a.gains.coins ? g.formatNumber(a.gains.coins) : '',
+		formattedWeapon,
+		formattedArmor,
+		formattedItem,
+		charac_name,
+		charac: (a.gains as any)[charac_name],
+	}
 
-	const raw_message_multiline = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display)
+	const encounter = a.encounter ? render_monster(a.encounter, options) : ''
+
+	const raw_message_multiline = g.formatMessage(`adventures/${a.hid}`, {
+		encounter,
+		...gains_for_display
+	})
 	const raw_message = raw_message_multiline
 		.split('\n')
 		.map((s: string) => s.trim())
 		.filter((s: string) => !!s)
 		.join(' ')
 
+	const gained: GainType[] = Object.keys(a.gains)
+		.filter((gain_type: GainType) => !!(a.gains as any)[gain_type])
+		.map((gain_type: GainType) => {
+			if (!Enum.isType(GainType, gain_type))
+				throw new Error(`render_adventure(): unexpected gain type "${gain_type}"!`)
+			return gain_type
+		})
+
+	//console.log({gained, gains_for_display})
+
 	const msg_parts = [
 		raw_message,
 		'',
-		...Object.keys(a.gains)
-			.filter((gain_type: GainType) => !!a.gains[gain_type])
-			.map((gain_type: GainType) => render_adventure_gain(a, gain_type, gains_for_display))
+		...gained.map((gain_type: GainType) => render_adventure_gain(a, gain_type, gains_for_display))
 		]
 
 	return msg_parts.join('\n')

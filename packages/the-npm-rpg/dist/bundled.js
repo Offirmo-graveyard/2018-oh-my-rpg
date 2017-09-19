@@ -60,41 +60,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 27);
+/******/ 	return __webpack_require__(__webpack_require__.s = 30);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const prettyjson = __webpack_require__(29)
-const boxify = __webpack_require__(42)
-const stylizeString = __webpack_require__(13)
-const wrapLines = __webpack_require__(97)
-const ansiEscapes = __webpack_require__(98)
-
-/////////////////////////////////////////////////
-
-// simply rename / clean the APIs
-
-module.exports = {
-	boxify,
-	stylizeString,
-	wrapLines,
-	prettifyJson(data, options) {
-		return prettyjson.render(data, options)
-	},
-	// code taken from https://github.com/sindresorhus/clear-cli
-	// The MIT License (MIT)
-	// Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
-	clearCli() {
-		process.stdout.write(ansiEscapes.clearScreen)
-	},
-}
-
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -149,36 +119,37 @@ exports.Enum = Enum;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+const prettyjson = __webpack_require__(32)
+const boxify = __webpack_require__(45)
+const stylizeString = __webpack_require__(14)
+const wrapLines = __webpack_require__(100)
+const ansiEscapes = __webpack_require__(101)
 
-/////////////////////
-Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = __webpack_require__(101);
-const types_1 = __webpack_require__(22);
-const ITEM_QUALITIES = [
-    types_1.ItemQuality.common,
-    types_1.ItemQuality.uncommon,
-    types_1.ItemQuality.rare,
-    types_1.ItemQuality.epic,
-    types_1.ItemQuality.legendary,
-    types_1.ItemQuality.artifact,
-];
-exports.ITEM_QUALITIES = ITEM_QUALITIES;
-const ITEM_SLOTS = [
-    types_1.InventorySlot.weapon,
-    types_1.InventorySlot.armor,
-];
-exports.ITEM_SLOTS = ITEM_SLOTS;
-/////////////////////
-tslib_1.__exportStar(__webpack_require__(22), exports);
-/////////////////////
-//# sourceMappingURL=index.js.map
+/////////////////////////////////////////////////
+
+// simply rename / clean the APIs
+
+module.exports = {
+	boxify,
+	stylizeString,
+	wrapLines,
+	prettifyJson(data, options) {
+		return prettyjson.render(data, options)
+	},
+	// code taken from https://github.com/sindresorhus/clear-cli
+	// The MIT License (MIT)
+	// Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+	clearCli() {
+		process.stdout.write(ansiEscapes.clearScreen)
+	},
+}
+
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
@@ -908,6 +879,39 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
 
 
 /***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/////////////////////
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = __webpack_require__(104);
+const types_1 = __webpack_require__(23);
+const ITEM_QUALITIES = [
+    types_1.ItemQuality.common,
+    types_1.ItemQuality.uncommon,
+    types_1.ItemQuality.rare,
+    types_1.ItemQuality.epic,
+    types_1.ItemQuality.legendary,
+    types_1.ItemQuality.artifact,
+];
+exports.ITEM_QUALITIES = ITEM_QUALITIES;
+const ITEM_SLOTS = [
+    types_1.InventorySlot.weapon,
+    types_1.InventorySlot.armor,
+];
+exports.ITEM_SLOTS = ITEM_SLOTS;
+const MIN_LEVEL = 1;
+exports.MIN_LEVEL = MIN_LEVEL;
+const MAX_LEVEL = 9999;
+exports.MAX_LEVEL = MAX_LEVEL;
+/////////////////////
+tslib_1.__exportStar(__webpack_require__(23), exports);
+/////////////////////
+//# sourceMappingURL=index.js.map
+
+/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -946,10 +950,10 @@ module['exports'] = colors;
 
 colors.themes = {};
 
-var ansiStyles = colors.styles = __webpack_require__(31);
+var ansiStyles = colors.styles = __webpack_require__(34);
 var defineProps = Object.defineProperties;
 
-colors.supportsColor = __webpack_require__(32);
+colors.supportsColor = __webpack_require__(35);
 
 if (typeof colors.enabled === "undefined") {
   colors.enabled = colors.supportsColor;
@@ -1079,15 +1083,15 @@ var sequencer = function sequencer (map, str) {
 };
 
 // custom formatter methods
-colors.trap = __webpack_require__(34);
-colors.zalgo = __webpack_require__(35);
+colors.trap = __webpack_require__(37);
+colors.zalgo = __webpack_require__(38);
 
 // maps
 colors.maps = {};
-colors.maps.america = __webpack_require__(36);
-colors.maps.zebra = __webpack_require__(37);
-colors.maps.rainbow = __webpack_require__(38);
-colors.maps.random = __webpack_require__(39)
+colors.maps.america = __webpack_require__(39);
+colors.maps.zebra = __webpack_require__(40);
+colors.maps.rainbow = __webpack_require__(41);
+colors.maps.random = __webpack_require__(42)
 
 for (var map in colors.maps) {
   (function(map){
@@ -1119,13 +1123,112 @@ module.exports = require("fs");
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const lodash_1 = __webpack_require__(100);
-const definitions_1 = __webpack_require__(2);
-const logic_weapons_1 = __webpack_require__(8);
-const logic_armors_1 = __webpack_require__(10);
+const random_1 = __webpack_require__(2);
+const definitions_1 = __webpack_require__(3);
+const data_1 = __webpack_require__(105);
+exports.i18n_messages = data_1.i18n_messages;
+exports.static_armor_data = data_1.ENTRIES;
+const types_1 = __webpack_require__(107);
+exports.ArmorPartType = types_1.ArmorPartType;
+const constants_1 = __webpack_require__(108);
+const ARMOR_BASES = data_1.ENTRIES.filter((armor_component) => armor_component.type === types_1.ArmorPartType.base);
+const ARMOR_QUALIFIERS1 = data_1.ENTRIES.filter((armor_component) => armor_component.type === types_1.ArmorPartType.qualifier1);
+const ARMOR_QUALIFIERS2 = data_1.ENTRIES.filter((armor_component) => armor_component.type === types_1.ArmorPartType.qualifier2);
+const MAX_ENHANCEMENT_LEVEL = 8;
+exports.MAX_ENHANCEMENT_LEVEL = MAX_ENHANCEMENT_LEVEL;
+const MIN_STRENGTH = 1;
+exports.MIN_STRENGTH = MIN_STRENGTH;
+const MAX_STRENGTH = 20;
+exports.MAX_STRENGTH = MAX_STRENGTH;
+/////////////////////
+function pick_random_quality(rng) {
+    // legendary =    1/1000
+    // epic:     =   10/1000
+    // rare:     =  200/1000
+    // uncommon  =  389/1000
+    // common    =  400/1000
+    return random_1.Random.bool(400, 1000)(rng)
+        ? definitions_1.ItemQuality.common
+        : random_1.Random.bool(389, 600)(rng)
+            ? definitions_1.ItemQuality.uncommon
+            : random_1.Random.bool(200, 211)(rng)
+                ? definitions_1.ItemQuality.rare
+                : random_1.Random.bool(10, 11)(rng)
+                    ? definitions_1.ItemQuality.epic
+                    : definitions_1.ItemQuality.legendary;
+}
+function pick_random_base(rng) {
+    return random_1.Random.pick(rng, ARMOR_BASES).hid;
+}
+function pick_random_qualifier1(rng) {
+    return random_1.Random.pick(rng, ARMOR_QUALIFIERS1).hid;
+}
+function pick_random_qualifier2(rng) {
+    return random_1.Random.pick(rng, ARMOR_QUALIFIERS2).hid;
+}
+const pick_random_base_strength = random_1.Random.integer(MIN_STRENGTH, MAX_STRENGTH);
+/////////////////////
+function factory(rng, hints = {}) {
+    // TODO add a check for hints to be in existing components
+    return {
+        slot: definitions_1.InventorySlot.armor,
+        base_hid: hints.base_hid || pick_random_base(rng),
+        qualifier1_hid: hints.qualifier1_hid || pick_random_qualifier1(rng),
+        qualifier2_hid: hints.qualifier2_hid || pick_random_qualifier2(rng),
+        quality: hints.quality || pick_random_quality(rng),
+        base_strength: hints.base_strength || pick_random_base_strength(rng),
+        enhancement_level: hints.enhancement_level || 0,
+    };
+}
+exports.factory = factory;
+/////////////////////
+// for demo purpose, all characteristics having the same probability + also random enhancement level
+function generate_random_demo_armor() {
+    const rng = random_1.Random.engines.mt19937().autoSeed();
+    return factory(rng, {
+        enhancement_level: random_1.Random.integer(0, MAX_ENHANCEMENT_LEVEL)(rng)
+    });
+}
+exports.generate_random_demo_armor = generate_random_demo_armor;
+/////////////////////
+function enhance(armor) {
+    if (armor.enhancement_level >= MAX_ENHANCEMENT_LEVEL)
+        throw new Error(`can't enhance an armor above the maximal enhancement level!`);
+    armor.enhancement_level++;
+    return armor;
+}
+exports.enhance = enhance;
+function get_damage_reduction_interval(armor) {
+    const ATTACK_VS_DEFENSE_RATIO = 0.5;
+    return constants_1.get_interval(armor.base_strength, armor.quality, armor.enhancement_level, ATTACK_VS_DEFENSE_RATIO);
+}
+exports.get_damage_reduction_interval = get_damage_reduction_interval;
+function get_medium_damage_reduction(armor) {
+    const reduction_range = get_damage_reduction_interval(armor);
+    return Math.round((reduction_range[0] + reduction_range[1]) / 2);
+}
+exports.get_medium_damage_reduction = get_medium_damage_reduction;
+/////////////////////
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/////////////////////
+Object.defineProperty(exports, "__esModule", { value: true });
+const lodash_1 = __webpack_require__(103);
+const typescript_string_enums_1 = __webpack_require__(0);
+const definitions_1 = __webpack_require__(3);
+const logic_armors_1 = __webpack_require__(7);
+const logic_weapons_1 = __webpack_require__(10);
+const logic_monsters_1 = __webpack_require__(24);
 const state_inventory_1 = __webpack_require__(11);
-const state_character_1 = __webpack_require__(23);
-const types_1 = __webpack_require__(111);
+const state_character_1 = __webpack_require__(25);
+const state_the_boring_rpg_1 = __webpack_require__(12);
+const types_1 = __webpack_require__(129);
 exports.TextStyle = types_1.TextStyle;
 const DEFAULT_RENDERING_OPTIONS = {
     globalize: {
@@ -1191,35 +1294,48 @@ function get_characteristic_icon_for(stat) {
     }
 }
 ///////
-function render_weapon(w, options = DEFAULT_RENDERING_OPTIONS) {
-    if (w.slot !== definitions_1.InventorySlot.weapon)
-        throw new Error(`render_weapon(): can't render a ${w.slot} !`);
+function render_armor(i, options = DEFAULT_RENDERING_OPTIONS) {
+    if (i.slot !== definitions_1.InventorySlot.armor)
+        throw new Error(`render_armor(): can't render a ${i.slot} !`);
     const g = options.globalize;
-    const b = g.formatMessage(`weapon/base/${w.base_hid}`, {});
-    const q1 = g.formatMessage(`weapon/qualifier1/${w.qualifier1_hid}`, {});
-    const q2 = g.formatMessage(`weapon/qualifier2/${w.qualifier2_hid}`, {});
+    const b = g.formatMessage(`armor/base/${i.base_hid}`, {});
+    const q1 = g.formatMessage(`armor/qualifier1/${i.qualifier1_hid}`, {});
+    const q2 = g.formatMessage(`armor/qualifier2/${i.qualifier2_hid}`, {});
     const parts = q2.startsWith('of')
         ? [q1, b, q2]
         : [q2, q1, b];
     const name = parts.map(lodash_1.capitalize).join(' ');
-    const enhancement_level = w.enhancement_level
-        ? ` +${w.enhancement_level}`
+    const enhancement_level = i.enhancement_level
+        ? ` +${i.enhancement_level}`
         : '';
-    const [min_damage, max_damage] = logic_weapons_1.get_damage_interval(w);
-    return options.stylize(get_style_for_quality(w.quality), `${name}${enhancement_level}`) + ` [${min_damage} ↔ ${max_damage}]`;
-}
-exports.render_weapon = render_weapon;
-function render_armor(a, options = DEFAULT_RENDERING_OPTIONS) {
-    if (a.slot !== definitions_1.InventorySlot.armor)
-        throw new Error(`render_armor(): can't render a ${a.slot} !`);
-    const name = `${a.qualifier1_hid}.${a.base_hid}.of.the.${a.qualifier2_hid}`;
-    const enhancement_level = a.enhancement_level
-        ? ` +${a.enhancement_level}`
-        : '';
-    const [min_dmg_reduc, max_dmg_reduc] = logic_armors_1.get_damage_reduction_interval(a);
-    return options.stylize(get_style_for_quality(a.quality), `${name}${enhancement_level}`) + ` [${min_dmg_reduc} ↔ ${max_dmg_reduc}]`;
+    const [min, max] = logic_armors_1.get_damage_reduction_interval(i);
+    return options.stylize(get_style_for_quality(i.quality), `${i.quality} `
+        + options.stylize(types_1.TextStyle.important_part, name)
+        + `${enhancement_level}`)
+        + ` [${min} ↔ ${max}]`;
 }
 exports.render_armor = render_armor;
+function render_weapon(i, options = DEFAULT_RENDERING_OPTIONS) {
+    if (i.slot !== definitions_1.InventorySlot.weapon)
+        throw new Error(`render_weapon(): can't render a ${i.slot} !`);
+    const g = options.globalize;
+    const b = g.formatMessage(`weapon/base/${i.base_hid}`, {});
+    const q1 = g.formatMessage(`weapon/qualifier1/${i.qualifier1_hid}`, {});
+    const q2 = g.formatMessage(`weapon/qualifier2/${i.qualifier2_hid}`, {});
+    const parts = q2.startsWith('of')
+        ? [q1, b, q2]
+        : [q2, q1, b];
+    const name = parts.map(lodash_1.capitalize).join(' ');
+    const enhancement_level = i.enhancement_level
+        ? ` +${i.enhancement_level}`
+        : '';
+    const [min, max] = logic_weapons_1.get_damage_interval(i);
+    return options.stylize(get_style_for_quality(i.quality), `${i.quality} `
+        + options.stylize(types_1.TextStyle.important_part, name)
+        + `${enhancement_level}`)
+        + ` [${min} ↔ ${max}]`;
+}
+exports.render_weapon = render_weapon;
 function render_item(i, options = DEFAULT_RENDERING_OPTIONS) {
     if (!i)
         return '';
@@ -1233,6 +1349,16 @@ function render_item(i, options = DEFAULT_RENDERING_OPTIONS) {
     }
 }
 exports.render_item = render_item;
+function render_monster(m, options = DEFAULT_RENDERING_OPTIONS) {
+    const name = m.name.split(' ').map(lodash_1.capitalize).join(' ');
+    const icon = m.rank === logic_monsters_1.MonsterRank.boss
+        ? '👑  '
+        : m.rank === logic_monsters_1.MonsterRank.elite
+            ? options.stylize(types_1.TextStyle.elite_mark, '★ ')
+            : '';
+    return `${m.possible_emoji}  ${icon}${m.rank} ${options.stylize(types_1.TextStyle.important_part, name)} L${m.level}`;
+}
+exports.render_monster = render_monster;
 function render_characteristics(state, options = DEFAULT_RENDERING_OPTIONS) {
     const { last_adventure: la } = options;
     return state_character_1.CHARACTER_STATS.map((stat) => {
@@ -1310,7 +1436,7 @@ function render_adventure_gain(a, gain_type, gains_for_display) {
         case 'luck':
             return `🆙  ${gain_type} increased!`;
         default:
-            return `🔥  TODO gain message for ${gain_type}`;
+            return `🔥  TODO gain message for "${gain_type}"`;
     }
 }
 function render_adventure(a, options = DEFAULT_RENDERING_OPTIONS) {
@@ -1318,25 +1444,30 @@ function render_adventure(a, options = DEFAULT_RENDERING_OPTIONS) {
     const formattedWeapon = a.gains.weapon ? render_item(a.gains.weapon, options) : '';
     const formattedArmor = a.gains.armor ? render_item(a.gains.armor, options) : '';
     const formattedItem = formattedWeapon || formattedArmor;
+    const charac = typescript_string_enums_1.Enum.keys(state_character_1.CharacterStat).find(stat => !!a.gains[stat]);
     // formatting to natural language
-    const gains_for_display = Object.assign({}, a.gains, {
-        formattedCoins: a.gains.coins ? g.formatNumber(a.gains.coins) : '',
-        formattedWeapon,
+    const gains_for_display = Object.assign({}, a.gains, { formattedCoins: a.gains.coins ? g.formatNumber(a.gains.coins) : '', formattedWeapon,
         formattedArmor,
         formattedItem,
-    });
-    const raw_message_multiline = g.formatMessage(`clickmsg/${a.hid}`, gains_for_display);
+        charac });
+    const raw_message_multiline = g.formatMessage(`adventures/${a.hid}`, gains_for_display);
     const raw_message = raw_message_multiline
         .split('\n')
         .map((s) => s.trim())
         .filter((s) => !!s)
         .join(' ');
+    const gained = Object.keys(a.gains)
+        .filter((gain_type) => !!a.gains[gain_type])
+        .map((gain_type) => {
+        if (!typescript_string_enums_1.Enum.isType(state_the_boring_rpg_1.GainType, gain_type))
+            throw new Error(`render_adventure(): unexpected gain type "${gain_type}"!`);
+        return gain_type;
+    });
+    //console.log({gained, gains_for_display})
     const msg_parts = [
         raw_message,
         '',
-        ...Object.keys(a.gains)
-            .filter((gain_type) => !!a.gains[gain_type])
-            .map((gain_type) => render_adventure_gain(a, gain_type, gains_for_display))
+        ...gained.map((gain_type) => render_adventure_gain(a, gain_type, gains_for_display))
     ];
     return msg_parts.join('\n');
 }
@@ -1345,19 +1476,25 @@ exports.render_adventure = render_adventure;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 8 */
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = require("crypto");
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const random_1 = __webpack_require__(3);
-const definitions_1 = __webpack_require__(2);
-const static_weapon_data = __webpack_require__(102);
-const types_1 = __webpack_require__(104);
+const random_1 = __webpack_require__(2);
+const definitions_1 = __webpack_require__(3);
+const static_weapon_data = __webpack_require__(109);
+const types_1 = __webpack_require__(111);
 exports.WeaponPartType = types_1.WeaponPartType;
-const constants_1 = __webpack_require__(105);
+const constants_1 = __webpack_require__(112);
 const WEAPON_BASES = static_weapon_data.filter((weapon_component) => weapon_component.type === types_1.WeaponPartType.base);
 const WEAPON_QUALIFIERS1 = static_weapon_data.filter((weapon_component) => weapon_component.type === types_1.WeaponPartType.qualifier1);
 const WEAPON_QUALIFIERS2 = static_weapon_data.filter((weapon_component) => weapon_component.type === types_1.WeaponPartType.qualifier2);
@@ -1369,15 +1506,20 @@ const MAX_STRENGTH = 20;
 exports.MAX_STRENGTH = MAX_STRENGTH;
 /////////////////////
 function pick_random_quality(rng) {
-    // TODO high qualities rarer
-    return random_1.Random.pick(rng, [
-        definitions_1.ItemQuality.common,
-        definitions_1.ItemQuality.uncommon,
-        definitions_1.ItemQuality.rare,
-        definitions_1.ItemQuality.epic,
-        definitions_1.ItemQuality.legendary,
-        definitions_1.ItemQuality.artifact,
-    ]);
+    // legendary =    1/1000
+    // epic:     =   10/1000
+    // rare:     =  200/1000
+    // uncommon  =  389/1000
+    // common    =  400/1000
+    return random_1.Random.bool(400, 1000)(rng)
+        ? definitions_1.ItemQuality.common
+        : random_1.Random.bool(389, 600)(rng)
+            ? definitions_1.ItemQuality.uncommon
+            : random_1.Random.bool(200, 211)(rng)
+                ? definitions_1.ItemQuality.rare
+                : random_1.Random.bool(10, 11)(rng)
+                    ? definitions_1.ItemQuality.epic
+                    : definitions_1.ItemQuality.legendary;
 }
 function pick_random_base(rng) {
     return random_1.Random.pick(rng, WEAPON_BASES).hid;
@@ -1434,103 +1576,6 @@ exports.get_medium_damage = get_medium_damage;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = require("crypto");
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/////////////////////
-Object.defineProperty(exports, "__esModule", { value: true });
-const random_1 = __webpack_require__(3);
-const definitions_1 = __webpack_require__(2);
-const data_1 = __webpack_require__(106);
-exports.i18n_messages = data_1.i18n_messages;
-exports.static_armor_data = data_1.ENTRIES;
-const types_1 = __webpack_require__(108);
-exports.ArmorPartType = types_1.ArmorPartType;
-const constants_1 = __webpack_require__(109);
-const ARMOR_BASES = data_1.ENTRIES.filter((armor_component) => armor_component.type === types_1.ArmorPartType.base);
-const ARMOR_QUALIFIERS1 = data_1.ENTRIES.filter((armor_component) => armor_component.type === types_1.ArmorPartType.qualifier1);
-const ARMOR_QUALIFIERS2 = data_1.ENTRIES.filter((armor_component) => armor_component.type === types_1.ArmorPartType.qualifier2);
-const MAX_ENHANCEMENT_LEVEL = 8;
-exports.MAX_ENHANCEMENT_LEVEL = MAX_ENHANCEMENT_LEVEL;
-const MIN_STRENGTH = 1;
-exports.MIN_STRENGTH = MIN_STRENGTH;
-const MAX_STRENGTH = 20;
-exports.MAX_STRENGTH = MAX_STRENGTH;
-/////////////////////
-function pick_random_quality(rng) {
-    // TODO make high qualities rarer
-    return random_1.Random.pick(rng, [
-        definitions_1.ItemQuality.common,
-        definitions_1.ItemQuality.uncommon,
-        definitions_1.ItemQuality.rare,
-        definitions_1.ItemQuality.epic,
-        definitions_1.ItemQuality.legendary,
-        definitions_1.ItemQuality.artifact,
-    ]);
-}
-function pick_random_base(rng) {
-    return random_1.Random.pick(rng, ARMOR_BASES).hid;
-}
-function pick_random_qualifier1(rng) {
-    return random_1.Random.pick(rng, ARMOR_QUALIFIERS1).hid;
-}
-function pick_random_qualifier2(rng) {
-    return random_1.Random.pick(rng, ARMOR_QUALIFIERS2).hid;
-}
-const pick_random_base_strength = random_1.Random.integer(MIN_STRENGTH, MAX_STRENGTH);
-/////////////////////
-function factory(rng, hints = {}) {
-    // TODO add a check for hints to be in existing components
-    return {
-        slot: definitions_1.InventorySlot.armor,
-        base_hid: hints.base_hid || pick_random_base(rng),
-        qualifier1_hid: hints.qualifier1_hid || pick_random_qualifier1(rng),
-        qualifier2_hid: hints.qualifier2_hid || pick_random_qualifier2(rng),
-        quality: hints.quality || pick_random_quality(rng),
-        base_strength: hints.base_strength || pick_random_base_strength(rng),
-        enhancement_level: hints.enhancement_level || 0,
-    };
-}
-exports.factory = factory;
-/////////////////////
-// for demo purpose, all characteristics having the same probability + also random enhancement level
-function generate_random_demo_armor() {
-    const rng = random_1.Random.engines.mt19937().autoSeed();
-    return factory(rng, {
-        enhancement_level: random_1.Random.integer(0, MAX_ENHANCEMENT_LEVEL)(rng)
-    });
-}
-exports.generate_random_demo_armor = generate_random_demo_armor;
-/////////////////////
-function enhance(armor) {
-    if (armor.enhancement_level >= MAX_ENHANCEMENT_LEVEL)
-        throw new Error(`can't enhance an armor above the maximal enhancement level!`);
-    armor.enhancement_level++;
-    return armor;
-}
-exports.enhance = enhance;
-function get_damage_reduction_interval(armor) {
-    const ATTACK_VS_DEFENSE_RATIO = 0.5;
-    return constants_1.get_interval(armor.base_strength, armor.quality, armor.enhancement_level, ATTACK_VS_DEFENSE_RATIO);
-}
-exports.get_damage_reduction_interval = get_damage_reduction_interval;
-function get_medium_damage_reduction(armor) {
-    const reduction_range = get_damage_reduction_interval(armor);
-    return Math.round((reduction_range[0] + reduction_range[1]) / 2);
-}
-exports.get_medium_damage_reduction = get_medium_damage_reduction;
-/////////////////////
-//# sourceMappingURL=index.js.map
-
-/***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1538,7 +1583,7 @@ exports.get_medium_damage_reduction = get_medium_damage_reduction;
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const definitions_1 = __webpack_require__(2);
+const definitions_1 = __webpack_require__(3);
 exports.InventorySlot = definitions_1.InventorySlot;
 /////////////////////
 function factory() {
@@ -1660,8 +1705,281 @@ exports.iterables_unslotted = iterables_unslotted;
 
 "use strict";
 
-const stripAnsi = __webpack_require__(43);
-const isFullwidthCodePoint = __webpack_require__(45);
+Object.defineProperty(exports, "__esModule", { value: true });
+const random_1 = __webpack_require__(2);
+/////////////////////
+const definitions_1 = __webpack_require__(3);
+const state_meta_1 = __webpack_require__(118);
+const state_character_1 = __webpack_require__(25);
+const state_wallet_1 = __webpack_require__(122);
+const state_inventory_1 = __webpack_require__(11);
+const state_prng_1 = __webpack_require__(124);
+const logic_weapons_1 = __webpack_require__(10);
+const logic_armors_1 = __webpack_require__(7);
+const logic_monsters_1 = __webpack_require__(24);
+const logic_shop_1 = __webpack_require__(125);
+const logic_adventures_1 = __webpack_require__(26);
+const types_1 = __webpack_require__(128);
+exports.VERSION = types_1.VERSION;
+exports.GainType = types_1.GainType;
+/////////////////////
+function factory() {
+    let state = {
+        version: types_1.VERSION,
+        meta: state_meta_1.factory(),
+        avatar: state_character_1.factory(),
+        inventory: state_inventory_1.factory(),
+        wallet: state_wallet_1.factory(),
+        prng: state_prng_1.factory(),
+        last_adventure: null,
+        click_count: 0,
+        good_click_count: 0,
+        meaningful_interaction_count: 0,
+    };
+    let rng = state_prng_1.get_prng(state.prng);
+    const start_weapon = logic_weapons_1.factory(rng, {
+        base_hid: 'spoon',
+        qualifier1_hid: 'used',
+        qualifier2_hid: 'noob',
+        quality: definitions_1.ItemQuality.common,
+        base_strength: 1,
+    });
+    state = receive_item(state, start_weapon);
+    state = equip_item(state, 0);
+    const start_armor = logic_armors_1.factory(rng, {
+        base_hid: 'socks',
+        qualifier1_hid: 'used',
+        qualifier2_hid: 'noob',
+        quality: 'common',
+        base_strength: 1,
+    });
+    state = receive_item(state, start_armor);
+    state = equip_item(state, 0);
+    //state.prng = prng_update_use_count(state.prng, rng)
+    return state;
+}
+exports.factory = factory;
+function migrate_to_latest(state) {
+    const src_version = state.version;
+    if (!state.version) {
+        // new game
+        return factory();
+    }
+    if (src_version === types_1.VERSION)
+        return state;
+    if (src_version > types_1.VERSION)
+        throw new Error('You saved game was is from a more recent version of this game. Please update!');
+    console.warn(`migrating data from v${src_version} to ${types_1.VERSION}...`);
+    // TODO migrate properly when out of beta
+    console.error(`beta: migrating through full reset !`);
+    return factory();
+}
+exports.migrate_to_latest = migrate_to_latest;
+/////////////////////
+const STATS = ['health', 'mana', 'strength', 'agility', 'charisma', 'wisdom', 'luck'];
+function instantiate_adventure_archetype(rng, aa, character, inventory) {
+    let { hid, good, type, outcome: should_gain } = aa;
+    should_gain = Object.assign({}, should_gain);
+    // instantiate the special gains
+    if (should_gain.random_charac) {
+        const stat = random_1.Random.pick(rng, STATS);
+        should_gain[stat] = true;
+    }
+    if (should_gain.lowest_charac) {
+        const lowest_stat = STATS.reduce((acc, val) => {
+            return character[acc] < character[val] ? acc : val;
+        }, 'health');
+        should_gain[lowest_stat] = true;
+    }
+    if (should_gain.armor_or_weapon) {
+        // TODO take into account the existing inventory
+        if (random_1.Random.bool()(rng))
+            should_gain.armor = true;
+        else
+            should_gain.weapon = true;
+    }
+    if (should_gain.armor_or_weapon_improvement) {
+        if (random_1.Random.bool()(rng))
+            should_gain.armor_improvement = true;
+        else
+            should_gain.weapon_improvement = true;
+    }
+    // intermediate data
+    const new_player_level = character.level + (should_gain.level ? 1 : 0);
+    return {
+        hid,
+        good,
+        encounter: type === logic_adventures_1.AdventureType.fight ? logic_monsters_1.factory(rng, { level: character.level }) : undefined,
+        gains: {
+            level: should_gain.level ? 1 : 0,
+            health: should_gain.health ? 1 : 0,
+            mana: should_gain.mana ? 1 : 0,
+            strength: should_gain.strength ? 1 : 0,
+            agility: should_gain.agility ? 1 : 0,
+            charisma: should_gain.charisma ? 1 : 0,
+            wisdom: should_gain.wisdom ? 1 : 0,
+            luck: should_gain.luck ? 1 : 0,
+            coins: logic_adventures_1.generate_random_coin_gain(rng, should_gain.coins, new_player_level),
+            tokens: should_gain.tokens ? 1 : 0,
+            armor: should_gain.armor ? logic_armors_1.factory(rng) : null,
+            weapon: should_gain.weapon ? logic_weapons_1.factory(rng) : null,
+            armor_improvement: should_gain.armor_improvement,
+            weapon_improvement: should_gain.weapon_improvement,
+        }
+    };
+}
+function receive_stat_increase(state, stat, amount = 1) {
+    state.avatar = state_character_1.increase_stat(state.avatar, stat, amount);
+    return state;
+}
+function receive_item(state, item) {
+    // TODO handle inventory full
+    state.inventory = state_inventory_1.add_item(state.inventory, item);
+    return state;
+}
+function receive_coins(state, amount) {
+    state.wallet = state_wallet_1.add_amount(state.wallet, state_wallet_1.Currency.coin, amount);
+    return state;
+}
+function receive_tokens(state, amount) {
+    state.wallet = state_wallet_1.add_amount(state.wallet, state_wallet_1.Currency.token, amount);
+    return state;
+}
+function play_good(state, explicit_adventure_archetype_hid) {
+    state.good_click_count++;
+    state.meaningful_interaction_count++;
+    let rng = state_prng_1.get_prng(state.prng);
+    const aa = explicit_adventure_archetype_hid
+        ? logic_adventures_1.get_archetype(explicit_adventure_archetype_hid)
+        : logic_adventures_1.pick_random_good_archetype(rng);
+    if (!aa)
+        throw new Error(`play_good(): hinted adventure archetype "${explicit_adventure_archetype_hid}" could not be found!`);
+    const adventure = instantiate_adventure_archetype(rng, aa, state.avatar.characteristics, state.inventory);
+    state.last_adventure = adventure;
+    const { gains: gained } = adventure;
+    // TODO store hid for no repetition
+    let gain_count = 0;
+    if (gained.level) {
+        gain_count++;
+        state = receive_stat_increase(state, state_character_1.CharacterStat.level);
+    }
+    if (gained.health) {
+        gain_count++;
+        state = receive_stat_increase(state, state_character_1.CharacterStat.health, gained.health);
+    }
+    if (gained.mana) {
+        gain_count++;
+        state = receive_stat_increase(state, state_character_1.CharacterStat.mana, gained.mana);
+    }
+    if (gained.strength) {
+        gain_count++;
+        state = receive_stat_increase(state, state_character_1.CharacterStat.strength, gained.strength);
+    }
+    if (gained.agility) {
+        gain_count++;
+        state = receive_stat_increase(state, state_character_1.CharacterStat.agility, gained.agility);
+    }
+    if (gained.charisma) {
+        gain_count++;
+        state = receive_stat_increase(state, state_character_1.CharacterStat.charisma, gained.charisma);
+    }
+    if (gained.wisdom) {
+        gain_count++;
+        state = receive_stat_increase(state, state_character_1.CharacterStat.wisdom, gained.wisdom);
+    }
+    if (gained.luck) {
+        gain_count++;
+        state = receive_stat_increase(state, state_character_1.CharacterStat.luck, gained.luck);
+    }
+    if (gained.coins) {
+        gain_count++;
+        state = receive_coins(state, gained.coins);
+    }
+    if (gained.tokens) {
+        gain_count++;
+        state = receive_tokens(state, gained.tokens);
+    }
+    if (gained.weapon) {
+        gain_count++;
+        state = receive_item(state, gained.weapon);
+    }
+    if (gained.armor) {
+        gain_count++;
+        state = receive_item(state, gained.armor);
+    }
+    if (gained.weapon_improvement) {
+        gain_count++;
+        let weapon_to_enhance = state_inventory_1.get_item_in_slot(state.inventory, definitions_1.InventorySlot.weapon);
+        if (weapon_to_enhance && weapon_to_enhance.enhancement_level < logic_weapons_1.MAX_ENHANCEMENT_LEVEL)
+            logic_weapons_1.enhance(weapon_to_enhance);
+        // TODO enhance another weapon as fallback
+    }
+    if (gained.armor_improvement) {
+        gain_count++;
+        const armor_to_enhance = state_inventory_1.get_item_in_slot(state.inventory, definitions_1.InventorySlot.armor);
+        if (armor_to_enhance && armor_to_enhance.enhancement_level < logic_armors_1.MAX_ENHANCEMENT_LEVEL)
+            logic_armors_1.enhance(armor_to_enhance);
+        // TODO enhance another armor as fallback
+    }
+    if (!gain_count)
+        throw new Error(`play_good() for hid "${aa.hid}" unexpectedly resulted in NO gains!`);
+    state.prng = state_prng_1.update_use_count(state.prng, rng, {
+        I_swear_I_really_cant_know_whether_the_rng_was_used: !!explicit_adventure_archetype_hid
+    });
+    return state;
+}
+function appraise_item_at_coordinates(state, coordinates) {
+    const item_to_sell = state_inventory_1.get_item_at_coordinates(state.inventory, coordinates);
+    if (!item_to_sell)
+        throw new Error('Sell: No item!');
+    return logic_shop_1.appraise(item_to_sell);
+}
+exports.appraise_item_at_coordinates = appraise_item_at_coordinates;
+/////////////////////
+// allow passing an explicit adventure archetype for testing !
+function play(state, explicit_adventure_archetype_hid) {
+    state.click_count++;
+    // TODO good / bad
+    return play_good(state, explicit_adventure_archetype_hid);
+}
+exports.play = play;
+function equip_item(state, coordinates) {
+    // TODO count it as a meaningful interaction if positive (or with a limit)
+    state.inventory = state_inventory_1.equip_item(state.inventory, coordinates);
+    return state;
+}
+exports.equip_item = equip_item;
+function sell_item(state, coordinates) {
+    const price = appraise_item_at_coordinates(state, coordinates);
+    state.inventory = state_inventory_1.remove_item(state.inventory, coordinates);
+    state.wallet = state_wallet_1.add_amount(state.wallet, state_wallet_1.Currency.coin, price);
+    // TODO count it as a meaningful interaction if positive (or with a limit)
+    return state;
+}
+exports.sell_item = sell_item;
+function rename_avatar(state, new_name) {
+    // TODO count it as a meaningful interaction once
+    state.avatar = state_character_1.rename(state.avatar, new_name);
+    return state;
+}
+exports.rename_avatar = rename_avatar;
+function change_avatar_class(state, klass) {
+    // TODO make this have an effect (in v2 ?)
+    state.avatar = state_character_1.switch_class(state.avatar, klass);
+    return state;
+}
+exports.change_avatar_class = change_avatar_class;
+/////////////////////
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+const stripAnsi = __webpack_require__(46);
+const isFullwidthCodePoint = __webpack_require__(48);
 
 module.exports = str => {
 	if (typeof str !== 'string' || str.length === 0) {
@@ -1698,16 +2016,16 @@ module.exports = str => {
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const escapeStringRegexp = __webpack_require__(46);
-const ansiStyles = __webpack_require__(47);
-const supportsColor = __webpack_require__(51);
+const escapeStringRegexp = __webpack_require__(49);
+const ansiStyles = __webpack_require__(50);
+const supportsColor = __webpack_require__(54);
 
-const template = __webpack_require__(54);
+const template = __webpack_require__(57);
 
 const isSimpleWindowsTerm = process.platform === 'win32' && !(process.env.TERM || '').toLowerCase().startsWith('xterm');
 
@@ -1925,7 +2243,7 @@ module.exports.supportsColor = supportsColor;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -1953,11 +2271,11 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* MIT license */
-var cssKeywords = __webpack_require__(49);
+var cssKeywords = __webpack_require__(52);
 
 // NOTE: conversions should only return primitive values (i.e. arrays, or
 //       values that give correct `typeof` results).
@@ -2820,27 +3138,27 @@ convert.rgb.gray = function (rgb) {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = require("child_process");
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports = require("util");
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var path = __webpack_require__(5);
-var which = __webpack_require__(70);
-var LRU = __webpack_require__(19);
+var which = __webpack_require__(73);
+var LRU = __webpack_require__(20);
 
 var commandCache = new LRU({ max: 50, maxAge: 30 * 1000 });  // Cache just for 30sec
 
@@ -2870,7 +3188,7 @@ module.exports = resolveCommand;
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2880,11 +3198,11 @@ module.exports = LRUCache
 
 // This will be a proper iterable 'Map' in engines that support it,
 // or a fakey-fake PseudoMap in older versions.
-var Map = __webpack_require__(74)
-var util = __webpack_require__(17)
+var Map = __webpack_require__(77)
+var util = __webpack_require__(18)
 
 // A linked list to keep track of recently-used-ness
-var Yallist = __webpack_require__(76)
+var Yallist = __webpack_require__(79)
 
 // use symbols if possible, otherwise just _props
 var hasSymbol = typeof Symbol === 'function'
@@ -3344,7 +3662,7 @@ function Entry (key, value, length, now, maxAge) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3381,22 +3699,22 @@ module.exports = escapeArgument;
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {
 	stylizeString,
 	clearCli,
-} = __webpack_require__(0)
+} = __webpack_require__(1)
 
 /////////////////////////////////////////////////
 
-const render_adventure_screen = __webpack_require__(99).render
-const render_character_screen = __webpack_require__(112).render
+const render_adventure_screen = __webpack_require__(102).render
+const render_character_screen = __webpack_require__(130).render
 const {
 	render: render_inventory_screen,
 	render_selected_item: render_inventory_selected_item
-} = __webpack_require__(113)
+} = __webpack_require__(131)
 
 /////////////////////////////////////////////////
 
@@ -3501,13 +3819,13 @@ module.exports = {
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(1);
+const typescript_string_enums_1 = __webpack_require__(0);
 /////////////////////
 const ItemQuality = typescript_string_enums_1.Enum('common', 'uncommon', 'rare', 'epic', 'legendary', 'artifact');
 exports.ItemQuality = ItemQuality;
@@ -3518,28 +3836,89 @@ exports.InventorySlot = InventorySlot;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const types_1 = __webpack_require__(110);
+const random_1 = __webpack_require__(2);
+const types_1 = __webpack_require__(113);
+exports.MonsterRank = types_1.MonsterRank;
+const data_1 = __webpack_require__(114);
+/////////////////////
+function pick_random_rank(rng) {
+    // on 10 times, 1 boss, 2 elites, 7 common
+    return random_1.Random.bool(0.7)(rng)
+        ? types_1.MonsterRank.common
+        : random_1.Random.bool(0.66)(rng)
+            ? types_1.MonsterRank.elite
+            : types_1.MonsterRank.boss;
+}
+/////////////////////
+const MONSTER_RELATIVE_LEVEL_SPREAD = 0.1;
+const MAX_LEVEL = 9999; // TODO share that
+function factory(rng, hints = {}) {
+    const raw = hints.name
+        ? data_1.ENTRIES.find(raw_monster => raw_monster.name === hints.name)
+        : random_1.Random.pick(rng, data_1.ENTRIES);
+    if (!raw)
+        throw new Error(`OMR Monster factory: can't find a monster corresponding to hint "${hints.name}"!`);
+    let level = -1;
+    if (!hints.level)
+        level = random_1.Random.integer(1, MAX_LEVEL)(rng);
+    else {
+        // provide a little variation around the given level
+        const reference_level = hints.level;
+        const variation = Math.round(Math.max(1, reference_level * MONSTER_RELATIVE_LEVEL_SPREAD));
+        level = Math.max(1, Math.min(MAX_LEVEL, reference_level + random_1.Random.integer(-variation, variation)(rng)));
+    }
+    return {
+        name: raw.name,
+        level,
+        rank: hints.rank || pick_random_rank(rng),
+        possible_emoji: hints.possible_emoji || raw.emoji,
+    };
+}
+exports.factory = factory;
+/////////////////////
+// for demo purpose, all characteristics having the same probability + also random enhancement level
+function generate_random_demo_monster() {
+    const rng = random_1.Random.engines.mt19937().autoSeed();
+    return factory(rng);
+}
+exports.generate_random_demo_monster = generate_random_demo_monster;
+/////////////////////
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/////////////////////
+Object.defineProperty(exports, "__esModule", { value: true });
+const typescript_string_enums_1 = __webpack_require__(0);
+const types_1 = __webpack_require__(117);
 exports.CharacterStat = types_1.CharacterStat;
 exports.CharacterClass = types_1.CharacterClass;
 /////////////////////
-const CHARACTER_STATS = [
-    types_1.CharacterStat.level,
-    types_1.CharacterStat.health,
-    types_1.CharacterStat.mana,
-    types_1.CharacterStat.strength,
-    types_1.CharacterStat.agility,
-    types_1.CharacterStat.charisma,
-    types_1.CharacterStat.wisdom,
-    types_1.CharacterStat.luck,
-];
+const CHARACTER_STATS = typescript_string_enums_1.Enum.keys(types_1.CharacterStat);
 exports.CHARACTER_STATS = CHARACTER_STATS;
+/*
+    CharacterStat.level,
+
+    CharacterStat.health,
+    CharacterStat.mana,
+
+    CharacterStat.strength,
+    CharacterStat.agility,
+    CharacterStat.charisma,
+    CharacterStat.wisdom,
+    CharacterStat.luck,
+]*/
 ///////
 function factory() {
     return {
@@ -3584,268 +3963,140 @@ exports.increase_stat = increase_stat;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 24 */
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/////////////////////
+Object.defineProperty(exports, "__esModule", { value: true });
+const random_1 = __webpack_require__(2);
+const types_1 = __webpack_require__(27);
+exports.CoinsGain = types_1.CoinsGain;
+exports.AdventureType = types_1.AdventureType;
+const data_1 = __webpack_require__(126);
+exports.i18n_messages = data_1.i18n_messages;
+/////////////////////
+const ALL_ADVENTURE_ARCHETYPES = data_1.ENTRIES
+    .filter(paa => (paa.isPublished !== false))
+    .map(paa => {
+    const raw_outcome = paa.outcome || {};
+    const outcome = {
+        level: !!raw_outcome.level,
+        agility: !!raw_outcome.agility,
+        health: !!raw_outcome.health,
+        luck: !!raw_outcome.luck,
+        mana: !!raw_outcome.mana,
+        strength: !!raw_outcome.strength,
+        charisma: !!raw_outcome.charisma,
+        wisdom: !!raw_outcome.wisdom,
+        random_charac: !!raw_outcome.random_charac,
+        lowest_charac: !!raw_outcome.lowest_charac,
+        class_main_charac: !!raw_outcome.class_main_charac,
+        class_secondary_charac: !!raw_outcome.class_secondary_charac,
+        coins: raw_outcome.coins || types_1.CoinsGain.none,
+        tokens: raw_outcome.tokens || 0,
+        armor: !!raw_outcome.armor,
+        weapon: !!raw_outcome.weapon,
+        armor_or_weapon: !!raw_outcome.armor_or_weapon,
+        armor_improvement: !!raw_outcome.armor_improvement,
+        weapon_improvement: !!raw_outcome.weapon_improvement,
+        armor_or_weapon_improvement: !!raw_outcome.armor_or_weapon_improvement,
+    };
+    const aa = {
+        hid: paa.hid,
+        good: paa.good,
+        type: paa.type,
+        outcome,
+    };
+    return aa;
+});
+exports.ALL_ADVENTURE_ARCHETYPES = ALL_ADVENTURE_ARCHETYPES;
+const ALL_BAD_ADVENTURE_ARCHETYPES = ALL_ADVENTURE_ARCHETYPES.filter(aa => !aa.good);
+exports.ALL_BAD_ADVENTURE_ARCHETYPES = ALL_BAD_ADVENTURE_ARCHETYPES;
+const ALL_GOOD_ADVENTURE_ARCHETYPES = ALL_ADVENTURE_ARCHETYPES.filter(aa => aa.good);
+exports.ALL_GOOD_ADVENTURE_ARCHETYPES = ALL_GOOD_ADVENTURE_ARCHETYPES;
+const GOOD_ADVENTURE_ARCHETYPES_BY_TYPE = {
+    story: ALL_GOOD_ADVENTURE_ARCHETYPES.filter(aa => aa.type === types_1.AdventureType.story),
+    fight: ALL_GOOD_ADVENTURE_ARCHETYPES.filter(aa => aa.type === types_1.AdventureType.fight),
+};
+exports.GOOD_ADVENTURE_ARCHETYPES_BY_TYPE = GOOD_ADVENTURE_ARCHETYPES_BY_TYPE;
+const COINS_GAIN_MULTIPLIER_PER_LEVEL = 1.1;
+const COINS_GAIN_RANGES = {
+    none: [0, 0],
+    small: [1, 20],
+    medium: [50, 100],
+    big: [500, 700],
+    huge: [900, 2000],
+};
+(function checkDataSanity() {
+    if (ALL_ADVENTURE_ARCHETYPES.length < 20) {
+        console.error(ALL_ADVENTURE_ARCHETYPES);
+        throw new Error(`Data sanity failure: ALL_ADVENTURE_ARCHETYPES`);
+    }
+    if (ALL_BAD_ADVENTURE_ARCHETYPES.length !== 1)
+        throw new Error(`Data sanity failure: ALL_BAD_ADVENTURE_ARCHETYPES`);
+    if (ALL_GOOD_ADVENTURE_ARCHETYPES.length < 20)
+        throw new Error(`Data sanity failure: ALL_GOOD_ADVENTURE_ARCHETYPES`);
+    if (GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.fight.length !== 5) {
+        console.error(GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.fight);
+        throw new Error(`Data sanity failure: GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.fight`);
+    }
+    if (GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.story.length < 20)
+        throw new Error(`Data sanity failure: GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.story`);
+})();
+/////////////////////
+// useful for picking an exact archetype (ex. tests)
+function get_archetype(hid) {
+    const aa = ALL_ADVENTURE_ARCHETYPES.find(aa => aa.hid === hid);
+    if (!aa)
+        throw new Error(`logic-adventures, get_archetype(): couldn't find archetype "${hid}" !`);
+    return aa;
+}
+exports.get_archetype = get_archetype;
+const FIGHT_ENCOUNTER_RATIO = 0.33;
+function pick_random_good_archetype(rng) {
+    return random_1.Random.bool(FIGHT_ENCOUNTER_RATIO)(rng)
+        ? random_1.Random.pick(rng, GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.fight)
+        : random_1.Random.pick(rng, GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.story);
+}
+exports.pick_random_good_archetype = pick_random_good_archetype;
+function pick_random_bad_archetype(rng) {
+    return random_1.Random.pick(rng, ALL_BAD_ADVENTURE_ARCHETYPES);
+}
+exports.pick_random_bad_archetype = pick_random_bad_archetype;
+function generate_random_coin_gain(rng, range, player_level) {
+    if (range === types_1.CoinsGain.none)
+        return 0;
+    const level_multiplier = player_level * COINS_GAIN_MULTIPLIER_PER_LEVEL;
+    const interval = COINS_GAIN_RANGES[range];
+    return random_1.Random.integer(interval[0] * level_multiplier, interval[1] * level_multiplier)(rng);
+}
+exports.generate_random_coin_gain = generate_random_coin_gain;
+/////////////////////
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const random_1 = __webpack_require__(3);
+const typescript_string_enums_1 = __webpack_require__(0);
 /////////////////////
-const definitions_1 = __webpack_require__(2);
-const state_meta_1 = __webpack_require__(118);
-const state_character_1 = __webpack_require__(23);
-const state_wallet_1 = __webpack_require__(122);
-const state_inventory_1 = __webpack_require__(11);
-const state_prng_1 = __webpack_require__(124);
-const logic_weapons_1 = __webpack_require__(8);
-const logic_armors_1 = __webpack_require__(10);
-const logic_shop_1 = __webpack_require__(125);
-const logic_adventures_1 = __webpack_require__(126);
-const types_1 = __webpack_require__(129);
-exports.VERSION = types_1.VERSION;
-exports.GainType = types_1.GainType;
+const CoinsGain = typescript_string_enums_1.Enum('none', 'small', 'medium', 'big', 'huge');
+exports.CoinsGain = CoinsGain;
+const AdventureType = typescript_string_enums_1.Enum('story', 'fight');
+exports.AdventureType = AdventureType;
 /////////////////////
-function factory() {
-    let state = {
-        version: types_1.VERSION,
-        meta: state_meta_1.factory(),
-        avatar: state_character_1.factory(),
-        inventory: state_inventory_1.factory(),
-        wallet: state_wallet_1.factory(),
-        prng: state_prng_1.factory(),
-        last_adventure: null,
-        click_count: 0,
-        good_click_count: 0,
-        meaningful_interaction_count: 0,
-    };
-    let rng = state_prng_1.get_prng(state.prng);
-    const start_weapon = logic_weapons_1.factory(rng, {
-        base_hid: 'spoon',
-        qualifier1_hid: 'used',
-        qualifier2_hid: 'noob',
-        quality: definitions_1.ItemQuality.common,
-        base_strength: 1,
-    });
-    state = receive_item(state, start_weapon);
-    state = equip_item(state, 0);
-    const start_armor = logic_armors_1.factory(rng, {
-        base_hid: 'socks',
-        qualifier1_hid: 'used',
-        qualifier2_hid: 'noob',
-        quality: 'common',
-        base_strength: 1,
-    });
-    state = receive_item(state, start_armor);
-    state = equip_item(state, 0);
-    //state.prng = prng_update_use_count(state.prng, rng)
-    return state;
-}
-exports.factory = factory;
-function migrate_to_latest(state) {
-    const src_version = state.version;
-    if (!state.version) {
-        // new game
-        return factory();
-    }
-    if (src_version === types_1.VERSION)
-        return state;
-    if (src_version > types_1.VERSION)
-        throw new Error('You saved game was is from a more recent version of this game. Please update!');
-    console.warn(`migrating data from v${src_version} to ${types_1.VERSION}...`);
-    // TODO migrate properly when out of beta
-    console.error(`beta: migrating through full reset !`);
-    return factory();
-}
-exports.migrate_to_latest = migrate_to_latest;
-/////////////////////
-function instantiate_adventure_archetype(rng, aa, player_level, inventory) {
-    let { hid, good, post: { gains: { level: should_gain_a_level, agility, health, luck, mana, strength, charisma, wisdom, coins: coins_gain, tokens, armor: should_receive_armor, weapon: should_receive_weapon, armor_or_weapon: should_receive_armor_or_weapon, armor_improvement, weapon_improvement, armor_or_weapon_improvement, } } } = aa;
-    // instantiate the random gains
-    // TODO take into account the inventory
-    if (should_receive_armor_or_weapon) {
-        if (random_1.Random.bool()(rng))
-            should_receive_armor = true;
-        else
-            should_receive_weapon = true;
-    }
-    if (armor_or_weapon_improvement) {
-        if (random_1.Random.bool()(rng))
-            armor_improvement = true;
-        else
-            weapon_improvement = true;
-    }
-    const new_player_level = player_level + (should_gain_a_level ? 1 : 0);
-    const weapon = should_receive_weapon
-        ? logic_weapons_1.factory(rng)
-        : null;
-    const armor = should_receive_armor
-        ? logic_armors_1.factory(rng)
-        : null;
-    return {
-        hid,
-        good,
-        gains: {
-            level: should_gain_a_level ? 1 : 0,
-            health,
-            mana,
-            strength,
-            agility,
-            charisma,
-            wisdom,
-            luck,
-            coins: logic_adventures_1.generate_random_coin_gain(rng, coins_gain, new_player_level),
-            tokens,
-            weapon,
-            armor,
-            armor_improvement,
-            weapon_improvement,
-        }
-    };
-}
-function receive_stat_increase(state, stat, amount = 1) {
-    state.avatar = state_character_1.increase_stat(state.avatar, stat, amount);
-    return state;
-}
-function receive_item(state, item) {
-    // TODO handle inventory full
-    state.inventory = state_inventory_1.add_item(state.inventory, item);
-    return state;
-}
-function receive_coins(state, amount) {
-    state.wallet = state_wallet_1.add_amount(state.wallet, state_wallet_1.Currency.coin, amount);
-    return state;
-}
-function receive_tokens(state, amount) {
-    state.wallet = state_wallet_1.add_amount(state.wallet, state_wallet_1.Currency.token, amount);
-    return state;
-}
-function play_good(state, explicit_adventure_archetype_hid) {
-    state.good_click_count++;
-    state.meaningful_interaction_count++;
-    let rng = state_prng_1.get_prng(state.prng);
-    const aa = explicit_adventure_archetype_hid
-        ? logic_adventures_1.get_archetype(explicit_adventure_archetype_hid)
-        : logic_adventures_1.pick_random_good_archetype(rng);
-    const adventure = instantiate_adventure_archetype(rng, aa, state.avatar.characteristics.level, state.inventory);
-    state.last_adventure = adventure;
-    const { gains: { level, health, mana, strength, agility, charisma, wisdom, luck, coins, tokens, armor, weapon, armor_improvement, weapon_improvement, } } = adventure;
-    // TODO store hid for no repetition
-    let gain_count = 0;
-    if (level) {
-        gain_count++;
-        state = receive_stat_increase(state, state_character_1.CharacterStat.level);
-    }
-    if (health) {
-        gain_count++;
-        state = receive_stat_increase(state, state_character_1.CharacterStat.health, health);
-    }
-    if (mana) {
-        gain_count++;
-        state = receive_stat_increase(state, state_character_1.CharacterStat.mana, mana);
-    }
-    if (strength) {
-        gain_count++;
-        state = receive_stat_increase(state, state_character_1.CharacterStat.strength, strength);
-    }
-    if (agility) {
-        gain_count++;
-        state = receive_stat_increase(state, state_character_1.CharacterStat.agility, agility);
-    }
-    if (charisma) {
-        gain_count++;
-        state = receive_stat_increase(state, state_character_1.CharacterStat.charisma, charisma);
-    }
-    if (wisdom) {
-        gain_count++;
-        state = receive_stat_increase(state, state_character_1.CharacterStat.wisdom, wisdom);
-    }
-    if (luck) {
-        gain_count++;
-        state = receive_stat_increase(state, state_character_1.CharacterStat.luck, luck);
-    }
-    if (coins) {
-        gain_count++;
-        state = receive_coins(state, coins);
-    }
-    if (tokens) {
-        gain_count++;
-        state = receive_tokens(state, tokens);
-    }
-    if (weapon) {
-        gain_count++;
-        state = receive_item(state, weapon);
-    }
-    if (armor) {
-        gain_count++;
-        state = receive_item(state, armor);
-    }
-    if (weapon_improvement) {
-        gain_count++;
-        let weapon_to_enhance = state_inventory_1.get_item_in_slot(state.inventory, definitions_1.InventorySlot.weapon);
-        if (weapon_to_enhance && weapon_to_enhance.enhancement_level < logic_weapons_1.MAX_ENHANCEMENT_LEVEL)
-            logic_weapons_1.enhance(weapon_to_enhance);
-        // TODO enhance another weapon as fallback
-    }
-    if (armor_improvement) {
-        gain_count++;
-        const armor_to_enhance = state_inventory_1.get_item_in_slot(state.inventory, definitions_1.InventorySlot.armor);
-        if (armor_to_enhance && armor_to_enhance.enhancement_level < logic_armors_1.MAX_ENHANCEMENT_LEVEL)
-            logic_armors_1.enhance(armor_to_enhance);
-        // TODO enhance another armor as fallback
-    }
-    state.prng = state_prng_1.update_use_count(state.prng, rng);
-    return state;
-}
-function appraise_item_at_coordinates(state, coordinates) {
-    const item_to_sell = state_inventory_1.get_item_at_coordinates(state.inventory, coordinates);
-    if (!item_to_sell)
-        throw new Error('Sell: No item!');
-    return logic_shop_1.appraise(item_to_sell);
-}
-exports.appraise_item_at_coordinates = appraise_item_at_coordinates;
-/////////////////////
-// allow passing an explicit adventure archetype for testing !
-function play(state, explicit_adventure_archetype_hid) {
-    state.click_count++;
-    // TODO good / bad
-    return play_good(state, explicit_adventure_archetype_hid);
-}
-exports.play = play;
-function equip_item(state, coordinates) {
-    // TODO count it as a meaningful interaction if positive (or with a limit)
-    state.inventory = state_inventory_1.equip_item(state.inventory, coordinates);
-    return state;
-}
-exports.equip_item = equip_item;
-function sell_item(state, coordinates) {
-    const price = appraise_item_at_coordinates(state, coordinates);
-    state.inventory = state_inventory_1.remove_item(state.inventory, coordinates);
-    state.wallet = state_wallet_1.add_amount(state.wallet, state_wallet_1.Currency.coin, price);
-    // TODO count it as a meaningful interaction if positive (or with a limit)
-    return state;
-}
-exports.sell_item = sell_item;
-function rename_avatar(state, new_name) {
-    // TODO count it as a meaningful interaction once
-    state.avatar = state_character_1.rename(state.avatar, new_name);
-    return state;
-}
-exports.rename_avatar = rename_avatar;
-function change_avatar_class(state, klass) {
-    // TODO make this have an effect (in v2 ?)
-    state.avatar = state_character_1.switch_class(state.avatar, klass);
-    return state;
-}
-exports.change_avatar_class = change_avatar_class;
-/////////////////////
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const tbrpg = __webpack_require__(24)
+const tbrpg = __webpack_require__(12)
 const {
 	get_item_at_coordinates
 } = __webpack_require__(11)
@@ -3902,22 +4153,22 @@ module.exports = {
 
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = require("readline");
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { version } = __webpack_require__(28)
-const { prettifyJson, stylizeString } = __webpack_require__(0)
-const { render_non_interactive_before, render_non_interactive_after } = __webpack_require__(21)
-const { init_globalize, init_savegame } = __webpack_require__(114)
-const { play } = __webpack_require__(25)
-const { render_cta } = __webpack_require__(134)
-const { start_loop } = __webpack_require__(135)
+const { version } = __webpack_require__(31)
+const { prettifyJson, stylizeString } = __webpack_require__(1)
+const { render_non_interactive_before, render_non_interactive_after } = __webpack_require__(22)
+const { init_globalize, init_savegame } = __webpack_require__(132)
+const { play } = __webpack_require__(28)
+const { render_cta } = __webpack_require__(138)
+const { start_loop } = __webpack_require__(139)
 
 /////////////////////////////////////////////////
 
@@ -3948,6 +4199,10 @@ options.rendering_options = {
 
 function stylize_tbrpg_string(style, s) {
 	switch(style) {
+		case 'important_part':
+			return stylizeString.bold(s)
+		case 'elite_mark':
+			return stylizeString.yellow.bold(s)
 		case 'item_quality_common':
 			return stylizeString.gray(s)
 		case 'item_quality_uncommon':
@@ -3989,23 +4244,23 @@ console.log('\n---------------------------------------------------------------\n
 
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"the-npm-rpg","version":"0.1.0","description":"The Boring RPG, a command line RPG game. Just `npx the-npm-rpg`!","main":"src/index.js","author":"Offirmo <offirmo.net@gmail.com>","license":"UNLICENSED","repository":{"type":"git","url":"git+https://github.com/online-adventures/oh-my-rpg.git"},"bin":"./bin/index.js","scripts":{"start":"node src/index.js","bin":"bin/index.js","build":"webpack --config meta/webpack.config.ts"},"dependencies":{"cldr-data":"^31.0.2","conf":"^1.1.2","globalize":"^1.3.0"},"devDependencies":{"@oh-my-rpg/data":"^0.0.1","@oh-my-rpg/state-inventory":"^0.0.1","@oh-my-rpg/state-the-boring-rpg":"^0.0.1","@oh-my-rpg/view-text":"^0.0.1","ansi-escapes":"^2.0.0","boxen":"^1.2.1","chalk":"^2.0.1","env-paths":"^1.0.0","fetchival":"^0.3.2","iana-tz-data":"^2017.1.0","latest-version":"^3.1.0","linewrap":"^0.2.1","package-json":"^4.0.1","prettyjson":"^1.2.1","tslib":"^1.7.1","universal-analytics":"^0.4.13","username":"^3.0.0","webpack":"^3.3.0"}}
+module.exports = {"name":"the-npm-rpg","version":"0.2.0","description":"The Boring RPG, a command line RPG game. Just `npx the-npm-rpg`!","main":"src/index.js","author":"Offirmo <offirmo.net@gmail.com>","license":"UNLICENSED","repository":{"type":"git","url":"git+https://github.com/online-adventures/oh-my-rpg.git"},"bin":"./bin/index.js","scripts":{"start":"node src/index.js","bin":"bin/index.js","build":"webpack --config meta/webpack.config.ts"},"dependencies":{"cldr-data":"^31.0.2","conf":"^1.1.2","globalize":"^1.3.0"},"devDependencies":{"@oh-my-rpg/data":"^0.0.1","@oh-my-rpg/logic-armors":"^0.0.1","@oh-my-rpg/logic-adventures":"^0.0.1","@oh-my-rpg/logic-weapons":"^0.0.1","@oh-my-rpg/state-inventory":"^0.0.1","@oh-my-rpg/state-the-boring-rpg":"^0.0.1","@oh-my-rpg/view-text":"^0.0.1","ansi-escapes":"^2.0.0","boxen":"^1.2.1","chalk":"^2.0.1","env-paths":"^1.0.0","fetchival":"^0.3.2","iana-tz-data":"^2017.1.0","latest-version":"^3.1.0","linewrap":"^0.2.1","package-json":"^4.0.1","prettyjson":"^1.2.1","tslib":"^1.7.1","universal-analytics":"^0.4.13","username":"^3.0.0","webpack":"^3.3.0"}}
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 // ### Module dependencies
-var colors = __webpack_require__(30);
-var Utils = __webpack_require__(40);
+var colors = __webpack_require__(33);
+var Utils = __webpack_require__(43);
 
-exports.version = __webpack_require__(41).version;
+exports.version = __webpack_require__(44).version;
 
 // Helper function to detect if an object can be directly serializable
 var isSerializable = function(input, onlyPrimitives, options) {
@@ -4265,7 +4520,7 @@ exports.renderString = function renderString(data, options, indentation) {
 
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -4279,7 +4534,7 @@ var colors = __webpack_require__(4);
 module['exports'] = colors;
 
 /***/ }),
-/* 31 */
+/* 34 */
 /***/ (function(module, exports) {
 
 /*
@@ -4361,7 +4616,7 @@ Object.keys(codes).forEach(function (key) {
 });
 
 /***/ }),
-/* 32 */
+/* 35 */
 /***/ (function(module, exports) {
 
 /*
@@ -4427,7 +4682,7 @@ module.exports = (function () {
 })();
 
 /***/ }),
-/* 33 */
+/* 36 */
 /***/ (function(module, exports) {
 
 function webpackEmptyContext(req) {
@@ -4436,10 +4691,10 @@ function webpackEmptyContext(req) {
 webpackEmptyContext.keys = function() { return []; };
 webpackEmptyContext.resolve = webpackEmptyContext;
 module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 33;
+webpackEmptyContext.id = 36;
 
 /***/ }),
-/* 34 */
+/* 37 */
 /***/ (function(module, exports) {
 
 module['exports'] = function runTheTrap (text, options) {
@@ -4490,7 +4745,7 @@ module['exports'] = function runTheTrap (text, options) {
 
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ (function(module, exports) {
 
 // please no
@@ -4600,7 +4855,7 @@ module['exports'] = function zalgo(text, options) {
 
 
 /***/ }),
-/* 36 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var colors = __webpack_require__(4);
@@ -4617,7 +4872,7 @@ module['exports'] = (function() {
 })();
 
 /***/ }),
-/* 37 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var colors = __webpack_require__(4);
@@ -4627,7 +4882,7 @@ module['exports'] = function (letter, i, exploded) {
 };
 
 /***/ }),
-/* 38 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var colors = __webpack_require__(4);
@@ -4646,7 +4901,7 @@ module['exports'] = (function () {
 
 
 /***/ }),
-/* 39 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var colors = __webpack_require__(4);
@@ -4659,7 +4914,7 @@ module['exports'] = (function () {
 })();
 
 /***/ }),
-/* 40 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4691,24 +4946,24 @@ exports.getMaxIndexLength = function(input) {
 
 
 /***/ }),
-/* 41 */
+/* 44 */
 /***/ (function(module, exports) {
 
 module.exports = {"_from":"prettyjson@^1.2.1","_id":"prettyjson@1.2.1","_inBundle":false,"_integrity":"sha1-/P+rQdGcq0365eV15kJGYZsS0ok=","_location":"/prettyjson","_phantomChildren":{},"_requested":{"type":"range","registry":true,"raw":"prettyjson@^1.2.1","name":"prettyjson","escapedName":"prettyjson","rawSpec":"^1.2.1","saveSpec":null,"fetchSpec":"^1.2.1"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/prettyjson/-/prettyjson-1.2.1.tgz","_shasum":"fcffab41d19cab4dfae5e575e64246619b12d289","_spec":"prettyjson@^1.2.1","_where":"/Users/yjutard/work/src/oa/oh-my-rpg","author":{"name":"Rafael de Oleza","email":"rafeca@gmail.com","url":"https://github.com/rafeca"},"bin":{"prettyjson":"./bin/prettyjson"},"bugs":{"url":"https://github.com/rafeca/prettyjson/issues"},"bundleDependencies":false,"dependencies":{"colors":"^1.1.2","minimist":"^1.2.0"},"deprecated":false,"description":"Package for formatting JSON data in a coloured YAML-style, perfect for CLI output","devDependencies":{"coveralls":"^2.11.15","istanbul":"^0.4.5","jshint":"^2.9.4","mocha":"^3.1.2","mocha-lcov-reporter":"^1.2.0","should":"^11.1.1"},"homepage":"http://rafeca.com/prettyjson","keywords":["json","cli","formatting","colors"],"license":"MIT","main":"./lib/prettyjson","name":"prettyjson","repository":{"type":"git","url":"git+https://github.com/rafeca/prettyjson.git"},"scripts":{"changelog":"git log $(git describe --tags --abbrev=0)..HEAD --pretty='* %s' --first-parent","coverage":"istanbul cover _mocha --report lcovonly -- -R spec","coveralls":"npm run coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage","jshint":"jshint lib/*.js test/*.js","test":"npm run jshint && mocha --reporter spec","testwin":"node ./node_modules/mocha/bin/mocha --reporter spec"},"version":"1.2.1"}
 
 /***/ }),
-/* 42 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const stringWidth = __webpack_require__(12);
-const chalk = __webpack_require__(13);
-const widestLine = __webpack_require__(55);
-const cliBoxes = __webpack_require__(62);
-const camelCase = __webpack_require__(64);
-const ansiAlign = __webpack_require__(65);
-const termSize = __webpack_require__(66);
+const stringWidth = __webpack_require__(13);
+const chalk = __webpack_require__(14);
+const widestLine = __webpack_require__(58);
+const cliBoxes = __webpack_require__(65);
+const camelCase = __webpack_require__(67);
+const ansiAlign = __webpack_require__(68);
+const termSize = __webpack_require__(69);
 
 const getObject = detail => {
 	let obj;
@@ -4842,18 +5097,18 @@ module.exports._borderStyles = cliBoxes;
 
 
 /***/ }),
-/* 43 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const ansiRegex = __webpack_require__(44);
+const ansiRegex = __webpack_require__(47);
 
 module.exports = input => typeof input === 'string' ? input.replace(ansiRegex(), '') : input;
 
 
 /***/ }),
-/* 44 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4870,7 +5125,7 @@ module.exports = () => {
 
 
 /***/ }),
-/* 45 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4923,7 +5178,7 @@ module.exports = x => {
 
 
 /***/ }),
-/* 46 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4941,12 +5196,12 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 47 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(module) {
-const colorConvert = __webpack_require__(48);
+const colorConvert = __webpack_require__(51);
 
 const wrapAnsi16 = (fn, offset) => function () {
 	const code = fn.apply(colorConvert, arguments);
@@ -5098,14 +5353,14 @@ Object.defineProperty(module, 'exports', {
 	get: assembleStyles
 });
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)(module)))
 
 /***/ }),
-/* 48 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var conversions = __webpack_require__(15);
-var route = __webpack_require__(50);
+var conversions = __webpack_require__(16);
+var route = __webpack_require__(53);
 
 var convert = {};
 
@@ -5185,7 +5440,7 @@ module.exports = convert;
 
 
 /***/ }),
-/* 49 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5344,10 +5599,10 @@ module.exports = {
 
 
 /***/ }),
-/* 50 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var conversions = __webpack_require__(15);
+var conversions = __webpack_require__(16);
 
 /*
 	this function routes a model to all other models.
@@ -5448,13 +5703,13 @@ module.exports = function (fromModel) {
 
 
 /***/ }),
-/* 51 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const os = __webpack_require__(52);
-const hasFlag = __webpack_require__(53);
+const os = __webpack_require__(55);
+const hasFlag = __webpack_require__(56);
 
 const env = process.env;
 
@@ -5570,13 +5825,13 @@ module.exports = process && support(supportLevel);
 
 
 /***/ }),
-/* 52 */
+/* 55 */
 /***/ (function(module, exports) {
 
 module.exports = require("os");
 
 /***/ }),
-/* 53 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5593,7 +5848,7 @@ module.exports = function (flag, argv) {
 
 
 /***/ }),
-/* 54 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5728,12 +5983,12 @@ module.exports = (chalk, tmp) => {
 
 
 /***/ }),
-/* 55 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var stringWidth = __webpack_require__(56);
+var stringWidth = __webpack_require__(59);
 
 module.exports = function (str) {
 	return Math.max.apply(null, str.split('\n').map(function (x) {
@@ -5744,14 +5999,14 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 56 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var stripAnsi = __webpack_require__(57);
-var codePointAt = __webpack_require__(59);
-var isFullwidthCodePoint = __webpack_require__(60);
+var stripAnsi = __webpack_require__(60);
+var codePointAt = __webpack_require__(62);
+var isFullwidthCodePoint = __webpack_require__(63);
 
 // https://github.com/nodejs/io.js/blob/cff7300a578be1b10001f2d967aaedc88aee6402/lib/readline.js#L1345
 module.exports = function (str) {
@@ -5788,12 +6043,12 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 57 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var ansiRegex = __webpack_require__(58)();
+var ansiRegex = __webpack_require__(61)();
 
 module.exports = function (str) {
 	return typeof str === 'string' ? str.replace(ansiRegex, '') : str;
@@ -5801,7 +6056,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 58 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5812,7 +6067,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 59 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5851,12 +6106,12 @@ module.exports = function (str, pos) {
 
 
 /***/ }),
-/* 60 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var numberIsNan = __webpack_require__(61);
+var numberIsNan = __webpack_require__(64);
 
 module.exports = function (x) {
 	if (numberIsNan(x)) {
@@ -5904,7 +6159,7 @@ module.exports = function (x) {
 
 
 /***/ }),
-/* 61 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5915,22 +6170,22 @@ module.exports = Number.isNaN || function (x) {
 
 
 /***/ }),
-/* 62 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-module.exports = __webpack_require__(63);
+module.exports = __webpack_require__(66);
 
 
 /***/ }),
-/* 63 */
+/* 66 */
 /***/ (function(module, exports) {
 
 module.exports = {"single":{"topLeft":"┌","topRight":"┐","bottomRight":"┘","bottomLeft":"└","vertical":"│","horizontal":"─"},"double":{"topLeft":"╔","topRight":"╗","bottomRight":"╝","bottomLeft":"╚","vertical":"║","horizontal":"═"},"round":{"topLeft":"╭","topRight":"╮","bottomRight":"╯","bottomLeft":"╰","vertical":"│","horizontal":"─"},"single-double":{"topLeft":"╓","topRight":"╖","bottomRight":"╜","bottomLeft":"╙","vertical":"║","horizontal":"─"},"double-single":{"topLeft":"╒","topRight":"╕","bottomRight":"╛","bottomLeft":"╘","vertical":"│","horizontal":"═"},"classic":{"topLeft":"+","topRight":"+","bottomRight":"+","bottomLeft":"+","vertical":"|","horizontal":"-"}}
 
 /***/ }),
-/* 64 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6001,13 +6256,13 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 65 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-const stringWidth = __webpack_require__(12)
+const stringWidth = __webpack_require__(13)
 
 function ansiAlign (text, opts) {
   if (!text) return text
@@ -6069,13 +6324,13 @@ function fullDiff (maxWidth, curWidth) {
 
 
 /***/ }),
-/* 66 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(__dirname) {
 const path = __webpack_require__(5);
-const execa = __webpack_require__(67);
+const execa = __webpack_require__(70);
 
 const create = (columns, rows) => ({
 	columns: parseInt(columns, 10),
@@ -6147,22 +6402,22 @@ module.exports = () => {
 /* WEBPACK VAR INJECTION */}.call(exports, "/"))
 
 /***/ }),
-/* 67 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const childProcess = __webpack_require__(16);
-const util = __webpack_require__(17);
-const crossSpawn = __webpack_require__(68);
-const stripEof = __webpack_require__(83);
-const npmRunPath = __webpack_require__(84);
-const isStream = __webpack_require__(86);
-const _getStream = __webpack_require__(87);
-const pFinally = __webpack_require__(90);
-const onExit = __webpack_require__(91);
-const errname = __webpack_require__(95);
-const stdio = __webpack_require__(96);
+const childProcess = __webpack_require__(17);
+const util = __webpack_require__(18);
+const crossSpawn = __webpack_require__(71);
+const stripEof = __webpack_require__(86);
+const npmRunPath = __webpack_require__(87);
+const isStream = __webpack_require__(89);
+const _getStream = __webpack_require__(90);
+const pFinally = __webpack_require__(93);
+const onExit = __webpack_require__(94);
+const errname = __webpack_require__(98);
+const stdio = __webpack_require__(99);
 
 const TEN_MEGABYTES = 1000 * 1000 * 10;
 
@@ -6463,15 +6718,15 @@ module.exports.spawn = util.deprecate(module.exports, 'execa.spawn() is deprecat
 
 
 /***/ }),
-/* 68 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var cp = __webpack_require__(16);
-var parse = __webpack_require__(69);
-var enoent = __webpack_require__(82);
+var cp = __webpack_require__(17);
+var parse = __webpack_require__(72);
+var enoent = __webpack_require__(85);
 
 var cpSpawnSync = cp.spawnSync;
 
@@ -6529,17 +6784,17 @@ module.exports._enoent = enoent;
 
 
 /***/ }),
-/* 69 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var resolveCommand = __webpack_require__(18);
-var hasEmptyArgumentBug = __webpack_require__(77);
-var escapeArgument = __webpack_require__(20);
-var escapeCommand = __webpack_require__(78);
-var readShebang = __webpack_require__(79);
+var resolveCommand = __webpack_require__(19);
+var hasEmptyArgumentBug = __webpack_require__(80);
+var escapeArgument = __webpack_require__(21);
+var escapeCommand = __webpack_require__(81);
+var readShebang = __webpack_require__(82);
 
 var isWin = process.platform === 'win32';
 var skipShellRegExp = /\.(?:com|exe)$/i;
@@ -6649,7 +6904,7 @@ module.exports = parse;
 
 
 /***/ }),
-/* 70 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = which
@@ -6661,7 +6916,7 @@ var isWindows = process.platform === 'win32' ||
 
 var path = __webpack_require__(5)
 var COLON = isWindows ? ';' : ':'
-var isexe = __webpack_require__(71)
+var isexe = __webpack_require__(74)
 
 function getNotFoundError (cmd) {
   var er = new Error('not found: ' + cmd)
@@ -6790,15 +7045,15 @@ function whichSync (cmd, opt) {
 
 
 /***/ }),
-/* 71 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var fs = __webpack_require__(6)
 var core
 if (process.platform === 'win32' || global.TESTING_WINDOWS) {
-  core = __webpack_require__(72)
+  core = __webpack_require__(75)
 } else {
-  core = __webpack_require__(73)
+  core = __webpack_require__(76)
 }
 
 module.exports = isexe
@@ -6853,7 +7108,7 @@ function sync (path, options) {
 
 
 /***/ }),
-/* 72 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = isexe
@@ -6901,7 +7156,7 @@ function sync (path, options) {
 
 
 /***/ }),
-/* 73 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = isexe
@@ -6948,7 +7203,7 @@ function checkMode (stat, options) {
 
 
 /***/ }),
-/* 74 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 if (process.env.npm_package_name === 'pseudomap' &&
@@ -6958,12 +7213,12 @@ if (process.env.npm_package_name === 'pseudomap' &&
 if (typeof Map === 'function' && !process.env.TEST_PSEUDOMAP) {
   module.exports = Map
 } else {
-  module.exports = __webpack_require__(75)
+  module.exports = __webpack_require__(78)
 }
 
 
 /***/ }),
-/* 75 */
+/* 78 */
 /***/ (function(module, exports) {
 
 var hasOwnProperty = Object.prototype.hasOwnProperty
@@ -7082,7 +7337,7 @@ function set (data, k, v) {
 
 
 /***/ }),
-/* 76 */
+/* 79 */
 /***/ (function(module, exports) {
 
 module.exports = Yallist
@@ -7458,7 +7713,7 @@ function Node (value, prev, next, list) {
 
 
 /***/ }),
-/* 77 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7483,13 +7738,13 @@ module.exports = hasEmptyArgumentBug();
 
 
 /***/ }),
-/* 78 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var escapeArgument = __webpack_require__(20);
+var escapeArgument = __webpack_require__(21);
 
 function escapeCommand(command) {
     // Do not escape if this command is not dangerous..
@@ -7502,15 +7757,15 @@ module.exports = escapeCommand;
 
 
 /***/ }),
-/* 79 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var fs = __webpack_require__(6);
-var LRU = __webpack_require__(19);
-var shebangCommand = __webpack_require__(80);
+var LRU = __webpack_require__(20);
+var shebangCommand = __webpack_require__(83);
 
 var shebangCache = new LRU({ max: 50, maxAge: 30 * 1000 });  // Cache just for 30sec
 
@@ -7546,12 +7801,12 @@ module.exports = readShebang;
 
 
 /***/ }),
-/* 80 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var shebangRegex = __webpack_require__(81);
+var shebangRegex = __webpack_require__(84);
 
 module.exports = function (str) {
 	var match = str.match(shebangRegex);
@@ -7572,7 +7827,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 81 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7581,14 +7836,14 @@ module.exports = /^#!.*/;
 
 
 /***/ }),
-/* 82 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var isWin = process.platform === 'win32';
-var resolveCommand = __webpack_require__(18);
+var resolveCommand = __webpack_require__(19);
 
 var isNode10 = process.version.indexOf('v0.10.') === 0;
 
@@ -7661,7 +7916,7 @@ module.exports.notFoundError = notFoundError;
 
 
 /***/ }),
-/* 83 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7683,13 +7938,13 @@ module.exports = function (x) {
 
 
 /***/ }),
-/* 84 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 const path = __webpack_require__(5);
-const pathKey = __webpack_require__(85);
+const pathKey = __webpack_require__(88);
 
 module.exports = opts => {
 	opts = Object.assign({
@@ -7729,7 +7984,7 @@ module.exports.env = opts => {
 
 
 /***/ }),
-/* 85 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7749,7 +8004,7 @@ module.exports = opts => {
 
 
 /***/ }),
-/* 86 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7777,12 +8032,12 @@ isStream.transform = function (stream) {
 
 
 /***/ }),
-/* 87 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const bufferStream = __webpack_require__(88);
+const bufferStream = __webpack_require__(91);
 
 function getStream(inputStream, opts) {
 	if (!inputStream) {
@@ -7835,12 +8090,12 @@ module.exports.array = (stream, opts) => getStream(stream, Object.assign({}, opt
 
 
 /***/ }),
-/* 88 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const PassThrough = __webpack_require__(89).PassThrough;
+const PassThrough = __webpack_require__(92).PassThrough;
 
 module.exports = opts => {
 	opts = Object.assign({}, opts);
@@ -7893,13 +8148,13 @@ module.exports = opts => {
 
 
 /***/ }),
-/* 89 */
+/* 92 */
 /***/ (function(module, exports) {
 
 module.exports = require("stream");
 
 /***/ }),
-/* 90 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7921,16 +8176,16 @@ module.exports = (promise, onFinally) => {
 
 
 /***/ }),
-/* 91 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Note: since nyc uses this module to output coverage, any lines
 // that are in the direct sync flow of nyc's outputCoverage are
 // ignored, since we can never get coverage for them.
-var assert = __webpack_require__(92)
-var signals = __webpack_require__(93)
+var assert = __webpack_require__(95)
+var signals = __webpack_require__(96)
 
-var EE = __webpack_require__(94)
+var EE = __webpack_require__(97)
 /* istanbul ignore if */
 if (typeof EE !== 'function') {
   EE = EE.EventEmitter
@@ -8084,13 +8339,13 @@ function processEmit (ev, arg) {
 
 
 /***/ }),
-/* 92 */
+/* 95 */
 /***/ (function(module, exports) {
 
 module.exports = require("assert");
 
 /***/ }),
-/* 93 */
+/* 96 */
 /***/ (function(module, exports) {
 
 // This is not the set of all possible signals.
@@ -8149,13 +8404,13 @@ if (process.platform === 'linux') {
 
 
 /***/ }),
-/* 94 */
+/* 97 */
 /***/ (function(module, exports) {
 
 module.exports = require("events");
 
 /***/ }),
-/* 95 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8199,7 +8454,7 @@ module.exports.__test__ = errname;
 
 
 /***/ }),
-/* 96 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8247,7 +8502,7 @@ module.exports = opts => {
 
 
 /***/ }),
-/* 97 */
+/* 100 */
 /***/ (function(module, exports) {
 
 
@@ -9038,7 +9293,7 @@ linewrap.wrap = function(text/*, start, stop, params*/) {
 
 
 /***/ }),
-/* 98 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9143,12 +9398,12 @@ x.iTerm.setCwd = cwd => '\u001B]50;CurrentDir=' + (cwd || process.cwd()) + '\u00
 
 
 /***/ }),
-/* 99 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { wrapLines, stylizeString } = __webpack_require__(0)
+const { wrapLines, stylizeString } = __webpack_require__(1)
 
-const { render_adventure } = __webpack_require__(7)
+const { render_adventure } = __webpack_require__(8)
 
 /////////////////////////////////////////////////
 
@@ -9174,7 +9429,7 @@ module.exports = {
 
 
 /***/ }),
-/* 100 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -26263,10 +26518,10 @@ module.exports = {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)(module)))
 
 /***/ }),
-/* 101 */
+/* 104 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -26450,89 +26705,13 @@ function __asyncValues(o) {
 }
 
 /***/ }),
-/* 102 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const set = __webpack_require__(103).entries
-
-module.exports = set
-
-
-/***/ }),
-/* 103 */
-/***/ (function(module, exports) {
-
-module.exports = {"entries":[{"type":"base","hid":"axe"},{"type":"base","hid":"bow"},{"type":"base","hid":"claw"},{"type":"base","hid":"dagger"},{"type":"base","hid":"grimoire"},{"type":"base","hid":"harp"},{"type":"base","hid":"knife"},{"type":"base","hid":"longbow"},{"type":"base","hid":"longsword"},{"type":"base","hid":"luth"},{"type":"base","hid":"mace"},{"type":"base","hid":"scythe"},{"type":"base","hid":"spear"},{"type":"base","hid":"spoon"},{"type":"base","hid":"staff"},{"type":"base","hid":"sword"},{"type":"base","hid":"wand"},{"type":"qualifier1","hid":"admirable"},{"type":"qualifier1","hid":"arcanic"},{"type":"qualifier1","hid":"bestial"},{"type":"qualifier1","hid":"bone"},{"type":"qualifier1","hid":"brass"},{"type":"qualifier1","hid":"cardboard"},{"type":"qualifier1","hid":"complex"},{"type":"qualifier1","hid":"composite"},{"type":"qualifier1","hid":"consecrated"},{"type":"qualifier1","hid":"crafted"},{"type":"qualifier1","hid":"cruel"},{"type":"qualifier1","hid":"cunning"},{"type":"qualifier1","hid":"cursed"},{"type":"qualifier1","hid":"emerald"},{"type":"qualifier1","hid":"engraved"},{"type":"qualifier1","hid":"forbidden"},{"type":"qualifier1","hid":"forgotten"},{"type":"qualifier1","hid":"ghost"},{"type":"qualifier1","hid":"golden"},{"type":"qualifier1","hid":"heavy"},{"type":"qualifier1","hid":"heroic"},{"type":"qualifier1","hid":"holy"},{"type":"qualifier1","hid":"inflexible"},{"type":"qualifier1","hid":"invincible"},{"type":"qualifier1","hid":"iron"},{"type":"qualifier1","hid":"jade"},{"type":"qualifier1","hid":"light"},{"type":"qualifier1","hid":"living"},{"type":"qualifier1","hid":"lost"},{"type":"qualifier1","hid":"mechanical"},{"type":"qualifier1","hid":"mysterious"},{"type":"qualifier1","hid":"old"},{"type":"qualifier1","hid":"onyx"},{"type":"qualifier1","hid":"overrated"},{"type":"qualifier1","hid":"powerful"},{"type":"qualifier1","hid":"practical"},{"type":"qualifier1","hid":"proven"},{"type":"qualifier1","hid":"raging"},{"type":"qualifier1","hid":"robust"},{"type":"qualifier1","hid":"sapphire"},{"type":"qualifier1","hid":"savage"},{"type":"qualifier1","hid":"silver"},{"type":"qualifier1","hid":"simple"},{"type":"qualifier1","hid":"sinister"},{"type":"qualifier1","hid":"skeleton"},{"type":"qualifier1","hid":"solid"},{"type":"qualifier1","hid":"steel"},{"type":"qualifier1","hid":"strange"},{"type":"qualifier1","hid":"subtile"},{"type":"qualifier1","hid":"swift"},{"type":"qualifier1","hid":"unwavering"},{"type":"qualifier1","hid":"used"},{"type":"qualifier1","hid":"whirling"},{"type":"qualifier1","hid":"wooden"},{"type":"qualifier2","hid":"adjudicator"},{"type":"qualifier2","hid":"ambassador"},{"type":"qualifier2","hid":"ancients"},{"type":"qualifier2","hid":"apprentice"},{"type":"qualifier2","hid":"assaulting"},{"type":"qualifier2","hid":"beginner"},{"type":"qualifier2","hid":"brave"},{"type":"qualifier2","hid":"conqueror"},{"type":"qualifier2","hid":"cruel_tyrant"},{"type":"qualifier2","hid":"defender"},{"type":"qualifier2","hid":"destructor"},{"type":"qualifier2","hid":"dwarven"},{"type":"qualifier2","hid":"elite"},{"type":"qualifier2","hid":"elven"},{"type":"qualifier2","hid":"executioner"},{"type":"qualifier2","hid":"expert"},{"type":"qualifier2","hid":"explorer"},{"type":"qualifier2","hid":"gladiator"},{"type":"qualifier2","hid":"goddess"},{"type":"qualifier2","hid":"guard"},{"type":"qualifier2","hid":"hunter"},{"type":"qualifier2","hid":"judgement"},{"type":"qualifier2","hid":"king"},{"type":"qualifier2","hid":"mediator"},{"type":"qualifier2","hid":"mercenary"},{"type":"qualifier2","hid":"militia"},{"type":"qualifier2","hid":"nightmare"},{"type":"qualifier2","hid":"noble"},{"type":"qualifier2","hid":"noob"},{"type":"qualifier2","hid":"pilgrim"},{"type":"qualifier2","hid":"pioneer"},{"type":"qualifier2","hid":"pirate"},{"type":"qualifier2","hid":"profane"},{"type":"qualifier2","hid":"ranger"},{"type":"qualifier2","hid":"sorcerer"},{"type":"qualifier2","hid":"tormentor"},{"type":"qualifier2","hid":"training"},{"type":"qualifier2","hid":"traveler"},{"type":"qualifier2","hid":"twink"},{"type":"qualifier2","hid":"tyrant"},{"type":"qualifier2","hid":"upholder"},{"type":"qualifier2","hid":"warfield_king"},{"type":"qualifier2","hid":"warfield"},{"type":"qualifier2","hid":"warrior"},{"type":"qualifier2","hid":"wise"},{"type":"qualifier2","hid":"woodsman"}]}
-
-/***/ }),
-/* 104 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(1);
-/////////////////////
-const WeaponPartType = typescript_string_enums_1.Enum('base', 'qualifier1', 'qualifier2');
-exports.WeaponPartType = WeaponPartType;
-/////////////////////
-//# sourceMappingURL=types.js.map
-
-/***/ }),
 /* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-////////////////////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-////////////
-// actualized strength
-// quality multipliers (see spreadsheet for calculation)
-const QUALITY_STRENGTH_MULTIPLIER = {
-    common: 1,
-    uncommon: 19,
-    rare: 46,
-    epic: 91,
-    legendary: 182,
-    artifact: 333,
-};
-exports.QUALITY_STRENGTH_MULTIPLIER = QUALITY_STRENGTH_MULTIPLIER;
-const QUALITY_STRENGTH_SPREAD = {
-    common: 6,
-    uncommon: 5,
-    rare: 4,
-    epic: 3,
-    legendary: 2,
-    artifact: 1,
-};
-exports.QUALITY_STRENGTH_SPREAD = QUALITY_STRENGTH_SPREAD;
-const ENHANCEMENT_MULTIPLIER = 0.2;
-exports.ENHANCEMENT_MULTIPLIER = ENHANCEMENT_MULTIPLIER;
-function get_interval(base_strength, quality, enhancement_level, coef = 1) {
-    const spread = QUALITY_STRENGTH_SPREAD[quality];
-    const strength_multiplier = QUALITY_STRENGTH_MULTIPLIER[quality];
-    const enhancement_multiplier = (1 + ENHANCEMENT_MULTIPLIER * enhancement_level);
-    // constrain interval
-    const min_strength = Math.max(base_strength - spread, 1);
-    const max_strength = Math.min(base_strength + spread, 20);
-    return [
-        Math.round(min_strength * strength_multiplier * enhancement_multiplier * coef),
-        Math.round(max_strength * strength_multiplier * enhancement_multiplier * coef)
-    ];
-}
-exports.get_interval = get_interval;
-////////////////////////////////////
-//# sourceMappingURL=constants.js.map
-
-/***/ }),
-/* 106 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const i18n_en_1 = __webpack_require__(107);
+const i18n_en_1 = __webpack_require__(106);
 const i18n_messages = {
     en: i18n_en_1.messages,
 };
@@ -26638,7 +26817,7 @@ exports.ENTRIES = ENTRIES;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 107 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26780,13 +26959,13 @@ exports.messages = {
 //# sourceMappingURL=i18n_en.js.map
 
 /***/ }),
-/* 108 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(1);
+const typescript_string_enums_1 = __webpack_require__(0);
 /////////////////////
 const ArmorPartType = typescript_string_enums_1.Enum('base', 'qualifier1', 'qualifier2');
 exports.ArmorPartType = ArmorPartType;
@@ -26794,7 +26973,7 @@ exports.ArmorPartType = ArmorPartType;
 //# sourceMappingURL=types.js.map
 
 /***/ }),
-/* 109 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26841,20 +27020,19 @@ exports.get_interval = get_interval;
 //# sourceMappingURL=constants.js.map
 
 /***/ }),
-/* 110 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+const set = __webpack_require__(110).entries
 
-Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(1);
-/////////////////////
-const CharacterStat = typescript_string_enums_1.Enum('agility', 'health', 'level', 'luck', 'mana', 'strength', 'charisma', 'wisdom');
-exports.CharacterStat = CharacterStat;
-const CharacterClass = typescript_string_enums_1.Enum('novice', 'warrior', 'barbarian', 'paladin', 'sculptor', 'pirate', 'ninja', 'rogue', 'wizard', 'hunter', 'druid', 'priest');
-exports.CharacterClass = CharacterClass;
-/////////////////////
-//# sourceMappingURL=types.js.map
+module.exports = set
+
+
+/***/ }),
+/* 110 */
+/***/ (function(module, exports) {
+
+module.exports = {"entries":[{"type":"base","hid":"axe"},{"type":"base","hid":"bow"},{"type":"base","hid":"claw"},{"type":"base","hid":"dagger"},{"type":"base","hid":"grimoire"},{"type":"base","hid":"harp"},{"type":"base","hid":"knife"},{"type":"base","hid":"longbow"},{"type":"base","hid":"longsword"},{"type":"base","hid":"luth"},{"type":"base","hid":"mace"},{"type":"base","hid":"scythe"},{"type":"base","hid":"spear"},{"type":"base","hid":"spoon"},{"type":"base","hid":"staff"},{"type":"base","hid":"sword"},{"type":"base","hid":"wand"},{"type":"qualifier1","hid":"admirable"},{"type":"qualifier1","hid":"arcanic"},{"type":"qualifier1","hid":"bestial"},{"type":"qualifier1","hid":"bone"},{"type":"qualifier1","hid":"brass"},{"type":"qualifier1","hid":"cardboard"},{"type":"qualifier1","hid":"complex"},{"type":"qualifier1","hid":"composite"},{"type":"qualifier1","hid":"consecrated"},{"type":"qualifier1","hid":"crafted"},{"type":"qualifier1","hid":"cruel"},{"type":"qualifier1","hid":"cunning"},{"type":"qualifier1","hid":"cursed"},{"type":"qualifier1","hid":"emerald"},{"type":"qualifier1","hid":"engraved"},{"type":"qualifier1","hid":"forbidden"},{"type":"qualifier1","hid":"forgotten"},{"type":"qualifier1","hid":"ghost"},{"type":"qualifier1","hid":"golden"},{"type":"qualifier1","hid":"heavy"},{"type":"qualifier1","hid":"heroic"},{"type":"qualifier1","hid":"holy"},{"type":"qualifier1","hid":"inflexible"},{"type":"qualifier1","hid":"invincible"},{"type":"qualifier1","hid":"iron"},{"type":"qualifier1","hid":"jade"},{"type":"qualifier1","hid":"light"},{"type":"qualifier1","hid":"living"},{"type":"qualifier1","hid":"lost"},{"type":"qualifier1","hid":"mechanical"},{"type":"qualifier1","hid":"mysterious"},{"type":"qualifier1","hid":"old"},{"type":"qualifier1","hid":"onyx"},{"type":"qualifier1","hid":"overrated"},{"type":"qualifier1","hid":"powerful"},{"type":"qualifier1","hid":"practical"},{"type":"qualifier1","hid":"proven"},{"type":"qualifier1","hid":"raging"},{"type":"qualifier1","hid":"robust"},{"type":"qualifier1","hid":"sapphire"},{"type":"qualifier1","hid":"savage"},{"type":"qualifier1","hid":"silver"},{"type":"qualifier1","hid":"simple"},{"type":"qualifier1","hid":"sinister"},{"type":"qualifier1","hid":"skeleton"},{"type":"qualifier1","hid":"solid"},{"type":"qualifier1","hid":"steel"},{"type":"qualifier1","hid":"strange"},{"type":"qualifier1","hid":"subtile"},{"type":"qualifier1","hid":"swift"},{"type":"qualifier1","hid":"unwavering"},{"type":"qualifier1","hid":"used"},{"type":"qualifier1","hid":"whirling"},{"type":"qualifier1","hid":"wooden"},{"type":"qualifier2","hid":"adjudicator"},{"type":"qualifier2","hid":"ambassador"},{"type":"qualifier2","hid":"ancients"},{"type":"qualifier2","hid":"apprentice"},{"type":"qualifier2","hid":"assaulting"},{"type":"qualifier2","hid":"beginner"},{"type":"qualifier2","hid":"brave"},{"type":"qualifier2","hid":"conqueror"},{"type":"qualifier2","hid":"cruel_tyrant"},{"type":"qualifier2","hid":"defender"},{"type":"qualifier2","hid":"destructor"},{"type":"qualifier2","hid":"dwarven"},{"type":"qualifier2","hid":"elite"},{"type":"qualifier2","hid":"elven"},{"type":"qualifier2","hid":"executioner"},{"type":"qualifier2","hid":"expert"},{"type":"qualifier2","hid":"explorer"},{"type":"qualifier2","hid":"gladiator"},{"type":"qualifier2","hid":"goddess"},{"type":"qualifier2","hid":"guard"},{"type":"qualifier2","hid":"hunter"},{"type":"qualifier2","hid":"judgement"},{"type":"qualifier2","hid":"king"},{"type":"qualifier2","hid":"mediator"},{"type":"qualifier2","hid":"mercenary"},{"type":"qualifier2","hid":"militia"},{"type":"qualifier2","hid":"nightmare"},{"type":"qualifier2","hid":"noble"},{"type":"qualifier2","hid":"noob"},{"type":"qualifier2","hid":"pilgrim"},{"type":"qualifier2","hid":"pioneer"},{"type":"qualifier2","hid":"pirate"},{"type":"qualifier2","hid":"profane"},{"type":"qualifier2","hid":"ranger"},{"type":"qualifier2","hid":"sorcerer"},{"type":"qualifier2","hid":"tormentor"},{"type":"qualifier2","hid":"training"},{"type":"qualifier2","hid":"traveler"},{"type":"qualifier2","hid":"twink"},{"type":"qualifier2","hid":"tyrant"},{"type":"qualifier2","hid":"upholder"},{"type":"qualifier2","hid":"warfield_king"},{"type":"qualifier2","hid":"warfield"},{"type":"qualifier2","hid":"warrior"},{"type":"qualifier2","hid":"wise"},{"type":"qualifier2","hid":"woodsman"}]}
 
 /***/ }),
 /* 111 */
@@ -26863,11 +27041,10 @@ exports.CharacterClass = CharacterClass;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+const typescript_string_enums_1 = __webpack_require__(0);
 /////////////////////
-const typescript_string_enums_1 = __webpack_require__(1);
-/////////////////////
-const TextStyle = typescript_string_enums_1.Enum('item_quality_common', 'item_quality_uncommon', 'item_quality_rare', 'item_quality_epic', 'item_quality_legendary', 'item_quality_artifact', 'change_outline');
-exports.TextStyle = TextStyle;
+const WeaponPartType = typescript_string_enums_1.Enum('base', 'qualifier1', 'qualifier2');
+exports.WeaponPartType = WeaponPartType;
 /////////////////////
 //# sourceMappingURL=types.js.map
 
@@ -26875,150 +27052,905 @@ exports.TextStyle = TextStyle;
 /* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { stylizeString } = __webpack_require__(0)
+"use strict";
 
-const {
-	render_characteristics
-} = __webpack_require__(7)
-
-/////////////////////////////////////////////////
-
-
-
-function render({config, rendering_options}) {
-	const state = config.store
-
-	console.log(''
-		//stylizeString.bold('🙂  CHARACTERISTICS 💗\n')
-		+ 'name:  ' + stylizeString.bold(state.avatar.name) + '\n'
-		+ 'class: ' + stylizeString.bold(state.avatar.klass) + '\n'
-		+ '\n'
-		+ stylizeString.bold('CHARACTERISTICS:\n')
-		+ render_characteristics(state.avatar, rendering_options)
-	)
+////////////////////////////////////
+Object.defineProperty(exports, "__esModule", { value: true });
+////////////
+// actualized strength
+// quality multipliers (see spreadsheet for calculation)
+const QUALITY_STRENGTH_MULTIPLIER = {
+    common: 1,
+    uncommon: 19,
+    rare: 46,
+    epic: 91,
+    legendary: 182,
+    artifact: 333,
+};
+exports.QUALITY_STRENGTH_MULTIPLIER = QUALITY_STRENGTH_MULTIPLIER;
+const QUALITY_STRENGTH_SPREAD = {
+    common: 6,
+    uncommon: 5,
+    rare: 4,
+    epic: 3,
+    legendary: 2,
+    artifact: 1,
+};
+exports.QUALITY_STRENGTH_SPREAD = QUALITY_STRENGTH_SPREAD;
+const ENHANCEMENT_MULTIPLIER = 0.2;
+exports.ENHANCEMENT_MULTIPLIER = ENHANCEMENT_MULTIPLIER;
+function get_interval(base_strength, quality, enhancement_level, coef = 1) {
+    const spread = QUALITY_STRENGTH_SPREAD[quality];
+    const strength_multiplier = QUALITY_STRENGTH_MULTIPLIER[quality];
+    const enhancement_multiplier = (1 + ENHANCEMENT_MULTIPLIER * enhancement_level);
+    // constrain interval
+    const min_strength = Math.max(base_strength - spread, 1);
+    const max_strength = Math.min(base_strength + spread, 20);
+    return [
+        Math.round(min_strength * strength_multiplier * enhancement_multiplier * coef),
+        Math.round(max_strength * strength_multiplier * enhancement_multiplier * coef)
+    ];
 }
-
-/////////////////////////////////////////////////
-
-module.exports = {
-	render,
-}
-
+exports.get_interval = get_interval;
+////////////////////////////////////
+//# sourceMappingURL=constants.js.map
 
 /***/ }),
 /* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { stylizeString } = __webpack_require__(0)
+"use strict";
 
-const {
-	render_equipment,
-	render_wallet,
-	render_inventory
-} = __webpack_require__(7)
-
-/////////////////////////////////////////////////
-
-
-
-function render({config, rendering_options}) {
-	const state = config.store
-
-	console.log(''
-		//stylizeString.bold('⚔  ACTIVE EQUIPMENT 🛡 \n')
-		+ stylizeString.bold('ACTIVE EQUIPMENT:\n')
-		+ render_equipment(state.inventory, rendering_options)
-		+ '\n\n'
-		+ stylizeString.bold('WALLET:\n')
-		+ render_wallet(state.wallet, rendering_options)
-		+ '\n\n'
-		+ stylizeString.bold('INVENTORY:\n')
-		+ render_inventory(state.inventory, rendering_options)
-	)
-}
-
-function render_selected_item({config, rendering_options, selected_item_coordinates}) {
-	console.log('TODO render_selected_item')
-}
-/////////////////////////////////////////////////
-
-module.exports = {
-	render,
-	render_selected_item,
-}
-
+Object.defineProperty(exports, "__esModule", { value: true });
+const typescript_string_enums_1 = __webpack_require__(0);
+//import { Item, InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
+/////////////////////
+const MonsterRank = typescript_string_enums_1.Enum('common', 'elite', 'boss');
+exports.MonsterRank = MonsterRank;
+/////////////////////
+//# sourceMappingURL=types.js.map
 
 /***/ }),
 /* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Conf = __webpack_require__(115)
-const Globalize = __webpack_require__(116)
-const CLDRData = __webpack_require__(117)
+"use strict";
 
-const { migrate_to_latest } = __webpack_require__(24)
-const { prettifyJson } = __webpack_require__(0)
-
-/////////////////////////////////////////////////
-
-function init_globalize() {
-	const en = Object.assign({},
-		__webpack_require__(130).en,
-		__webpack_require__(132).en,
-	)
-
-	Globalize.load(CLDRData.entireSupplemental())
-	Globalize.load(CLDRData.entireMainFor('en'))
-	//Globalize.loadTimeZone(require('iana-tz-data'))
-	Globalize.loadMessages({en})
-
-	return Globalize('en')
-}
-
-
-function init_savegame({verbose}) {
-	const config = new Conf({
-		configName: 'state',
-		defaults: {},
-	})
-
-	if (verbose) console.log('config path:', config.path)
-	if (verbose) console.log('loaded state:\n-------\n', prettifyJson(config.store), '\n-------\n')
-
-	const state = migrate_to_latest(config.store)
-	if (verbose) console.log('migrated state:\n-------\n', prettifyJson(state), '\n-------\n')
-
-	config.clear()
-	config.set(state)
-
-	return config
-}
-
-/////////////////////////////////////////////////
-
-module.exports = {
-	init_globalize,
-	init_savegame,
-}
-
+Object.defineProperty(exports, "__esModule", { value: true });
+const data_1 = __webpack_require__(115);
+const EMOJI_ENTRIES = Object.keys(data_1.UNICODE_CHARS)
+    .map(key => data_1.UNICODE_CHARS[key])
+    .filter(charDetails => charDetails.taxonomy.includes('monster'))
+    .map((charDetails) => ({
+    name: charDetails.properties.description,
+    emoji: charDetails.char,
+}));
+const EXTRA_ENTRIES = [
+    {
+        name: 'drop bear',
+        emoji: '🐨',
+    },
+    {
+        name: 'dahu',
+        emoji: '🐏',
+    },
+];
+const ENTRIES = [].concat(...EMOJI_ENTRIES, ...EXTRA_ENTRIES);
+exports.ENTRIES = ENTRIES;
+//# sourceMappingURL=index.js.map
 
 /***/ }),
 /* 115 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("conf");
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var unicode_1 = __webpack_require__(116);
+exports.UNICODE_CHARS = unicode_1.CHARACTERS;
+//# sourceMappingURL=index.js.map
 
 /***/ }),
 /* 116 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("globalize");
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const CHARACTERS = {
+    '01f400': {
+        code_point: 128000,
+        char: '🐀',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'rat',
+        },
+    },
+    '01f401': {
+        code_point: 128001,
+        char: '🐁',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'mouse',
+        },
+    },
+    '01f402': {
+        code_point: 128002,
+        char: '🐂',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'ox',
+        },
+    },
+    '01f403': {
+        code_point: 128003,
+        char: '🐃',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'water buffalo',
+        },
+    },
+    '01f404': {
+        code_point: 128004,
+        char: '🐄',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'cow',
+        },
+    },
+    '01f405': {
+        code_point: 128005,
+        char: '🐅',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'tiger',
+        },
+    },
+    '01f406': {
+        code_point: 128006,
+        char: '🐆',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'leopard',
+        },
+    },
+    '01f407': {
+        code_point: 128007,
+        char: '🐇',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'rabbit',
+        },
+    },
+    '01f408': {
+        code_point: 128008,
+        char: '🐈',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'cat',
+        },
+    },
+    '01f409': {
+        code_point: 128009,
+        char: '🐉',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'dragon',
+        },
+    },
+    '01f40a': {
+        code_point: 128010,
+        char: '🐊',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'crocodile',
+        },
+    },
+    '01f40b': {
+        code_point: 128011,
+        char: '🐋',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'whale',
+        },
+    },
+    '01f40c': {
+        code_point: 128012,
+        char: '🐌',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'snail',
+        },
+    },
+    '01f40d': {
+        code_point: 128013,
+        char: '🐍',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'snake',
+        },
+    },
+    '01f40e': {
+        code_point: 128014,
+        char: '🐎',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'horse',
+        },
+    },
+    '01f40f': {
+        code_point: 128015,
+        char: '🐏',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'ram',
+        },
+    },
+    '01f410': {
+        code_point: 128016,
+        char: '🐐',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'goat',
+        },
+    },
+    '01f411': {
+        code_point: 128017,
+        char: '🐑',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'ewe',
+        },
+    },
+    '01f412': {
+        code_point: 128018,
+        char: '🐒',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'monkey',
+        },
+    },
+    '01f413': {
+        code_point: 128019,
+        char: '🐓',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'chicken',
+        },
+    },
+    '01f414': {
+        code_point: 128020,
+        char: '🐔',
+        taxonomy: ['animal', 'living'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'chicken head',
+        },
+    },
+    '01f415': {
+        code_point: 128021,
+        char: '🐕',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'dog',
+        },
+    },
+    '01f416': {
+        code_point: 128022,
+        char: '🐖',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'pig',
+        },
+    },
+    '01f417': {
+        code_point: 128023,
+        char: '🐗',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'boar',
+        },
+    },
+    '01f418': {
+        code_point: 128024,
+        char: '🐘',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'elephant',
+        },
+    },
+    '01f419': {
+        code_point: 128025,
+        char: '🐙',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'octopus',
+        },
+    },
+    '01f41a': {
+        code_point: 128026,
+        char: '🐚',
+        taxonomy: ['animal', 'living'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'spiral shell',
+        },
+    },
+    '01f41b': {
+        code_point: 128027,
+        char: '🐛',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'caterpillar',
+        },
+    },
+    '01f41c': {
+        code_point: 128028,
+        char: '🐜',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'ant',
+        },
+    },
+    '01f41d': {
+        code_point: 128029,
+        char: '🐝',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'bee',
+        },
+    },
+    '01f41e': {
+        code_point: 128030,
+        char: '🐞',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'lady beetle',
+        },
+    },
+    '01f41f': {
+        code_point: 128031,
+        char: '🐟',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'fish',
+        },
+    },
+    '01f420': {
+        code_point: 128032,
+        char: '🐠',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'tropical fish',
+        },
+    },
+    '01f421': {
+        code_point: 128033,
+        char: '🐡',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'blowfish',
+        },
+    },
+    '01f422': {
+        code_point: 128034,
+        char: '🐢',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'turtle',
+        },
+    },
+    '01f423': {
+        code_point: 128035,
+        char: '🐣',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'hatching chick',
+        },
+    },
+    '01f424': {
+        code_point: 128036,
+        char: '🐤',
+        taxonomy: ['animal', 'living'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'baby chick',
+        },
+    },
+    '01f425': {
+        code_point: 128037,
+        char: '🐥',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'baby chick',
+        },
+    },
+    '01f426': {
+        code_point: 128038,
+        char: '🐦',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'pigeon',
+        },
+    },
+    '01f427': {
+        code_point: 128039,
+        char: '🐧',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'penguin',
+        },
+    },
+    '01f428': {
+        code_point: 128040,
+        char: '🐨',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'koala',
+        },
+    },
+    '01f429': {
+        code_point: 128041,
+        char: '🐩',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'poodle',
+        },
+    },
+    '01f42a': {
+        code_point: 128042,
+        char: '🐪',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'dromedary',
+        },
+    },
+    '01f42b': {
+        code_point: 128043,
+        char: '🐫',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'camel',
+        },
+    },
+    '01f42c': {
+        code_point: 128044,
+        char: '🐬',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'dolphin',
+        },
+    },
+    '01f42d': {
+        code_point: 128045,
+        char: '🐭',
+        taxonomy: ['animal', 'living'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'mouse',
+        },
+    },
+    '01f42e': {
+        code_point: 128046,
+        char: '🐮',
+        taxonomy: ['animal', 'living'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'cow',
+        },
+    },
+    '01f42f': {
+        code_point: 128047,
+        char: '🐯',
+        taxonomy: ['animal', 'living'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'tiger',
+        },
+    },
+    '01f430': {
+        code_point: 128048,
+        char: '🐰',
+        taxonomy: ['animal', 'living'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'rabbit',
+        },
+    },
+    '01f431': {
+        code_point: 128049,
+        char: '🐱',
+        taxonomy: ['animal', 'living'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'cat',
+        },
+    },
+    '01f432': {
+        code_point: 128050,
+        char: '🐲',
+        taxonomy: ['animal', 'living'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'dragon',
+        },
+    },
+    '01f433': {
+        code_point: 128051,
+        char: '🐳',
+        taxonomy: ['animal', 'living'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'spouting whale',
+        },
+    },
+    '01f434': {
+        code_point: 128052,
+        char: '🐴',
+        taxonomy: ['animal', 'living'],
+        tags: ['emoji'],
+        properties: {
+            description: 'horse',
+        },
+    },
+    '01f435': {
+        code_point: 128053,
+        char: '🐵',
+        taxonomy: ['animal', 'living'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'monkey',
+        },
+    },
+    '01f436': {
+        code_point: 128054,
+        char: '🐶',
+        taxonomy: ['animal', 'living'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'dog',
+        },
+    },
+    '01f437': {
+        code_point: 128055,
+        char: '🐷',
+        taxonomy: ['animal', 'living'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'pig',
+        },
+    },
+    '01f438': {
+        code_point: 128056,
+        char: '🐸',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'frog',
+        },
+    },
+    '01f439': {
+        code_point: 128057,
+        char: '🐹',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'hamster',
+        },
+    },
+    '01f43a': {
+        code_point: 128058,
+        char: '🐺',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji'],
+        properties: {
+            description: 'wolf',
+        },
+    },
+    '01f43b': {
+        code_point: 128059,
+        char: '🐻',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'bear',
+        },
+    },
+    '01f43c': {
+        code_point: 128060,
+        char: '🐼',
+        taxonomy: ['animal', 'living', 'monster', 'face'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'panda',
+        },
+    },
+    '01f43d': {
+        code_point: 128061,
+        char: '🐽',
+        taxonomy: [],
+        tags: ['emoji'],
+        properties: {
+            description: '???',
+        },
+    },
+    '01f43e': {
+        code_point: 128062,
+        char: '🐾',
+        taxonomy: [],
+        tags: ['emoji'],
+        properties: {
+            description: '???',
+        },
+    },
+    '01f43f': {
+        code_point: 128063,
+        char: '🐿',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'chipmunk',
+        },
+    },
+    '01f5ff': {
+        code_point: 128511,
+        char: '🗿',
+        taxonomy: ['monster'],
+        tags: ['emoji'],
+        properties: {
+            description: 'golem',
+        },
+    },
+    '01f47b': {
+        code_point: 128123,
+        char: '👻',
+        taxonomy: ['monster'],
+        tags: ['emoji'],
+        properties: {
+            description: 'ghost',
+        },
+    },
+    '01f54a': {
+        code_point: 128330,
+        char: '🕊',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'dove',
+        },
+    },
+    '01f577': {
+        code_point: 128375,
+        char: '🕷',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'spider',
+        },
+    },
+    '01f980': {
+        code_point: 129408,
+        char: '🦀',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'crab',
+        },
+    },
+    '01f981': {
+        code_point: 129409,
+        char: '🦁',
+        taxonomy: ['animal', 'living'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'lion',
+        },
+    },
+    '01f982': {
+        code_point: 129410,
+        char: '🦂',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'scorpion',
+        },
+    },
+    '01f983': {
+        code_point: 129411,
+        char: '🦃',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'turkey',
+        },
+    },
+    '01f984': {
+        code_point: 129412,
+        char: '🦄',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji'],
+        properties: {
+            description: 'unicorn',
+        },
+    },
+    '01f985': {
+        code_point: 129413,
+        char: '🦅',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'eagle',
+        },
+    },
+    '01f986': {
+        code_point: 129414,
+        char: '🦆',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'duck',
+        },
+    },
+    '01f987': {
+        code_point: 129415,
+        char: '🦇',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'bat',
+        },
+    },
+    '01f988': {
+        code_point: 129416,
+        char: '🦈',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'shark',
+        },
+    },
+    '01f989': {
+        code_point: 129417,
+        char: '🦉',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'owl',
+        },
+    },
+    '01f98a': {
+        code_point: 129418,
+        char: '🦊',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'face'],
+        properties: {
+            description: 'fox',
+        },
+    },
+    '01f98b': {
+        code_point: 129419,
+        char: '🦋',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'butterfly',
+        },
+    },
+    '01f98c': {
+        code_point: 129420,
+        char: '🦌',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'deer',
+        },
+    },
+    '01f98d': {
+        code_point: 129421,
+        char: '🦍',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'gorilla',
+        },
+    },
+    '01f98e': {
+        code_point: 129422,
+        char: '🦎',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'lizard',
+        },
+    },
+    '01f98f': {
+        code_point: 129423,
+        char: '🦏',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'rhinoceros',
+        },
+    },
+    '01f990': {
+        code_point: 129424,
+        char: '🦐',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'shrimp',
+        },
+    },
+    '01f991': {
+        code_point: 129425,
+        char: '🦑',
+        taxonomy: ['animal', 'living', 'monster'],
+        tags: ['emoji', 'full'],
+        properties: {
+            description: 'squid',
+        },
+    },
+};
+exports.CHARACTERS = CHARACTERS;
+//# sourceMappingURL=index.js.map
 
 /***/ }),
 /* 117 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("cldr-data");
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const typescript_string_enums_1 = __webpack_require__(0);
+/////////////////////
+const CharacterStat = typescript_string_enums_1.Enum('agility', 'health', 'level', 'luck', 'mana', 'strength', 'charisma', 'wisdom');
+exports.CharacterStat = CharacterStat;
+const CharacterClass = typescript_string_enums_1.Enum('novice', 'warrior', 'barbarian', 'paladin', 'sculptor', 'pirate', 'ninja', 'rogue', 'wizard', 'hunter', 'druid', 'priest');
+exports.CharacterClass = CharacterClass;
+/////////////////////
+//# sourceMappingURL=types.js.map
 
 /***/ }),
 /* 118 */
@@ -27214,7 +28146,7 @@ exports.iterables_currency = iterables_currency;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(1);
+const typescript_string_enums_1 = __webpack_require__(0);
 /////////////////////
 const Currency = typescript_string_enums_1.Enum('coin', 'token');
 exports.Currency = Currency;
@@ -27229,7 +28161,7 @@ exports.Currency = Currency;
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const random_1 = __webpack_require__(3);
+const random_1 = __webpack_require__(2);
 /////////////////////
 const DEFAULT_SEED = 987;
 exports.DEFAULT_SEED = DEFAULT_SEED;
@@ -27247,11 +28179,11 @@ function set_seed(state, seed) {
     return state;
 }
 exports.set_seed = set_seed;
-function update_use_count(state, prng) {
+function update_use_count(state, prng, options = {}) {
     const new_use_count = prng.getUseCount();
     if (new_use_count < state.use_count)
         throw new Error(`update PRNG state: count is lower than previous count, this is unexpected! Check your code!`);
-    if (new_use_count === state.use_count)
+    if (!options.I_swear_I_really_cant_know_whether_the_rng_was_used && new_use_count === state.use_count)
         console.warn(`update PRNG state: count hasn't changed = no random was generated! This is most likely a bug, check your code!`);
     if (prng !== cached_prng)
         throw new Error(`update PRNG state: passed prng is not the cached one, this is unexpected!`);
@@ -27308,10 +28240,10 @@ exports.xxx_internal_reset_prng_cache = xxx_internal_reset_prng_cache;
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const random_1 = __webpack_require__(3);
-const definitions_1 = __webpack_require__(2);
-const logic_weapons_1 = __webpack_require__(8);
-const logic_armors_1 = __webpack_require__(10);
+const random_1 = __webpack_require__(2);
+const definitions_1 = __webpack_require__(3);
+const logic_weapons_1 = __webpack_require__(10);
+const logic_armors_1 = __webpack_require__(7);
 /////////////////////
 function factory(rng) {
     // TODO one day
@@ -27353,133 +28285,240 @@ exports.appraise = appraise;
 
 "use strict";
 
-/////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const random_1 = __webpack_require__(3);
-const static_adventure_data = __webpack_require__(127);
-const types_1 = __webpack_require__(128);
-exports.CoinsGain = types_1.CoinsGain;
-/////////////////////
-const ALL_ADVENTURE_ARCHETYPES = static_adventure_data
-    .filter((paa) => paa.published !== false)
-    .map((paa) => {
-    const gains = (paa.post || {}).gains || {};
-    // type fields
-    gains.level = !!gains.level;
-    gains.agility = gains.agility || 0;
-    gains.health = gains.health || 0;
-    gains.luck = gains.luck || 0;
-    gains.mana = gains.mana || 0;
-    gains.strength = gains.strength || 0;
-    gains.charisma = gains.charisma || 0;
-    gains.wisdom = gains.wisdom || 0;
-    gains.random_charac = gains.random_charac || 0;
-    gains.class_main_charac = gains.class_main_charac || 0;
-    gains.class_secondary_charac = gains.class_secondary_charac || 0;
-    gains.coins = gains.coins || types_1.CoinsGain.none;
-    gains.tokens = gains.tokens || 0;
-    gains.armor = !!gains.armor;
-    gains.weapon = !!gains.weapon;
-    gains.armor_or_weapon = !!gains.armor_or_weapon;
-    gains.armor_improvement = !!gains.armor_improvement;
-    gains.weapon_improvement = !!gains.weapon_improvement;
-    gains.armor_or_weapon_improvement = !!gains.armor_or_weapon_improvement;
-    return {
-        hid: paa.hid,
-        good: paa.good,
-        post: {
-            gains: gains
-        },
-    };
-});
-const ALL_GOOD_ADVENTURE_ARCHETYPES = ALL_ADVENTURE_ARCHETYPES.filter(aa => aa.good);
-const ALL_BAD_ADVENTURE_ARCHETYPES = ALL_ADVENTURE_ARCHETYPES.filter(aa => !aa.good);
-const COINS_GAIN_MULTIPLIER_PER_LEVEL = 1.1;
-const COINS_GAIN_RANGES = {
-    none: [0, 0],
-    small: [1, 20],
-    medium: [50, 100],
-    big: [500, 700],
-    huge: [900, 2000],
+const i18n_en_1 = __webpack_require__(127);
+const i18n_messages = {
+    en: i18n_en_1.messages,
 };
-/////////////////////
-// useful for picking an exact archetype (ex. tests)
-function get_archetype(hid) {
-    const aa = ALL_ADVENTURE_ARCHETYPES.find(aa => aa.hid === hid);
-    if (!aa)
-        throw new Error(`logic-adventures, get_archetype(): couldn't find archetype "${hid}" !`);
-    return aa;
-}
-exports.get_archetype = get_archetype;
-function pick_random_good_archetype(rng) {
-    return random_1.Random.pick(rng, ALL_GOOD_ADVENTURE_ARCHETYPES);
-}
-exports.pick_random_good_archetype = pick_random_good_archetype;
-function pick_random_bad_archetype(rng) {
-    return random_1.Random.pick(rng, ALL_BAD_ADVENTURE_ARCHETYPES);
-}
-exports.pick_random_bad_archetype = pick_random_bad_archetype;
-function generate_random_coin_gain(rng, range, player_level) {
-    if (range === types_1.CoinsGain.none)
-        return 0;
-    const level_multiplier = player_level * COINS_GAIN_MULTIPLIER_PER_LEVEL;
-    const interval = COINS_GAIN_RANGES[range];
-    return random_1.Random.integer(interval[0] * level_multiplier, interval[1] * level_multiplier)(rng);
-}
-exports.generate_random_coin_gain = generate_random_coin_gain;
-/////////////////////
+exports.i18n_messages = i18n_messages;
+const types_1 = __webpack_require__(27);
+const story = types_1.AdventureType.story;
+const fight = types_1.AdventureType.fight;
+const ENTRIES = [
+    { good: false, type: story, hid: 'bad_default', outcome: {} },
+    { good: true, type: fight, hid: 'fight_won_coins', outcome: { coins: 'small' } },
+    { good: true, type: fight, hid: 'fight_won_loot', outcome: { armor_or_weapon: true } },
+    { good: true, type: fight, hid: 'fight_won_any', outcome: { random_charac: true } },
+    { good: true, type: fight, hid: 'fight_lost_any', outcome: { random_charac: true } },
+    { good: true, type: fight, hid: 'fight_lost_shortcoming', outcome: { lowest_charac: true } },
+    { good: true, type: story, hid: 'bored_log', outcome: { strength: true } },
+    { good: true, type: story, hid: 'caravan', outcome: { coins: 'small' } },
+    { good: true, type: story, hid: 'dying_man', outcome: { coins: 'medium' } },
+    { good: true, type: story, hid: 'ate_bacon', outcome: { level: true } },
+    { good: true, type: story, hid: 'ate_zombie', outcome: { mana: true } },
+    { good: true, type: story, hid: 'refreshing_nap', outcome: { health: true } },
+    { good: true, type: story, hid: 'older', outcome: { level: true } },
+    { good: true, type: story, hid: 'stare_cup', outcome: { mana: true } },
+    { good: true, type: story, hid: 'nuclear_fusion_paper', outcome: { wisdom: true } },
+    { good: true, type: story, hid: 'found_green_mushroom', outcome: { level: true } },
+    { good: true, type: story, hid: 'found_red_mushroom', outcome: { health: true } },
+    { good: true, type: story, hid: 'found_blue_mushroom', outcome: { mana: true } },
+    { good: true, type: story, hid: 'found_white_mushroom', outcome: { strength: true } },
+    { good: true, type: story, hid: 'found_yellow_mushroom', outcome: { agility: true } },
+    { good: true, type: story, hid: 'found_orange_mushroom', outcome: { charisma: true } },
+    { good: true, type: story, hid: 'found_black_mushroom', outcome: { wisdom: true } },
+    { good: true, type: story, hid: 'found_rainbow_mushroom', outcome: { luck: true } },
+    { good: true, type: story, hid: 'found_random_mushroom', outcome: { random_charac: true } },
+    { good: true, type: story, hid: 'meet_old_wizard', outcome: { wisdom: true } },
+    { good: true, type: story, hid: 'good_necromancer', outcome: { agility: true } },
+    { good: true, type: story, hid: 'talk_to_all_villagers', outcome: { charisma: true } },
+    { good: true, type: story, hid: 'always_keep_potions', outcome: { health: true } },
+    { good: true, type: story, hid: 'lost', outcome: { health: true } },
+    { good: true, type: story, hid: 'fate_sword', outcome: { coins: 'small' } },
+    { good: true, type: story, hid: 'grinding', outcome: { level: true } },
+    { good: true, type: story, hid: 'so_many_potions', outcome: { strength: true } },
+    { good: true, type: story, hid: 'rematch', outcome: { level: true } },
+    { good: true, type: story, hid: 'useless', outcome: { wisdom: true } },
+    { good: true, type: story, hid: 'escort', outcome: { health: true } },
+    { good: true, type: story, hid: 'rare_goods_seller', outcome: { armor_or_weapon: true } },
+    { good: true, type: story, hid: 'progress_loop', outcome: { armor_or_weapon: true } },
+    { good: true, type: story, hid: 'idiot_bandits', outcome: { coins: 'medium' } },
+    { good: true, type: story, hid: 'princess', outcome: { coins: 'medium', armor_or_weapon_improvement: true } },
+    { good: true, type: story, hid: 'bad_village', outcome: { mana: true } },
+    { good: true, type: story, hid: 'mana_mana', outcome: { mana: true } },
+];
+exports.ENTRIES = ENTRIES;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
 /* 127 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-const entries = [
-	{ good: false, hid: 'bad_default', post: {}},
+"use strict";
 
-	{ good: true, hid: 'bored_log',             post: { gains: { strength: 1 }}},
-	{ good: true, hid: 'caravan',               post: { gains: { coins: 'small' }}},
-	{ good: true, hid: 'dying_man',             post: { gains: { coins: 'medium' }}},
-	{ good: true, hid: 'ate_bacon',             post: { gains: { level: 1 }}},
-	//{ good: true, hid: 'ate_mushroom',          post: { gains: { level: 1 }}},
-	{ good: true, hid: 'ate_zombie',             post: { gains: { mana: 1 }}},
-	{ good: true, hid: 'refreshing_nap',         post: { gains: { health: 1 }}},
-	{ good: true, hid: 'older',                  post: { gains: { level: 1 }}},
-	{ good: true, hid: 'stare_cup',              post: { gains: { mana: 2 }}},
-	{ good: true, hid: 'nuclear_fusion_paper',   post: { gains: { wisdom: 1 }}},
-	{ good: true, hid: 'found_green_mushroom',   post: { gains: { level: 1 }}},
-
-	{ good: true, hid: 'found_red_mushroom',     post: { gains: { health: 1 }}},
-	{ good: true, hid: 'found_blue_mushroom',    post: { gains: { mana: 1 }}},
-	{ good: true, hid: 'found_white_mushroom',   post: { gains: { strength: 1 }}},
-	{ good: true, hid: 'found_yellow_mushroom',  post: { gains: { agility: 1 }}},
-	{ good: true, hid: 'found_orange_mushroom',  post: { gains: { charisma: 1 }}},
-	{ good: true, hid: 'found_black_mushroom',   post: { gains: { wisdom: 1 }}},
-	{ good: true, hid: 'found_rainbow_mushroom', post: { gains: { luck: 1 }}},
-	{ good: true, hid: 'found_random_mushroom',  post: { gains: { luck: 1 }}, published: false},
-
-	{ good: true, hid: 'meet_old_wizard',       post: { gains: { wisdom: 1 }}},
-	{ good: true, hid: 'good_necromancer',      post: { gains: { agility: 1 }}},
-	{ good: true, hid: 'talk_to_all_villagers', post: { gains: { charisma: 1 }}},
-	{ good: true, hid: 'always_keep_potions',   post: { gains: { health: 1 }}},
-	{ good: true, hid: 'lost',                  post: { gains: { health: 1 }}},
-	{ good: true, hid: 'fate_sword',            post: { gains: { coins: 'small' }}},
-	{ good: true, hid: 'grinding',              post: { gains: { level: 1 }}},
-	{ good: true, hid: 'so_many_potions',       post: { gains: { strength: 1 }}},
-	{ good: true, hid: 'rematch',               post: { gains: { level: 1 }}},
-	{ good: true, hid: 'useless',               post: { gains: { wisdom: 1 }}},
-	{ good: true, hid: 'escort',                post: { gains: { health: 1 }}},
-	{ good: true, hid: 'rare_goods_seller',     post: { gains: { armor_or_weapon: true }}},
-	{ good: true, hid: 'progress_loop',         post: { gains: { armor_or_weapon: true }}},
-	{ good: true, hid: 'idiot_bandits',         post: { gains: { coins: 'medium' }}},
-	{ good: true, hid: 'princess',              post: { gains: { coins: 'medium', armor_or_weapon_improvement: true }}},
-	{ good: true, hid: 'bad_village',           post: { gains: { mana: 1 }}},
-	{ good: true, hid: 'mana_mana',             post: { gains: { mana: 1 }}}
-]
-
-
-module.exports = entries
-
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.messages = {
+    adventures: {
+        bad_default: `You clicked too early!
++{penalty_s}s !`,
+        fight_won_coins: `
+You have defeated a {enemy}!
+You looted {formattedCoins} coins from its corpse.`,
+        fight_won_loot: `
+You have defeated a {enemy}!
+You looted a {formattedItem} from its corpse.`,
+        fight_won_any: `
+You have defeated a {enemy}!
+You perfected your {charac_name} during the fight: +{charac} {charac_name}!`,
+        fight_lost_any: `
+You were attacked by a {enemy} but you got away just before it was about to kill you.
+You learnt how to flee more efficiently: +{charac} {charac_name}!`,
+        fight_lost_shortcoming: `
+You were attacked by a {enemy} but you got away just before it was about to kill you.
+You reflect on your lack of {charac_name} during this fight and train hard: +{charac} {charac_name}!`,
+        // from the original game
+        bored_log: `
+You were so bored, you punched a log for hours!
+You gained +{strength} strength!`,
+        caravan: `
+You were hired to protect a caravan of merchants.
+You gained {formattedCoins} coins!`,
+        dying_man: `
+A dying man on the street left you everything he had.
+You gained {formattedCoins} coins!`,
+        ate_bacon: `
+You ate some bacon.
+You gained +{level} level!`,
+        /* too bland, please!
+        ate_mushroom: `
+You ate a mushroom.
+You gained +{level} level!`,*/
+        ate_zombie: `
+You ate a zombie.
+You gained +{mana} mana!`,
+        refreshing_nap: `
+You took a nap and feel refreshed.
+You gained +{health} health!`,
+        older: `
+You feel a little older.
+You gained +{level} level!`,
+        stare_cup: `
+You stare really hard at a cup, and it almost moves!
+You gained +{mana} mana!`,
+        nuclear_fusion_paper: `
+You wrote a paper on nuclear fusion.
+You gained +{wisdom} wisdom!`,
+        found_green_mushroom: `
+You found a green mushroom.
+You gained +{level} level!`,
+        // from me, inferred
+        found_red_mushroom: `
+You found a red mushroom.
+You gained +{health} health!`,
+        found_blue_mushroom: `
+You found a blue mushroom.
+You gained +{mana} mana!`,
+        found_white_mushroom: `
+You found a white mushroom.
+You gained +{strength} strength!`,
+        found_yellow_mushroom: `
+You found a yellow mushroom.
+You gained +{agility} agility!`,
+        found_orange_mushroom: `
+You found an orange mushroom.
+You gained +{charisma} charisma!`,
+        found_black_mushroom: `
+You found a black mushroom.
+You gained +{wisdom} wisdom!`,
+        found_rainbow_mushroom: `
+You found a glowing rainbow mushroom.
+You gained +{luck} luck!`,
+        found_random_mushroom: `
+You found a golden mushroom.
+You gained +{charac} {charac_name}!`,
+        // from me
+        meet_old_wizard: `
+You meet a mysterious old wizard…
+Before giving you the quest, he tells you his loooong story : Vous gain +{wisdom} wisdom!`,
+        // electricbunnycomics.com
+        good_necromancer: `
+You meet a child weeping over his dead hamster pet… Thanks to necromancy, you reanimate it an a hamster-zombie!
+Oddly, the child cries even more while running away.
+Fortunately, you gain +{agility} agility for avoiding the stones thrown by the villagers.`,
+        // dorkly
+        talk_to_all_villagers: `
+You spoke to all villagers in the village : no quest may have escaped you!
+On the other hand, your head aches for discussing so much.
++{charisma} charisma thanks to this training!`,
+        always_keep_potions: `
+Being a good adventurer, you kept a health potion "just in case":
+Well done, your health is top-notch!`,
+        lost: `
+With all those quests, you forgot where you had to go…
+But circling around the whole map is good for your health: +{health} health!`,
+        // DK
+        fate_sword: `
+To thank you for saving his wife and his children, the farmer offer you "Destiny",
+the heirloom sword passed in his family from generations.
+30 minutes later, the merchant only gives you {formattedCoins} coins for it… Ahh those poors!`,
+        // dorkly
+        grinding: `
+For lack of a better idea, you grind for hours and hours…
+So what? It's an RPG, what did you expect?
+But it pays: +{level} level!`,
+        // ?
+        so_many_potions: `
+The fight against the final boss was hard, very hard…
+Most importantly, +{strength} strength for managing to control a pressing urge after drinking 25 potions !`,
+        // cad-comic.com
+        rematch: `
+You got beaten by a goblin!
+Shameful, you roam around the country, accepting quests after quests to train yourself before facing him again.
+Unfortunately, he also trained and beat you again!
+Well, the +{level} level will always be useful…`,
+        // paintraincomic.com
+        // http://paintraincomic.com/comic/cemetery/
+        useless: `
+Arriving at the village, the mayor testify that the neighborhood is no longer dangerous.
+The sorceress find herself someone and no longer curses people.
+The haunted cemetery was a pet cemetery, villagers are happy to have them back.
+The giant is helping the farmers in the fields.
+You feel useless and reflect on your role in the world. +{wisdom} wisdom!`,
+        // memecenter.com
+        escort: `
+You are escorting an important NPC.
+Unfortunately, if you walk, he's faster thant you.
+However, if you run, you're faster than him!
+By slaloming and running into circles, you manage.
++{health} health thanks to those efforts!`,
+        // memecenter.com
+        rare_goods_seller: `
+You come across an old man with excentric apparel.
+Score! It's a rare item seller!
+He gives you a good price for a {formattedItem}.`,
+        // memecenter.com
+        progress_loop: `
+You would need better gear to level up.
+But you'd need to level up to get better gear.
+Cruel dilemma !
+Fortunately, you find a {formattedItem} at the bottom of a well!`,
+        // memecenter.com/motohorse
+        idiot_bandits: `
+You are being talked about since you slayed the dragon and defeated the sorceress.
+Bandits embush you, aiming for your wealth. What a silly idea!
+You read in the eyes of last one that he realizes it on moment
+before your fireball incinerate him.
+Fortunately, gold doesn't burn: +{formattedCoins} coins!`,
+        // don't remember the source for this one
+        princess: `
+« You won't take back the princess! » yell the terrible black mage,
+as you reach his throne room.
+You reassure him: you are only here for loot.
+He let you help yourself (+{formattedCoins} coins)
+and enchant your weapon!`,
+        // DM of the ring
+        bad_village: `
+You reach a new village. There is no weapon shop.
+No potion shop either! And no quests at the inn!!
+That's too much. At your call, lightnings and meteors wipe this useless place.
+Good opportunity to practice your magic: +{mana} mana.`,
+        // ?
+        mana_mana: `
+« Mah na mah na » « To to to do do »
++{mana} mana!`,
+    }
+};
+//# sourceMappingURL=i18n_en.js.map
 
 /***/ }),
 /* 128 */
@@ -27488,10 +28527,14 @@ module.exports = entries
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(1);
+const typescript_string_enums_1 = __webpack_require__(0);
 /////////////////////
-const CoinsGain = typescript_string_enums_1.Enum('none', 'small', 'medium', 'big', 'huge');
-exports.CoinsGain = CoinsGain;
+const GainType = typescript_string_enums_1.Enum(
+// Note: must match properties in Adventure['gains']
+'level', 'health', 'mana', 'strength', 'agility', 'charisma', 'wisdom', 'luck', 'coins', 'tokens', 'weapon', 'armor', 'weapon_improvement', 'armor_improvement');
+exports.GainType = GainType;
+const VERSION = 8;
+exports.VERSION = VERSION;
 /////////////////////
 //# sourceMappingURL=types.js.map
 
@@ -27502,12 +28545,11 @@ exports.CoinsGain = CoinsGain;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_string_enums_1 = __webpack_require__(1);
 /////////////////////
-const GainType = typescript_string_enums_1.Enum('level', 'health', 'mana', 'strength', 'agility', 'charisma', 'wisdom', 'luck', 'coins', 'tokens', 'weapon', 'armor', 'weapon_improvement', 'armor_improvement');
-exports.GainType = GainType;
-const VERSION = 8;
-exports.VERSION = VERSION;
+const typescript_string_enums_1 = __webpack_require__(0);
+/////////////////////
+const TextStyle = typescript_string_enums_1.Enum('important_part', 'elite_mark', 'item_quality_common', 'item_quality_uncommon', 'item_quality_rare', 'item_quality_epic', 'item_quality_legendary', 'item_quality_artifact', 'change_outline');
+exports.TextStyle = TextStyle;
 /////////////////////
 //# sourceMappingURL=types.js.map
 
@@ -27515,190 +28557,76 @@ exports.VERSION = VERSION;
 /* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const en = __webpack_require__(131)
+const { stylizeString } = __webpack_require__(1)
+
+const {
+	render_characteristics
+} = __webpack_require__(8)
+
+/////////////////////////////////////////////////
+
+
+
+function render({config, rendering_options}) {
+	const state = config.store
+
+	console.log(''
+		//stylizeString.bold('🙂  CHARACTERISTICS 💗\n')
+		+ 'name:  ' + stylizeString.bold(state.avatar.name) + '\n'
+		+ 'class: ' + stylizeString.bold(state.avatar.klass) + '\n'
+		+ '\n'
+		+ stylizeString.bold('CHARACTERISTICS:\n')
+		+ render_characteristics(state.avatar, rendering_options)
+	)
+}
+
+/////////////////////////////////////////////////
 
 module.exports = {
-	en
+	render,
 }
 
 
 /***/ }),
 /* 131 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+const { stylizeString } = __webpack_require__(1)
+
+const {
+	render_equipment,
+	render_wallet,
+	render_inventory
+} = __webpack_require__(8)
+
+/////////////////////////////////////////////////
+
+
+
+function render({config, rendering_options}) {
+	const state = config.store
+
+	console.log(''
+		//stylizeString.bold('⚔  ACTIVE EQUIPMENT 🛡 \n')
+		+ stylizeString.bold('ACTIVE EQUIPMENT:\n')
+		+ render_equipment(state.inventory, rendering_options)
+		+ '\n\n'
+		+ stylizeString.bold('WALLET:\n')
+		+ render_wallet(state.wallet, rendering_options)
+		+ '\n\n'
+		+ stylizeString.bold('INVENTORY:\n')
+		+ render_inventory(state.inventory, rendering_options)
+	)
+}
+
+function render_selected_item({config, rendering_options, selected_item_coordinates}) {
+	console.log('TODO render_selected_item')
+}
+/////////////////////////////////////////////////
 
 module.exports = {
-	clickmsg: {
-		bad_default: `You clicked too early!
-+{penalty_s}s !`,
-
-		// from the original game
-		bored_log: `
-You were so bored, you punched a log for hours!
-You gained +{strength} strength!`,
-		caravan: `
-You were hired to protect a caravan of merchants.
-You gained {formattedCoins} coins!`,
-		dying_man: `
-A dying man on the street left you everything he had.
-You gained {formattedCoins} coins!`,
-		ate_bacon: `
-You ate some bacon.
-You gained +{level} level!`,
-		/* too bland, please!
-		ate_mushroom: `
-You ate a mushroom.
-You gained +{level} level!`,*/
-		ate_zombie: `
-You ate a zombie.
-You gained +{mana} mana!`,
-		refreshing_nap: `
-You took a nap and feel refreshed.
-You gained +{health} health!`,
-		older: `
-You feel a little older.
-You gained +{level} level!`,
-		stare_cup: `
-You stare really hard at a cup, and it almost moves!
-You gained +{mana} mana!`,
-		nuclear_fusion_paper: `
-You wrote a paper on nuclear fusion.
-You gained +{wisdom} wisdom!`,
-		found_green_mushroom: `
-You found a green mushroom.
-You gained +{level} level!`,
-
-		// from me, inferred
-		found_red_mushroom: `
-You found a red mushroom.
-You gained +{health} health!`,
-		found_blue_mushroom: `
-You found a blue mushroom.
-You gained +{mana} mana!`,
-		found_white_mushroom: `
-You found a white mushroom.
-You gained +{strength} strength!`,
-		found_yellow_mushroom: `
-You found a yellow mushroom.
-You gained +{agility} agility!`,
-		found_orange_mushroom: `
-You found an orange mushroom.
-You gained +{charisma} charisma!`,
-		found_black_mushroom: `
-You found a black mushroom.
-You gained +{wisdom} wisdom!`,
-		found_rainbow_mushroom: `
-You found a glowing rainbow mushroom.
-You gained +{luck} luck!`,
-		found_random_mushroom: `
-You found a golden mushroom.
-You gained +{charac} {charac_name}!`,
-
-		// from me
-		meet_old_wizard: `
-You meet a mysterious old wizard…
-Before giving you the quest, he tells you his loooong story : Vous gain +{wisdom} wisdom!`,
-		// electricbunnycomics.com
-		good_necromancer: `
-You meet a child weeping over his dead hamster pet… Thanks to necromancy, you reanimate it an a hamster-zombie!
-Oddly, the child cries even more while running away.
-Fortunately, you gain +{agility} agility for avoiding the stones thrown by the villagers.`,
-		// dorkly
-		talk_to_all_villagers: `
-You spoke to all villagers in the village : no quest may have escaped you!
-On the other hand, your head aches for discussing so much.
-+{charisma} charisma thanks to this training!`,
-		always_keep_potions: `
-Being a good adventurer, you kept a health potion "just in case":
-Well done, your health is top-notch!`,
-		lost: `
-With all those quests, you forgot where you had to go…
-But circling around the whole map is good for your health: +{health} health!`,
-		// DK
-		fate_sword: `
-To thank you for saving his wife and his children, the farmer offer you "Destiny",
-the heirloom sword passed in his family from generations.
-30 minutes later, the merchant only gives you {formattedCoins} coins for it… Ahh those poors!`,
-		// dorkly
-		grinding: `
-For lack of a better idea, you grind for hours and hours…
-So what? It's an RPG, what did you expect?
-But it pays: +{level} level!`,
-		// ?
-		so_many_potions: `
-The fight against the final boss was hard, very hard…
-Most importantly, +{strength} strength for managing to control a pressing urge after drinking 25 potions !`,
-		// cad-comic.com
-		rematch: `
-You got beaten by a goblin!
-Shameful, you roam around the country, accepting quests after quests to train yourself before facing him again.
-Unfortunately, he also trained and beat you again!
-Well, the +{level} level will always be useful…`,
-		// paintraincomic.com
-		// http://paintraincomic.com/comic/cemetery/
-		useless: `
-Arriving at the village, the mayor testify that the neighborhood is no longer dangerous.
-The sorceress find herself someone and no longer curses people.
-The haunted cemetery was a pet cemetery, villagers are happy to have them back.
-The giant is helping the farmers in the fields.
-You feel useless and reflect on your role in the world. +{wisdom} wisdom!`,
-		// memecenter.com
-		escort: `
-You are escorting an important NPC.
-Unfortunately, if you walk, he's faster thant you.
-However, if you run, you're faster than him!
-By slaloming and running into circles, you manage.
-+{health} health thanks to those efforts!`,
-		// memecenter.com
-		rare_goods_seller: `
-You come across an old man with excentric apparel.
-Score! It's a rare item seller!
-He gives you a good price for a {formattedItem}.`,
-		// memecenter.com
-		progress_loop: `
-You would need better gear to level up.
-But you'd need to level up to get better gear.
-Cruel dilemma !
-Fortunately, you find a {formattedItem} at the bottom of a well!`,
-		// memecenter.com/motohorse
-		idiot_bandits: `
-You are being talked about since you slayed the dragon and defeated the sorceress.
-Bandits embush you, aiming for your wealth. What a silly idea!
-You read in the eyes of last one that he realizes it on moment
-before your fireball incinerate him.
-Fortunately, gold doesn't burn: +{formattedCoins} coins!`,
-		// don't remember the source for this one
-		princess: `
-« You won't take back the princess! » yell the terrible black mage,
-as you reach his throne room.
-You reassure him: you are only here for loot.
-He let you help yourself (+{formattedCoins} coins)
-and enchant your weapon!`,
-		// DM of the ring
-		bad_village: `
-You reach a new village. There is no weapon shop.
-No potion shop either! And no quests at the inn!!
-That's too much. At your call, lightnings and meteors wipe this useless place.
-Good opportunity to practice your magic: +{mana} mana.`,
-		// ?
-		mana_mana: `
-« Mah na mah na » « To to to do do »
-+{mana} mana!`,
-
-		/*
-		 // "make friends" necromancy
-		 xmake_friends:
-		 '',
-		 // licorne multicolore
-		 xunicorns:
-		 '',
-		 // memes
-		 xarrown_in_the_knee:
-		 '', // arrow in the knee
-		 // retour chez le mage noir, apprentissage de sorts
-		 xblack_mage_again:
-		 '',
-		 */
-	}
+	render,
+	render_selected_item,
 }
 
 
@@ -27706,7 +28634,80 @@ Good opportunity to practice your magic: +{mana} mana.`,
 /* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const en = __webpack_require__(133)
+const Conf = __webpack_require__(133)
+const Globalize = __webpack_require__(134)
+const CLDRData = __webpack_require__(135)
+
+const { migrate_to_latest } = __webpack_require__(12)
+const { prettifyJson } = __webpack_require__(1)
+
+/////////////////////////////////////////////////
+
+function init_globalize() {
+	const en = Object.assign({},
+		__webpack_require__(26).i18n_messages.en,
+		__webpack_require__(136).en,
+		__webpack_require__(7).i18n_messages.en,
+	)
+
+	Globalize.load(CLDRData.entireSupplemental())
+	Globalize.load(CLDRData.entireMainFor('en'))
+	//Globalize.loadTimeZone(require('iana-tz-data'))
+	Globalize.loadMessages({en})
+
+	return Globalize('en')
+}
+
+
+function init_savegame({verbose}) {
+	const config = new Conf({
+		configName: 'state',
+		defaults: {},
+	})
+
+	if (verbose) console.log('config path:', config.path)
+	if (verbose) console.log('loaded state:\n-------\n', prettifyJson(config.store), '\n-------\n')
+
+	const state = migrate_to_latest(config.store)
+	if (verbose) console.log('migrated state:\n-------\n', prettifyJson(state), '\n-------\n')
+
+	config.clear()
+	config.set(state)
+
+	return config
+}
+
+/////////////////////////////////////////////////
+
+module.exports = {
+	init_globalize,
+	init_savegame,
+}
+
+
+/***/ }),
+/* 133 */
+/***/ (function(module, exports) {
+
+module.exports = require("conf");
+
+/***/ }),
+/* 134 */
+/***/ (function(module, exports) {
+
+module.exports = require("globalize");
+
+/***/ }),
+/* 135 */
+/***/ (function(module, exports) {
+
+module.exports = require("cldr-data");
+
+/***/ }),
+/* 136 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const en = __webpack_require__(137)
 
 module.exports = {
 	en
@@ -27714,7 +28715,7 @@ module.exports = {
 
 
 /***/ }),
-/* 133 */
+/* 137 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -27864,10 +28865,10 @@ module.exports = {
 
 
 /***/ }),
-/* 134 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { stylizeString } = __webpack_require__(0)
+const { stylizeString } = __webpack_require__(1)
 
 /////////////////////////////////////////////////
 
@@ -27906,24 +28907,54 @@ module.exports = {
 
 
 /***/ }),
-/* 135 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const readline = __webpack_require__(26)
+const readline = __webpack_require__(29)
 const {
 	prettifyJson,
 	stylizeString,
-} = __webpack_require__(0)
-const { ask_question: raw_ask_question } = __webpack_require__(136)
+} = __webpack_require__(1)
+const { ask_question: raw_ask_question } = __webpack_require__(140)
 
 /////////////////////////////////////////////////
 
-const ui = __webpack_require__(137)
-const { play, equip_item, sell_item, does_item_exist_at_coordinate, rename_avatar, change_class } = __webpack_require__(25)
-const { render_interactive_before, render_interactive_after } = __webpack_require__(21)
+const ui = __webpack_require__(141)
+const { play, equip_item, sell_item, does_item_exist_at_coordinate, rename_avatar, change_class } = __webpack_require__(28)
+const { render_interactive_before, render_interactive_after } = __webpack_require__(22)
 
 
 /////////////////////////////////////////////////
+
+
+/*
+1f170 "⋄🅰⋄"
+1f171 "⋄🅱⋄"
+1f172 "⋄🅲⋄"
+1f173 "⋄🅳⋄"
+1f174 "⋄🅴⋄"
+1f175 "⋄🅵⋄"
+1f176 "⋄🅶⋄"
+1f177 "⋄🅷⋄"
+1f178 "⋄🅸⋄"
+1f179 "⋄🅹⋄"
+1f17a "⋄🅺⋄"
+1f17b "⋄🅻⋄"
+1f17c "⋄🅼⋄"
+1f17d "⋄🅽⋄"
+1f17e "⋄🅾⋄"
+1f17f "⋄🅿⋄"
+1f180 "⋄🆀⋄"
+1f181 "⋄🆁⋄"
+1f182 "⋄🆂⋄"
+1f183 "⋄🆃⋄"
+1f184 "⋄🆄⋄"
+1f185 "⋄🆅⋄"
+1f186 "⋄🆆⋄"
+1f187 "⋄🆇⋄"
+1f188 "⋄🆈⋄"
+1f189 "⋄🆉⋄"
+ */
 
 function start_loop(options) {
 	return new Promise((resolve, reject) => {
@@ -28143,11 +29174,11 @@ module.exports = {
 
 
 /***/ }),
-/* 136 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://nodejs.org/api/readline.html
-const readline = __webpack_require__(26)
+const readline = __webpack_require__(29)
 
 let rli = readline.createInterface({
 	input: process.stdin,
@@ -28172,7 +29203,7 @@ module.exports = {
 
 
 /***/ }),
-/* 137 */
+/* 141 */
 /***/ (function(module, exports) {
 
 

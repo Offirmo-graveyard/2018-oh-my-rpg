@@ -26,6 +26,7 @@ interface AdventureArchetype {
         wisdom: boolean;
         luck: boolean;
         random_charac: boolean;
+        lowest_charac: boolean;
         class_main_charac: boolean;
         class_secondary_charac: boolean;
         coins: CoinsGain;
@@ -38,5 +39,5 @@ interface AdventureArchetype {
         armor_or_weapon_improvement: boolean;
     };
 }
-declare type Outcome = AdventureArchetype['outcome'];
-export { CoinsGain, AdventureType, AdventureArchetype, Outcome };
+declare type OutcomeArchetype = AdventureArchetype['outcome'];
+export { CoinsGain, AdventureType, AdventureArchetype, OutcomeArchetype };

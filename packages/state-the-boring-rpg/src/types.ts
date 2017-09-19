@@ -13,7 +13,9 @@ import { State as PRNGState } from '@oh-my-rpg/state-prng'
 
 /////////////////////
 
+
 const GainType = Enum(
+	// Note: must match properties in Adventure['gains']
 	'level',
 	'health',
 	'mana',
@@ -53,6 +55,7 @@ interface Adventure {
 		armor_improvement: boolean,
 	}
 }
+
 
 interface State {
 	meta: MetaState

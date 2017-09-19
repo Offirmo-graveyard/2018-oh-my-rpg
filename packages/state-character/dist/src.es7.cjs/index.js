@@ -1,21 +1,25 @@
 "use strict";
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
+const typescript_string_enums_1 = require("typescript-string-enums");
 const types_1 = require("./types");
 exports.CharacterStat = types_1.CharacterStat;
 exports.CharacterClass = types_1.CharacterClass;
 /////////////////////
-const CHARACTER_STATS = [
-    types_1.CharacterStat.level,
-    types_1.CharacterStat.health,
-    types_1.CharacterStat.mana,
-    types_1.CharacterStat.strength,
-    types_1.CharacterStat.agility,
-    types_1.CharacterStat.charisma,
-    types_1.CharacterStat.wisdom,
-    types_1.CharacterStat.luck,
-];
+const CHARACTER_STATS = typescript_string_enums_1.Enum.keys(types_1.CharacterStat);
 exports.CHARACTER_STATS = CHARACTER_STATS;
+/*
+    CharacterStat.level,
+
+    CharacterStat.health,
+    CharacterStat.mana,
+
+    CharacterStat.strength,
+    CharacterStat.agility,
+    CharacterStat.charisma,
+    CharacterStat.wisdom,
+    CharacterStat.luck,
+]*/
 ///////
 function factory() {
     return {

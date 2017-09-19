@@ -1,6 +1,6 @@
 
 import { xxx_internal_reset_prng_cache } from '@oh-my-rpg/state-prng'
-
+import { ALL_GOOD_ADVENTURE_ARCHETYPES } from '@oh-my-rpg/logic-adventures'
 import {
 	get_unequiped_item_count,
 	get_equiped_item_count,
@@ -81,14 +81,14 @@ describe('⚔ 👑 😪  The Boring RPG', function() {
 
 		describe('🤘🏽 play', function() {
 
-			context('🚫 when the cooldown has NOT passed', function() {
+			context('🚫  when the cooldown has NOT passed', function() {
 				it('should generate a negative adventure')
 				it('should not decrease user stats')
 				it('should punish the user by increasing the cooldown')
 				it('may actually result in a good outcome (idea)')
 			})
 
-			context('✅ when the cooldown has passed', function() {
+			context('✅  when the cooldown has passed', function() {
 
 				it('should sometime generate a story adventure', () => {
 					const state = play(factory())
@@ -105,7 +105,16 @@ describe('⚔ 👑 😪  The Boring RPG', function() {
 					expect(state).to.have.property('meaningful_interaction_count', 1)
 				})
 
-				it('should sometime generate a battle adventure')
+				it('should sometime generate a fight adventure', () => {
+					let fightCount = 0
+					let state = factory()
+					for(let i = 0; i < 20; ++i) {
+						state = play(state)
+						if (state.last_adventure!.hid.startsWith('fight_'))
+							fightCount++
+					}
+					expect(fightCount).to.be.above(3)
+				})
 
 				context('when the adventure is a story', function() {
 
@@ -130,18 +139,25 @@ describe('⚔ 👑 😪  The Boring RPG', function() {
 							// a new item is present
 							expect(get_unequiped_item_count(state.inventory), 'unequipped').to.equal(1)
 							// it's a weapon !
-							expect(get_item_at_coordinates(state.inventory, 0)).to.have.property('slot', 'weapon')
+							expect(get_item_at_coordinates(state.inventory, 0)).to.have.property('slot', 'armor')
 						})
 						it('should sometime be an item improvement')
 					})
 				})
 
-				context('when the adventure is a battle', function() {
+				context('when the adventure is a fight', function() {
 
-					describe('the outcome', function() {
-
-						it('should sometime be a victory')
-						it('should sometime be a defeat')
+					it('should generate a suitable enemy', () => {
+						let state = factory()
+						state.avatar.characteristics.level = 500
+						for(let i = 0; i < 20; ++i) {
+							state = play(state)
+							if (state.last_adventure!.hid.startsWith('fight_'))
+								break
+						}
+						console.log(state.last_adventure)
+						expect(state.last_adventure!.encounter).to.exist
+						expect(state.last_adventure!.encounter!.level).to.be.within(400, 600)
 					})
 				})
 			})
@@ -154,6 +170,17 @@ describe('⚔ 👑 😪  The Boring RPG', function() {
 			it('should allow equiping an item, correctly swapping with an already equiped item')
 
 			it('should allow selling an item')
+		})
+	})
+
+	describe('adventures', function() {
+		ALL_GOOD_ADVENTURE_ARCHETYPES.forEach(({hid, good}) => {
+			describe(`${good ? '✅' : '🚫'}  adventure "${hid}"`, function() {
+				it('should be playable', () => {
+					let state = factory()
+					state = play(state, hid)
+				})
+			})
 		})
 	})
 })

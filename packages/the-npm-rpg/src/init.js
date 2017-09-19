@@ -9,7 +9,7 @@ const { prettifyJson } = require('./deps')
 
 function init_globalize() {
 	const en = Object.assign({},
-		require('@oh-my-rpg/data/src/adventure_archetype/i18n').en,
+		require('@oh-my-rpg/logic-adventures').i18n_messages.en,
 		require('@oh-my-rpg/data/src/weapon_component/i18n').en,
 		require('@oh-my-rpg/logic-armors').i18n_messages.en,
 	)

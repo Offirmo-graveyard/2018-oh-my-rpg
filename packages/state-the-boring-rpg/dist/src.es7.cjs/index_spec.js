@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const state_prng_1 = require("@oh-my-rpg/state-prng");
+const logic_adventures_1 = require("@oh-my-rpg/logic-adventures");
 const state_inventory_1 = require("@oh-my-rpg/state-inventory");
 const state_wallet_1 = require("@oh-my-rpg/state-wallet");
 const _1 = require(".");
@@ -54,13 +55,13 @@ describe('⚔ 👑 😪  The Boring RPG', function () {
     });
     describe('👆🏾 user actions', function () {
         describe('🤘🏽 play', function () {
-            context('🚫 when the cooldown has NOT passed', function () {
+            context('🚫  when the cooldown has NOT passed', function () {
                 it('should generate a negative adventure');
                 it('should not decrease user stats');
                 it('should punish the user by increasing the cooldown');
                 it('may actually result in a good outcome (idea)');
             });
-            context('✅ when the cooldown has passed', function () {
+            context('✅  when the cooldown has passed', function () {
                 it('should sometime generate a story adventure', () => {
                     const state = _1.play(_1.factory());
                     expect(state.last_adventure).not.to.be.null;
@@ -72,7 +73,16 @@ describe('⚔ 👑 😪  The Boring RPG', function () {
                     expect(state).to.have.property('good_click_count', 1);
                     expect(state).to.have.property('meaningful_interaction_count', 1);
                 });
-                it('should sometime generate a battle adventure');
+                it('should sometime generate a fight adventure', () => {
+                    let fightCount = 0;
+                    let state = _1.factory();
+                    for (let i = 0; i < 20; ++i) {
+                        state = _1.play(state);
+                        if (state.last_adventure.hid.startsWith('fight_'))
+                            fightCount++;
+                    }
+                    expect(fightCount).to.be.above(3);
+                });
                 context('when the adventure is a story', function () {
                     describe('the outcome', function () {
                         it('should sometime be a coin gain', () => {
@@ -91,15 +101,23 @@ describe('⚔ 👑 😪  The Boring RPG', function () {
                             // a new item is present
                             expect(state_inventory_1.get_unequiped_item_count(state.inventory), 'unequipped').to.equal(1);
                             // it's a weapon !
-                            expect(state_inventory_1.get_item_at_coordinates(state.inventory, 0)).to.have.property('slot', 'weapon');
+                            expect(state_inventory_1.get_item_at_coordinates(state.inventory, 0)).to.have.property('slot', 'armor');
                         });
                         it('should sometime be an item improvement');
                     });
                 });
-                context('when the adventure is a battle', function () {
-                    describe('the outcome', function () {
-                        it('should sometime be a victory');
-                        it('should sometime be a defeat');
+                context('when the adventure is a fight', function () {
+                    it('should generate a suitable enemy', () => {
+                        let state = _1.factory();
+                        state.avatar.characteristics.level = 500;
+                        for (let i = 0; i < 20; ++i) {
+                            state = _1.play(state);
+                            if (state.last_adventure.hid.startsWith('fight_'))
+                                break;
+                        }
+                        console.log(state.last_adventure);
+                        expect(state.last_adventure.encounter).to.exist;
+                        expect(state.last_adventure.encounter.level).to.be.within(400, 600);
                     });
                 });
             });
@@ -108,6 +126,16 @@ describe('⚔ 👑 😪  The Boring RPG', function () {
             it('should allow un-equiping an item'); // not now, but useful for ex. for immediately buying a better item on the market
             it('should allow equiping an item, correctly swapping with an already equiped item');
             it('should allow selling an item');
+        });
+    });
+    describe('adventures', function () {
+        logic_adventures_1.ALL_GOOD_ADVENTURE_ARCHETYPES.forEach(({ hid, good }) => {
+            describe(`${good ? '✅' : '🚫'}  adventure "${hid}"`, function () {
+                it('should be playable', () => {
+                    let state = _1.factory();
+                    state = _1.play(state, hid);
+                });
+            });
         });
     });
 });

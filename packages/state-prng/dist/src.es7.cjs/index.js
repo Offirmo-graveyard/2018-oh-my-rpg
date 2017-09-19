@@ -19,11 +19,11 @@ function set_seed(state, seed) {
     return state;
 }
 exports.set_seed = set_seed;
-function update_use_count(state, prng) {
+function update_use_count(state, prng, options = {}) {
     const new_use_count = prng.getUseCount();
     if (new_use_count < state.use_count)
         throw new Error(`update PRNG state: count is lower than previous count, this is unexpected! Check your code!`);
-    if (new_use_count === state.use_count)
+    if (!options.I_swear_I_really_cant_know_whether_the_rng_was_used && new_use_count === state.use_count)
         console.warn(`update PRNG state: count hasn't changed = no random was generated! This is most likely a bug, check your code!`);
     if (prng !== cached_prng)
         throw new Error(`update PRNG state: passed prng is not the cached one, this is unexpected!`);

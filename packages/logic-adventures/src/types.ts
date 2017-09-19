@@ -27,15 +27,16 @@ interface AdventureArchetype {
 	good: boolean
 	outcome: {
 		level: boolean
+
 		health: boolean
 		mana: boolean
-
 		strength: boolean
 		agility: boolean
 		charisma: boolean
 		wisdom: boolean
 		luck: boolean
 		random_charac: boolean
+		lowest_charac: boolean
 		class_main_charac: boolean
 		class_secondary_charac: boolean
 
@@ -53,7 +54,7 @@ interface AdventureArchetype {
 	}
 }
 
-type Outcome = AdventureArchetype['outcome']
+type OutcomeArchetype = AdventureArchetype['outcome']
 
 
 /////////////////////
@@ -62,7 +63,7 @@ export {
 	CoinsGain,
 	AdventureType,
 	AdventureArchetype,
-	Outcome,
+	OutcomeArchetype,
 }
 
 /////////////////////

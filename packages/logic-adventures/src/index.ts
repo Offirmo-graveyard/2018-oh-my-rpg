@@ -2,25 +2,23 @@
 
 import { Random, Engine } from '@offirmo/random'
 
-import * as static_adventure_data from '@oh-my-rpg/data/src/adventure_archetype'
-
 import {
 	CoinsGain,
 	AdventureType,
-	Outcome,
+	OutcomeArchetype,
 	AdventureArchetype,
 } from './types'
 
-import { ENTRIES } from './data'
+import { i18n_messages, ENTRIES } from './data'
 
 /////////////////////
 
 const ALL_ADVENTURE_ARCHETYPES: AdventureArchetype[] = ENTRIES
 	.filter(paa => (paa.isPublished !== false))
 	.map(paa => {
-		const raw_outcome: Partial<Outcome> = paa.outcome || {}
+		const raw_outcome: Partial<OutcomeArchetype> = paa.outcome || {}
 
-		const outcome: Outcome = {
+		const outcome: OutcomeArchetype = {
 			level   : !!raw_outcome.level,
 
 			agility : !!raw_outcome.agility,
@@ -31,6 +29,7 @@ const ALL_ADVENTURE_ARCHETYPES: AdventureArchetype[] = ENTRIES
 			charisma: !!raw_outcome.charisma,
 			wisdom  : !!raw_outcome.wisdom,
 			random_charac         : !!raw_outcome.random_charac,
+			lowest_charac         : !!raw_outcome.lowest_charac,
 			class_main_charac     : !!raw_outcome.class_main_charac,
 			class_secondary_charac: !!raw_outcome.class_secondary_charac,
 
@@ -46,8 +45,8 @@ const ALL_ADVENTURE_ARCHETYPES: AdventureArchetype[] = ENTRIES
 
 		const aa: AdventureArchetype = {
 			hid: paa.hid!,
-			good: paa.good!,
-			type: AdventureType.story, // TODO
+			good: paa.good,
+			type: paa.type,
 			outcome,
 		}
 		return aa
@@ -71,6 +70,22 @@ const COINS_GAIN_RANGES: { [k: string]: [number, number] } = {
 	huge:   [900, 2000],
 }
 
+;(function checkDataSanity() {
+	if (ALL_ADVENTURE_ARCHETYPES.length < 20) {
+		console.error(ALL_ADVENTURE_ARCHETYPES)
+		throw new Error(`Data sanity failure: ALL_ADVENTURE_ARCHETYPES`)
+	}
+	if (ALL_BAD_ADVENTURE_ARCHETYPES.length !== 1)
+		throw new Error(`Data sanity failure: ALL_BAD_ADVENTURE_ARCHETYPES`)
+	if (ALL_GOOD_ADVENTURE_ARCHETYPES.length < 20)
+		throw new Error(`Data sanity failure: ALL_GOOD_ADVENTURE_ARCHETYPES`)
+	if (GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.fight.length !== 5) {
+		console.error(GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.fight)
+		throw new Error(`Data sanity failure: GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.fight`)
+	}
+	if (GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.story.length < 20)
+		throw new Error(`Data sanity failure: GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.story`)
+})()
 
 /////////////////////
 
@@ -82,9 +97,12 @@ function get_archetype(hid: string): AdventureArchetype {
 	return aa!
 }
 
+const FIGHT_ENCOUNTER_RATIO = 0.33
+
 function pick_random_good_archetype(rng: Engine): AdventureArchetype {
-	// TODO
-	return Random.pick(rng, ALL_GOOD_ADVENTURE_ARCHETYPES)
+	return Random.bool(FIGHT_ENCOUNTER_RATIO)(rng)
+		? Random.pick(rng, GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.fight)
+		: Random.pick(rng, GOOD_ADVENTURE_ARCHETYPES_BY_TYPE.story)
 }
 
 function pick_random_bad_archetype(rng: Engine): AdventureArchetype {
@@ -104,7 +122,16 @@ function generate_random_coin_gain(rng: Engine, range: CoinsGain, player_level: 
 /////////////////////
 
 export {
+	i18n_messages,
+
+	ALL_ADVENTURE_ARCHETYPES,
+	ALL_BAD_ADVENTURE_ARCHETYPES,
+	ALL_GOOD_ADVENTURE_ARCHETYPES,
+	GOOD_ADVENTURE_ARCHETYPES_BY_TYPE,
+
 	CoinsGain,
+	AdventureType,
+	OutcomeArchetype,
 	AdventureArchetype,
 
 	pick_random_good_archetype,

@@ -28,13 +28,13 @@ function set_seed(state: State, seed: number): State {
 
 declare const console: any // TODO
 
-function update_use_count(state: State, prng: MT19937): State {
+function update_use_count(state: State, prng: MT19937, options: any = {}): State {
 	const new_use_count = prng.getUseCount()
 
 	if (new_use_count < state.use_count)
 		throw new Error(`update PRNG state: count is lower than previous count, this is unexpected! Check your code!`)
 
-	if (new_use_count === state.use_count)
+	if (!options.I_swear_I_really_cant_know_whether_the_rng_was_used && new_use_count === state.use_count)
 		console.warn(`update PRNG state: count hasn't changed = no random was generated! This is most likely a bug, check your code!`)
 
 	if (prng !== cached_prng)
