@@ -159,12 +159,12 @@ function render_monster(m: Monster, options: RenderingOptions = DEFAULT_RENDERIN
 	const name = m.name.split(' ').map(capitalize).join(' ')
 
 	const icon = m.rank === MonsterRank.boss
-		? '👑  '
+		? '👑 '
 		: m.rank === MonsterRank.elite
 			? options.stylize(TextStyle.elite_mark, '★ ')
 			: ''
 
-	return `L${m.level} ${m.rank} ${options.stylize(TextStyle.important_part, name)} ${m.possible_emoji} ${icon}`
+	return `L${m.level} ${m.rank} ${options.stylize(TextStyle.important_part, name)} ${m.possible_emoji}  ${icon}`
 }
 
 function render_characteristics(state: CharacterState, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {

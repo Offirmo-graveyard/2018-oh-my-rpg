@@ -1,4 +1,4 @@
-const { version } = require('../package.json')
+const loadJsonFile = require('load-json-file')
 const { prettifyJson, stylizeString } = require('./deps')
 const { render_non_interactive_before, render_non_interactive_after } = require('./screens')
 const { init_globalize, init_savegame } = require('./init')
@@ -9,6 +9,8 @@ const { start_loop } = require('./interactive_mode')
 /////////////////////////////////////////////////
 
 const MINIMAL_TERMINAL_WIDTH = 80
+
+const { version } = loadJsonFile.sync('package.json')
 
 const options = {
 	version,

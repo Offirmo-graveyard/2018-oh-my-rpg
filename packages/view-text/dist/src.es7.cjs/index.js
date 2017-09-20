@@ -134,11 +134,11 @@ exports.render_item = render_item;
 function render_monster(m, options = DEFAULT_RENDERING_OPTIONS) {
     const name = m.name.split(' ').map(lodash_1.capitalize).join(' ');
     const icon = m.rank === logic_monsters_1.MonsterRank.boss
-        ? '👑  '
+        ? '👑 '
         : m.rank === logic_monsters_1.MonsterRank.elite
             ? options.stylize(types_1.TextStyle.elite_mark, '★ ')
             : '';
-    return `L${m.level} ${m.rank} ${options.stylize(types_1.TextStyle.important_part, name)} ${m.possible_emoji} ${icon}`;
+    return `L${m.level} ${m.rank} ${options.stylize(types_1.TextStyle.important_part, name)} ${m.possible_emoji}  ${icon}`;
 }
 exports.render_monster = render_monster;
 function render_characteristics(state, options = DEFAULT_RENDERING_OPTIONS) {

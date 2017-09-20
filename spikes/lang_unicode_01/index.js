@@ -5,12 +5,14 @@ console.log('The boring RPG');
 
 const stylize = require('chalk')
 
-//const [min, max] = [1000, 10000]
-//const [min, max] = [parseInt('1f000', 16), parseInt('1ffff', 16)]
+// http://jrgraphix.net/r/Unicode/2460-24FF
+const enclosed_set = [
+	parseInt('24ea', 16),
+	[parseInt('2460', 16), parseInt('2473', 16)], // numbers
+	[parseInt('24b6', 16), parseInt('24e9', 16)], // letters
+];
 
-
-
-const set = [
+const monsters_set = [
 	[parseInt('1f400', 16), parseInt('1f43f', 16)], // animals 1
 	parseInt('1f5ff', 16),
 	parseInt('1f47b', 16),
@@ -19,6 +21,9 @@ const set = [
 	[parseInt('1f980', 16), parseInt('1f991', 16)], // animals 2
 ];
 
+//const set = enclosed_set
+//const set = monsters_set
+const set = [[parseInt('1d400', 16), parseInt('1d433', 16)]]
 
 function render_set(set) {
 	console.log('----')

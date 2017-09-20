@@ -29,7 +29,6 @@
 		"@oh-my-rpg/state-the-boring-rpg": "^0.0.1",
 		"@oh-my-rpg/view-text": "^0.0.1",
 		"ansi-escapes": "^2.0.0",
-		"boxen": "^1.2.1",
 		"chalk": "^2.0.1",
 		"env-paths": "^1.0.0",
 		"fetchival": "^0.3.2",
