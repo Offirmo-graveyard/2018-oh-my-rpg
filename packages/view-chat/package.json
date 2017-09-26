@@ -1,0 +1,32 @@
+{
+	"name": "@oh-my-rpg/view-chat",
+	"version": "0.0.1",
+	"description": "chat-like generic interface",
+	"main": "dist/src.es7.cjs/index.js",
+	"typings": "dist/src.es7.cjs/index.js",
+	"author": "Offirmo <offirmo.net@gmail.com>",
+	"license": "UNLICENSED",
+	"scripts": {
+		"__dev": "~~~~~~~ DEVELOPMENT ~~~~~~~",
+		"build:dev": "../../node_modules/.bin/tsc --project meta/dev",
+		"build:dev:watch": "npm run build:dev -- --watch",
+		"test": "../../node_modules/.bin/mocha --opts ../../node_modules/@offirmo/unit-test-toolbox/mocha.opts ../../node_modules/@offirmo/unit-test-toolbox/mocha-chai-init-node.js 'dist/src.es7.cjs/**/*spec.js'",
+		"__helpers": "----------- Helpers -----------",
+		"dev": "npm run build:dev:watch"
+	},
+	"dependencies": {
+		"@oh-my-rpg/data": "^0.0.1",
+		"boxen": "^1.2.1",
+		"chalk": "^2.1.0",
+		"indent-string": "^3.2.0",
+		"joi": "^11.1.0",
+		"linewrap": "^0.2.1",
+		"term-size": "^1.2.0",
+		"typescript-string-enums": "^0.3.5",
+		"wrap-ansi": "^3.0.1"
+	},
+	"devDependencies": {
+		"prettyjson": "^1.2.1",
+		"tslib": "^1.7.1"
+	}
+}

@@ -4,6 +4,8 @@
 		"../../src/**/*.ts"
 	]
 
+Schema:
+http://www.vertabelo.com/blog/technical-articles/a-song-of-ice-and-databases-a-game-of-thrones-data-model
 
 
 TODO:

@@ -41,5 +41,9 @@
 		"universal-analytics": "^0.4.13",
 		"username": "^3.0.0",
 		"webpack": "^3.3.0"
+	},
+	"custom-field": "just curious",
+	"custom-object": {
+		"will": "it do something?"
 	}
 }

@@ -11,7 +11,9 @@
 	"scripts": {
 		"demo:globalize": "node spikes/mod_globalize_001"
 	},
-	"dependencies": {},
+	"dependencies": {
+		"boxen": "^1.2.1"
+	},
 	"devDependencies": {
 		"@offirmo/unit-test-toolbox": "^1.0.0",
 		"@types/lodash": "^4.14.74",

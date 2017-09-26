@@ -25,6 +25,11 @@ const monsters_set = [
 //const set = monsters_set
 const set = [[parseInt('1d400', 16), parseInt('1d433', 16)]]
 
+'a'.codePointAt(0).toString(16)
+✓ = 0x
+🅰 = 0x
+🦐
+
 function render_set(set) {
 	console.log('----')
 	set.forEach(e => {
