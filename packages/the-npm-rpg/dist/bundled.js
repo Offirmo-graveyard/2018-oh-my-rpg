@@ -882,10 +882,16 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*jshint eqnull:true*/
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = require("fs");
+module.exports = require("path");
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports) {
+
+module.exports = require("fs");
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -916,12 +922,6 @@ exports.MAX_LEVEL = MAX_LEVEL;
 tslib_1.__exportStar(__webpack_require__(26), exports);
 /////////////////////
 //# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = require("path");
 
 /***/ }),
 /* 6 */
@@ -1130,7 +1130,7 @@ module.exports = require("util");
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
 const random_1 = __webpack_require__(2);
-const definitions_1 = __webpack_require__(4);
+const definitions_1 = __webpack_require__(5);
 const data_1 = __webpack_require__(117);
 exports.i18n_messages = data_1.i18n_messages;
 exports.static_armor_data = data_1.ENTRIES;
@@ -1227,7 +1227,7 @@ exports.get_medium_damage_reduction = get_medium_damage_reduction;
 Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = __webpack_require__(115);
 const typescript_string_enums_1 = __webpack_require__(0);
-const definitions_1 = __webpack_require__(4);
+const definitions_1 = __webpack_require__(5);
 const logic_armors_1 = __webpack_require__(8);
 const logic_weapons_1 = __webpack_require__(11);
 const logic_monsters_1 = __webpack_require__(27);
@@ -1497,7 +1497,7 @@ module.exports = require("crypto");
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
 const random_1 = __webpack_require__(2);
-const definitions_1 = __webpack_require__(4);
+const definitions_1 = __webpack_require__(5);
 const static_weapon_data = __webpack_require__(121);
 const types_1 = __webpack_require__(123);
 exports.WeaponPartType = types_1.WeaponPartType;
@@ -1590,7 +1590,7 @@ exports.get_medium_damage = get_medium_damage;
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const definitions_1 = __webpack_require__(4);
+const definitions_1 = __webpack_require__(5);
 exports.InventorySlot = definitions_1.InventorySlot;
 /////////////////////
 function factory() {
@@ -1715,7 +1715,7 @@ exports.iterables_unslotted = iterables_unslotted;
 Object.defineProperty(exports, "__esModule", { value: true });
 const random_1 = __webpack_require__(2);
 /////////////////////
-const definitions_1 = __webpack_require__(4);
+const definitions_1 = __webpack_require__(5);
 const state_meta_1 = __webpack_require__(130);
 const state_character_1 = __webpack_require__(28);
 const state_wallet_1 = __webpack_require__(134);
@@ -1987,7 +1987,7 @@ exports.change_avatar_class = change_avatar_class;
 "use strict";
 
 
-var fs = __webpack_require__(3)
+var fs = __webpack_require__(4)
 
 module.exports = clone(fs)
 
@@ -3198,7 +3198,7 @@ module.exports = require("child_process");
 "use strict";
 
 
-var path = __webpack_require__(5);
+var path = __webpack_require__(3);
 var which = __webpack_require__(87);
 var LRU = __webpack_require__(23);
 
@@ -4216,7 +4216,8 @@ const { start_loop } = __webpack_require__(151)
 
 const MINIMAL_TERMINAL_WIDTH = 80
 
-const { version } = loadJsonFile.sync('package.json')
+const PACKAGE_JSON_PATH = __webpack_require__(3).join('..', 'package.json')
+const { version } = loadJsonFile.sync(PACKAGE_JSON_PATH)
 
 const options = {
 	version,
@@ -4293,7 +4294,7 @@ console.log('\n---------------------------------------------------------------\n
 
 "use strict";
 
-const path = __webpack_require__(5);
+const path = __webpack_require__(3);
 const fs = __webpack_require__(35);
 const stripBom = __webpack_require__(39);
 const parseJson = __webpack_require__(40);
@@ -4309,7 +4310,7 @@ module.exports.sync = fp => parse(fs.readFileSync(fp, 'utf8'), fp);
 /* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var fs = __webpack_require__(3)
+var fs = __webpack_require__(4)
 var polyfills = __webpack_require__(36)
 var legacy = __webpack_require__(38)
 var queue = []
@@ -8264,7 +8265,7 @@ function fullDiff (maxWidth, curWidth) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(__dirname) {
-const path = __webpack_require__(5);
+const path = __webpack_require__(3);
 const execa = __webpack_require__(84);
 
 const create = (columns, rows) => ({
@@ -8849,7 +8850,7 @@ var isWindows = process.platform === 'win32' ||
     process.env.OSTYPE === 'cygwin' ||
     process.env.OSTYPE === 'msys'
 
-var path = __webpack_require__(5)
+var path = __webpack_require__(3)
 var COLON = isWindows ? ';' : ':'
 var isexe = __webpack_require__(88)
 
@@ -8983,7 +8984,7 @@ function whichSync (cmd, opt) {
 /* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var fs = __webpack_require__(3)
+var fs = __webpack_require__(4)
 var core
 if (process.platform === 'win32' || global.TESTING_WINDOWS) {
   core = __webpack_require__(89)
@@ -9049,7 +9050,7 @@ function sync (path, options) {
 module.exports = isexe
 isexe.sync = sync
 
-var fs = __webpack_require__(3)
+var fs = __webpack_require__(4)
 
 function checkPathExt (path, options) {
   var pathext = options.pathExt !== undefined ?
@@ -9097,7 +9098,7 @@ function sync (path, options) {
 module.exports = isexe
 isexe.sync = sync
 
-var fs = __webpack_require__(3)
+var fs = __webpack_require__(4)
 
 function isexe (path, options, cb) {
   fs.stat(path, function (er, stat) {
@@ -9698,7 +9699,7 @@ module.exports = escapeCommand;
 "use strict";
 
 
-var fs = __webpack_require__(3);
+var fs = __webpack_require__(4);
 var LRU = __webpack_require__(23);
 var shebangCommand = __webpack_require__(97);
 
@@ -9878,7 +9879,7 @@ module.exports = function (x) {
 
 "use strict";
 
-const path = __webpack_require__(5);
+const path = __webpack_require__(3);
 const pathKey = __webpack_require__(102);
 
 module.exports = opts => {
@@ -30164,7 +30165,7 @@ exports.xxx_internal_reset_prng_cache = xxx_internal_reset_prng_cache;
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
 const random_1 = __webpack_require__(2);
-const definitions_1 = __webpack_require__(4);
+const definitions_1 = __webpack_require__(5);
 const logic_weapons_1 = __webpack_require__(11);
 const logic_armors_1 = __webpack_require__(8);
 /////////////////////

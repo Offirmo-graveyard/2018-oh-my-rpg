@@ -10,7 +10,8 @@ const { start_loop } = require('./interactive_mode')
 
 const MINIMAL_TERMINAL_WIDTH = 80
 
-const { version } = loadJsonFile.sync('package.json')
+const PACKAGE_JSON_PATH = require('path').join('..', 'package.json')
+const { version } = loadJsonFile.sync(PACKAGE_JSON_PATH)
 
 const options = {
 	version,
