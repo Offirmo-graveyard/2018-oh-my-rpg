@@ -15,7 +15,7 @@ function render({term_width, config, rendering_options}) {
 	else {
 		console.log(`Episode #${state.good_click_count}\n`)
 		console.log(
-			+ wrapLines(term_width)(
+			wrapLines(term_width)(
 				stylizeString.bold(render_adventure(state.last_adventure, rendering_options))
 			)
 		)
