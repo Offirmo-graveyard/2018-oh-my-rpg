@@ -57,5 +57,5 @@ interface State {
     good_click_count: number;
     meaningful_interaction_count: number;
 }
-declare const VERSION = 8;
+declare const VERSION = 9;
 export { VERSION, GainType, Adventure, State };

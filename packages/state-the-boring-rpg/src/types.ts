@@ -70,7 +70,7 @@ interface State {
 	meaningful_interaction_count: number
 }
 
-const VERSION = 8
+const VERSION = 9
 
 /////////////////////
 

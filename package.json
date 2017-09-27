@@ -15,10 +15,10 @@
 		"boxen": "^1.2.1"
 	},
 	"devDependencies": {
-		"@offirmo/unit-test-toolbox": "^1.0.0",
-		"@types/lodash": "^4.14.74",
+		"@offirmo/unit-test-toolbox": "^2.1.0",
+		"@types/lodash": "^4.14.76",
 		"lerna": "^2.2.0",
 		"lodash": "^4.17.4",
-		"typescript": "^2.5.2"
+		"typescript": "^2.5.3"
 	}
 }
