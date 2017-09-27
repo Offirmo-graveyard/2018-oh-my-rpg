@@ -10,6 +10,6 @@
 //console.log(`Current directory: ${process.cwd()}`);
 //console.log(`Current file dir: ${__dirname}`);
 //console.log(`Current file: ${__filename}`);
-process.chdir(require('path').join(__dirname, '..', 'dist'));
+process.chdir(require('path').join(__dirname, '..'));
 
 require('../dist/bundled')

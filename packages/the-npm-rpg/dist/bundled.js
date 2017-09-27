@@ -4216,7 +4216,7 @@ const { start_loop } = __webpack_require__(151)
 
 const MINIMAL_TERMINAL_WIDTH = 80
 
-const PACKAGE_JSON_PATH = __webpack_require__(3).join('..', 'package.json')
+const PACKAGE_JSON_PATH = __webpack_require__(3).join('.', 'package.json')
 const { version } = loadJsonFile.sync(PACKAGE_JSON_PATH)
 
 const options = {
@@ -11336,13 +11336,17 @@ const { render_adventure } = __webpack_require__(9)
 function render({term_width, config, rendering_options}) {
 	const state = config.store
 
-	console.log(''
-		//'You continue your adventures...\n\n'
-		+ `Episode #${state.good_click_count}\n`
-		+ wrapLines(term_width)(
-			stylizeString.bold(render_adventure(state.last_adventure, rendering_options))
+	if (!state.last_adventure) {
+		console.log('[select play to go on an adventure]')
+	}
+	else {
+		console.log(`Episode #${state.good_click_count}\n`)
+		console.log(
+			+ wrapLines(term_width)(
+				stylizeString.bold(render_adventure(state.last_adventure, rendering_options))
+			)
 		)
-	)
+	}
 }
 
 /////////////////////////////////////////////////
