@@ -4,7 +4,8 @@
 const readline = require('readline')
 const termSize = require('term-size')
 
-
+const MANY_BOX_HORIZ = '────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────'
+const MANY_SPACES = '                                                                                                                                                                  '
 
 const {
 	prettifyJson,
@@ -16,32 +17,14 @@ const {
 function factory({get_next_step}) {
 	const DEBUG = false
 	const state = {
+		isClosing: false,
 		keyPressCallback: null
 	}
 
 	if (!process.stdout.isTTY)
 		throw new Error('start_loop: current term is not a tty !')
-	readline.emitKeypressEvents(process.stdin)
-	const rli = readline.createInterface({
-		input: process.stdin,
-		output: process.stdout
-	})
-	rli.on('line', (input) => {
-		console.log(`Received line: ${input}`);
-	})
-	process.stdin.on('keypress', (str, key_pressed) => {
-		if (!state.keyPressCallback)
-			return
 
-		if (DEBUG) console.log(`key pressed:\n${prettifyJson(key_pressed)}\n`)
-		if (!key_pressed) {
-			if (DEBUG) console.error('keypress: Y U no key?!')
-			return
-		}
 
-		key_pressed.name = key_pressed.name ||  key_pressed.sequence
-		state.keyPressCallback(key_pressed)
-	})
 
 	const {columns: TERM_WIDTH} = termSize()
 	if (DEBUG) console.log({TERM_WIDTH})
@@ -52,10 +35,47 @@ function factory({get_next_step}) {
 		? USED_WIDTH
 		: Math.max(60, Math.round(USED_WIDTH * .5))
 	if (DEBUG) console.log({USED_WIDTH, MSG_WIDTH})
-	const LINE = '────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────'.slice(0, MSG_WIDTH - 2)
+	const MSG_BASELINE = MANY_BOX_HORIZ.slice(0, MSG_WIDTH - 2)
 	const MSG_L_INDENT = Math.round((TERM_WIDTH - USED_WIDTH) / 2)
 	const MSG_R_INDENT = MSG_L_INDENT + USED_WIDTH - MSG_WIDTH
+	const PROMPT = MANY_SPACES.slice(0, MSG_L_INDENT + 2)
 
+
+	process.stdin.setRawMode(true)
+	readline.emitKeypressEvents(process.stdin)
+
+	const rli = readline.createInterface({
+		input: process.stdin,
+		output: process.stdout,
+		prompt: PROMPT,
+	})
+
+	rli.on('line', (input) => {
+		if (DEBUG) console.log(`[Received line: ${input}]`);
+	})
+
+	rli.on('close', () => {
+		if (DEBUG) console.log(`[Received close]`);
+		state.isClosing = true
+	})
+
+	process.stdin.on('keypress', (str, key_pressed) => {
+		if (DEBUG) console.log(`[keypress]`);
+		if (!state.keyPressCallback)
+			return
+		if (state.isClosing)
+			return
+
+		if (DEBUG) console.log(`[key pressed:\n${prettifyJson(key_pressed)}\n]`)
+		if (!key_pressed) {
+			if (DEBUG) console.error('keypress: Y U no key?!')
+			return
+		}
+
+		key_pressed.name = key_pressed.name || key_pressed.sequence
+		state.keyPressCallback(key_pressed)
+	})
+	rli.prompt()
 	// TODO
 	// global exit key
 
@@ -90,8 +110,8 @@ function factory({get_next_step}) {
 		try {
 			if (!choice.hasOwnProperty('value') || typeof choice.value === 'undefined')
 				throw new Error('Choice has no value!')
-			choice.msg = choice.msg || String(choice.value)
-			const key = (choice.key_hint || choice.msg[0] || choice.value[0]).toLowerCase()
+			choice.msg_cta = choice.msg_cta || String(choice.value)
+			const key = (choice.key_hint || choice.msg_cta[0] || choice.value[0]).toLowerCase()
 			choice = {
 				key,
 				...choice
@@ -109,11 +129,11 @@ function factory({get_next_step}) {
 		msg_as_user: ok => ok ? 'Yes, I confirm.' : 'No, I changed my mind.',
 		choices: [
 			{
-				msg: 'Yes, confirm',
+				msg_cta: 'Yes, confirm',
 				value: true,
 			},
 			{
-				msg: 'No, cancel',
+				msg_cta: 'No, cancel',
 				value: false,
 			},
 		]
@@ -122,9 +142,9 @@ function factory({get_next_step}) {
 	const LETTER_A_CODEPOINT = 'a'.codePointAt(0)
 	const SQUARED_LATIN_CAPITAL_LETTER_A_CODEPOINT = 0x1F130
 	function render_choice(choice) {
-		const {key, msg} = choice
+		const {key, msg_cta} = choice
 		const nice_key = String.fromCodePoint(key.codePointAt(0) - LETTER_A_CODEPOINT + SQUARED_LATIN_CAPITAL_LETTER_A_CODEPOINT)
-		return `${nice_key}  ${msg}`
+		return `${nice_key}  ${msg_cta}`
 	}
 
 	async function display_message(msg, choices, options = {}) {
@@ -138,10 +158,10 @@ function factory({get_next_step}) {
 
 		const hasChoices = choices && choices.length > 0
 		if (!hasChoices) {
-			msg += '\n└─' + LINE
+			msg += '\n└─' + MSG_BASELINE
 		}
 		else {
-			msg += '\n└┬' + LINE
+			msg += '\n└┬' + MSG_BASELINE
 			choices.forEach((choice, index) => {
 				if (index === choices.length - 1)
 					msg += '\n └' + render_choice(choice)
@@ -161,7 +181,9 @@ function factory({get_next_step}) {
 
 	function read_string(step) {
 		return new Promise(resolve => {
-				rli.clearLine(process.stdout, 0)
+				//rli.clearLine(process.stdout, 0)
+				rli.prompt()
+
 				rli.question('', answer => {
 					rli.clearLine(process.stdout, 0)
 					if (DEBUG) console.log(`[You entered: "${answer}"]`)
@@ -179,10 +201,10 @@ function factory({get_next_step}) {
 
 	function read_key_sequence() {
 		return new Promise(resolve => {
-			process.stdin.setRawMode(true)
-			//readline.moveCursor(stream, MSG_R_INDENT, 0)
+			//process.stdin.setRawMode(true)
+			rli.prompt()
 			state.keyPressCallback = key => {
-				process.stdin.setRawMode(false)
+				//process.stdin.setRawMode(false)
 				state.keyPressCallback = null
 				rli.clearLine(process.stdout, 0)
 				resolve(key)
@@ -284,19 +306,19 @@ async function get_next_step() {
 		callback: value => state.mode = value,
 		choices: [
 			{
-				msg: 'Play',
+				msg_cta: 'Play',
 				value: 'play',
 				key_hint: 'p',
 				msg_as_user: () => 'Let’s play!',
 			},
 			{
-				msg: 'Manage Inventory',
+				msg_cta: 'Manage Inventory',
 				value: 'inventory',
 				key_hint: 'i',
 				msg_as_user: () => 'Let’s sort out my stuff.',
 			},
 			{
-				msg: 'Manage Character',
+				msg_cta: 'Manage Character',
 				value: 'character',
 				key_hint: 'c',
 				msg_as_user: () => 'Let’s see how I’m doing!',
