@@ -109,7 +109,7 @@ describe('⚔ 👑 😪  The Boring RPG', function () {
                 context('when the adventure is a fight', function () {
                     it('should generate a suitable enemy', () => {
                         let state = _1.factory();
-                        state.avatar.characteristics.level = 500;
+                        state.avatar.attributes.level = 500;
                         for (let i = 0; i < 20; ++i) {
                             state = _1.play(state);
                             if (state.last_adventure.hid.startsWith('fight_'))

@@ -1,7 +1,7 @@
 
 
 const prettyjson = require('prettyjson')
-function prettifyJson(data, options) {
+function prettify_json(data, options) {
 	return prettyjson.render(data, options)
 }
 
@@ -28,7 +28,7 @@ const enclose_in_box = boxen
 ////////////
 
 module.exports = {
-	prettifyJson,
+	prettify_json,
 	indent_string,
 	wrap_string,
 	enclose_in_box,

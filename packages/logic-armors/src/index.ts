@@ -72,7 +72,7 @@ function factory(rng: Engine, hints: Partial<Armor> = {}): Armor {
 
 /////////////////////
 
-// for demo purpose, all characteristics having the same probability + also random enhancement level
+// for demo purpose, all attributes having the same probability + also random enhancement level
 function generate_random_demo_armor(): Armor {
 	const rng: Engine = Random.engines.mt19937().autoSeed()
 	return factory(rng, {

@@ -25,7 +25,7 @@ function factory() {
     return {
         name: '[anonymous]',
         klass: types_1.CharacterClass.novice,
-        characteristics: {
+        attributes: {
             level: 1,
             // TODO improve this
             health: 1,
@@ -56,7 +56,7 @@ function increase_stat(state, stat, amount = 1) {
     if (amount <= 0)
         throw new Error(`Error while increasing stat "${stat}: invalid amount!`);
     // TODO stats caps
-    state.characteristics[stat] += amount;
+    state.attributes[stat] += amount;
     return state;
 }
 exports.increase_stat = increase_stat;

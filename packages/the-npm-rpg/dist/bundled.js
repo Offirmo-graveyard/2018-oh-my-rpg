@@ -1188,7 +1188,7 @@ function factory(rng, hints = {}) {
 }
 exports.factory = factory;
 /////////////////////
-// for demo purpose, all characteristics having the same probability + also random enhancement level
+// for demo purpose, all attributes having the same probability + also random enhancement level
 function generate_random_demo_armor() {
     const rng = random_1.Random.engines.mt19937().autoSeed();
     return factory(rng, {
@@ -1370,7 +1370,7 @@ function render_characteristics(state, options = DEFAULT_RENDERING_OPTIONS) {
     return state_character_1.CHARACTER_STATS.map((stat) => {
         const icon = get_characteristic_icon_for(stat);
         const label = stat;
-        const value = state.characteristics[stat];
+        const value = state.attributes[stat];
         const padded_label = `${label}............`.slice(0, 11);
         const padded_human_values = `.......${value}`.slice(-4);
         const update_notice = options.stylize(types_1.TextStyle.change_outline, la && la.gains && la.gains[stat]
@@ -1553,7 +1553,7 @@ function factory(rng, hints = {}) {
 }
 exports.factory = factory;
 /////////////////////
-// for demo purpose, all characteristics having the same probability + also random enhancement level
+// for demo purpose, all attributes having the same probability + also random enhancement level
 function generate_random_demo_weapon() {
     const rng = random_1.Random.engines.mt19937().autoSeed();
     return factory(rng, {
@@ -1862,7 +1862,7 @@ function play_good(state, explicit_adventure_archetype_hid) {
         : logic_adventures_1.pick_random_good_archetype(rng);
     if (!aa)
         throw new Error(`play_good(): hinted adventure archetype "${explicit_adventure_archetype_hid}" could not be found!`);
-    const adventure = instantiate_adventure_archetype(rng, aa, state.avatar.characteristics, state.inventory);
+    const adventure = instantiate_adventure_archetype(rng, aa, state.avatar.attributes, state.inventory);
     state.last_adventure = adventure;
     const { gains: gained } = adventure;
     // TODO store hid for no repetition
@@ -3805,7 +3805,7 @@ A great saga just started...`
 		charisma,
 		wisdom,
 		luck,
-	} = state.avatar.characteristics
+	} = state.avatar.attributes
 	console.log(
 `The great saga of ${stylizeString.bold(state.avatar.name)}, ${state.avatar.klass} LVL${level}
 HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS:${wisdom} LUCK:${luck}`)
@@ -3925,7 +3925,7 @@ function factory(rng, hints = {}) {
 }
 exports.factory = factory;
 /////////////////////
-// for demo purpose, all characteristics having the same probability + also random enhancement level
+// for demo purpose, all attributes having the same probability + also random enhancement level
 function generate_random_demo_monster() {
     const rng = random_1.Random.engines.mt19937().autoSeed();
     return factory(rng);
@@ -3966,7 +3966,7 @@ function factory() {
     return {
         name: '[anonymous]',
         klass: types_1.CharacterClass.novice,
-        characteristics: {
+        attributes: {
             level: 1,
             // TODO improve this
             health: 1,
@@ -3997,7 +3997,7 @@ function increase_stat(state, stat, amount = 1) {
     if (amount <= 0)
         throw new Error(`Error while increasing stat "${stat}: invalid amount!`);
     // TODO stats caps
-    state.characteristics[stat] += amount;
+    state.attributes[stat] += amount;
     return state;
 }
 exports.increase_stat = increase_stat;
@@ -30178,7 +30178,7 @@ function factory(rng) {
 }
 exports.factory = factory;
 /////////////////////
-// for demo purpose, all characteristics having the same probability + also random enhancement level
+// for demo purpose, all attributes having the same probability + also random enhancement level
 function generate_random_demo_shop() {
     const rng = random_1.Random.engines.mt19937().autoSeed();
     return factory(rng);
@@ -30499,7 +30499,6 @@ function render({config, rendering_options}) {
 	const state = config.store
 
 	console.log(''
-		//stylizeString.bold('🙂  CHARACTERISTICS 💗\n')
 		+ 'name:  ' + stylizeString.bold(state.avatar.name) + '\n'
 		+ 'class: ' + stylizeString.bold(state.avatar.klass) + '\n'
 		+ '\n'

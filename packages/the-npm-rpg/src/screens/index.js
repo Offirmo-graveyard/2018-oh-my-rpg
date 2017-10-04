@@ -59,7 +59,7 @@ A great saga just started...`
 		charisma,
 		wisdom,
 		luck,
-	} = state.avatar.characteristics
+	} = state.avatar.attributes
 	console.log(
 `The great saga of ${stylizeString.bold(state.avatar.name)}, ${state.avatar.klass} LVL${level}
 HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS:${wisdom} LUCK:${luck}`)

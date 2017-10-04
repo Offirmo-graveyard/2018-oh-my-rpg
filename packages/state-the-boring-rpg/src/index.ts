@@ -14,7 +14,7 @@ import {
 } from '@oh-my-rpg/state-meta'
 
 import {
-	Characteristics,
+	Attributes,
 	CharacterStat,
 	CharacterClass,
 	State as CharacterState,
@@ -159,7 +159,7 @@ function migrate_to_latest(state: any): State {
 /////////////////////
 
 const STATS = [ 'health', 'mana', 'strength', 'agility', 'charisma', 'wisdom', 'luck' ]
-function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, character: Characteristics, inventory: InventoryState): Adventure {
+function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, character: Attributes, inventory: InventoryState): Adventure {
 	let {hid, good, type, outcome : should_gain} = aa
 
 	should_gain = {...should_gain}
@@ -254,7 +254,7 @@ function play_good(state: State, explicit_adventure_archetype_hid?: string): Sta
 	const adventure = instantiate_adventure_archetype(
 		rng,
 		aa,
-		state.avatar.characteristics,
+		state.avatar.attributes,
 		state.inventory,
 	)
 	state.last_adventure = adventure

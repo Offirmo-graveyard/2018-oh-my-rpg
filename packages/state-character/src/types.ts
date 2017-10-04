@@ -32,7 +32,7 @@ type CharacterClass = Enum<typeof CharacterClass>
 
 /////////////////////
 
-interface Characteristics {
+interface Attributes {
 	level: number
 
 	health: number
@@ -48,7 +48,7 @@ interface Characteristics {
 interface State {
 	name: string
 	klass: CharacterClass
-	characteristics: Characteristics
+	attributes: Attributes
 	// inventory here ?
 }
 
@@ -57,7 +57,7 @@ interface State {
 export {
 	CharacterStat,
 	CharacterClass,
-	Characteristics,
+	Attributes,
 	State,
 }
 

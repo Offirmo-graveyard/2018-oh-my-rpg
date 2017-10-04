@@ -25,7 +25,7 @@ declare const CharacterClass: {
     priest: "priest";
 };
 declare type CharacterClass = Enum<typeof CharacterClass>;
-interface Characteristics {
+interface Attributes {
     level: number;
     health: number;
     mana: number;
@@ -38,6 +38,6 @@ interface Characteristics {
 interface State {
     name: string;
     klass: CharacterClass;
-    characteristics: Characteristics;
+    attributes: Attributes;
 }
-export { CharacterStat, CharacterClass, Characteristics, State };
+export { CharacterStat, CharacterClass, Attributes, State };

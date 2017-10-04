@@ -12,7 +12,6 @@ function render({config, rendering_options}) {
 	const state = config.store
 
 	console.log(''
-		//stylizeString.bold('🙂  CHARACTERISTICS 💗\n')
 		+ 'name:  ' + stylizeString.bold(state.avatar.name) + '\n'
 		+ 'class: ' + stylizeString.bold(state.avatar.klass) + '\n'
 		+ '\n'

@@ -5,7 +5,7 @@ import { Enum } from 'typescript-string-enums'
 import {
 	CharacterStat,
 	CharacterClass,
-	Characteristics,
+	Attributes,
 	State,
 } from './types'
 
@@ -32,7 +32,7 @@ function factory(): State {
 	return {
 		name: '[anonymous]',
 		klass: CharacterClass.novice,
-		characteristics: {
+		attributes: {
 			level: 1,
 
 			// TODO improve this
@@ -70,7 +70,7 @@ function increase_stat(state: State, stat: CharacterStat, amount = 1): State {
 		throw new Error(`Error while increasing stat "${stat}: invalid amount!`)
 
 	// TODO stats caps
-	state.characteristics[stat] += amount
+	state.attributes[stat] += amount
 
 	return state
 }
@@ -80,7 +80,7 @@ function increase_stat(state: State, stat: CharacterStat, amount = 1): State {
 export {
 	CharacterStat,
 	CharacterClass,
-	Characteristics,
+	Attributes,
 	State,
 
 	CHARACTER_STATS,

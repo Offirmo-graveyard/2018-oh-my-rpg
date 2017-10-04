@@ -16,7 +16,7 @@ describe('🤕 ❤️  Character stats logic', function() {
 			expect(state).to.deep.equal({
 				name: '[anonymous]',
 				klass: CharacterClass.novice,
-				characteristics: {
+				attributes: {
 					level: 1,
 
 					health: 1,
@@ -52,8 +52,8 @@ describe('🤕 ❤️  Character stats logic', function() {
 			let state = factory()
 
 			state = increase_stat(state, CharacterStat.agility)
-			expect(state.characteristics.agility).to.equal(2)
-			expect(state.characteristics).to.deep.equal({
+			expect(state.attributes.agility).to.equal(2)
+			expect(state.attributes).to.deep.equal({
 				level: 1,
 
 				health: 1,
@@ -67,9 +67,9 @@ describe('🤕 ❤️  Character stats logic', function() {
 			})
 
 			state = increase_stat(state, CharacterStat.agility, 2)
-			expect(state.characteristics.agility).to.equal(4)
+			expect(state.attributes.agility).to.equal(4)
 
-			expect(state.characteristics).to.deep.equal({
+			expect(state.attributes).to.deep.equal({
 				level: 1,
 
 				health: 1,
@@ -83,9 +83,9 @@ describe('🤕 ❤️  Character stats logic', function() {
 			})
 
 			state = increase_stat(state, CharacterStat.agility)
-			expect(state.characteristics.agility).to.equal(5)
+			expect(state.attributes.agility).to.equal(5)
 
-			expect(state.characteristics).to.deep.equal({
+			expect(state.attributes).to.deep.equal({
 				level: 1,
 
 				health: 1,

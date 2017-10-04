@@ -149,7 +149,7 @@ function play_good(state, explicit_adventure_archetype_hid) {
         : logic_adventures_1.pick_random_good_archetype(rng);
     if (!aa)
         throw new Error(`play_good(): hinted adventure archetype "${explicit_adventure_archetype_hid}" could not be found!`);
-    const adventure = instantiate_adventure_archetype(rng, aa, state.avatar.characteristics, state.inventory);
+    const adventure = instantiate_adventure_archetype(rng, aa, state.avatar.attributes, state.inventory);
     state.last_adventure = adventure;
     const { gains: gained } = adventure;
     // TODO store hid for no repetition

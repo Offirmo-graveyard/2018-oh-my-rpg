@@ -173,7 +173,7 @@ function render_characteristics(state: CharacterState, options: RenderingOptions
 	return CHARACTER_STATS.map((stat: CharacterStat) => {
 		const icon = get_characteristic_icon_for(stat)
 		const label = stat
-		const value = state.characteristics[stat]
+		const value = state.attributes[stat]
 
 		const padded_label = `${label}............`.slice(0, 11)
 		const padded_human_values = `.......${value}`.slice(-4)
