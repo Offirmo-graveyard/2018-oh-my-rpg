@@ -17,6 +17,21 @@ const {
 
 const DEBUG = false
 
+// http://stackoverflow.com/a/1917041/587407
+function get_shared_start(array) {
+	if (array.length <= 1) return ''
+
+	const A = array.concat().sort()
+	const a1 = A[0]
+	const a2 = A[A.length - 1]
+	const L = a1.length
+
+	let i = 0
+	while (i < L && a1.charAt(i) === a2.charAt(i)) { i++ }
+
+	return a1.substring(0, i)
+}
+
 function prettify_params_for_debug() {
 	return indent_string(
 			prettify_json.apply(null, arguments),
@@ -25,8 +40,13 @@ function prettify_params_for_debug() {
 		)
 }
 
+function alpha_to_nice_unicode(char) {
+	return '' + char + '\u20e3'
+}
+
+
 function tty_chat_ui_factory() {
-	console.log('↘ tty_chat_ui_factory()')
+	if (DEBUG) console.log('↘ tty_chat_ui_factory()')
 	const state = {
 		is_closing: false,
 		keypress_callback: null,
@@ -87,16 +107,32 @@ function tty_chat_ui_factory() {
 	// TODO
 	// global exit key
 
-	const LETTER_A_CODEPOINT = 'a'.codePointAt(0)
-	const SQUARED_LATIN_CAPITAL_LETTER_A_CODEPOINT = 0x1F130
+
+	function decorate_choices_with_key(step) {
+		const unhinted_choices = step.choices.filter(choice => !choice.key_hint)
+		const common_value_part = get_shared_start(unhinted_choices.map(choice => choice.msg_cta.toLowerCase()))
+		step.choices.forEach(choice => {
+			const key = choice.key_hint || {
+				name: choice.msg_cta.toLowerCase().slice(common_value_part.length)[0]
+			}
+
+			choice._ui_tty = {key}
+		})
+		const allowed_keys = step.choices.map(choice => choice._ui_tty.key.name).join(',')
+		if (DEBUG) console.log('  available choices: ' + allowed_keys)
+	}
+
+
+
 	function render_choice(choice) {
-		const {key, msg_cta} = choice
-		const nice_key = String.fromCodePoint(key.codePointAt(0) - LETTER_A_CODEPOINT + SQUARED_LATIN_CAPITAL_LETTER_A_CODEPOINT)
-		return `${nice_key}  ${msg_cta}`
+		const {msg_cta} = choice
+		const {key} = choice._ui_tty
+		const nice_key = alpha_to_nice_unicode(key.name)
+		return `${nice_key} ${msg_cta}`
 	}
 
 	async function display_message({msg, choices = [], side = '→'}) {
-		console.log(`↘ display_message(\n${prettify_params_for_debug({msg, choices, side})}\n)`)
+		if (DEBUG) console.log(`↘ display_message(\n${prettify_params_for_debug({msg, choices, side})}\n)`)
 		if (typeof arguments[0] !== 'object')
 			throw new Error(`display_message(): incorrect invocation!`)
 		if (!msg)
@@ -110,6 +146,7 @@ function tty_chat_ui_factory() {
 		}
 		else {
 			msg += '\n└┬' + MSG_BASELINE
+			decorate_choices_with_key({choices})
 			choices.forEach((choice, index) => {
 				if (index === choices.length - 1)
 					msg += '\n └' + render_choice(choice)
@@ -121,10 +158,10 @@ function tty_chat_ui_factory() {
 		let indent_col_count = 0
 		switch(side) {
 			case '→':
-				indent_col_count = MSG_R_INDENT
+				indent_col_count = MSG_L_INDENT
 				break
 			case '←':
-				indent_col_count = MSG_L_INDENT
+				indent_col_count = MSG_R_INDENT
 				break
 			case '↔':
 			default:
@@ -141,17 +178,18 @@ function tty_chat_ui_factory() {
 	}
 
 	function read_string(step) {
-		console.log(`↘ read_string(\n${prettify_params_for_debug(step)}\n)`)
+		if (DEBUG) console.log(`↘ read_string(\n${prettify_params_for_debug(step)}\n)`)
 		return new Promise(resolve => {
-			//rli.clearLine(process.stdout, 0)
-			rli.prompt()
+				//rli.clearLine(process.stdout, 0)
+				rli.prompt()
 
-			rli.question('', answer => {
-				rli.clearLine(process.stdout, 0)
-				if (DEBUG) console.log(`[You entered: "${answer}"]`)
-				resolve(answer)
+				rli.question('', answer => {
+					rli.clearLine(process.stdout, 0)
+					answer = String(answer).trim()
+					if (DEBUG) console.log(`[You entered: "${answer}"]`)
+					resolve(answer)
+				})
 			})
-		})
 			.then(answer => {
 				if (step.msgg_as_user)
 					return display_message({
@@ -165,7 +203,7 @@ function tty_chat_ui_factory() {
 	}
 
 	function read_key_sequence() {
-		console.log('↘ read_key_sequence()')
+		if (DEBUG) console.log('↘ read_key_sequence()')
 		return new Promise(resolve => {
 			//process.stdin.setRawMode(true)
 			rli.prompt()
@@ -180,17 +218,23 @@ function tty_chat_ui_factory() {
 	}
 
 	async function read_choice(step) {
-		console.log('↘ read_choice()')
+		if (DEBUG) console.log('↘ read_choice()')
+		const allowed_keys = step.choices.map(choice => choice._ui_tty.key.name).join(',')
+		if (DEBUG) console.log('  available choices: ' + allowed_keys)
 		let answer = undefined
 		while (typeof answer === 'undefined') {
 			const key = await read_key_sequence()
-			const choice = step.choices.find(choice => choice.key === key.name)
-			if(!choice)
-				console.log('[please select a correct choice]')
+			const choice = step.choices.find(choice => choice._ui_tty.key.name === key.name)
+			if(!choice) {
+				console.log(`[please select a correct choice: ${allowed_keys}]`)
+			}
 			else {
 				answer = choice.value
+				// TODO display here ?
 				await display_message({
-					msg: (choice.msgg_as_user || step.msgg_as_user)(answer),
+					msg: (choice.msgg_as_user || step.msgg_as_user || (() => choice.msg_cta))(answer),
+					// () => choice.msg_cta
+					// x => String(x)
 					side: '←'
 				})
 			}
@@ -199,19 +243,27 @@ function tty_chat_ui_factory() {
 	}
 
 	async function read_answer(step) {
-		console.log('↘ read_answer()')
+		if (DEBUG) console.log('↘ read_answer()')
 		switch (step.type) {
-			case 'string':
+			case 'ask_for_string':
 				return read_string(step)
-			case 'choices':
+			case 'ask_for_choice':
 				return read_choice(step)
+			/*
+			case 'confirm':
+
+			if (step.msgg_confirm) {
+				ok = await ask_user_for_confirmation(step.msgg_confirm(answer))
+				if (DEBUG) console.log(`↖ ask_user(…) confirmation = "${ok}"`)
+			}
+			 */
 			default:
 				throw new Error(`Unsupported step type: "${step.type}"!`)
 		}
 	}
 
 	async function teardown() {
-		console.log('↘ teardown()')
+		if (DEBUG) console.log('↘ teardown()')
 		rli.close()
 	}
 
@@ -224,17 +276,42 @@ function tty_chat_ui_factory() {
 }
 
 function factory({gen_next_step, ui}) {
-	console.log('↘ factory()')
+	if (DEBUG) console.log('↘ factory()')
+
+	const STEP_CONFIRM = uniformize_step({
+		msg_main: `Are you sure?`,
+		msgg_as_user: ok => ok ? 'Yes, I confirm.' : 'No, I changed my mind…',
+		choices: [
+			{
+				msg_cta: 'Yes, confirm',
+				value: true,
+			},
+			{
+				msg_cta: 'No, cancel',
+				value: false,
+			},
+		]
+	})
 
 	function uniformize_step(step) {
 		try {
-			if (!step.msg_instructions)
-				throw new Error('Step is missing instructions message!')
+
+			if (step.type === 'ask_for_confirmation' && step !== STEP_CONFIRM)
+				step = {
+					...STEP_CONFIRM,
+					...step,
+				}
+
+			if (!step.msg_main)
+				throw new Error('Step is missing main message!')
+
 			if (!step.type) {
 				if (!step.choices)
-					throw new Error('Step type is unknown!')
-				step.type = 'choices'
+					throw new Error('Step type is unknown and not inferrable!')
+
+				step.type = 'ask_for_choice'
 			}
+
 			step = {
 				msgg_acknowledge: () => `OK.`,
 				validator: null,
@@ -256,11 +333,6 @@ function factory({gen_next_step, ui}) {
 			if (!choice.hasOwnProperty('value') || typeof choice.value === 'undefined')
 				throw new Error('Choice has no value!')
 			choice.msg_cta = choice.msg_cta || String(choice.value)
-			const key = (choice.key_hint || choice.msg_cta[0] || choice.value[0]).toLowerCase()
-			choice = {
-				key,
-				...choice
-			}
 			return choice
 		}
 		catch (e) {
@@ -269,25 +341,10 @@ function factory({gen_next_step, ui}) {
 		}
 	}
 
-	const STEP_CONFIRM = uniformize_step({
-		msg_instructions: `Are you sure?`,
-		msgg_as_user: ok => ok ? 'Yes, I confirm.' : 'No, I changed my mind.',
-		choices: [
-			{
-				msg_cta: 'Yes, confirm',
-				value: true,
-			},
-			{
-				msg_cta: 'No, cancel',
-				value: false,
-			},
-		]
-	})
-
 	async function ask_user_for_confirmation(msg) {
-		console.log(`↘ ask_user_for_confirmation(${msg})`)
+		if (DEBUG) console.log(`↘ ask_user_for_confirmation(${msg})`)
 		await ui.display_message({
-			msg: msg || STEP_CONFIRM.msg_instructions,
+			msg: msg || STEP_CONFIRM.msg_main,
 			choices: STEP_CONFIRM.choices
 		})
 		let ok = await ui.read_answer(STEP_CONFIRM)
@@ -297,17 +354,13 @@ function factory({gen_next_step, ui}) {
 	}
 
 	async function ask_user(step) {
-		console.log(`↘ ask_user(\n${prettify_params_for_debug(step)}\n)`)
+		if (DEBUG) console.log(`↘ ask_user(\n${prettify_params_for_debug(step)}\n)`)
 		let ok = true
 		let answer = ''
 		do {
-			await ui.display_message({msg: step.msg_instructions, choices: step.choices})
+			await ui.display_message({msg: step.msg_main, choices: step.choices})
 			answer = await ui.read_answer(step)
-			console.log(`↖ ask_user(…) answer = "${answer}"`)
-			if (step.msg_confirm) {
-				ok = await ask_user_for_confirmation(step.msg_confirm(answer))
-				console.log(`↖ ask_user(…) confirmation = "${ok}"`)
-			}
+			if (DEBUG) console.log(`↖ ask_user(…) answer = "${answer}"`)
 		} while (!ok)
 		if (step.msgg_acknowledge)
 			await ui.display_message({msg: step.msgg_acknowledge(answer)})
@@ -315,30 +368,43 @@ function factory({gen_next_step, ui}) {
 	}
 
 	async function execute_step(step) {
-		console.log(`↘ execute_step(\n${prettify_params_for_debug(step)}\n)`)
-		const answer = await ask_user(step)
-		let msgs = []
-		if (step.callback) {
-			msgs = await step.callback(answer) || []
+		if (DEBUG) console.log(`↘ execute_step(\n${prettify_params_for_debug(step)}\n)`)
+
+		switch (step.type) {
+			case 'simple_message':
+				return ui.display_message({
+					msg: step.msg_main,
+				})
+			case 'ask_for_confirmation':
+			case 'ask_for_string':
+			case 'ask_for_choice': {
+				const answer = await ask_user(step)
+				if (step.callback)
+					await step.callback(answer)
+				break
+			}
+			default:
+				throw new Error(`Unsupported step type: "${step.type}"!`)
 		}
-		msgs.forEach(ui.display_message)
 	}
 
 	async function start() {
-		console.log('↘ start()')
+		if (DEBUG) console.log('↘ start()')
 		try {
 			await ui.setup()
 			let should_exit = false
+			let last_step = undefined
+			let last_answer = undefined
 			do {
-				const {value: raw_step, done} = await gen_next_step.next()
+				const {value: raw_step, done} = await gen_next_step.next({last_step, last_answer})
 				//console.log({raw_step, done})
 				if (done) {
 					should_exit = true
+					continue
 				}
-				else {
-					const step = uniformize_step(raw_step)
-					await execute_step(step)
-				}
+
+				const step = uniformize_step(raw_step)
+				await execute_step(step)
 			} while(!should_exit)
 			await ui.teardown()
 		}
@@ -364,63 +430,77 @@ function* get_next_step1() {
 
 	yield* [
 		{
-			msg_instructions: `What's your name?`,
-			type: 'string',
-			validator: null, // TODO
+			type: 'simple_message',
+			msg_main: `Welcome. I'll have a few questions…`,
+		},
+		{
+			type: 'ask_for_string',
+			msg_main: `What's your name?`,
+			//validator: null, // TODO
 			msgg_as_user: value => `My name is "${value}".`,
-			//msg_confirm: name => `Do you confirm?`,
 			msgg_acknowledge: name => `Thanks for the answer, ${name}!`,
 			callback: value => { state.name = value }
 		},
 		{
-			msg_instructions: `What city do you live in?`,
-			type: 'string',
-			validator: null, // TODO
+			type: 'ask_for_string',
+			msg_main: `What city do you live in?`,
 			msgg_as_user: value => `I live in "${value}".`,
-			msgg_acknowledge: () => `Thanks, wait for a moment...`, // TODO default
+			msgg_acknowledge: value => `${value}, a fine city indeed!`,
 			callback: value => { state.city = value }
 		},
 		{
-			msg_instructions: `Make your choice`,
+			type: 'simple_message',
+			msg_main: `Please wait for a moment...`,
+		},
+		// TODO wait with feedback
+		{
+			type: 'delay',
+			msg_main: `Please wait for a moment...`,
+		},
+		{
+			msg_main: `Make your choice`,
 			callback: value => { state.mode = value },
 			choices: [
 				{
 					msg_cta: 'Choice 1',
 					value: 1,
-					key_hint: '1', // TODO auto
 				},
 				{
 					msg_cta: 'Choice 2',
 					value: 2,
-					key_hint: '2',
 				},
 			]
 		}
 	]
+
+	/*
+		{
+			type: 'ask_for_confirmation',
+			//msgg_main: name => `Do you confirm?`,
+			callback: value => { }
+		},
+	 */
 }
 
 async function get_next_step2() {
 
 	const MAIN_MODE = {
-		msg_instructions: `What do you want to do?`,
+		msg_main: `What do you want to do?`,
 		callback: value => state.mode = value,
 		choices: [
 			{
 				msg_cta: 'Play',
 				value: 'play',
-				key_hint: 'p',
 				msgg_as_user: () => 'Let’s play!',
 			},
 			{
 				msg_cta: 'Manage Inventory',
 				value: 'inventory',
-				key_hint: 'i',
 				msgg_as_user: () => 'Let’s sort out my stuff.',
 			},
 			{
 				msg_cta: 'Manage Character',
 				value: 'character',
-				key_hint: 'c',
 				msgg_as_user: () => 'Let’s see how I’m doing!',
 			},
 		]

@@ -7,7 +7,6 @@ import {
 } from './types'
 
 ////////////////////////////////////
-
 const ENCLOSED_LIGHT: CharMapping = {
 	id: 'EnclosedLight',
 	alphabet_upper: punycode.ucs2.decode('ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏ'),
@@ -17,9 +16,7 @@ const ENCLOSED_LIGHT: CharMapping = {
 }
 ENCLOSED_LIGHT.others.set('0'.codePointAt(0)!, '⓪')
 
-// Greek and Coptic http://jrgraphix.net/r/Unicode/0370-03FF
-
-// 13A0-13FF
+////////////////////////////////////
 const CHEROKEE: CharMapping = {
 	id: 'Cherokee',
 	alphabet_upper: undefined,
@@ -27,6 +24,7 @@ const CHEROKEE: CharMapping = {
 	numbers: undefined,
 	others: new Map<number, string>()
 }
+// 13A0-13FF
 CHEROKEE.others.set('4'.codePointAt(0)!, 'Ꮞ')
 CHEROKEE.others.set('6'.codePointAt(0)!, 'Ꮾ')
 CHEROKEE.others.set('9'.codePointAt(0)!, 'Ꮽ')
@@ -53,6 +51,7 @@ CHEROKEE.others.set('W'.codePointAt(0)!, 'Ꮃ')
 CHEROKEE.others.set('y'.codePointAt(0)!, 'Ꭹ')
 CHEROKEE.others.set('Z'.codePointAt(0)!, 'Ꮓ')
 
+////////////////////////////////////
 const MATH_01: CharMapping = {
 	id: 'Math01',
 	alphabet_upper: punycode.ucs2.decode('𝐀𝐁𝐂𝐃𝐄𝐅𝐆𝐇𝐈𝐉𝐊𝐋𝐌𝐍𝐎𝐏𝐐𝐑𝐒𝐓𝐔𝐕𝐖𝐗𝐘𝐙'),
@@ -60,7 +59,6 @@ const MATH_01: CharMapping = {
 	numbers: punycode.ucs2.decode('𝟬𝟭𝟮𝟯𝟰𝟱𝟲𝟳𝟴𝟵'),
 	others: new Map<number, string>()
 }
-
 // +++ Math http://jrgraphix.net/r/Unicode/1D400-1D7FF
 
 
@@ -94,7 +92,7 @@ const MATH_01: CharMapping = {
  */
 
 
-
+////////////////////////////////////
 // "form" http://jrgraphix.net/r/Unicode/FF00-FFEF
 // old italic http://jrgraphix.net/r/Unicode/10300-1032F
 
@@ -106,6 +104,8 @@ const MATH_01: CharMapping = {
 
 // TODO combining? http://jrgraphix.net/r/Unicode/20D0-20FF
 
+
+////////////////////////////////////
 const CHAR_MAPPINGS = [
 	ENCLOSED_LIGHT,
 	CHEROKEE,
