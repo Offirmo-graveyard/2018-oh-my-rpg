@@ -4,48 +4,19 @@
 
 const readline = require('readline')
 const termSize = require('term-size')
+const { indent_string, wrap_string, prettify_json } = require('./libs')
+const { prettify_params_for_debug, get_shared_start } = require('./utils')
+
 
 const MANY_BOX_HORIZ = '────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────'
 const MANY_SPACES = '                                                                                                                                                                  '
 
-const {
-	prettify_json,
-	indent_string,
-	wrap_string,
-	enclose_in_box,
-} = require('./libs')
-
-const DEBUG = false
-
-// http://stackoverflow.com/a/1917041/587407
-function get_shared_start(array) {
-	if (array.length <= 1) return ''
-
-	const A = array.concat().sort()
-	const a1 = A[0]
-	const a2 = A[A.length - 1]
-	const L = a1.length
-
-	let i = 0
-	while (i < L && a1.charAt(i) === a2.charAt(i)) { i++ }
-
-	return a1.substring(0, i)
-}
-
-function prettify_params_for_debug() {
-	return indent_string(
-			prettify_json.apply(null, arguments),
-			1,
-			{indent: '	'}
-		)
-}
 
 function alpha_to_nice_unicode(char) {
 	return '' + char + '\u20e3'
 }
 
-
-function tty_chat_ui_factory() {
+function factory({DEBUG, shouldCenter}) {
 	if (DEBUG) console.log('↘ tty_chat_ui_factory()')
 	const state = {
 		is_closing: false,
@@ -65,7 +36,9 @@ function tty_chat_ui_factory() {
 		: Math.max(50, Math.round(USED_WIDTH * .5))
 	if (DEBUG) console.log({USED_WIDTH, MSG_WIDTH})
 	const MSG_BASELINE = MANY_BOX_HORIZ.slice(0, MSG_WIDTH - 2)
-	const MSG_L_INDENT = Math.round((TERM_WIDTH - USED_WIDTH) / 2)
+	const MSG_L_INDENT = shouldCenter
+		? Math.round((TERM_WIDTH - USED_WIDTH) / 2)
+		: 0
 	const MSG_R_INDENT = MSG_L_INDENT + USED_WIDTH - MSG_WIDTH
 	const PROMPT = MANY_SPACES.slice(0, MSG_L_INDENT + 2)
 
@@ -275,257 +248,7 @@ function tty_chat_ui_factory() {
 	}
 }
 
-function factory({gen_next_step, ui}) {
-	if (DEBUG) console.log('↘ factory()')
 
-	const STEP_CONFIRM = uniformize_step({
-		msg_main: `Are you sure?`,
-		msgg_as_user: ok => ok ? 'Yes, I confirm.' : 'No, I changed my mind…',
-		choices: [
-			{
-				msg_cta: 'Yes, confirm',
-				value: true,
-			},
-			{
-				msg_cta: 'No, cancel',
-				value: false,
-			},
-		]
-	})
-
-	function uniformize_step(step) {
-		try {
-
-			if (step.type === 'ask_for_confirmation' && step !== STEP_CONFIRM)
-				step = {
-					...STEP_CONFIRM,
-					...step,
-				}
-
-			if (!step.msg_main)
-				throw new Error('Step is missing main message!')
-
-			if (!step.type) {
-				if (!step.choices)
-					throw new Error('Step type is unknown and not inferrable!')
-
-				step.type = 'ask_for_choice'
-			}
-
-			step = {
-				msgg_acknowledge: () => `OK.`,
-				validator: null,
-				choices: [],
-				...step
-			}
-
-			step.choices = step.choices.map(uniformize_choice)
-			return step
-		}
-		catch (e) {
-			console.error(prettify_json(step))
-			throw e
-		}
-	}
-
-	function uniformize_choice(choice) {
-		try {
-			if (!choice.hasOwnProperty('value') || typeof choice.value === 'undefined')
-				throw new Error('Choice has no value!')
-			choice.msg_cta = choice.msg_cta || String(choice.value)
-			return choice
-		}
-		catch (e) {
-			console.error(prettify_json(choice))
-			throw e
-		}
-	}
-
-	async function ask_user_for_confirmation(msg) {
-		if (DEBUG) console.log(`↘ ask_user_for_confirmation(${msg})`)
-		await ui.display_message({
-			msg: msg || STEP_CONFIRM.msg_main,
-			choices: STEP_CONFIRM.choices
-		})
-		let ok = await ui.read_answer(STEP_CONFIRM)
-		if (!ok)
-			await ui.display_message({ msg: 'No worries, let’s try again...' })
-		return ok
-	}
-
-	async function ask_user(step) {
-		if (DEBUG) console.log(`↘ ask_user(\n${prettify_params_for_debug(step)}\n)`)
-		let ok = true
-		let answer = ''
-		do {
-			await ui.display_message({msg: step.msg_main, choices: step.choices})
-			answer = await ui.read_answer(step)
-			if (DEBUG) console.log(`↖ ask_user(…) answer = "${answer}"`)
-		} while (!ok)
-		if (step.msgg_acknowledge)
-			await ui.display_message({msg: step.msgg_acknowledge(answer)})
-		return answer
-	}
-
-	async function execute_step(step) {
-		if (DEBUG) console.log(`↘ execute_step(\n${prettify_params_for_debug(step)}\n)`)
-
-		switch (step.type) {
-			case 'simple_message':
-				return ui.display_message({
-					msg: step.msg_main,
-				})
-			case 'ask_for_confirmation':
-			case 'ask_for_string':
-			case 'ask_for_choice': {
-				const answer = await ask_user(step)
-				if (step.callback)
-					await step.callback(answer)
-				break
-			}
-			default:
-				throw new Error(`Unsupported step type: "${step.type}"!`)
-		}
-	}
-
-	async function start() {
-		if (DEBUG) console.log('↘ start()')
-		try {
-			await ui.setup()
-			let should_exit = false
-			let last_step = undefined
-			let last_answer = undefined
-			do {
-				const {value: raw_step, done} = await gen_next_step.next({last_step, last_answer})
-				//console.log({raw_step, done})
-				if (done) {
-					should_exit = true
-					continue
-				}
-
-				const step = uniformize_step(raw_step)
-				await execute_step(step)
-			} while(!should_exit)
-			await ui.teardown()
-		}
-		catch (e) {
-			await ui.teardown()
-			throw e
-		}
-	}
-
-	return {
-		start,
-	}
+module.exports = {
+	factory,
 }
-
-
-
-function* get_next_step1() {
-	const state = {
-		mode: 'main',
-		name: undefined,
-		city: undefined,
-	}
-
-	yield* [
-		{
-			type: 'simple_message',
-			msg_main: `Welcome. I'll have a few questions…`,
-		},
-		{
-			type: 'ask_for_string',
-			msg_main: `What's your name?`,
-			//validator: null, // TODO
-			msgg_as_user: value => `My name is "${value}".`,
-			msgg_acknowledge: name => `Thanks for the answer, ${name}!`,
-			callback: value => { state.name = value }
-		},
-		{
-			type: 'ask_for_string',
-			msg_main: `What city do you live in?`,
-			msgg_as_user: value => `I live in "${value}".`,
-			msgg_acknowledge: value => `${value}, a fine city indeed!`,
-			callback: value => { state.city = value }
-		},
-		{
-			type: 'simple_message',
-			msg_main: `Please wait for a moment...`,
-		},
-		// TODO wait with feedback
-		{
-			type: 'delay',
-			msg_main: `Please wait for a moment...`,
-		},
-		{
-			msg_main: `Make your choice`,
-			callback: value => { state.mode = value },
-			choices: [
-				{
-					msg_cta: 'Choice 1',
-					value: 1,
-				},
-				{
-					msg_cta: 'Choice 2',
-					value: 2,
-				},
-			]
-		}
-	]
-
-	/*
-		{
-			type: 'ask_for_confirmation',
-			//msgg_main: name => `Do you confirm?`,
-			callback: value => { }
-		},
-	 */
-}
-
-async function get_next_step2() {
-
-	const MAIN_MODE = {
-		msg_main: `What do you want to do?`,
-		callback: value => state.mode = value,
-		choices: [
-			{
-				msg_cta: 'Play',
-				value: 'play',
-				msgg_as_user: () => 'Let’s play!',
-			},
-			{
-				msg_cta: 'Manage Inventory',
-				value: 'inventory',
-				msgg_as_user: () => 'Let’s sort out my stuff.',
-			},
-			{
-				msg_cta: 'Manage Character',
-				value: 'character',
-				msgg_as_user: () => 'Let’s see how I’m doing!',
-			},
-		]
-	}
-
-	return state.name
-		? MAIN_MODE
-		: GET_NAME
-	//return GET_NAME
-}
-
-
-const no_ui = {
-	setup: () => {},
-	display_message: () => {},
-	read_answer: () => {},
-	teardown: () => {},
-}
-
-const chat = factory({
-	gen_next_step: get_next_step1(),
-	ui: process.stdout.isTTY
-		? tty_chat_ui_factory()
-		: no_ui,
-})
-chat.start()
-	.then(console.log)
-	.catch(console.error)

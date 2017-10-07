@@ -7,6 +7,7 @@ type ItemQualityColorizer = (q: ItemQuality, s: string) => string
 	ItemQualityColorizer,
 
 
+https://github.com/cronvel/terminal-kit
 
 function get_ansi_color_for_quality(quality: ItemQuality): string {
 	switch (quality) {
