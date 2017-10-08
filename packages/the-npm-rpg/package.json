@@ -11,7 +11,7 @@
 	},
 	"bin": "./bin/index.js",
 	"scripts": {
-		"start": "node src/index.js",
+		"start": "node src/v2/index.js",
 		"bin": "bin/index.js",
 		"build": "webpack --config meta/webpack.config.ts"
 	},
@@ -27,6 +27,7 @@
 		"@oh-my-rpg/logic-weapons": "^0.0.1",
 		"@oh-my-rpg/state-inventory": "^0.0.1",
 		"@oh-my-rpg/state-the-boring-rpg": "^0.0.1",
+		"@oh-my-rpg/view-chat": "^0.0.1",
 		"@oh-my-rpg/view-text": "^0.0.1",
 		"ansi-escapes": "^2.0.0",
 		"chalk": "^2.0.1",

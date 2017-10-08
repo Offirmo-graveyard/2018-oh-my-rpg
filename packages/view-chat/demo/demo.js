@@ -2,8 +2,8 @@
 ':' //# http://sambal.org/?p=1014 ; exec /usr/bin/env node "$0" "$@"
 'use strict';
 
-const { factory: tty_chat_ui_factory } = require('./ui_tty')
-const { factory: chat_factory } = require('./chat')
+const { factory: tty_chat_ui_factory } = require('../src/ui/tty')
+const { factory: chat_factory } = require('../src')
 
 const DEBUG = false
 

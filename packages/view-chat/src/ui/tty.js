@@ -4,8 +4,8 @@
 
 const readline = require('readline')
 const termSize = require('term-size')
-const { indent_string, wrap_string, prettify_json } = require('./libs')
-const { prettify_params_for_debug, get_shared_start } = require('./utils')
+const { indent_string, wrap_string, prettify_json } = require('../libs')
+const { prettify_params_for_debug, get_shared_start } = require('../utils')
 
 
 const MANY_BOX_HORIZ = '────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────'
