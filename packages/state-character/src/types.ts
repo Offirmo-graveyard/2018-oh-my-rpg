@@ -2,7 +2,7 @@ import { Enum } from 'typescript-string-enums'
 
 /////////////////////
 
-const CharacterStat = Enum(
+const CharacterAttribute = Enum(
 	'agility',
 	'health',
 	'level',
@@ -12,7 +12,7 @@ const CharacterStat = Enum(
 	'charisma',
 	'wisdom',
 )
-type CharacterStat = Enum<typeof CharacterStat>
+type CharacterAttribute = Enum<typeof CharacterAttribute>
 
 const CharacterClass = Enum(
 	'novice',
@@ -32,7 +32,7 @@ type CharacterClass = Enum<typeof CharacterClass>
 
 /////////////////////
 
-interface Attributes {
+interface CharacterAttributes {
 	level: number
 
 	health: number
@@ -48,16 +48,18 @@ interface Attributes {
 interface State {
 	name: string
 	klass: CharacterClass
-	attributes: Attributes
-	// inventory here ?
+	attributes: CharacterAttributes
+	// TODO inventory here ?
+
+	schema_version: number
 }
 
 /////////////////////
 
 export {
-	CharacterStat,
+	CharacterAttribute,
 	CharacterClass,
-	Attributes,
+	CharacterAttributes,
 	State,
 }
 

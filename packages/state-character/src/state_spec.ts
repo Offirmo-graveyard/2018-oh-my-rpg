@@ -1,5 +1,6 @@
+import { SCHEMA_VERSION } from './consts'
 import {
-	CharacterStat,
+	CharacterAttribute,
 	CharacterClass,
 	State,
 
@@ -7,7 +8,7 @@ import {
 	increase_stat,
 } from '.'
 
-describe('🤕 ❤️  Character stats logic', function() {
+describe('🤕 ❤️  Character state / reducer', function() {
 
 	describe('🆕  initial state', function() {
 
@@ -27,7 +28,9 @@ describe('🤕 ❤️  Character stats logic', function() {
 					charisma: 1,
 					wisdom: 1,
 					luck: 1
-				}
+				},
+
+				schema_version: SCHEMA_VERSION,
 			})
 		})
 	})
@@ -38,12 +41,12 @@ describe('🤕 ❤️  Character stats logic', function() {
 			let state = factory()
 
 			function increase_0() {
-				state = increase_stat(state, CharacterStat.agility, 0)
+				state = increase_stat(state, CharacterAttribute.agility, 0)
 			}
 			expect(increase_0).to.throw('invalid amount!')
 
 			function decrease() {
-				state = increase_stat(state, CharacterStat.agility, -1)
+				state = increase_stat(state, CharacterAttribute.agility, -1)
 			}
 			expect(decrease).to.throw('invalid amount!')
 		})
@@ -51,7 +54,7 @@ describe('🤕 ❤️  Character stats logic', function() {
 		it('should work in nominal case', function() {
 			let state = factory()
 
-			state = increase_stat(state, CharacterStat.agility)
+			state = increase_stat(state, CharacterAttribute.agility)
 			expect(state.attributes.agility).to.equal(2)
 			expect(state.attributes).to.deep.equal({
 				level: 1,
@@ -66,7 +69,7 @@ describe('🤕 ❤️  Character stats logic', function() {
 				luck: 1
 			})
 
-			state = increase_stat(state, CharacterStat.agility, 2)
+			state = increase_stat(state, CharacterAttribute.agility, 2)
 			expect(state.attributes.agility).to.equal(4)
 
 			expect(state.attributes).to.deep.equal({
@@ -82,7 +85,7 @@ describe('🤕 ❤️  Character stats logic', function() {
 				luck: 1
 			})
 
-			state = increase_stat(state, CharacterStat.agility)
+			state = increase_stat(state, CharacterAttribute.agility)
 			expect(state.attributes.agility).to.equal(5)
 
 			expect(state.attributes).to.deep.equal({

@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const consts_1 = require("./consts");
 const _1 = require(".");
-describe('🤕 ❤️  Character stats logic', function () {
+describe('🤕 ❤️  Character state / reducer', function () {
     describe('🆕  initial state', function () {
         it('should have correct defaults', function () {
             const state = _1.factory();
@@ -17,7 +18,8 @@ describe('🤕 ❤️  Character stats logic', function () {
                     charisma: 1,
                     wisdom: 1,
                     luck: 1
-                }
+                },
+                schema_version: consts_1.SCHEMA_VERSION,
             });
         });
     });
@@ -25,17 +27,17 @@ describe('🤕 ❤️  Character stats logic', function () {
         it('should fail on invalid amount', function () {
             let state = _1.factory();
             function increase_0() {
-                state = _1.increase_stat(state, _1.CharacterStat.agility, 0);
+                state = _1.increase_stat(state, _1.CharacterAttribute.agility, 0);
             }
             expect(increase_0).to.throw('invalid amount!');
             function decrease() {
-                state = _1.increase_stat(state, _1.CharacterStat.agility, -1);
+                state = _1.increase_stat(state, _1.CharacterAttribute.agility, -1);
             }
             expect(decrease).to.throw('invalid amount!');
         });
         it('should work in nominal case', function () {
             let state = _1.factory();
-            state = _1.increase_stat(state, _1.CharacterStat.agility);
+            state = _1.increase_stat(state, _1.CharacterAttribute.agility);
             expect(state.attributes.agility).to.equal(2);
             expect(state.attributes).to.deep.equal({
                 level: 1,
@@ -47,7 +49,7 @@ describe('🤕 ❤️  Character stats logic', function () {
                 wisdom: 1,
                 luck: 1
             });
-            state = _1.increase_stat(state, _1.CharacterStat.agility, 2);
+            state = _1.increase_stat(state, _1.CharacterAttribute.agility, 2);
             expect(state.attributes.agility).to.equal(4);
             expect(state.attributes).to.deep.equal({
                 level: 1,
@@ -59,7 +61,7 @@ describe('🤕 ❤️  Character stats logic', function () {
                 wisdom: 1,
                 luck: 1
             });
-            state = _1.increase_stat(state, _1.CharacterStat.agility);
+            state = _1.increase_stat(state, _1.CharacterAttribute.agility);
             expect(state.attributes.agility).to.equal(5);
             expect(state.attributes).to.deep.equal({
                 level: 1,
@@ -74,4 +76,4 @@ describe('🤕 ❤️  Character stats logic', function () {
         });
     });
 });
-//# sourceMappingURL=index_spec.js.map
+//# sourceMappingURL=state_spec.js.map

@@ -18,8 +18,6 @@ const options = {
 	may_clear_screen: true,
 	term_width: MINIMAL_TERMINAL_WIDTH,
 }
-
-
 options.is_interactive = !!process.stdout.isTTY // TODO read params also
 //options.is_interactive = false
 options.may_clear_screen = options.is_interactive

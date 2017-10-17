@@ -1,5 +1,5 @@
 import { Enum } from 'typescript-string-enums';
-declare const CharacterStat: {
+declare const CharacterAttribute: {
     agility: "agility";
     health: "health";
     level: "level";
@@ -9,7 +9,7 @@ declare const CharacterStat: {
     charisma: "charisma";
     wisdom: "wisdom";
 };
-declare type CharacterStat = Enum<typeof CharacterStat>;
+declare type CharacterAttribute = Enum<typeof CharacterAttribute>;
 declare const CharacterClass: {
     novice: "novice";
     warrior: "warrior";
@@ -25,7 +25,7 @@ declare const CharacterClass: {
     priest: "priest";
 };
 declare type CharacterClass = Enum<typeof CharacterClass>;
-interface Attributes {
+interface CharacterAttributes {
     level: number;
     health: number;
     mana: number;
@@ -38,6 +38,7 @@ interface Attributes {
 interface State {
     name: string;
     klass: CharacterClass;
-    attributes: Attributes;
+    attributes: CharacterAttributes;
+    schema_version: number;
 }
-export { CharacterStat, CharacterClass, Attributes, State };
+export { CharacterAttribute, CharacterClass, CharacterAttributes, State };
