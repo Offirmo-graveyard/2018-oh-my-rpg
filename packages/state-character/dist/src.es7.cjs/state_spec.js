@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const consts_1 = require("./consts");
 const _1 = require(".");
-describe('🤕 ❤️  Character state / reducer', function () {
+describe('🤕 ❤️  Character state - reducer', function () {
     describe('🆕  initial state', function () {
         it('should have correct defaults', function () {
             const state = _1.factory();

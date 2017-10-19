@@ -8,7 +8,7 @@ import {
 	increase_stat,
 } from '.'
 
-describe('🤕 ❤️  Character state / reducer', function() {
+describe('🤕 ❤️  Character state - reducer', function() {
 
 	describe('🆕  initial state', function() {
 

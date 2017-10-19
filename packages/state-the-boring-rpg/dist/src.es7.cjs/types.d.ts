@@ -47,7 +47,6 @@ interface Adventure {
 }
 interface State {
     meta: MetaState;
-    version: number;
     avatar: CharacterState;
     inventory: InventoryState;
     wallet: WalletState;
@@ -56,6 +55,6 @@ interface State {
     click_count: number;
     good_click_count: number;
     meaningful_interaction_count: number;
+    schema_version: number;
 }
-declare const VERSION = 9;
-export { VERSION, GainType, Adventure, State };
+export { GainType, Adventure, State };

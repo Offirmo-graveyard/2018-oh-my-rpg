@@ -1,7 +1,7 @@
 {
 	"name": "oh-my-rpg",
 	"version": "0.0.1",
-	"description": "Web based RPG",
+	"description": "My RPG framework, with composable building blocks + final RPG implementations. Isomorphic (node & browser), text based with progressive augmentations.",
 	"author": "Offirmo <offirmo.net@gmail.com>",
 	"license": "UNLICENSED",
 	"repository": {
@@ -19,6 +19,7 @@
 		"@types/lodash": "^4.14.76",
 		"lerna": "^2.2.0",
 		"lodash": "^4.17.4",
+		"npm-run-all": "^4.1.1",
 		"typescript": "^2.5.3"
 	}
 }

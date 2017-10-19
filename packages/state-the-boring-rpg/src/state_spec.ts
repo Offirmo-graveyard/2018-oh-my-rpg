@@ -13,13 +13,12 @@ import {
 } from '@oh-my-rpg/state-wallet'
 
 import {
-	VERSION,
 	factory,
 	migrate_to_latest,
 	play,
 } from '.'
 
-describe('⚔ 👑 😪  The Boring RPG', function() {
+describe('⚔ 👑 😪  The Boring RPG - reducer', function() {
 	beforeEach(() => xxx_internal_reset_prng_cache())
 
 	describe('🆕 initial state', function() {
@@ -43,37 +42,6 @@ describe('⚔ 👑 😪  The Boring RPG', function() {
 			// check our 2 predefined items are present and equipped
 			expect(get_equiped_item_count(state.inventory), 'equipped').to.equal(2)
 			expect(get_unequiped_item_count(state.inventory), 'unequipped').to.equal(0)
-		})
-	})
-
-	describe('XXX savegame migration', function() {
-
-		context('when the version is more recent', function() {
-			it('should throw with a meaningful error', () => {
-				function load() {
-					migrate_to_latest({
-						version: 99999
-					})
-				}
-				expect(load).to.throw('more recent version')
-			})
-		})
-
-		context('when the version is up to date', function() {
-			it('should return the state without change', () => {
-				const state = {
-					version: VERSION,
-					foo: 42
-				}
-				expect(migrate_to_latest(state)).to.deep.equal({
-					version: VERSION,
-					foo: 42
-				})
-			})
-		})
-
-		context('when the version is outdated', function() {
-			it('TODO should migrate to latest version')
 		})
 	})
 

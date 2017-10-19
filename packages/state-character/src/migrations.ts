@@ -1,29 +1,26 @@
-import {
-	LIB_ID,
-	SCHEMA_VERSION,
-} from './consts'
+import { LIB_ID, SCHEMA_VERSION } from './consts'
 import { State } from './types'
-import { factory } from './index'
+import { factory } from './state'
 
 
-function migrate_to_latest(state: any): State {
-	const src_version = state.version
+function migrate_to_latest(legacy_state: any): State {
+	const src_version = legacy_state.schema_version || 0
 
-	if (!state.version) {
-		// no previous data
-		return factory()
-	}
+	let state: State = factory()
 
 	if (src_version === SCHEMA_VERSION)
-		return state as State
+		state = legacy_state as State
+	else if (src_version > SCHEMA_VERSION)
+		throw new Error(`${LIB_ID}: Your data is from a more recent version of this lib. Please update!`)
+	else {
+		// TODO logger
+		console.warn(`${LIB_ID}: attempting to migrate schema from v${src_version} to v${SCHEMA_VERSION}...`)
+		state = migrate_to_1(legacy_state)
+	}
 
-	if (src_version > SCHEMA_VERSION)
-		throw new Error(`${LIB_ID}: You saved game was is from a more recent version of this game. Please update!`)
+	// migrate sub-reducers if any...
 
-	// TODO logger
-	console.warn(`${LIB_ID}: attempting to migrate schema from v${src_version} to v${SCHEMA_VERSION}...`)
-
-	return migrate_to_1(state)
+	return state
 }
 
 function migrate_to_1(legacy_state: any): State {
@@ -35,7 +32,7 @@ function migrate_to_1(legacy_state: any): State {
 			return {
 				name,
 				klass,
-				attributes: characteristics,
+				attributes: characteristics, //< renamed
 				schema_version: 1,
 			}
 	}
@@ -45,7 +42,7 @@ function migrate_to_1(legacy_state: any): State {
 
 function fail_migration_by_resetting(): State {
 	// TODO send event upwards
-	console.error(`${LIB_ID}: failed migrating, performing full reset !`)
+	console.error(`${LIB_ID}: failed migrating schema, performing full reset !`)
 	return factory()
 }
 

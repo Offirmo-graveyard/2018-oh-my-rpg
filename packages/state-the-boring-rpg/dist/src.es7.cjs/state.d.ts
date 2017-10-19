@@ -1,0 +1,11 @@
+import { CharacterClass } from '@oh-my-rpg/state-character';
+import { InventoryCoordinates } from '@oh-my-rpg/state-inventory';
+import { State, GainType, Adventure } from './types';
+declare function factory(): State;
+declare function appraise_item_at_coordinates(state: Readonly<State>, coordinates: InventoryCoordinates): number;
+declare function play(state: State, explicit_adventure_archetype_hid?: string): State;
+declare function equip_item(state: State, coordinates: InventoryCoordinates): State;
+declare function sell_item(state: State, coordinates: InventoryCoordinates): State;
+declare function rename_avatar(state: State, new_name: string): State;
+declare function change_avatar_class(state: State, klass: CharacterClass): State;
+export { GainType, Adventure, State, appraise_item_at_coordinates, factory, play, equip_item, sell_item, rename_avatar, change_avatar_class };

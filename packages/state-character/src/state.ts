@@ -2,10 +2,7 @@
 
 import { Enum } from 'typescript-string-enums'
 
-import {
-	LIB_ID,
-	SCHEMA_VERSION,
-} from './consts'
+import { LIB_ID, SCHEMA_VERSION } from './consts'
 
 import {
 	CharacterAttribute,

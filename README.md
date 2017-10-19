@@ -1,12 +1,19 @@
 # Oh My RPG ⚔ 👑
 
-
 ## Intro
-A [lerna](https://lernajs.io/) collection of packages featuring:
-- individual modules implementing RPG logic
-- actual RPGs using those packages (for now only the-npm-rpg)
 
-The modules are in TypeScript.
+My RPG framework, comprised of:
+* composable building blocks
+* final RPG implementations (using the blocks)
+Code is issomorphic, targeting node & browser. This is achieved by being text based with progressive augmentations:
+# pure text
+# text with emojis
+# text with styles: ASCII or CSS
+# pictures (displayable in browser or iterm2)
+# ...
+
+Under the hood, it's a [lerna](https://lernajs.io/) collection of packages.
+Those modules are either in TypeScript or JavaScript, whatever makes the most sense in each case.
 
 
 
@@ -15,7 +22,6 @@ The modules are in TypeScript.
 nvm install
 npm install --global lerna
 lerna bootstrap --hoist
-lerna run build:dev
 lerna run build
 ```
 
