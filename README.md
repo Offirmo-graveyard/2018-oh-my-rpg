@@ -1,16 +1,22 @@
 # Oh My RPG ⚔ 👑
 
+**If you're looking for:**
+- **the npm rpg** → go here: [README.md](packages/the-npm-rpg/README.md)
+
+
+
 ## Intro
 
 My RPG framework, comprised of:
 * composable building blocks
 * final RPG implementations (using the blocks)
-Code is issomorphic, targeting node & browser. This is achieved by being text based with progressive augmentations:
-# pure text
-# text with emojis
-# text with styles: ASCII or CSS
-# pictures (displayable in browser or iterm2)
-# ...
+
+Code is isomorphic, targeting node & browser. This is achieved by being text based with progressive augmentations:
+1. pure text
+1. text with emojis
+1. text with styles: ASCII or CSS
+1. pictures (displayable in browser or iterm2)
+1. ...
 
 Under the hood, it's a [lerna](https://lernajs.io/) collection of packages.
 Those modules are either in TypeScript or JavaScript, whatever makes the most sense in each case.
@@ -35,13 +41,20 @@ Example: see `packages/the-npm-rpg`
 ## Contributing
 ```bash
 lerna clean --yes
+npm run clean:deps & lerna run clean:deps
+lerna bootstrap --hoist
+lerna run clean:build
+lerna --sort run build
+```
+
+misc
+```bash
+lerna exec -- rm -rf dist
 rm -f package-lock.json & lerna exec -- rm -f package-lock.json
 rm -rf node_modules & lerna exec -- rm -rf node_modules
-lerna bootstrap --hoist
-lerna exec -- rm -rf dist
-lerna run build:dev
-lerna run build
 
+
+lerna bootstrap
 lerna exec -- npm outdated
 ```
 

@@ -9,7 +9,10 @@
 		"url": "git+https://github.com/online-adventures/oh-my-rpg.git"
 	},
 	"scripts": {
-		"demo:globalize": "node spikes/mod_globalize_001"
+		"clean:deps": "rm -rf package-lock.json node_modules",
+		"demo:globalize": "node spikes/mod_globalize_001",
+		"__helpers": "----------- Helpers -----------",
+		"clean": "npm run clean:deps"
 	},
 	"dependencies": {
 		"boxen": "^1.2.1"

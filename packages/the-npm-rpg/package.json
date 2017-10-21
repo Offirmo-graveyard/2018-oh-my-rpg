@@ -30,7 +30,7 @@
 		"@oh-my-rpg/view-chat": "^0.0.1",
 		"@oh-my-rpg/view-text": "^0.0.1",
 		"ansi-escapes": "^2.0.0",
-		"chalk": "^2.0.1",
+		"chalk": "^2.2.0",
 		"env-paths": "^1.0.0",
 		"fetchival": "^0.3.2",
 		"iana-tz-data": "^2017.1.0",

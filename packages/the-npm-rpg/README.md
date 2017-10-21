@@ -11,12 +11,13 @@ This is a simple command-line RPG. Every time you launch the command, something 
 
 ## TLDR; I want to play !
 
-Quick test, just:
+(need node > 8) Just:
 ```bash
 > npx  the-npm-rpg
 ```
 
-Full install, if you don't have npx or if you want to play faster:
+### Full install
+If you want to play faster:
 ```bash
 > npm install --global  the-npm-rpg
 > the-npm-rpg
@@ -27,6 +28,8 @@ Full install, if you don't have npx or if you want to play faster:
 Inspiration for the game itself was taken from the defunct "boring RPG" https://www.reddit.com/r/boringrpg/.
 
 Inspiration to turn it into a command-line RPG was taken from the "npx" utility, recently integrated to npm. https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b
+
+https://dev.to/nrobinson2000/why-you-need-terminal-bpd
 
 
 ## Troubleshooting

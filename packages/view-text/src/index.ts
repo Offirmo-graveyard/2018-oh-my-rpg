@@ -10,7 +10,7 @@ import { Weapon, get_damage_interval as get_weapon_damage_interval } from '@oh-m
 import { MonsterRank, Monster } from '@oh-my-rpg/logic-monsters'
 import { State as InventoryState, iterables_unslotted, get_item_in_slot } from '@oh-my-rpg/state-inventory'
 import { State as WalletState, Currency, get_currency_amount } from '@oh-my-rpg/state-wallet'
-import { State as CharacterState, CharacterStat, CHARACTER_STATS } from '@oh-my-rpg/state-character'
+import { State as CharacterState, CharacterAttribute, CHARACTER_STATS } from '@oh-my-rpg/state-character'
 import { Adventure, GainType } from '@oh-my-rpg/state-the-boring-rpg'
 
 import { TextStyle, RenderingOptions } from './types'
@@ -58,25 +58,25 @@ function get_item_icon_for(i: Item | null): string {
 	}
 }
 
-function get_characteristic_icon_for(stat: CharacterStat): string {
+function get_characteristic_icon_for(stat: CharacterAttribute): string {
 	switch(stat) {
-		case CharacterStat.level:
+		case CharacterAttribute.level:
 			return '👶'
-		case CharacterStat.health:
+		case CharacterAttribute.health:
 			return '💗'
-		case CharacterStat.mana:
+		case CharacterAttribute.mana:
 			return '💙'
 
-		case CharacterStat.agility:
+		case CharacterAttribute.agility:
 			return '🤸'
-		case CharacterStat.luck:
+		case CharacterAttribute.luck:
 			return '🤹'
-		case CharacterStat.strength:
+		case CharacterAttribute.strength:
 			// 💪
 			return '🏋'
-		case CharacterStat.charisma:
+		case CharacterAttribute.charisma:
 			return '🏊'
-		case CharacterStat.wisdom:
+		case CharacterAttribute.wisdom:
 			// '🙏'
 			return '👵'
 
@@ -170,7 +170,7 @@ function render_monster(m: Monster, options: RenderingOptions = DEFAULT_RENDERIN
 function render_characteristics(state: CharacterState, options: RenderingOptions = DEFAULT_RENDERING_OPTIONS): string {
 	const {last_adventure: la} = options
 
-	return CHARACTER_STATS.map((stat: CharacterStat) => {
+	return CHARACTER_STATS.map((stat: CharacterAttribute) => {
 		const icon = get_characteristic_icon_for(stat)
 		const label = stat
 		const value = state.attributes[stat]
@@ -279,7 +279,7 @@ function render_adventure(a: Adventure, options: RenderingOptions = DEFAULT_REND
 	const formattedWeapon = a.gains.weapon ? render_item(a.gains.weapon, options) : ''
 	const formattedArmor = a.gains.armor ? render_item(a.gains.armor, options) : ''
 	const formattedItem = formattedWeapon || formattedArmor
-	const charac_name: string = Enum.keys(CharacterStat).find(stat => !!a.gains[stat]) as string
+	const charac_name: string = Enum.keys(CharacterAttribute).find(stat => !!a.gains[stat]) as string
 
 	// formatting to natural language
 	const gains_for_display = {
