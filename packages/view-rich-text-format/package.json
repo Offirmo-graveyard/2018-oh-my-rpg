@@ -1,5 +1,5 @@
 {
-	"name": "@oh-my-rpg/view-rich-text",
+	"name": "@oh-my-rpg/view-rich-text-format",
 	"version": "0.0.1",
 	"description": "A rich text format for rendering to different plathorm: ascii, html...",
 	"main": "src/index.js",

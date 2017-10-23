@@ -30,15 +30,14 @@ const SUBNODE_HR = {
 	$content: '',
 }
 
-
-function walk_content({state, $content, $subnodes, callbacks, $node, $depth}) {
+function walk_content({state, $content, $subnodes, callbacks, $node, depth}) {
 	const split1 = $content.split('{{')
 
 	state = callbacks.on_concatenate_str({
 		state,
 		str: split1.shift(),
 		$node,
-		$depth,
+		depth,
 	})
 
 	state = split1.reduce((state, paramAndText) => {
@@ -51,7 +50,7 @@ function walk_content({state, $content, $subnodes, callbacks, $node, $depth}) {
 			state,
 			id: subnode_id,
 			$node,
-			$depth,
+			depth,
 		})
 
 		let $subnode = $subnodes[subnode_id]
@@ -68,15 +67,15 @@ function walk_content({state, $content, $subnodes, callbacks, $node, $depth}) {
 		let sub_state = walk($subnode, callbacks, {
 			$parent_node: $node,
 			$id: subnode_id,
-			$depth: $depth + 1,
+			depth: depth + 1,
 		})
 
 		sub_state = $filters.reduce(
 			(state, $filter) => {
 				const fine_filter_cb = `on_filter_${$filter}`
 				if (callbacks[fine_filter_cb])
-					return callbacks[fine_filter_cb]({ state, $filter, $node, $filters, $depth})
-				return callbacks.on_filter({ state, $filter, $node, $filters, $depth})
+					return callbacks[fine_filter_cb]({ state, $filter, $node, $filters, depth})
+				return callbacks.on_filter({ state, $filter, $node, $filters, depth})
 			},
 			sub_state,
 		)
@@ -86,16 +85,17 @@ function walk_content({state, $content, $subnodes, callbacks, $node, $depth}) {
 		state = callbacks.on_concatenate_subnode({
 			state,
 			sub_state,
-			$subnode,
-			$node,
-			$depth,
+			id: subnode_id,
+			$node: $subnode,
+			$parent_node: $node,
+			depth,
 		})
 
 		state = callbacks.on_concatenate_str({
 			state,
 			str: split2[0],
 			$node,
-			$depth,
+			depth,
 		})
 
 		return state
@@ -104,7 +104,7 @@ function walk_content({state, $content, $subnodes, callbacks, $node, $depth}) {
 	return state
 }
 
-function walk($raw_node, callbacks, { $parent_node, $parent_classes, $depth = 0, $id = 'root' } = {}) {
+function walk($raw_node, callbacks, { $parent_node, $parent_classes, depth = 0, $id = 'root' } = {}) {
 	const {
 		$v = 1,
 		$type = 'span',
@@ -122,7 +122,8 @@ function walk($raw_node, callbacks, { $parent_node, $parent_classes, $depth = 0,
 		$type,
 		$classes,
 		$content,
-		...$subnodes
+		...$subnodes,
+		$sub_node_count: Object.keys($subnodes).length,
 	}
 
 	const isRoot = !$parent_node
@@ -134,29 +135,53 @@ function walk($raw_node, callbacks, { $parent_node, $parent_classes, $depth = 0,
 		callbacks.begin()
 	}
 
-	let state = callbacks.on_node_enter({ $node, $id, $depth })
+	let state = callbacks.on_node_enter({ $node, $id, depth })
 
 	// TODO class begin / start ?
 
 	state = $classes.reduce(
-		(state, $class) => callbacks.on_class_before({ state, $class, $node, $depth }),
+		(state, $class) => callbacks.on_class_before({ state, $class, $node, depth }),
 		state
 	)
 
-	state = walk_content({state, $content, $subnodes, callbacks, $node, $depth })
+	if ($type === 'ul' || $type === 'ol') {
+		const sorted_keys = Object.keys($subnodes).sort()
+		sorted_keys.forEach(key => {
+			const $subnode = {
+				$type: 'li',
+				$content: `{{${key}}}`,
+				[key]: $subnodes[key]
+			}
+			let sub_state = walk($subnode, callbacks, {
+				$parent_node: $node,
+				$id: key,
+				depth: depth + 1,
+			})
+			state = callbacks.on_concatenate_subnode({
+				state,
+				sub_state,
+				id: key,
+				$node: $subnode,
+				$parent_node: $node,
+				depth,
+			})
+		})
+	}
+	else
+		state = walk_content({state, $content, $subnodes, callbacks, $node, depth })
 
 	state = $classes.reduce(
-		(state, $class) => callbacks.on_class_after({ state, $class, $node, $depth }),
+		(state, $class) => callbacks.on_class_after({ state, $class, $node, depth }),
 		state
 	)
 
 	const fine_type_cb = `on_type_${$type}`
 	if (callbacks[fine_type_cb])
-		state = callbacks[fine_type_cb]({ state, $type, $node, $depth })
+		state = callbacks[fine_type_cb]({ state, $type, $node, depth })
 	else
-		state = callbacks.on_type({ state, $type, $node, $depth })
+		state = callbacks.on_type({ state, $type, $node, depth })
 
-	state = callbacks.on_node_exit({state, $node, $id, $depth})
+	state = callbacks.on_node_exit({state, $node, $id, depth})
 
 	if (!$parent_node)
 		callbacks.end()

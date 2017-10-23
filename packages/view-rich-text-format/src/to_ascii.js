@@ -23,11 +23,22 @@ function apply_class({$class, str}) {
 	}
 }
 
+function on_concatenate_subnode({state, sub_state, id, $parent_node}) {
+	if ($parent_node.$type === 'ul')
+		return state + '\n - ' + sub_state
+
+	if ($parent_node.$type === 'ol')
+		return state + `\n ${(' ' + id).slice(-2)}. ` + sub_state
+
+	return state + sub_state
+}
+
 module.exports = {
 	on_node_enter: () => '',
 	on_concatenate_str: ({state, str}) => state + str,
-	on_concatenate_subnode: ({state, sub_state}) => state + sub_state,
+	on_concatenate_subnode,
 	on_class_after: ({state: str, $class}) => apply_class({$class, str}),
 	on_type_br: ({state}) => state + '\n',
 	on_type_hr: ({state}) => state + '\n------------------------------------------------------------\n',
 }
+
