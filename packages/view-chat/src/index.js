@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const { prettify_json } = require('./libs')
 const { prettify_params_for_debug } = require('./utils')

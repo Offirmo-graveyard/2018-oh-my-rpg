@@ -23,7 +23,7 @@ function sell_item({config}, coordinates) {
 
 function appraise_item_at_coordinates({config}, coordinates) {
 	let state = config.store
-	return appraise_item_at_coordinates(state, coordinates)
+	return tbrpg.appraise_item_at_coordinates(state, coordinates)
 }
 
 function does_item_exist_at_coordinate({config}, coordinates) {

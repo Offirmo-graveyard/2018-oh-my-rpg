@@ -1,6 +1,6 @@
 #!/bin/sh
 ':' //# http://sambal.org/?p=1014 ; exec /usr/bin/env node "$0" "$@"
-'use strict';
+"use strict";
 
 const readline = require('readline')
 const termSize = require('term-size')
@@ -10,11 +10,16 @@ const { prettify_params_for_debug, get_shared_start } = require('../utils')
 
 const MANY_BOX_HORIZ = '────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────'
 const MANY_SPACES = '                                                                                                                                                                  '
-
+const LIB = 'view-chat/tty'
 
 function alpha_to_nice_unicode(char) {
-	return '' + char + '\u20e3'
+	return ' ' + char + '\u20e3'
 }
+
+function key_to_string(key) {
+	return key.name
+}
+
 
 function factory({DEBUG, shouldCenter}) {
 	if (DEBUG) console.log('↘ tty_chat_ui_factory()')
@@ -82,15 +87,104 @@ function factory({DEBUG, shouldCenter}) {
 
 
 	function decorate_choices_with_key(step) {
-		const unhinted_choices = step.choices.filter(choice => !choice.key_hint)
-		const common_value_part = get_shared_start(unhinted_choices.map(choice => choice.msg_cta.toLowerCase()))
+		// init
 		step.choices.forEach(choice => {
-			const key = choice.key_hint || {
-				name: choice.msg_cta.toLowerCase().slice(common_value_part.length)[0]
+			choice._ui_tty = choice._ui_tty || {}
+		})
+
+		const affected_keys = new Set()
+		const unhinted_choices = []
+
+		// 1st follow hints, provided they don't collide
+		const seen_key_hints = new Set()
+		step.choices.forEach(choice => {
+			if (!choice.key_hint) {
+				unhinted_choices.push(choice)
+				return
 			}
 
-			choice._ui_tty = {key}
+			const key_hash = key_to_string(choice.key_hint)
+			if (seen_key_hints.has(key_hash)) {
+				// collision between hints
+				if (DEBUG) console.log(`collision between key hints for key "${key_hash}"!`)
+				// ignore hint for this choice
+				unhinted_choices.push(choice)
+				return
+			}
+
+			seen_key_hints.add(key_hash)
+			affected_keys.add(key_hash)
+
+			choice.key = choice.key_hint
 		})
+
+		// naive affectation for unhinted ones (may collide)
+		unhinted_choices.forEach(choice => {
+			choice._ui_tty.key = {
+					name: choice.msg_cta.toLowerCase()[0]
+				}
+		})
+
+		// find colliding choices with same key
+		function find_unaffected_key(hintstr) {
+			hintstr = hintstr + 'abcdefghijklmnopqrstuvwxyz1234567890'
+			for (let i=0; i < hintstr.length; i++) {
+				let candidate_key = {
+					name: hintstr.charAt(i)
+				}
+				let candidate_keystr = key_to_string(candidate_key)
+				if (!affected_keys.has(candidate_keystr))
+					return candidate_key
+			}
+			throw new Error(`${LIB}: couldn't find any keystroke, no letter left...`)
+		}
+
+		let have_collisions = false
+		let potentially_colliding_choices = unhinted_choices
+		do {
+			have_collisions = false
+
+			const groups = {}
+			potentially_colliding_choices.forEach(choice => {
+				const key_hash = key_to_string(choice._ui_tty.key)
+				groups[key_hash] = groups[key_hash] || []
+				groups[key_hash].push(choice)
+				if (groups[key_hash].length > 1)
+					have_collisions = true
+			})
+
+			if (!have_collisions)
+				break
+
+			potentially_colliding_choices = []
+
+			Object.keys(groups).forEach(key_hash => {
+				if (groups[key_hash].length === 1) {
+					// perfect, no collision
+					affected_keys.add(key_hash)
+					return
+				}
+
+				// collision
+				const colliding_choices = groups[key_hash]
+				const common_value_part = get_shared_start(colliding_choices.map(choice => choice.msg_cta.toLowerCase()))
+				colliding_choices.forEach(choice => {
+					let candidate_key = {
+						name: choice.msg_cta.toLowerCase().slice(common_value_part.length)[0]
+					}
+					let candidate_key_hash = key_to_string(candidate_key)
+
+					if (affected_keys.has(candidate_key_hash)) {
+						// find another one
+						candidate_key = find_unaffected_key(hintstr)
+						candidate_key_hash = key_to_string(candidate_key)
+					}
+					choice._ui_tty.key = candidate_key
+					affected_keys.add(candidate_key_hash)
+				})
+			})
+		} while(have_collisions)
+
 		const allowed_keys = step.choices.map(choice => choice._ui_tty.key.name).join(',')
 		if (DEBUG) console.log('  available choices: ' + allowed_keys)
 	}

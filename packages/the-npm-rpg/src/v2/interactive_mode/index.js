@@ -2,19 +2,24 @@
 const { factory: tty_chat_ui_factory } = require('@oh-my-rpg/view-chat/src/ui/tty')
 const { factory: chat_factory } = require('@oh-my-rpg/view-chat')
 
-const { prettifyJson } = require('../deps')
+const { stylize_string } = require('../libs')
+const { prettify_json_for_debug } = require('../utils')
+
+function is_first_launch({config}) {
+	const state = config.store
+	const {good_click_count} = state
+
+	return (good_click_count === 0)
+}
+
 
 function get_recap({config}) {
 	const state = config.store
-	console.log('state', prettifyJson(state), '---')
+	//console.log('state', prettify_json_for_debug(state))
 	const {good_click_count} = state
 
 	if (good_click_count === 0)
-		return stylizeString.bold(`Congratulations, adventurer!\n`)
-			+ `Your are more courageous, cunning and curious than your peers:
-You dared to enter this unknown realm, for glory and adventures! (and loot 💰 ;)
-
-Great sages prophetized your coming,
+		return `Great sages prophetized your coming,
 commoners are waiting for their hero
 and kings are trembling from fear of change...
 ..undoubtly, you'll make a name in this world and fulfill your destiny!
@@ -31,7 +36,7 @@ A great saga just started...`
 		wisdom,
 		luck,
 	} = state.avatar.attributes
-	return `The great saga of ${stylizeString.bold(state.avatar.name)}, ${state.avatar.klass} LVL${level}
+	return `The great saga of ${stylize_string.bold(state.avatar.name)}, ${state.avatar.klass} LVL${level}
 HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS:${wisdom} LUCK:${luck}`
 }
 
@@ -39,7 +44,43 @@ HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS
 
 
 function start_loop(options) {
-	const DEBUG = !!options.verbose
+	const DEBUG = options.verbose
+	if (DEBUG) console.log('all options:', prettify_json_for_debug(options))
+
+	const state = {
+		count: 0,
+		mode: 'main',
+	}
+
+	const MSG_INTRO = {
+		type: 'simple_message',
+		msg_main: stylize_string.bold(`Congratulations, adventurer!\n`)
+		+ `Your are more courageous, cunning and curious than your peers:
+You dared to enter this unknown realm, for glory and adventures! (and loot 💰 ;)`,
+	}
+
+
+	const MODE_MAIN = {
+		msg_main: `What do you want to do?`,
+		callback: value => state.mode = value,
+		choices: [
+			{
+				msg_cta: 'Play',
+				value: 'play',
+				msgg_as_user: () => 'Let’s play!',
+			},
+			{
+				msg_cta: 'Manage Inventory',
+				value: 'inventory',
+				msgg_as_user: () => 'Let’s sort out my stuff.',
+			},
+			{
+				msg_cta: 'Manage Character',
+				value: 'character',
+				msgg_as_user: () => 'Let’s see how I’m doing!',
+			},
+		]
+	}
 
 	function* gen_next_step() {
 		const state = {
@@ -49,13 +90,21 @@ function start_loop(options) {
 
 		let yielded
 
-		console.log('all', prettifyJson(options), '---')
+		if (is_first_launch(options)) {
+			state.count++
+			yielded = yield MSG_INTRO
+		}
+
+		state.count++
+		yielded = yield {
+			type: 'simple_message',
+			msg_main: get_recap(options),
+		}
+
 		do {
-			yielded = yield {
-				type: 'simple_message',
-				msg_main: get_recap(options),
-			}
-		} while (true)
+			state.count++
+			yielded = yield MODE_MAIN
+		} while (state.count < 10)
 
 		/*yield* [
 
@@ -109,9 +158,9 @@ function start_loop(options) {
 	}
 
 	const chat = chat_factory({
-		DEBUG,
+		DEBUG: false,
 		gen_next_step: gen_next_step(),
-		ui: tty_chat_ui_factory({DEBUG}),
+		ui: tty_chat_ui_factory({DEBUG: false}),
 	})
 
 	return chat.start()
