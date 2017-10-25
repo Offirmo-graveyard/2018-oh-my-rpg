@@ -15,6 +15,9 @@ describe('🤕 ❤️  Character state - reducer', function() {
 		it('should have correct defaults', function() {
 			const state = factory()
 			expect(state).to.deep.equal({
+				schema_version: SCHEMA_VERSION,
+				revision: 0,
+
 				name: '[anonymous]',
 				klass: CharacterClass.novice,
 				attributes: {
@@ -29,8 +32,6 @@ describe('🤕 ❤️  Character state - reducer', function() {
 					wisdom: 1,
 					luck: 1
 				},
-
-				schema_version: SCHEMA_VERSION,
 			})
 		})
 	})
@@ -101,5 +102,7 @@ describe('🤕 ❤️  Character state - reducer', function() {
 				luck: 1
 			})
 		})
+
+		it('should cap')
 	})
 })

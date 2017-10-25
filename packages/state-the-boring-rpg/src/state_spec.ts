@@ -1,4 +1,10 @@
 
+import * as MetaState from '@oh-my-rpg/state-meta'
+import * as CharacterState from '@oh-my-rpg/state-character'
+import * as WalletState from '@oh-my-rpg/state-wallet'
+import * as InventoryState from '@oh-my-rpg/state-inventory'
+import * as PRNGState from '@oh-my-rpg/state-prng'
+
 import { xxx_internal_reset_prng_cache } from '@oh-my-rpg/state-prng'
 import { ALL_GOOD_ADVENTURE_ARCHETYPES } from '@oh-my-rpg/logic-adventures'
 import {
@@ -12,6 +18,8 @@ import {
 	get_currency_amount,
 } from '@oh-my-rpg/state-wallet'
 
+import { LIB_ID, SCHEMA_VERSION } from './consts'
+
 import {
 	factory,
 	migrate_to_latest,
@@ -21,19 +29,23 @@ import {
 describe('⚔ 👑 😪  The Boring RPG - reducer', function() {
 	beforeEach(() => xxx_internal_reset_prng_cache())
 
-	describe('🆕 initial state', function() {
+	describe('🆕  initial state', function() {
 
 		it('should be correct', function() {
 			const state = factory()
 
+			expect(Object.keys(state)).to.have.lengthOf(11) // this test should be updated if that changes
+
 			// check presence of sub-states
-			expect(state).to.have.property('meta')
-			expect(state).to.have.property('avatar')
-			expect(state).to.have.property('inventory')
-			expect(state).to.have.property('wallet')
-			expect(state).to.have.property('prng')
+			expect(state, 'meta').to.have.property('meta')
+			expect(state, 'avatar').to.have.property('avatar')
+			expect(state, 'inventory').to.have.property('inventory')
+			expect(state, 'wallet').to.have.property('wallet')
+			expect(state, 'prng').to.have.property('prng')
 
 			// init of custom values
+			expect(state).to.have.property('schema_version', SCHEMA_VERSION)
+			expect(state).to.have.property('revision', 0)
 			expect(state).to.have.property('click_count', 0)
 			expect(state).to.have.property('good_click_count', 0)
 			expect(state).to.have.property('meaningful_interaction_count', 0)
@@ -123,7 +135,7 @@ describe('⚔ 👑 😪  The Boring RPG - reducer', function() {
 							if (state.last_adventure!.hid.startsWith('fight_'))
 								break
 						}
-						console.log(state.last_adventure)
+						//console.log(state.last_adventure)
 						expect(state.last_adventure!.encounter).to.exist
 						expect(state.last_adventure!.encounter!.level).to.be.within(400, 600)
 					})

@@ -10,6 +10,8 @@ const constants_1 = require("./constants");
 const WEAPON_BASES = static_weapon_data.filter((weapon_component) => weapon_component.type === types_1.WeaponPartType.base);
 const WEAPON_QUALIFIERS1 = static_weapon_data.filter((weapon_component) => weapon_component.type === types_1.WeaponPartType.qualifier1);
 const WEAPON_QUALIFIERS2 = static_weapon_data.filter((weapon_component) => weapon_component.type === types_1.WeaponPartType.qualifier2);
+const MIN_ENHANCEMENT_LEVEL = 0;
+exports.MIN_ENHANCEMENT_LEVEL = MIN_ENHANCEMENT_LEVEL;
 const MAX_ENHANCEMENT_LEVEL = 8;
 exports.MAX_ENHANCEMENT_LEVEL = MAX_ENHANCEMENT_LEVEL;
 const MIN_STRENGTH = 1;
@@ -84,5 +86,26 @@ function get_medium_damage(weapon) {
     return Math.round((damage_range[0] + damage_range[1]) / 2);
 }
 exports.get_medium_damage = get_medium_damage;
+/////////////////////
+const DEMO_WEAPON_1 = {
+    slot: definitions_1.InventorySlot.weapon,
+    base_hid: WEAPON_BASES[0].hid,
+    qualifier1_hid: WEAPON_QUALIFIERS1[0].hid,
+    qualifier2_hid: WEAPON_QUALIFIERS2[0].hid,
+    quality: definitions_1.ItemQuality.uncommon,
+    base_strength: MIN_STRENGTH + 1,
+    enhancement_level: MIN_ENHANCEMENT_LEVEL,
+};
+exports.DEMO_WEAPON_1 = DEMO_WEAPON_1;
+const DEMO_WEAPON_2 = {
+    slot: definitions_1.InventorySlot.weapon,
+    base_hid: WEAPON_BASES[1].hid,
+    qualifier1_hid: WEAPON_QUALIFIERS1[1].hid,
+    qualifier2_hid: WEAPON_QUALIFIERS2[1].hid,
+    quality: definitions_1.ItemQuality.legendary,
+    base_strength: MAX_STRENGTH - 1,
+    enhancement_level: MAX_ENHANCEMENT_LEVEL,
+};
+exports.DEMO_WEAPON_2 = DEMO_WEAPON_2;
 /////////////////////
 //# sourceMappingURL=index.js.map

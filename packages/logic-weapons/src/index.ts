@@ -19,6 +19,7 @@ const WEAPON_QUALIFIERS1: {type: 'qualifier1', hid: string}[] =
 const WEAPON_QUALIFIERS2: {type: 'qualifier2', hid: string}[] =
 	static_weapon_data.filter((weapon_component: any) => weapon_component.type === WeaponPartType.qualifier2)
 
+const MIN_ENHANCEMENT_LEVEL = 0
 const MAX_ENHANCEMENT_LEVEL = 8
 const MIN_STRENGTH = 1
 const MAX_STRENGTH = 20
@@ -104,9 +105,32 @@ function get_medium_damage(weapon: Weapon): number {
 
 /////////////////////
 
+const DEMO_WEAPON_1: Weapon = {
+	slot: InventorySlot.weapon,
+	base_hid: WEAPON_BASES[0].hid,
+	qualifier1_hid: WEAPON_QUALIFIERS1[0].hid,
+	qualifier2_hid: WEAPON_QUALIFIERS2[0].hid,
+	quality: ItemQuality.uncommon,
+	base_strength: MIN_STRENGTH + 1,
+	enhancement_level: MIN_ENHANCEMENT_LEVEL,
+}
+
+const DEMO_WEAPON_2: Weapon = {
+	slot: InventorySlot.weapon,
+	base_hid: WEAPON_BASES[1].hid,
+	qualifier1_hid: WEAPON_QUALIFIERS1[1].hid,
+	qualifier2_hid: WEAPON_QUALIFIERS2[1].hid,
+	quality: ItemQuality.legendary,
+	base_strength: MAX_STRENGTH - 1,
+	enhancement_level: MAX_ENHANCEMENT_LEVEL,
+}
+
+/////////////////////
+
 export {
 	WeaponPartType,
 	Weapon,
+	MIN_ENHANCEMENT_LEVEL,
 	MAX_ENHANCEMENT_LEVEL,
 	MIN_STRENGTH,
 	MAX_STRENGTH,
@@ -115,6 +139,9 @@ export {
 	enhance,
 	get_damage_interval,
 	get_medium_damage,
+
+	DEMO_WEAPON_1,
+	DEMO_WEAPON_2,
 }
 
 /////////////////////

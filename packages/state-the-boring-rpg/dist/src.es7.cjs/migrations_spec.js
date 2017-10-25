@@ -1,66 +1,70 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = require("lodash");
+const deepFreeze = require("deep-freeze-strict");
 const consts_1 = require("./consts");
 const migrations_1 = require("./migrations");
-const DATA_v1_20171017 = {
+const state_1 = require("./state");
+const DATA_v0 = state_1.OLDEST_LEGACY_STATE_FOR_TESTS;
+const DATA_OLDEST = DATA_v0;
+const DATA_v1_20171025 = deepFreeze({
     meta: {
-        uuid: '0ce9c180-e86e-4225-a913-3dc9519600aa',
+        uuid: 'd4759a75-81a2-4730-a0ef-79c7d0356ee8',
         name: 'Offirmo',
         email: 'offirmo.net@gmail.com',
-        allow_telemetry: true,
+        allow_telemetry: false
     },
     avatar: {
         name: 'Perte',
         klass: 'paladin',
         characteristics: {
-            level: 7,
+            level: 13,
             health: 12,
             mana: 23,
-            strength: 3,
-            agility: 4,
-            charisma: 5,
-            wisdom: 6,
-            luck: 7,
-        },
+            strength: 4,
+            agility: 5,
+            charisma: 6,
+            wisdom: 7,
+            luck: 8
+        }
     },
     inventory: {
         unslotted_capacity: 20,
         slotted: {
-            weapon: {
-                slot: 'weapon',
-                base_hid: 'claw',
-                qualifier1_hid: 'invincible',
-                qualifier2_hid: 'executioner',
-                quality: 'common',
-                base_strength: 20,
-                enhancement_level: 3,
-            },
             armor: {
                 slot: 'armor',
-                base_hid: 'mantle',
-                qualifier1_hid: 'golden',
-                qualifier2_hid: 'warfield_king',
+                base_hid: 'belt',
+                qualifier1_hid: 'brass',
+                qualifier2_hid: 'apprentice',
+                quality: 'legendary',
+                base_strength: 19,
+                enhancement_level: 8,
+            },
+            weapon: {
+                slot: 'weapon',
+                base_hid: 'axe',
+                qualifier1_hid: 'admirable',
+                qualifier2_hid: 'adjudicator',
                 quality: 'uncommon',
-                base_strength: 14,
-                enhancement_level: 1,
+                base_strength: 2,
+                enhancement_level: 0,
             },
         },
         unslotted: [
             {
-                slot: 'armor',
-                base_hid: 'shoulders',
-                qualifier1_hid: 'robust',
-                qualifier2_hid: 'pioneer',
-                quality: 'common',
-                base_strength: 15,
-                enhancement_level: 0,
+                slot: 'weapon',
+                base_hid: 'bow',
+                qualifier1_hid: 'arcanic',
+                qualifier2_hid: 'ambassador',
+                quality: 'legendary',
+                base_strength: 19,
+                enhancement_level: 8,
             },
             {
                 slot: 'armor',
-                base_hid: 'helmet',
-                qualifier1_hid: 'sapphire',
-                qualifier2_hid: 'warfield',
+                base_hid: 'armguards',
+                qualifier1_hid: 'bone',
+                qualifier2_hid: 'ancients',
                 quality: 'uncommon',
                 base_strength: 2,
                 enhancement_level: 0,
@@ -82,26 +86,21 @@ const DATA_v1_20171017 = {
             null,
             null,
             null,
-            null,
-        ],
+            null
+        ]
     },
     wallet: {
-        coin_count: 1750,
-        token_count: 34,
+        coin_count: 23456,
+        token_count: 89,
     },
     prng: {
-        seed: 987,
-        use_count: 456,
+        seed: 1234,
+        use_count: 107,
     },
     last_adventure: {
         hid: 'fight_lost_any',
         good: true,
-        encounter: {
-            name: 'chicken',
-            level: 7,
-            rank: 'elite',
-            possible_emoji: '🐓',
-        },
+        encounter: { name: 'chicken', level: 7, rank: 'elite', possible_emoji: '🐓' },
         gains: {
             level: 0,
             health: 0,
@@ -117,139 +116,16 @@ const DATA_v1_20171017 = {
             weapon: null,
             armor_improvement: false,
             weapon_improvement: false,
-        },
+        }
     },
     click_count: 86,
     good_click_count: 86,
     meaningful_interaction_count: 86,
     schema_version: 1,
-};
-Object.freeze(DATA_v1_20171017);
-const DATA_OLDEST = DATA_v1_20171017;
-const DATA_v1_20171018 = {
-    meta: {
-        uuid: '0ce9c180-e86e-4225-a913-3dc9519600aa',
-        name: 'Offirmo',
-        email: 'offirmo.net@gmail.com',
-        allow_telemetry: true,
-    },
-    avatar: {
-        name: 'Perte',
-        klass: 'paladin',
-        attributes: {
-            level: 7,
-            health: 12,
-            mana: 23,
-            strength: 3,
-            agility: 4,
-            charisma: 5,
-            wisdom: 6,
-            luck: 7,
-        },
-        schema_version: 1,
-    },
-    inventory: {
-        unslotted_capacity: 20,
-        slotted: {
-            weapon: {
-                slot: 'weapon',
-                base_hid: 'claw',
-                qualifier1_hid: 'invincible',
-                qualifier2_hid: 'executioner',
-                quality: 'common',
-                base_strength: 20,
-                enhancement_level: 3,
-            },
-            armor: {
-                slot: 'armor',
-                base_hid: 'mantle',
-                qualifier1_hid: 'golden',
-                qualifier2_hid: 'warfield_king',
-                quality: 'uncommon',
-                base_strength: 14,
-                enhancement_level: 1,
-            },
-        },
-        unslotted: [
-            {
-                slot: 'armor',
-                base_hid: 'shoulders',
-                qualifier1_hid: 'robust',
-                qualifier2_hid: 'pioneer',
-                quality: 'common',
-                base_strength: 15,
-                enhancement_level: 0,
-            },
-            {
-                slot: 'armor',
-                base_hid: 'helmet',
-                qualifier1_hid: 'sapphire',
-                qualifier2_hid: 'warfield',
-                quality: 'uncommon',
-                base_strength: 2,
-                enhancement_level: 0,
-            },
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-        ],
-    },
-    wallet: {
-        coin_count: 1750,
-        token_count: 34,
-    },
-    prng: {
-        seed: 987,
-        use_count: 456,
-    },
-    last_adventure: {
-        hid: 'fight_lost_any',
-        good: true,
-        encounter: {
-            name: 'chicken',
-            level: 7,
-            rank: 'elite',
-            possible_emoji: '🐓',
-        },
-        gains: {
-            level: 0,
-            health: 0,
-            mana: 0,
-            strength: 0,
-            agility: 0,
-            charisma: 0,
-            wisdom: 0,
-            luck: 1,
-            coins: 0,
-            tokens: 0,
-            armor: null,
-            weapon: null,
-            armor_improvement: false,
-            weapon_improvement: false,
-        },
-    },
-    click_count: 86,
-    good_click_count: 86,
-    meaningful_interaction_count: 86,
-    schema_version: 1,
-};
-Object.freeze(DATA_v1_20171018);
-const DATA_LATEST = DATA_v1_20171018;
+    revision: 0,
+});
+const DATA_v2_20171026 = state_1.DEMO_STATE;
+const DATA_LATEST = state_1.DEMO_STATE;
 describe('⚔ 👑 😪  The Boring RPG - schema migration', function () {
     context('when the version is more recent', function () {
         it('should throw with a meaningful error', () => {
@@ -267,7 +143,24 @@ describe('⚔ 👑 😪  The Boring RPG - schema migration', function () {
     });
     context('when the version is outdated', function () {
         it('should migrate to latest version', () => {
-            expect(migrations_1.migrate_to_latest(lodash_1.cloneDeep(DATA_OLDEST))).to.deep.equal(DATA_LATEST);
+            expect(migrations_1.migrate_to_latest(lodash_1.cloneDeep(DATA_OLDEST), state_1.MIGRATION_HINTS_FOR_TESTS)).to.deep.equal(DATA_LATEST);
+        });
+    });
+    describe('individual migration functions', function () {
+        describe(`2 to latest`, function () {
+            it('should work', () => {
+                expect(migrations_1.migrate_to_latest(lodash_1.cloneDeep(DATA_v2_20171026), state_1.MIGRATION_HINTS_FOR_TESTS)).to.deep.equal(DATA_LATEST);
+            });
+        });
+        describe(`1 to latest`, function () {
+            it('should work', () => {
+                expect(migrations_1.migrate_to_latest(lodash_1.cloneDeep(DATA_v1_20171025), state_1.MIGRATION_HINTS_FOR_TESTS)).to.deep.equal(DATA_LATEST);
+            });
+        });
+        describe(`0 to latest`, function () {
+            it('should work', () => {
+                expect(migrations_1.migrate_to_latest(lodash_1.cloneDeep(DATA_v0), state_1.MIGRATION_HINTS_FOR_TESTS)).to.deep.equal(DATA_LATEST);
+            });
         });
     });
 });

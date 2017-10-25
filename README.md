@@ -66,6 +66,7 @@ lerna exec -- npm outdated
 * https://gamedevelopment.tutsplus.com/categories/game-design
   * https://gamedevelopment.tutsplus.com/tutorials/making-difficult-fun-how-to-challenge-your-players--cms-25873
 * ;-) https://gamedevelopment.tutsplus.com/articles/3-questions-to-help-you-finish-your-first-game--gamedev-9576
+* https://github.com/mozilla/BrowserQuest
 
 ```bash
 git push --set-upstream origin master

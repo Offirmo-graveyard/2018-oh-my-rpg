@@ -8,4 +8,7 @@ declare function equip_item(state: State, coordinates: InventoryCoordinates): St
 declare function sell_item(state: State, coordinates: InventoryCoordinates): State;
 declare function rename_avatar(state: State, new_name: string): State;
 declare function change_avatar_class(state: State, klass: CharacterClass): State;
-export { GainType, Adventure, State, appraise_item_at_coordinates, factory, play, equip_item, sell_item, rename_avatar, change_avatar_class };
+declare const DEMO_STATE: State;
+declare const OLDEST_LEGACY_STATE_FOR_TESTS: any;
+declare const MIGRATION_HINTS_FOR_TESTS: any;
+export { GainType, Adventure, State, appraise_item_at_coordinates, factory, play, equip_item, sell_item, rename_avatar, change_avatar_class, DEMO_STATE, OLDEST_LEGACY_STATE_FOR_TESTS, MIGRATION_HINTS_FOR_TESTS };

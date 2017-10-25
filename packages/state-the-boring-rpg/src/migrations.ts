@@ -1,10 +1,19 @@
+/////////////////////
+
+import * as MetaState from '@oh-my-rpg/state-meta'
+import * as CharacterState from '@oh-my-rpg/state-character'
+import * as WalletState from '@oh-my-rpg/state-wallet'
+import * as InventoryState from '@oh-my-rpg/state-inventory'
+import * as PRNGState from '@oh-my-rpg/state-prng'
+
+
 import { LIB_ID, SCHEMA_VERSION } from './consts'
 import { State } from './types'
 import { factory } from './state'
-import { migrate_to_latest as migrate_character_state_to_latest } from '@oh-my-rpg/state-character'
 
+/////////////////////
 
-function migrate_to_latest(legacy_state: any): State {
+function migrate_to_latest(legacy_state: any, hints: any = {}): State {
 	const src_version = legacy_state.schema_version || 0
 
 	let state: State = factory()
@@ -15,16 +24,47 @@ function migrate_to_latest(legacy_state: any): State {
 		throw new Error(`${LIB_ID}: Your data is from a more recent version of this lib. Please update!`)
 	else {
 		// TODO logger
-		console.warn(`${LIB_ID}: attempting to migrate schema from v${src_version} to v${SCHEMA_VERSION}...`)
-		state = fail_migration_by_resetting()
+		console.warn(`${LIB_ID}: attempting to migrate schema from v${src_version} to v${SCHEMA_VERSION}:`)
+		state = migrate_to_2(legacy_state, hints)
 	}
 
 	// migrate sub-reducers if any...
-	state.avatar = migrate_character_state_to_latest(state.avatar)
-	// TODO more
+	state.meta = MetaState.migrate_to_latest(state.meta, hints.meta)
+	state.avatar = CharacterState.migrate_to_latest(state.avatar, hints.avatar)
+	state.inventory = InventoryState.migrate_to_latest(state.inventory, hints.inventory)
+	state.wallet = WalletState.migrate_to_latest(state.wallet, hints.wallet)
+	state.prng = PRNGState.migrate_to_latest(state.prng, hints.prng)
+	// TODO migrate adventure
 
 	return state
 }
+
+/////////////////////
+
+function migrate_to_2(legacy_state: any, hints: any): State {
+	if (legacy_state.schema_version !== 1)
+		legacy_state = migrate_to_1(legacy_state, hints)
+
+	console.info(`${LIB_ID}: migrating schema from v1 to v2...`)
+	return {
+		...legacy_state,
+		schema_version: 2,
+		revision: (hints && hints.to_v2 && hints.to_v2.revision) || 0, // added
+	}
+}
+
+/////////////////////
+
+function migrate_to_1(legacy_state: any, hints: any): any {
+	console.info(`${LIB_ID}: migrating schema from v0/non-versioned to v1...`)
+	return {
+		...legacy_state,
+		schema_version: 1, // added
+		revision: (hints && hints.to_v1 && hints.to_v1.revision) || 0, // added
+	}
+}
+
+/////////////////////
 
 function fail_migration_by_resetting(): State {
 	// TODO send event upwards
@@ -32,6 +72,9 @@ function fail_migration_by_resetting(): State {
 	return factory()
 }
 
+/////////////////////
+
 export {
+	migrate_to_1,
 	migrate_to_latest,
 }

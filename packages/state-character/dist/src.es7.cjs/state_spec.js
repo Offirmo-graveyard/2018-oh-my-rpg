@@ -7,6 +7,8 @@ describe('🤕 ❤️  Character state - reducer', function () {
         it('should have correct defaults', function () {
             const state = _1.factory();
             expect(state).to.deep.equal({
+                schema_version: consts_1.SCHEMA_VERSION,
+                revision: 0,
                 name: '[anonymous]',
                 klass: _1.CharacterClass.novice,
                 attributes: {
@@ -19,7 +21,6 @@ describe('🤕 ❤️  Character state - reducer', function () {
                     wisdom: 1,
                     luck: 1
                 },
-                schema_version: consts_1.SCHEMA_VERSION,
             });
         });
     });
@@ -74,6 +75,7 @@ describe('🤕 ❤️  Character state - reducer', function () {
                 luck: 1
             });
         });
+        it('should cap');
     });
 });
 //# sourceMappingURL=state_spec.js.map

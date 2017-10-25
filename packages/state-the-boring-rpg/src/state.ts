@@ -1,4 +1,7 @@
+/////////////////////
+
 import { Random, Engine } from '@offirmo/random'
+import * as deepFreeze from 'deep-freeze-strict'
 
 /////////////////////
 
@@ -8,45 +11,30 @@ import {
 	Item,
 } from '@oh-my-rpg/definitions'
 
-import {
-	State as MetaState,
-	factory as meta_state_factory,
-} from '@oh-my-rpg/state-meta'
+import * as MetaState from '@oh-my-rpg/state-meta'
 
+import * as CharacterState from '@oh-my-rpg/state-character'
 import {
 	CharacterAttribute,
 	CharacterAttributes,
 	CharacterClass,
-	State as CharacterState,
-	factory as character_state_factory,
 	increase_stat,
 	rename,
 	switch_class,
 } from '@oh-my-rpg/state-character'
 
-import {
-	State as WalletState,
-	Currency,
-	factory as wallet_state_factory,
-	add_amount as wallet_add_amount,
-	remove_amount as wallet_remove_amount,
-} from '@oh-my-rpg/state-wallet'
+import * as WalletState from '@oh-my-rpg/state-wallet'
+import { Currency } from '@oh-my-rpg/state-wallet'
 
+import * as InventoryState from '@oh-my-rpg/state-inventory'
 import {
-	State as InventoryState,
 	InventoryCoordinates,
-	factory as inventory_state_factory,
-	add_item as inventory_add_item,
-	equip_item as inventory_equip_item,
-	remove_item as inventory_remove_item,
 	get_item_in_slot,
 	get_item_at_coordinates,
 } from '@oh-my-rpg/state-inventory'
 
+import * as PRNGState from '@oh-my-rpg/state-prng'
 import {
-	factory as prng_state_factory,
-	set_seed as prng_set_seed,
-	update_use_count as prng_update_use_count,
 	get_prng,
 } from '@oh-my-rpg/state-prng'
 
@@ -84,31 +72,32 @@ import {
 	generate_random_coin_gain,
 } from '@oh-my-rpg/logic-adventures'
 
+import { LIB_ID, SCHEMA_VERSION } from './consts'
+
 import {
 	State,
 	GainType,
 	Adventure,
 } from './types'
 
-import { LIB_ID, SCHEMA_VERSION } from './consts'
-
 
 /////////////////////
 
 function factory(): State {
 	let state: State = {
-		meta: meta_state_factory(),
-		avatar: character_state_factory(),
-		inventory: inventory_state_factory(),
-		wallet: wallet_state_factory(),
-		prng: prng_state_factory(),
+		schema_version: SCHEMA_VERSION,
+		revision: 0,
+
+		meta: MetaState.factory(),
+		avatar: CharacterState.factory(),
+		inventory: InventoryState.factory(),
+		wallet: WalletState.factory(),
+		prng: PRNGState.factory(),
 
 		last_adventure: null,
 		click_count: 0,
 		good_click_count: 0,
 		meaningful_interaction_count: 0,
-
-		schema_version: SCHEMA_VERSION,
 	}
 
 	let rng = get_prng(state.prng)
@@ -133,7 +122,7 @@ function factory(): State {
 	state = receive_item(state, start_armor)
 	state = equip_item(state, 0)
 
-	//state.prng = prng_update_use_count(state.prng, rng)
+	//state.prng = PRNGState.update_use_count(state.prng, rng)
 
 	return state
 }
@@ -141,7 +130,7 @@ function factory(): State {
 /////////////////////
 
 const STATS = [ 'health', 'mana', 'strength', 'agility', 'charisma', 'wisdom', 'luck' ]
-function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, character: CharacterAttributes, inventory: InventoryState): Adventure {
+function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, character: CharacterAttributes, inventory: InventoryState.State): Adventure {
 	let {hid, good, type, outcome : should_gain} = aa
 
 	should_gain = {...should_gain}
@@ -206,17 +195,17 @@ function receive_stat_increase(state: State, stat: CharacterAttribute, amount = 
 
 function receive_item(state: State, item: Item): State {
 	// TODO handle inventory full
-	state.inventory = inventory_add_item(state.inventory, item)
+	state.inventory = InventoryState.add_item(state.inventory, item)
 	return state
 }
 
 function receive_coins(state: State, amount: number): State {
-	state.wallet = wallet_add_amount(state.wallet, Currency.coin, amount)
+	state.wallet = WalletState.add_amount(state.wallet, Currency.coin, amount)
 	return state
 }
 
 function receive_tokens(state: State, amount: number): State {
-	state.wallet = wallet_add_amount(state.wallet, Currency.token, amount)
+	state.wallet = WalletState.add_amount(state.wallet, Currency.token, amount)
 	return state
 }
 
@@ -315,7 +304,7 @@ function play_good(state: State, explicit_adventure_archetype_hid?: string): Sta
 
 	if (!gain_count)
 		throw new Error(`play_good() for hid "${aa.hid}" unexpectedly resulted in NO gains!`)
-	state.prng = prng_update_use_count(state.prng, rng, {
+	state.prng = PRNGState.update_use_count(state.prng, rng, {
 		I_swear_I_really_cant_know_whether_the_rng_was_used: !!explicit_adventure_archetype_hid
 	})
 
@@ -342,15 +331,15 @@ function play(state: State, explicit_adventure_archetype_hid?: string): State {
 
 function equip_item(state: State, coordinates: InventoryCoordinates): State {
 	// TODO count it as a meaningful interaction if positive (or with a limit)
-	state.inventory = inventory_equip_item(state.inventory, coordinates)
+	state.inventory = InventoryState.equip_item(state.inventory, coordinates)
 	return state
 }
 
 function sell_item(state: State, coordinates: InventoryCoordinates): State {
 	const price = appraise_item_at_coordinates(state, coordinates)
 
-	state.inventory = inventory_remove_item(state.inventory, coordinates)
-	state.wallet = wallet_add_amount(state.wallet, Currency.coin, price)
+	state.inventory = InventoryState.remove_item(state.inventory, coordinates)
+	state.wallet = WalletState.add_amount(state.wallet, Currency.coin, price)
 
 	// TODO count it as a meaningful interaction if positive (or with a limit)
 	return state
@@ -370,6 +359,108 @@ function change_avatar_class(state: State, klass: CharacterClass): State {
 
 /////////////////////
 
+// needed to test migrations, both here and in composing parents
+
+// a full featured, non-trivial demo state
+// needed for demos
+const DEMO_STATE: State = deepFreeze({
+	schema_version: 2,
+	revision: 203,
+
+	meta: MetaState.DEMO_STATE,
+	avatar: CharacterState.DEMO_STATE,
+	inventory: InventoryState.DEMO_STATE,
+	wallet: WalletState.DEMO_STATE,
+	prng: PRNGState.DEMO_STATE,
+
+	last_adventure: {
+		hid: 'fight_lost_any',
+		good: true,
+		encounter: {
+			name: 'chicken',
+			level: 7,
+			rank: 'elite',
+			possible_emoji: '🐓',
+		},
+		gains: {
+			level: 0,
+			health: 0,
+			mana: 0,
+			strength: 0,
+			agility: 0,
+			charisma: 0,
+			wisdom: 0,
+			luck: 1,
+			coins: 0,
+			tokens: 0,
+			armor: null,
+			weapon: null,
+			armor_improvement: false,
+			weapon_improvement: false,
+		},
+	},
+	click_count:                  86,
+	good_click_count:             86,
+	meaningful_interaction_count: 86,
+})
+
+// the oldest format we can migrate from
+// must correspond to state above
+const OLDEST_LEGACY_STATE_FOR_TESTS: any = deepFreeze({
+	// no schema_version = 0
+
+	meta: MetaState.OLDEST_LEGACY_STATE_FOR_TESTS,
+	avatar: CharacterState.OLDEST_LEGACY_STATE_FOR_TESTS,
+	inventory: InventoryState.OLDEST_LEGACY_STATE_FOR_TESTS,
+	wallet: WalletState.OLDEST_LEGACY_STATE_FOR_TESTS,
+	prng: PRNGState.OLDEST_LEGACY_STATE_FOR_TESTS,
+
+	last_adventure: {
+		hid: 'fight_lost_any',
+		good: true,
+		encounter: {
+			name: 'chicken',
+			level: 7,
+			rank: 'elite',
+			possible_emoji: '🐓',
+		},
+		gains: {
+			level: 0,
+			health: 0,
+			mana: 0,
+			strength: 0,
+			agility: 0,
+			charisma: 0,
+			wisdom: 0,
+			luck: 1,
+			coins: 0,
+			tokens: 0,
+			armor: null,
+			weapon: null,
+			armor_improvement: false,
+			weapon_improvement: false,
+		},
+	},
+	click_count:                  86,
+	good_click_count:             86,
+	meaningful_interaction_count: 86,
+})
+
+// some hints may be needed to migrate to demo state
+const MIGRATION_HINTS_FOR_TESTS: any = deepFreeze({
+	to_v2: {
+		revision: 203
+	},
+
+	meta: MetaState.MIGRATION_HINTS_FOR_TESTS,
+	avatar: CharacterState.MIGRATION_HINTS_FOR_TESTS,
+	inventory: InventoryState.MIGRATION_HINTS_FOR_TESTS,
+	wallet: WalletState.MIGRATION_HINTS_FOR_TESTS,
+	prng: PRNGState.MIGRATION_HINTS_FOR_TESTS,
+})
+
+/////////////////////
+
 export {
 	GainType,
 	Adventure,
@@ -384,6 +475,10 @@ export {
 	sell_item,
 	rename_avatar,
 	change_avatar_class,
+
+	DEMO_STATE,
+	OLDEST_LEGACY_STATE_FOR_TESTS,
+	MIGRATION_HINTS_FOR_TESTS,
 }
 
 /////////////////////

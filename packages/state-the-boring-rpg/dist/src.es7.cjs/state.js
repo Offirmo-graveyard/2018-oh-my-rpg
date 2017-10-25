@@ -1,34 +1,41 @@
 "use strict";
+/////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
 const random_1 = require("@offirmo/random");
+const deepFreeze = require("deep-freeze-strict");
 /////////////////////
 const definitions_1 = require("@oh-my-rpg/definitions");
-const state_meta_1 = require("@oh-my-rpg/state-meta");
+const MetaState = require("@oh-my-rpg/state-meta");
+const CharacterState = require("@oh-my-rpg/state-character");
 const state_character_1 = require("@oh-my-rpg/state-character");
+const WalletState = require("@oh-my-rpg/state-wallet");
 const state_wallet_1 = require("@oh-my-rpg/state-wallet");
+const InventoryState = require("@oh-my-rpg/state-inventory");
 const state_inventory_1 = require("@oh-my-rpg/state-inventory");
+const PRNGState = require("@oh-my-rpg/state-prng");
 const state_prng_1 = require("@oh-my-rpg/state-prng");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
 const logic_armors_1 = require("@oh-my-rpg/logic-armors");
 const logic_monsters_1 = require("@oh-my-rpg/logic-monsters");
 const logic_shop_1 = require("@oh-my-rpg/logic-shop");
 const logic_adventures_1 = require("@oh-my-rpg/logic-adventures");
+const consts_1 = require("./consts");
 const types_1 = require("./types");
 exports.GainType = types_1.GainType;
-const consts_1 = require("./consts");
 /////////////////////
 function factory() {
     let state = {
-        meta: state_meta_1.factory(),
-        avatar: state_character_1.factory(),
-        inventory: state_inventory_1.factory(),
-        wallet: state_wallet_1.factory(),
-        prng: state_prng_1.factory(),
+        schema_version: consts_1.SCHEMA_VERSION,
+        revision: 0,
+        meta: MetaState.factory(),
+        avatar: CharacterState.factory(),
+        inventory: InventoryState.factory(),
+        wallet: WalletState.factory(),
+        prng: PRNGState.factory(),
         last_adventure: null,
         click_count: 0,
         good_click_count: 0,
         meaningful_interaction_count: 0,
-        schema_version: consts_1.SCHEMA_VERSION,
     };
     let rng = state_prng_1.get_prng(state.prng);
     const start_weapon = logic_weapons_1.factory(rng, {
@@ -49,7 +56,7 @@ function factory() {
     });
     state = receive_item(state, start_armor);
     state = equip_item(state, 0);
-    //state.prng = prng_update_use_count(state.prng, rng)
+    //state.prng = PRNGState.update_use_count(state.prng, rng)
     return state;
 }
 exports.factory = factory;
@@ -113,15 +120,15 @@ function receive_stat_increase(state, stat, amount = 1) {
 }
 function receive_item(state, item) {
     // TODO handle inventory full
-    state.inventory = state_inventory_1.add_item(state.inventory, item);
+    state.inventory = InventoryState.add_item(state.inventory, item);
     return state;
 }
 function receive_coins(state, amount) {
-    state.wallet = state_wallet_1.add_amount(state.wallet, state_wallet_1.Currency.coin, amount);
+    state.wallet = WalletState.add_amount(state.wallet, state_wallet_1.Currency.coin, amount);
     return state;
 }
 function receive_tokens(state, amount) {
-    state.wallet = state_wallet_1.add_amount(state.wallet, state_wallet_1.Currency.token, amount);
+    state.wallet = WalletState.add_amount(state.wallet, state_wallet_1.Currency.token, amount);
     return state;
 }
 function play_good(state, explicit_adventure_archetype_hid) {
@@ -202,7 +209,7 @@ function play_good(state, explicit_adventure_archetype_hid) {
     }
     if (!gain_count)
         throw new Error(`play_good() for hid "${aa.hid}" unexpectedly resulted in NO gains!`);
-    state.prng = state_prng_1.update_use_count(state.prng, rng, {
+    state.prng = PRNGState.update_use_count(state.prng, rng, {
         I_swear_I_really_cant_know_whether_the_rng_was_used: !!explicit_adventure_archetype_hid
     });
     return state;
@@ -224,14 +231,14 @@ function play(state, explicit_adventure_archetype_hid) {
 exports.play = play;
 function equip_item(state, coordinates) {
     // TODO count it as a meaningful interaction if positive (or with a limit)
-    state.inventory = state_inventory_1.equip_item(state.inventory, coordinates);
+    state.inventory = InventoryState.equip_item(state.inventory, coordinates);
     return state;
 }
 exports.equip_item = equip_item;
 function sell_item(state, coordinates) {
     const price = appraise_item_at_coordinates(state, coordinates);
-    state.inventory = state_inventory_1.remove_item(state.inventory, coordinates);
-    state.wallet = state_wallet_1.add_amount(state.wallet, state_wallet_1.Currency.coin, price);
+    state.inventory = InventoryState.remove_item(state.inventory, coordinates);
+    state.wallet = WalletState.add_amount(state.wallet, state_wallet_1.Currency.coin, price);
     // TODO count it as a meaningful interaction if positive (or with a limit)
     return state;
 }
@@ -248,5 +255,100 @@ function change_avatar_class(state, klass) {
     return state;
 }
 exports.change_avatar_class = change_avatar_class;
+/////////////////////
+// needed to test migrations, both here and in composing parents
+// a full featured, non-trivial demo state
+// needed for demos
+const DEMO_STATE = deepFreeze({
+    schema_version: 2,
+    revision: 203,
+    meta: MetaState.DEMO_STATE,
+    avatar: CharacterState.DEMO_STATE,
+    inventory: InventoryState.DEMO_STATE,
+    wallet: WalletState.DEMO_STATE,
+    prng: PRNGState.DEMO_STATE,
+    last_adventure: {
+        hid: 'fight_lost_any',
+        good: true,
+        encounter: {
+            name: 'chicken',
+            level: 7,
+            rank: 'elite',
+            possible_emoji: '🐓',
+        },
+        gains: {
+            level: 0,
+            health: 0,
+            mana: 0,
+            strength: 0,
+            agility: 0,
+            charisma: 0,
+            wisdom: 0,
+            luck: 1,
+            coins: 0,
+            tokens: 0,
+            armor: null,
+            weapon: null,
+            armor_improvement: false,
+            weapon_improvement: false,
+        },
+    },
+    click_count: 86,
+    good_click_count: 86,
+    meaningful_interaction_count: 86,
+});
+exports.DEMO_STATE = DEMO_STATE;
+// the oldest format we can migrate from
+// must correspond to state above
+const OLDEST_LEGACY_STATE_FOR_TESTS = deepFreeze({
+    // no schema_version = 0
+    meta: MetaState.OLDEST_LEGACY_STATE_FOR_TESTS,
+    avatar: CharacterState.OLDEST_LEGACY_STATE_FOR_TESTS,
+    inventory: InventoryState.OLDEST_LEGACY_STATE_FOR_TESTS,
+    wallet: WalletState.OLDEST_LEGACY_STATE_FOR_TESTS,
+    prng: PRNGState.OLDEST_LEGACY_STATE_FOR_TESTS,
+    last_adventure: {
+        hid: 'fight_lost_any',
+        good: true,
+        encounter: {
+            name: 'chicken',
+            level: 7,
+            rank: 'elite',
+            possible_emoji: '🐓',
+        },
+        gains: {
+            level: 0,
+            health: 0,
+            mana: 0,
+            strength: 0,
+            agility: 0,
+            charisma: 0,
+            wisdom: 0,
+            luck: 1,
+            coins: 0,
+            tokens: 0,
+            armor: null,
+            weapon: null,
+            armor_improvement: false,
+            weapon_improvement: false,
+        },
+    },
+    click_count: 86,
+    good_click_count: 86,
+    meaningful_interaction_count: 86,
+});
+exports.OLDEST_LEGACY_STATE_FOR_TESTS = OLDEST_LEGACY_STATE_FOR_TESTS;
+// some hints may be needed to migrate to demo state
+const MIGRATION_HINTS_FOR_TESTS = deepFreeze({
+    to_v2: {
+        revision: 203
+    },
+    meta: MetaState.MIGRATION_HINTS_FOR_TESTS,
+    avatar: CharacterState.MIGRATION_HINTS_FOR_TESTS,
+    inventory: InventoryState.MIGRATION_HINTS_FOR_TESTS,
+    wallet: WalletState.MIGRATION_HINTS_FOR_TESTS,
+    prng: PRNGState.MIGRATION_HINTS_FOR_TESTS,
+});
+exports.MIGRATION_HINTS_FOR_TESTS = MIGRATION_HINTS_FOR_TESTS;
 /////////////////////
 //# sourceMappingURL=state.js.map

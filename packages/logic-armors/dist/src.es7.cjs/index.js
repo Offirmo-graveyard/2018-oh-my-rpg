@@ -12,6 +12,8 @@ const constants_1 = require("./constants");
 const ARMOR_BASES = data_1.ENTRIES.filter((armor_component) => armor_component.type === types_1.ArmorPartType.base);
 const ARMOR_QUALIFIERS1 = data_1.ENTRIES.filter((armor_component) => armor_component.type === types_1.ArmorPartType.qualifier1);
 const ARMOR_QUALIFIERS2 = data_1.ENTRIES.filter((armor_component) => armor_component.type === types_1.ArmorPartType.qualifier2);
+const MIN_ENHANCEMENT_LEVEL = 0;
+exports.MIN_ENHANCEMENT_LEVEL = MIN_ENHANCEMENT_LEVEL;
 const MAX_ENHANCEMENT_LEVEL = 8;
 exports.MAX_ENHANCEMENT_LEVEL = MAX_ENHANCEMENT_LEVEL;
 const MIN_STRENGTH = 1;
@@ -86,5 +88,26 @@ function get_medium_damage_reduction(armor) {
     return Math.round((reduction_range[0] + reduction_range[1]) / 2);
 }
 exports.get_medium_damage_reduction = get_medium_damage_reduction;
+/////////////////////
+const DEMO_ARMOR_1 = {
+    slot: definitions_1.InventorySlot.armor,
+    base_hid: ARMOR_BASES[0].hid,
+    qualifier1_hid: ARMOR_QUALIFIERS1[0].hid,
+    qualifier2_hid: ARMOR_QUALIFIERS2[0].hid,
+    quality: definitions_1.ItemQuality.uncommon,
+    base_strength: MIN_STRENGTH + 1,
+    enhancement_level: MIN_ENHANCEMENT_LEVEL,
+};
+exports.DEMO_ARMOR_1 = DEMO_ARMOR_1;
+const DEMO_ARMOR_2 = {
+    slot: definitions_1.InventorySlot.armor,
+    base_hid: ARMOR_BASES[1].hid,
+    qualifier1_hid: ARMOR_QUALIFIERS1[1].hid,
+    qualifier2_hid: ARMOR_QUALIFIERS2[1].hid,
+    quality: definitions_1.ItemQuality.legendary,
+    base_strength: MAX_STRENGTH - 1,
+    enhancement_level: MAX_ENHANCEMENT_LEVEL,
+};
+exports.DEMO_ARMOR_2 = DEMO_ARMOR_2;
 /////////////////////
 //# sourceMappingURL=index.js.map

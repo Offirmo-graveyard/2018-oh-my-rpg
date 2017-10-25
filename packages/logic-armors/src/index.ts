@@ -22,6 +22,7 @@ const ARMOR_QUALIFIERS2 =
 	static_armor_data.filter((armor_component: any) => armor_component.type === ArmorPartType.qualifier2) as
 		{type: 'qualifier2', hid: string}[]
 
+const MIN_ENHANCEMENT_LEVEL = 0
 const MAX_ENHANCEMENT_LEVEL = 8
 const MIN_STRENGTH = 1
 const MAX_STRENGTH = 20
@@ -107,9 +108,32 @@ function get_medium_damage_reduction(armor: Armor): number {
 
 /////////////////////
 
+const DEMO_ARMOR_1: Armor = {
+	slot: InventorySlot.armor,
+	base_hid: ARMOR_BASES[0].hid,
+	qualifier1_hid: ARMOR_QUALIFIERS1[0].hid,
+	qualifier2_hid: ARMOR_QUALIFIERS2[0].hid,
+	quality: ItemQuality.uncommon,
+	base_strength: MIN_STRENGTH + 1,
+	enhancement_level: MIN_ENHANCEMENT_LEVEL,
+}
+
+const DEMO_ARMOR_2: Armor = {
+	slot: InventorySlot.armor,
+	base_hid: ARMOR_BASES[1].hid,
+	qualifier1_hid: ARMOR_QUALIFIERS1[1].hid,
+	qualifier2_hid: ARMOR_QUALIFIERS2[1].hid,
+	quality: ItemQuality.legendary,
+	base_strength: MAX_STRENGTH - 1,
+	enhancement_level: MAX_ENHANCEMENT_LEVEL,
+}
+
+/////////////////////
+
 export {
 	ArmorPartType,
 	Armor,
+	MIN_ENHANCEMENT_LEVEL,
 	MAX_ENHANCEMENT_LEVEL,
 	MIN_STRENGTH,
 	MAX_STRENGTH,
@@ -120,6 +144,9 @@ export {
 	get_medium_damage_reduction,
 	i18n_messages,
 	static_armor_data,
+
+	DEMO_ARMOR_1,
+	DEMO_ARMOR_2,
 }
 
 /////////////////////

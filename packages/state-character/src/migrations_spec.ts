@@ -1,32 +1,17 @@
 import { cloneDeep } from 'lodash'
+import * as deepFreeze from 'deep-freeze-strict'
 
 import { SCHEMA_VERSION } from './consts'
 import { migrate_to_latest } from './migrations'
-import { CharacterClass, State } from './types'
+import { State } from './types'
+import { DEMO_STATE, OLDEST_LEGACY_STATE_FOR_TESTS, MIGRATION_HINTS_FOR_TESTS } from './state'
 
-const DATA_v0: any = {
-	name: 'Perte',
-	klass: CharacterClass.paladin,
-	characteristics: {
-		level: 13,
-
-		health: 12,
-		mana: 23,
-
-		strength: 4,
-		agility: 5,
-		charisma: 6,
-		wisdom: 7,
-		luck: 8,
-	},
-	// no version = 0
-}
-Object.freeze(DATA_v0)
+const DATA_v0: any = OLDEST_LEGACY_STATE_FOR_TESTS
 const DATA_OLDEST = DATA_v0
 
-const DATA_v1: State = {
+const DATA_v1: any = deepFreeze({
 	name: 'Perte',
-	klass: CharacterClass.paladin,
+	klass: 'paladin',
 	attributes: {
 		level: 13,
 
@@ -41,9 +26,11 @@ const DATA_v1: State = {
 	},
 
 	schema_version: 1,
-}
-Object.freeze(DATA_v1)
-const DATA_LATEST = DATA_v1
+})
+
+const DATA_v2: any = DEMO_STATE
+
+const DATA_LATEST = DEMO_STATE as State
 
 
 describe('🤕 ❤️  Character state - schema migration', function() {
@@ -69,21 +56,27 @@ describe('🤕 ❤️  Character state - schema migration', function() {
 	context('when the version is outdated', function() {
 
 		it('should migrate to latest version', () => {
-			expect(migrate_to_latest(cloneDeep(DATA_OLDEST))).to.deep.equal(DATA_LATEST)
+			expect(migrate_to_latest(cloneDeep(DATA_OLDEST), MIGRATION_HINTS_FOR_TESTS)).to.deep.equal(DATA_LATEST)
 		})
 	})
 
 	describe('individual migration functions', function() {
 
+		describe(`2 to latest`, function() {
+			it('should work', () => {
+				expect(migrate_to_latest(cloneDeep(DATA_v2), MIGRATION_HINTS_FOR_TESTS)).to.deep.equal(DATA_LATEST)
+			})
+		})
+
 		describe(`1 to latest`, function() {
 			it('should work', () => {
-				expect(migrate_to_latest(cloneDeep(DATA_v1))).to.deep.equal(DATA_LATEST)
+				expect(migrate_to_latest(cloneDeep(DATA_v1), MIGRATION_HINTS_FOR_TESTS)).to.deep.equal(DATA_LATEST)
 			})
 		})
 
 		describe(`0 to latest`, function() {
 			it('should work', () => {
-				expect(migrate_to_latest(cloneDeep(DATA_v0))).to.deep.equal(DATA_LATEST)
+				expect(migrate_to_latest(cloneDeep(DATA_v0), MIGRATION_HINTS_FOR_TESTS)).to.deep.equal(DATA_LATEST)
 			})
 		})
 	})

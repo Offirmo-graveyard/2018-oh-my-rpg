@@ -4,19 +4,23 @@ const state_prng_1 = require("@oh-my-rpg/state-prng");
 const logic_adventures_1 = require("@oh-my-rpg/logic-adventures");
 const state_inventory_1 = require("@oh-my-rpg/state-inventory");
 const state_wallet_1 = require("@oh-my-rpg/state-wallet");
+const consts_1 = require("./consts");
 const _1 = require(".");
 describe('⚔ 👑 😪  The Boring RPG - reducer', function () {
     beforeEach(() => state_prng_1.xxx_internal_reset_prng_cache());
-    describe('🆕 initial state', function () {
+    describe('🆕  initial state', function () {
         it('should be correct', function () {
             const state = _1.factory();
+            expect(Object.keys(state)).to.have.lengthOf(11); // this test should be updated if that changes
             // check presence of sub-states
-            expect(state).to.have.property('meta');
-            expect(state).to.have.property('avatar');
-            expect(state).to.have.property('inventory');
-            expect(state).to.have.property('wallet');
-            expect(state).to.have.property('prng');
+            expect(state, 'meta').to.have.property('meta');
+            expect(state, 'avatar').to.have.property('avatar');
+            expect(state, 'inventory').to.have.property('inventory');
+            expect(state, 'wallet').to.have.property('wallet');
+            expect(state, 'prng').to.have.property('prng');
             // init of custom values
+            expect(state).to.have.property('schema_version', consts_1.SCHEMA_VERSION);
+            expect(state).to.have.property('revision', 0);
             expect(state).to.have.property('click_count', 0);
             expect(state).to.have.property('good_click_count', 0);
             expect(state).to.have.property('meaningful_interaction_count', 0);
@@ -88,7 +92,7 @@ describe('⚔ 👑 😪  The Boring RPG - reducer', function () {
                             if (state.last_adventure.hid.startsWith('fight_'))
                                 break;
                         }
-                        console.log(state.last_adventure);
+                        //console.log(state.last_adventure)
                         expect(state.last_adventure.encounter).to.exist;
                         expect(state.last_adventure.encounter.level).to.be.within(400, 600);
                     });

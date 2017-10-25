@@ -57,6 +57,9 @@ interface Adventure {
 
 
 interface State {
+	schema_version: number
+	revision: number
+
 	meta: MetaState
 	avatar: CharacterState
 	inventory: InventoryState
@@ -66,8 +69,6 @@ interface State {
 	click_count: number
 	good_click_count: number
 	meaningful_interaction_count: number
-
-	schema_version: number
 }
 
 /////////////////////

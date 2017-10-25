@@ -46,12 +46,13 @@ interface CharacterAttributes {
 }
 
 interface State {
+	schema_version: number
+	revision: number
+
 	name: string
 	klass: CharacterClass
 	attributes: CharacterAttributes
 	// TODO inventory here ?
-
-	schema_version: number
 }
 
 /////////////////////

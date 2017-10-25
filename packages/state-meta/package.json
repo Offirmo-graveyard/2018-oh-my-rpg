@@ -19,6 +19,7 @@
 		"clean": "run-s clean:build clean:deps"
 	},
 	"dependencies": {
+		"deep-freeze-strict": "^1.1.1",
 		"typescript-string-enums": "^0.3.5",
 		"uuid": "^3.1.0"
 	},

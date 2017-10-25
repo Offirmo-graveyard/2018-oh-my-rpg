@@ -36,9 +36,10 @@ interface CharacterAttributes {
     luck: number;
 }
 interface State {
+    schema_version: number;
+    revision: number;
     name: string;
     klass: CharacterClass;
     attributes: CharacterAttributes;
-    schema_version: number;
 }
 export { CharacterAttribute, CharacterClass, CharacterAttributes, State };
