@@ -6,7 +6,7 @@ const { stylize_string } = require('./libs')
 // TODO handle boxification
 
 
-function apply_class({$class, str}) {
+function apply_class($class, str) {
 	switch($class) {
 		case 'place':
 			return stylize_string.green(str)
@@ -23,12 +23,12 @@ function apply_class({$class, str}) {
 	}
 }
 
-function on_concatenate_subnode({state, sub_state, id, $parent_node}) {
+function on_concatenate_sub_node({state, sub_state, $id, $parent_node}) {
 	if ($parent_node.$type === 'ul')
 		return state + '\n - ' + sub_state
 
 	if ($parent_node.$type === 'ol')
-		return state + `\n ${(' ' + id).slice(-2)}. ` + sub_state
+		return state + `\n ${(' ' + $id).slice(-2)}. ` + sub_state
 
 	return state + sub_state
 }
@@ -36,9 +36,8 @@ function on_concatenate_subnode({state, sub_state, id, $parent_node}) {
 module.exports = {
 	on_node_enter: () => '',
 	on_concatenate_str: ({state, str}) => state + str,
-	on_concatenate_subnode,
-	on_class_after: ({state: str, $class}) => apply_class({$class, str}),
+	on_concatenate_sub_node,
+	on_class_after: ({state, $class}) => apply_class($class, state),
 	on_type_br: ({state}) => state + '\n',
 	on_type_hr: ({state}) => state + '\n------------------------------------------------------------\n',
 }
-

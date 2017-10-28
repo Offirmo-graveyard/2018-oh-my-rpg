@@ -1,15 +1,5 @@
 "use strict";
 
-const { prettify_json } = require('./libs')
-
-/*console.log(prettify_json({
-     $v,
-     $type,
-     $classes,
-     $content,
-     $subnodes,
- }))*/
-
 const MANY_SPACES = '                                 '
 
 function indent(n) {
@@ -31,45 +21,45 @@ module.exports = {
 		console.log(indent(depth) + `  [state="${state}"] after`)
 		return state
 	},
-	on_node_exit: ({state, $node, $id, depth}) => {
+	on_node_exit: ({$id, state, $node, depth}) => {
 		console.log(indent(depth) + `⟨ [node] #${$id} [state="${state}"]`)
 		return state
 	},
-	on_concatenate_str: ({state, str, $node, depth}) => {
+	on_concatenate_str: ({str, state, $node, depth}) => {
 		console.log(indent(depth) + `+ [content=str] "${str}"`)
 		console.log(indent(depth) + `  [state="${state}"] before`)
 		state = state + str
 		console.log(indent(depth) + `  [state="${state}"] after`)
 		return state
 	},
-	on_concatenate_subnode: ({state, sub_state, $node, depth}) => {
+	on_concatenate_sub_node: ({sub_state, state, $node, depth}) => {
 		console.log(indent(depth) + `+ [content=node] "${sub_state}"`)
 		console.log(indent(depth) + `  [state="${state}"] before`)
 		state = state + sub_state
 		console.log(indent(depth) + `  [state="${state}"] after`)
 		return state
 	},
-	on_subnode_id: ({state, id, $node, depth}) => {
-		console.log(indent(depth) + `  [sub-node] #${id}`)
+	on_sub_node_id: ({$id, state, $node, depth}) => {
+		console.log(indent(depth) + `  [sub-node] #${$id}`)
 		console.log(indent(depth) + `  [state="${state}"]`)
 		return state
 	},
-	on_filter: ({state, $filter, sub_state, depth }) => {
+	on_filter: ({$filter, sub_state, state, depth }) => {
 		console.log(indent(depth) + `  [filter] "${$filter}" on "${sub_state}"`)
 		console.log(indent(depth) + `  [state="${state}"]`)
 		return state
 	},
-	on_class_before: ({state, $class, $node, depth }) => {
+	on_class_before: ({$class, state, $node, depth }) => {
 		console.log(indent(depth) + `  [⟩class] .${$class}`)
 		console.log(indent(depth) + `  [state="${state}"]`)
 		return state
 	},
-	on_class_after: ({state, $class, $node, depth }) => {
+	on_class_after: ({$class, state, $node, depth }) => {
 		console.log(indent(depth) + `  [⟨class] .${$class}`)
 		console.log(indent(depth) + `  [state="${state}"]`)
 		return state
 	},
-	on_type: ({state, $type, $node, depth}) => {
+	on_type: ({$type, state, $node, depth}) => {
 		console.log(indent(depth) + `  [type] "${$type}" ${$node.$classes}`)
 		console.log(indent(depth) + `  [state="${state}"]`)
 		return state

@@ -1,5 +1,7 @@
 import { Enum } from 'typescript-string-enums'
 
+///////
+
 const NodeType = Enum(
 	'span',
 	'p',
@@ -7,25 +9,27 @@ const NodeType = Enum(
 	'hr',
 	'ol',
 	'ul',
+	'li',
 )
 type NodeType = Enum<typeof NodeType>
 
 
-
-interface Node {
+interface CheckedNode {
 	$v: number
 	$type: NodeType
 	$classes: string[]
 	$content: string
-	[sub_node_id: string]: any // but in fact Node
+	$sub: {
+		[id: string]: Partial<CheckedNode>
+	}
 }
 
-type RawNode = Partial<Node>
+type Node = Partial<CheckedNode>
 
-
+////////////
 
 export {
 	NodeType,
+	CheckedNode,
 	Node,
-	RawNode,
 }

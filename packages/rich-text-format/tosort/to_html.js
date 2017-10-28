@@ -25,7 +25,7 @@ function apply_type({$type, str, $classes, $sub_node_count, depth}) {
 
 
 
-function on_concatenate_subnode({state, sub_state, id, $node}) {
+function on_concatenate_sub_node({state, sub_state, id, $node}) {
 	/*if ($node.$type === 'li')
 		return state + '\n' + sub_state + '\n'*/
 
@@ -37,7 +37,7 @@ function on_concatenate_subnode({state, sub_state, id, $node}) {
 module.exports = {
 	on_node_enter: () => '',
 	on_concatenate_str: ({state, str}) => state + str,
-	on_concatenate_subnode,
+	on_concatenate_sub_node,
 	on_type: ({state: str, $type, $node: {$classes, $sub_node_count}, depth}) => apply_type({$type, str, $classes, $sub_node_count, depth}),
 }
 

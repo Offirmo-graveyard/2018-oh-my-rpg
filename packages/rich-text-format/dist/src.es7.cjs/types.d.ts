@@ -1,19 +1,22 @@
 import { Enum } from 'typescript-string-enums';
 declare const NodeType: {
-    span: "span";
-    p: "p";
     br: "br";
     hr: "hr";
+    span: "span";
+    p: "p";
     ol: "ol";
     ul: "ul";
+    li: "li";
 };
 declare type NodeType = Enum<typeof NodeType>;
-interface Node {
+interface CheckedNode {
     $v: number;
     $type: NodeType;
     $classes: string[];
     $content: string;
-    [sub_node_id: string]: any;
+    $sub: {
+        [id: string]: Partial<CheckedNode>;
+    };
 }
-declare type RawNode = Partial<Node>;
-export { NodeType, Node, RawNode };
+declare type Node = Partial<CheckedNode>;
+export { NodeType, CheckedNode, Node };

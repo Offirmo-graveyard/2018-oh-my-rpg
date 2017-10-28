@@ -1,7 +1,7 @@
 {
-	"name": "@oh-my-rpg/view-rich-text-format",
+	"name": "@oh-my-rpg/rich-text-format",
 	"version": "0.0.1",
-	"description": "A rich text format for rendering to different plathorm: ascii, html...",
+	"description": "A rich text format for rendering to different platforms: ascii, html...",
 	"main": "src/index.js",
 	"author": "Offirmo <offirmo.net@gmail.com>",
 	"license": "UNLICENSED",
