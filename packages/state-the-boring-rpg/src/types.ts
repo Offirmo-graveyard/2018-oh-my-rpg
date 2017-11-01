@@ -66,6 +66,8 @@ interface State {
 	wallet: WalletState
 	prng: PRNGState
 	last_adventure: Adventure | null
+
+	// TODO rename click to something more generic
 	click_count: number
 	good_click_count: number
 	meaningful_interaction_count: number

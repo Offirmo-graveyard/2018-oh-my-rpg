@@ -7,6 +7,8 @@ Market:
 
 TOUSE
 https://github.com/SBoudrias/Inquirer.js
+https://github.com/iarna/gauge
+https://github.com/sindresorhus/term-img
 
 
 https://docs.npmjs.com/cli/deprecate

@@ -10,6 +10,8 @@ const NodeType = Enum(
 	'ol',
 	'ul',
 	'li',
+	'strong',
+	'em',
 )
 type NodeType = Enum<typeof NodeType>
 
@@ -26,10 +28,18 @@ interface CheckedNode {
 
 type Node = Partial<CheckedNode>
 
+///////
+
+// aliases
+type Document = Node
+//type RichTextDoc = Node
+
 ////////////
 
 export {
 	NodeType,
 	CheckedNode,
 	Node,
+
+	Document,
 }

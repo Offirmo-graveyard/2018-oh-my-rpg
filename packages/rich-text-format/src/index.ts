@@ -14,6 +14,7 @@ function to_html($doc: Node): string {
 
 export * from './types'
 export * from './walk'
+export * from './builder'
 
 export {
 	to_text,

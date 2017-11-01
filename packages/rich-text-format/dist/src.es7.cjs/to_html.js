@@ -9,7 +9,20 @@ function apply_type($type, str, $classes, $sub_node_count, depth) {
         return '<br/>\n';
     if ($type === 'hr')
         return '\n<hr/>\n';
-    let result = '\n' + indent(depth) + `<${$type}`;
+    let is_inline = false;
+    switch ($type) {
+        case 'strong':
+        case 'em':
+        case 'span':
+            is_inline = true;
+            break;
+        default:
+            break;
+    }
+    let result = '';
+    if (!is_inline)
+        result += '\n' + indent(depth);
+    result += `<${$type}`;
     if ($classes.length)
         result += ` class="${$classes.join(' ')}"`;
     result += '>' + str + ($sub_node_count ? '\n' + indent(depth) : '') + `</${$type}>`;

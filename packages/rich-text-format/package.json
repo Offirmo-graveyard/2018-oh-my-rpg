@@ -2,7 +2,8 @@
 	"name": "@oh-my-rpg/rich-text-format",
 	"version": "0.0.1",
 	"description": "A rich text format for rendering to different platforms: ascii, html...",
-	"main": "src/index.js",
+	"main": "dist/src.es7.cjs/index.js",
+	"typings": "dist/src.es7.cjs/index.d.ts",
 	"author": "Offirmo <offirmo.net@gmail.com>",
 	"license": "UNLICENSED",
 	"scripts": {

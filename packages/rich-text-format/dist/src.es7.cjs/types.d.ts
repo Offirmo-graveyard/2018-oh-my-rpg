@@ -1,12 +1,14 @@
 import { Enum } from 'typescript-string-enums';
 declare const NodeType: {
-    br: "br";
-    hr: "hr";
     span: "span";
     p: "p";
+    br: "br";
+    hr: "hr";
     ol: "ol";
     ul: "ul";
     li: "li";
+    strong: "strong";
+    em: "em";
 };
 declare type NodeType = Enum<typeof NodeType>;
 interface CheckedNode {
@@ -19,4 +21,5 @@ interface CheckedNode {
     };
 }
 declare type Node = Partial<CheckedNode>;
-export { NodeType, CheckedNode, Node };
+declare type Document = Node;
+export { NodeType, CheckedNode, Node, Document };

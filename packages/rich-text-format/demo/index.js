@@ -4,7 +4,7 @@
 
 console.log('Hello world!')
 
-const { walk, to_text, to_html } = require('../dist/src.es7.cjs')
+const RichText = require('../dist/src.es7.cjs')
 
 const callbacks_debug = require('./to_debug')
 const callbacks_ansi = require('./to_ansi')
@@ -83,19 +83,40 @@ const MSG_02 = {
 	},
 }
 
-const msg = MSG_02
 
-//console.log('\n' + walk(msg, callbacks_debug))
 
-console.log('\n------- to text -------\n' + to_text(msg))
-console.log('\n------- to ansi -------\n' + walk(msg, callbacks_ansi))
-console.log('\n------- to html -------\n' + to_html(msg))
+////////////////////////////////////
+console.log('\n------- 1 -------\n')
+const doc1 = MSG_02
 
+console.log('\n------- to text -------\n' + RichText.to_text(doc1))
+console.log('\n------- to ansi -------\n' + RichText.walk(doc1, callbacks_ansi))
+console.log('\n------- to html -------\n' + RichText.to_html(doc1))
+console.log('\n------- to debug -------\n' + RichText.walk(doc1, callbacks_debug))
+
+
+// TODO actions
+// TODO links
+// TODO micro-format clickables?
 
 // TODO uuid
 
-// TODO links
+// TODO strong / emphasis
 
-// TODO micro-format clickables?
 
-// TODO text
+////////////////////////////////////
+
+console.log('\n------- 2 -------\n')
+const doc2 = RichText.paragraph()
+	.pushText(''
+		+ 'Great sages prophetized your coming,{{br}}'
+		+ 'commoners are waiting for their hero{{br}}'
+		+ 'and kings are trembling from fear of change...{{br}}'
+		+ '…undoubtly, you’ll make a name in this world and fulfill your destiny!{{br}}'
+	)
+	.pushStrong('A great saga just started...')
+	.done()
+
+console.log('\n------- to text -------\n' + RichText.to_text(doc2))
+console.log('\n------- to ansi -------\n' + RichText.walk(doc2, callbacks_ansi))
+console.log('\n------- to html -------\n' + RichText.to_html(doc2))

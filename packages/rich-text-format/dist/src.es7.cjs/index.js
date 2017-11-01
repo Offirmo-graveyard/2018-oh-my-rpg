@@ -14,4 +14,5 @@ function to_html($doc) {
 exports.to_html = to_html;
 tslib_1.__exportStar(require("./types"), exports);
 tslib_1.__exportStar(require("./walk"), exports);
+tslib_1.__exportStar(require("./builder"), exports);
 //# sourceMappingURL=index.js.map
