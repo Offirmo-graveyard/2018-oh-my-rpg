@@ -2,7 +2,7 @@
 const {
 	prettify_json,
 	indent_string,
-} = require('./libs')
+} = require('../libs')
 
 
 function prettify_json_for_debug() {

@@ -7,7 +7,7 @@ console.log('Hello world!')
 const RichText = require('../dist/src.es7.cjs')
 
 const callbacks_debug = require('./to_debug')
-const callbacks_ansi = require('./to_ansi')
+const callbacks_ansi = require('../../the-npm-rpg/src/v2/utils/rich_text_to_ansi_callbacks')
 
 const WEAPON_01_NAME = {
 	$classes: ['item-name', 'item-weapon-name'],
@@ -114,7 +114,7 @@ const doc2 = RichText.paragraph()
 		+ 'and kings are trembling from fear of change...{{br}}'
 		+ '…undoubtly, you’ll make a name in this world and fulfill your destiny!{{br}}'
 	)
-	.pushStrong('A great saga just started...')
+	.pushStrong('A great saga just started.')
 	.done()
 
 console.log('\n------- to text -------\n' + RichText.to_text(doc2))

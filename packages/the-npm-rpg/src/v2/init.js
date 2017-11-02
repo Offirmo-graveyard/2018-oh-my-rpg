@@ -1,7 +1,7 @@
 const Conf = require('conf')
 
 const { migrate_to_latest } = require('@oh-my-rpg/state-the-boring-rpg')
-const { prettify_json_for_debug } = require('./utils')
+const { prettify_json_for_debug } = require('./utils/debug')
 
 /////////////////////////////////////////////////
 

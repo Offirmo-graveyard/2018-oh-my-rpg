@@ -1,10 +1,10 @@
 "use strict";
 
-const { stylize_string } = require('./libs')
+const { stylize_string } = require('../libs')
 
-const LIB = 'to_ansi'
+const LIB = 'rich_text_to_ansi'
 
-// TODO handle fixed width
+// TODO handle fixed width?
 // TODO handle boxification
 
 function apply_type($type, str) {
@@ -52,7 +52,7 @@ function on_concatenate_sub_node({state, sub_state, $id, $parent_node}) {
 	return state + sub_state
 }
 
-module.exports = {
+const callbacks = {
 	on_node_enter: () => '',
 	on_concatenate_str: ({state, str}) => state + str,
 	on_concatenate_sub_node,
@@ -61,3 +61,5 @@ module.exports = {
 	on_type_br: ({state}) => state + '\n',
 	on_type_hr: ({state}) => state + '\n------------------------------------------------------------\n',
 }
+
+module.exports = callbacks

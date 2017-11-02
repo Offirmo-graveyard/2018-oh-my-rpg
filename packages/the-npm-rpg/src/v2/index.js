@@ -1,7 +1,7 @@
 const loadJsonFile = require('load-json-file')
 
 const { stylize_string } = require('./libs')
-const { prettify_json_for_debug } = require('./utils')
+const { prettify_json_for_debug } = require('./utils/debug')
 
 const { init_savegame } = require('./init')
 const { play } = require('./actions')
