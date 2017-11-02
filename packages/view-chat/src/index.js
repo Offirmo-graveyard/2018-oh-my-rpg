@@ -90,8 +90,25 @@ function factory({DEBUG, gen_next_step, ui}) {
 			answer = await ui.read_answer(step)
 			if (DEBUG) console.log(`↖ ask_user(…) answer = "${answer}"`)
 		} while (!ok)
-		if (step.msgg_acknowledge)
+
+		let acknowledged = false
+		if (step.choices) {
+			const selected_choice = step.choices.find(choice => choice.value === answer)
+			if (selected_choice.msgg_acknowledge) {
+				await ui.display_message({msg: selected_choice.msgg_acknowledge(answer)})
+				acknowledged = true
+			}
+		}
+		if (!acknowledged && step.msgg_acknowledge) {
 			await ui.display_message({msg: step.msgg_acknowledge(answer)})
+			acknowledged = true
+		}
+		if (!acknowledged) {
+			const err = new Error('CNF acknowledge msg')
+			err.step = step
+			throw err
+		}
+
 		return answer
 	}
 
@@ -107,8 +124,25 @@ function factory({DEBUG, gen_next_step, ui}) {
 			case 'ask_for_string':
 			case 'ask_for_choice': {
 				const answer = await ask_user(step)
-				if (step.callback)
+
+				let reported = false
+				if (step.choices) {
+					const selected_choice = step.choices.find(choice => choice.value === answer)
+					if (selected_choice.callback) {
+						await selected_choice.callback(answer)
+						reported = true
+					}
+				}
+				if (!reported && step.callback) {
 					await step.callback(answer)
+					reported = true
+				}
+				if (!reported) {
+					const err = new Error('CNF report ask for result')
+					err.step = step
+					throw err
+				}
+
 				break
 			}
 			default:
