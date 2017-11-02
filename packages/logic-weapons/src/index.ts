@@ -3,7 +3,7 @@
 import { Random, Engine } from '@offirmo/random'
 import { ItemQuality, InventorySlot } from '@oh-my-rpg/definitions'
 
-import * as static_weapon_data from '@oh-my-rpg/data/src/weapon_component'
+import { i18n_messages, ENTRIES as static_weapon_data } from './data'
 
 import {
 	WeaponPartType,
@@ -12,12 +12,17 @@ import {
 
 import { get_interval } from './constants'
 
-const WEAPON_BASES: {type: 'base', hid: string}[] =
-	static_weapon_data.filter((weapon_component: any) => weapon_component.type === WeaponPartType.base)
-const WEAPON_QUALIFIERS1: {type: 'qualifier1', hid: string}[] =
-	static_weapon_data.filter((weapon_component: any) => weapon_component.type === WeaponPartType.qualifier1)
-const WEAPON_QUALIFIERS2: {type: 'qualifier2', hid: string}[] =
-	static_weapon_data.filter((weapon_component: any) => weapon_component.type === WeaponPartType.qualifier2)
+const WEAPON_BASES =
+	static_weapon_data.filter((armor_component: any) => armor_component.type === WeaponPartType.base) as
+		{type: 'base', hid: string}[]
+const WEAPON_QUALIFIERS1 =
+	static_weapon_data.filter((armor_component: any) => armor_component.type === WeaponPartType.qualifier1) as
+		{type: 'qualifier1', hid: string}[]
+const WEAPON_QUALIFIERS2 =
+	static_weapon_data.filter((armor_component: any) => armor_component.type === WeaponPartType.qualifier2) as
+		{type: 'qualifier2', hid: string}[]
+
+
 
 const MIN_ENHANCEMENT_LEVEL = 0
 const MAX_ENHANCEMENT_LEVEL = 8
@@ -139,6 +144,9 @@ export {
 	enhance,
 	get_damage_interval,
 	get_medium_damage,
+
+	i18n_messages,
+	static_weapon_data,
 
 	DEMO_WEAPON_1,
 	DEMO_WEAPON_2,
