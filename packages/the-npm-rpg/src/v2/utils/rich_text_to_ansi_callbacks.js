@@ -4,12 +4,18 @@ const { stylize_string } = require('../libs')
 
 const LIB = 'rich_text_to_ansi'
 
+const WIDTH_COMPENSATION = ' '
+
 // TODO handle fixed width?
 // TODO handle boxification
 
 function apply_type($type, str) {
 	switch($type) {
+		case 'li':
+		case 'ol':
 		case 'p':
+		case 'span':
+		case 'ul':
 			// nothing to do for those one
 			return str
 		case 'strong':
@@ -24,17 +30,36 @@ function apply_type($type, str) {
 
 function apply_class($class, str) {
 	switch($class) {
-		case 'place':
-			return stylize_string.green(str)
-		case 'place-name':
-		case 'item-name':
+		case 'item__name':
 			return stylize_string.bold(str)
-		case 'person':
+
+		case 'item--quality--common':
+			return stylize_string.gray(str)
+		case 'item--quality--uncommon':
+			return stylize_string.green(str)
+		case 'item--quality--rare':
 			return stylize_string.blue(str)
-		case 'item-weapon':
-			return '⚔  ' + stylize_string.red(str)
+		case 'item--quality--epic':
+			return stylize_string.magenta(str)
+		case 'item--quality--legendary':
+			return stylize_string.red(str)
+		case 'item--quality--artifact':
+			return stylize_string.yellow(str)
+
+		case 'item--armor':
+			return '🛡 ' + WIDTH_COMPENSATION + str
+		case 'item--weapon':
+			return '⚔ ' + WIDTH_COMPENSATION + str
+
+		case 'item-enhancement':
+		case 'armor-values':
+		case 'weapon-values':
+		case 'item':
+			// no style
+			return str
+
 		default:
-			//console.warn(`${LIB}: unknown class "${$class}", ignored.`) // todo avoid repetition
+			console.warn(`${LIB}: unknown class "${$class}", ignored.`) // todo avoid repetition
 			return str
 	}
 }

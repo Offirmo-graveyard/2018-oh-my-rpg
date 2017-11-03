@@ -86,13 +86,13 @@ const MSG_02 = {
 
 
 ////////////////////////////////////
-console.log('\n------- 1 -------\n')
+console.log('\n------- 1 -------')
 const doc1 = MSG_02
 
 console.log('\n------- to text -------\n' + RichText.to_text(doc1))
 console.log('\n------- to ansi -------\n' + RichText.walk(doc1, callbacks_ansi))
 console.log('\n------- to html -------\n' + RichText.to_html(doc1))
-console.log('\n------- to debug -------\n' + RichText.walk(doc1, callbacks_debug))
+//console.log('\n------- to debug -------\n' + RichText.walk(doc1, callbacks_debug))
 
 
 // TODO actions
@@ -106,7 +106,7 @@ console.log('\n------- to debug -------\n' + RichText.walk(doc1, callbacks_debug
 
 ////////////////////////////////////
 
-console.log('\n------- 2 -------\n')
+console.log('\n------- 2 -------')
 const doc2 = RichText.paragraph()
 	.pushText(''
 		+ 'Great sages prophetized your coming,{{br}}'

@@ -9,14 +9,14 @@ import {
 
 
 interface Builder {
-	addClass(klass: string): Builder
+	addClass(...classes: string[]): Builder
 	pushText(str: string): Builder
 	pushStrong(str: string, id?: string): Builder
 	pushEmphasized(str: string, id?: string): Builder
 	pushNode(node: Node, id?: string): Builder
 	pushLineBreak(): Builder
 	pushHorizontalRule(): Builder
-	done(): Document
+	done(): CheckedNode
 }
 
 
@@ -43,8 +43,8 @@ function factory($type: NodeType): Builder {
 
 	let sub_id = 0
 
-	function addClass(klass: string): Builder {
-		$node.$classes.push(klass)
+	function addClass(...classes: string[]): Builder {
+		$node.$classes.push(...classes)
 		return builder
 	}
 
@@ -86,7 +86,7 @@ function factory($type: NodeType): Builder {
 		return builder
 	}
 
-	function done(): Document {
+	function done(): CheckedNode {
 		return $node
 	}
 

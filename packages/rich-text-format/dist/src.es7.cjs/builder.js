@@ -22,8 +22,8 @@ function factory($type) {
         done,
     };
     let sub_id = 0;
-    function addClass(klass) {
-        $node.$classes.push(klass);
+    function addClass(...classes) {
+        $node.$classes.push(...classes);
         return builder;
     }
     function pushText(str) {

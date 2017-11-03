@@ -1,4 +1,9 @@
-export const messages = {
+
+interface I18nMessages {
+	[k: string]: string | I18nMessages
+}
+
+const messages: I18nMessages = {
 	armor: {
 		base: {
 			'armguards': 'armguards',
@@ -130,4 +135,9 @@ export const messages = {
 			'woodsman': 'woodsman’s',
 		}
 	},
+}
+
+export {
+	I18nMessages,
+	messages,
 }

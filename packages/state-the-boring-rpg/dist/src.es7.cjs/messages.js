@@ -9,8 +9,9 @@ function get_recap(state) {
             + 'Great sages prophesied your coming,{{br}}'
             + 'commoners are waiting for their hero{{br}}'
             + 'and kings are trembling from fear of change...{{br}}'
-            + '…undoubtedly, you’ll make a name in this world and fulfill your destiny!{{br}}')
-            .pushStrong('A great saga just started...')
+            + '…undoubtedly, you’ll make a name in this world and fulfill your destiny!{{br}}'
+            + '{{br}}')
+            .pushStrong('A great saga just started.')
             .done();
     }
     return RichText.paragraph()
@@ -22,14 +23,21 @@ function get_tip(state) {
     const hasEverPlayed = !!state.click_count;
     if (!hasEverPlayed)
         return RichText.paragraph()
-            .pushText('Select ')
+            .pushText('Tip: Select ')
             .pushStrong('play')
-            .pushStrong(' to start adventuring!')
+            .pushText(' to start adventuring!')
             .done();
     return null;
 }
 exports.get_tip = get_tip;
 /*
+    const MSG_INTRO = {
+        type: 'simple_message',
+        msg_main: stylize_string.bold(`Congratulations, adventurer!\n`)
+        + `Your are more courageous, cunning and curious than your peers:
+You dared to enter this unknown realm, for glory and adventures! (and loot 💰 ;)`,
+    }
+
 
     const {
         level,

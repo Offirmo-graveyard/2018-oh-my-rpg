@@ -142,6 +142,7 @@ export {
 	enhance,
 	get_damage_reduction_interval,
 	get_medium_damage_reduction,
+
 	i18n_messages,
 	static_armor_data,
 

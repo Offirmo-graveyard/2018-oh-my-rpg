@@ -1,13 +1,13 @@
-import { NodeType, Node, Document } from './types';
+import { NodeType, CheckedNode, Node, Document } from './types';
 interface Builder {
-    addClass(klass: string): Builder;
+    addClass(...classes: string[]): Builder;
     pushText(str: string): Builder;
     pushStrong(str: string, id?: string): Builder;
     pushEmphasized(str: string, id?: string): Builder;
     pushNode(node: Node, id?: string): Builder;
     pushLineBreak(): Builder;
     pushHorizontalRule(): Builder;
-    done(): Document;
+    done(): CheckedNode;
 }
 declare function factory($type: NodeType): Builder;
 declare function paragraph(): Builder;

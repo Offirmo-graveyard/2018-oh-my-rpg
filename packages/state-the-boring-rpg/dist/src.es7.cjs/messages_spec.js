@@ -14,6 +14,9 @@ describe.only('⚔ 👑 😪  The Boring RPG - contextual messages', function ()
                 expect(str).to.include('A great saga just started');
             });
         });
+        context('when the user has already played', function () {
+            it('should recap current status');
+        });
     });
     describe('get tip', function () {
         context('when the user has just started a new game', function () {
@@ -21,10 +24,18 @@ describe.only('⚔ 👑 😪  The Boring RPG - contextual messages', function ()
                 const state = _1.factory();
                 const doc = _1.get_tip(state);
                 const str = RichText.to_text(doc);
-                console.log(str);
-                expect('' + str).to.include('Tip:');
-                expect('' + str).to.include('select play');
+                //console.log(`"${str}"`)
+                expect(str).to.include('Tip:');
+                expect(str).to.include('Select play');
             });
+        });
+        context('when the user has already played', function () {
+            context('when the user has an unequiped better weapon', function () {
+                it('should suggest to install it');
+            });
+        });
+        context('when none of the above', function () {
+            it('should not suggest anything');
         });
     });
 });

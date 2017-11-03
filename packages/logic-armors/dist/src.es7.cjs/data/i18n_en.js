@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.messages = {
+const messages = {
     armor: {
         base: {
             'armguards': 'armguards',
@@ -133,4 +133,5 @@ exports.messages = {
         }
     },
 };
+exports.messages = messages;
 //# sourceMappingURL=i18n_en.js.map
