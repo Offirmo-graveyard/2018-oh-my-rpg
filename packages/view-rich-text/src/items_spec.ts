@@ -1,3 +1,4 @@
+import * as RichText from '@oh-my-rpg/rich-text-format'
 
 import { InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
 import { generate_random_demo_weapon, DEMO_WEAPON_1, DEMO_WEAPON_2 } from '@oh-my-rpg/logic-weapons'
@@ -18,13 +19,12 @@ import {
 
 describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 
-	/*
 	describe('⚔  weapon rendering', function() {
 
 		context('when not enhanced', function() {
 
 			it('should render properly', () => {
-				const str = render_weapon({
+				const $doc = render_weapon({
 					slot: InventorySlot.weapon,
 					base_hid: 'luth',
 					qualifier1_hid: 'simple',
@@ -32,10 +32,8 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 					quality: ItemQuality.legendary,
 					base_strength: 14,
 					enhancement_level: 0,
-				}, {
-					globalize: Globalize('en'),
-					stylize: (style: string, s: string) => s
 				})
+				const str = RichText.to_text($doc)
 				expect(str).to.be.a.string
 				expect(str).to.include('Luth')
 				expect(str).to.include('Simple')
@@ -47,7 +45,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 		context('when enhanced', function() {
 
 			it('should render properly', () => {
-				const str = render_weapon({
+				const $doc = render_weapon({
 					slot: InventorySlot.weapon,
 					base_hid: 'longsword',
 					qualifier1_hid: 'onyx',
@@ -55,10 +53,8 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 					quality: ItemQuality.legendary,
 					base_strength: 14,
 					enhancement_level: 3,
-				}, {
-					globalize: Globalize('en'),
-					stylize: (style: string, s: string) => s
 				})
+				const str = RichText.to_text($doc)
 				expect(str).to.be.a.string
 				expect(str).to.include('Long sword')
 				expect(str).to.include('Onyx')
@@ -73,7 +69,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 		context('when not enhanced', function() {
 
 			it('should render properly', () => {
-				const str = render_armor({
+				const $doc = render_armor({
 					slot: InventorySlot.armor,
 					base_hid: 'socks',
 					qualifier1_hid: 'onyx',
@@ -81,10 +77,8 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 					quality: ItemQuality.legendary,
 					base_strength: 14,
 					enhancement_level: 0
-				}, {
-					globalize: Globalize('en'),
-					stylize: (style: string, s: string) => s
 				})
+				const str = RichText.to_text($doc)
 				expect(str).to.be.a.string
 				expect(str).to.include('Socks')
 				expect(str).to.include('Onyx')
@@ -96,7 +90,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 		context('when enhanced', function() {
 
 			it('should render properly', () => {
-				const str = render_armor({
+				const $doc = render_armor({
 					slot: InventorySlot.armor,
 					base_hid: 'mantle',
 					qualifier1_hid: 'embroidered',
@@ -104,10 +98,8 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 					quality: ItemQuality.legendary,
 					base_strength: 14,
 					enhancement_level: 5
-				}, {
-					globalize: Globalize('en'),
-					stylize: (style: string, s: string) => s
 				})
+				const str = RichText.to_text($doc)
 				expect(str).to.be.a.string
 				expect(str).to.include('Mantle')
 				expect(str).to.include('Embroidered')
@@ -116,7 +108,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 			})
 		})
 	})
-
+/*
 	describe('⚔ 🛡  equipment rendering', function() {
 
 		context('when empty', function() {
@@ -150,7 +142,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 	})
 	*/
 
-	describe.only('demo', function() {
+	describe('demo', function() {
 
 		it('shows off weapons', () => {
 

@@ -1,4 +1,4 @@
-import { ItemQuality, InventorySlot, Item, ITEM_SLOTS } from '@oh-my-rpg/definitions'
+import { InventorySlot, Item } from '@oh-my-rpg/definitions'
 import { Armor, get_damage_reduction_interval as get_armor_damage_reduction_interval } from '@oh-my-rpg/logic-armors'
 import { Weapon, get_damage_interval as get_weapon_damage_interval } from '@oh-my-rpg/logic-weapons'
 
@@ -29,7 +29,7 @@ function render_armor_name(i: Armor): RichText.Document {
 
 	if (i.enhancement_level) {
 		const $node_enhancement = RichText.span()
-			.addClass('item-enhancement')
+			.addClass('item--enhancement')
 			.pushText(`+${i.enhancement_level}`)
 			.done()
 
@@ -48,19 +48,21 @@ function render_armor(i: Armor): RichText.Document {
 	if (i.slot !== InventorySlot.armor)
 		throw new Error(`render_armor(): can't render a ${i.slot}!`)
 
-	const builder = RichText.span()
-		.addClass('item', 'item--armor', 'item--quality--' + i.quality)
-		.pushNode(render_armor_name(i), 'armor_name')
+	const $node_quality = RichText.span().pushText(i.quality).done()
 
 	const [min, max] = get_armor_damage_reduction_interval(i)
 	const $node_values = RichText.span()
-		.addClass('armor-values')
+		.addClass('armor--values')
 		.pushText(`[${min} ↔ ${max}]`)
 		.done()
 
-	builder.pushText(' ').pushNode($node_values, 'values')
-
-	return builder.done()
+	return RichText.span()
+		.addClass('item', 'item--armor', 'item--quality--' + i.quality)
+		.pushText('{{quality}} {{name}} {{values}}')
+		.pushRawNode($node_quality, 'quality')
+		.pushRawNode(render_armor_name(i), 'name')
+		.pushRawNode($node_values, 'values')
+		.done()
 }
 
 function render_weapon_name(i: Weapon): RichText.Document {
@@ -82,7 +84,7 @@ function render_weapon_name(i: Weapon): RichText.Document {
 
 	if (i.enhancement_level) {
 		const $node_enhancement = RichText.span()
-			.addClass('item-enhancement')
+			.addClass('item--enhancement')
 			.pushText(`+${i.enhancement_level}`)
 			.done()
 
@@ -101,19 +103,21 @@ function render_weapon(i: Weapon): RichText.Document {
 	if (i.slot !== InventorySlot.weapon)
 		throw new Error(`render_weapon(): can't render a ${i.slot}!`)
 
-	const builder = RichText.span()
-		.addClass('item', 'item--weapon', 'item--quality--' + i.quality)
-		.pushNode(render_weapon_name(i), 'weapon_name')
+	const $node_quality = RichText.span().pushText(i.quality).done()
 
 	const [min, max] = get_weapon_damage_interval(i)
 	const $node_values = RichText.span()
-		.addClass('weapon-values')
+		.addClass('weapon--values')
 		.pushText(`[${min} ↔ ${max}]`)
 		.done()
 
-	builder.pushText(' ').pushNode($node_values, 'values')
-
-	return builder.done()
+	return RichText.span()
+		.addClass('item', 'item--weapon', 'item--quality--' + i.quality)
+		.pushText('{{quality}} {{name}} {{values}}')
+		.pushRawNode($node_quality, 'quality')
+		.pushRawNode(render_weapon_name(i), 'name')
+		.pushRawNode($node_values, 'values')
+		.done()
 }
 
 function render_item(i?: Item): RichText.Document {

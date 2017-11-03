@@ -50,10 +50,20 @@ function apply_class($class, str) {
 			return '🛡 ' + WIDTH_COMPENSATION + str
 		case 'item--weapon':
 			return '⚔ ' + WIDTH_COMPENSATION + str
+		case 'currency--coin':
+			return '💰 ' + WIDTH_COMPENSATION + str
+		case 'currency--token':
+			return '💠 ' + WIDTH_COMPENSATION + str
 
-		case 'item-enhancement':
-		case 'armor-values':
-		case 'weapon-values':
+		/*
+
+
+	return `💰  ${wallet.coin_count} coins${coins_update_notice}
+💠  ${wallet.token_count} tokens${tokens_update_notice}`
+		 */
+		case 'item--enhancement':
+		case 'armor--values':
+		case 'weapon--values':
 		case 'item':
 			// no style
 			return str

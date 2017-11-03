@@ -16,6 +16,7 @@ function factory($type) {
         pushText,
         pushStrong,
         pushEmphasized,
+        pushRawNode,
         pushNode,
         pushLineBreak,
         pushHorizontalRule,
@@ -30,6 +31,15 @@ function factory($type) {
         $node.$content += str;
         return builder;
     }
+    function pushRawNode(node, id) {
+        $node.$sub[id] = node;
+        return builder;
+    }
+    function pushNode(node, id) {
+        id = id || ('s' + ++sub_id);
+        $node.$content += `{{${id}}}`;
+        return pushRawNode(node, id);
+    }
     function pushStrong(str, id) {
         const node = strong()
             .pushText(str)
@@ -41,12 +51,6 @@ function factory($type) {
             .pushText(str)
             .done();
         return pushNode(node, id);
-    }
-    function pushNode(node, id) {
-        id = id || ('s' + ++sub_id);
-        $node.$content += `{{${id}}}`;
-        $node.$sub[id] = node;
-        return builder;
     }
     function pushLineBreak() {
         $node.$content += '{{br}}';

@@ -21,7 +21,7 @@ function render_armor_name(i) {
         : '{{q2|Capitalize}} {{q1|Capitalize}} {{base|Capitalize}}');
     if (i.enhancement_level) {
         const $node_enhancement = RichText.span()
-            .addClass('item-enhancement')
+            .addClass('item--enhancement')
             .pushText(`+${i.enhancement_level}`)
             .done();
         builder.pushText(' ').pushNode($node_enhancement, 'enhancement');
@@ -36,16 +36,19 @@ exports.render_armor_name = render_armor_name;
 function render_armor(i) {
     if (i.slot !== definitions_1.InventorySlot.armor)
         throw new Error(`render_armor(): can't render a ${i.slot}!`);
-    const builder = RichText.span()
-        .addClass('item', 'item--armor', 'item--quality--' + i.quality)
-        .pushNode(render_armor_name(i), 'armor_name');
+    const $node_quality = RichText.span().pushText(i.quality).done();
     const [min, max] = logic_armors_1.get_damage_reduction_interval(i);
     const $node_values = RichText.span()
-        .addClass('armor-values')
+        .addClass('armor--values')
         .pushText(`[${min} ↔ ${max}]`)
         .done();
-    builder.pushText(' ').pushNode($node_values, 'values');
-    return builder.done();
+    return RichText.span()
+        .addClass('item', 'item--armor', 'item--quality--' + i.quality)
+        .pushText('{{quality}} {{name}} {{values}}')
+        .pushRawNode($node_quality, 'quality')
+        .pushRawNode(render_armor_name(i), 'name')
+        .pushRawNode($node_values, 'values')
+        .done();
 }
 exports.render_armor = render_armor;
 function render_weapon_name(i) {
@@ -62,7 +65,7 @@ function render_weapon_name(i) {
         : '{{q2|Capitalize}} {{q1|Capitalize}} {{base|Capitalize}}');
     if (i.enhancement_level) {
         const $node_enhancement = RichText.span()
-            .addClass('item-enhancement')
+            .addClass('item--enhancement')
             .pushText(`+${i.enhancement_level}`)
             .done();
         builder.pushText(' ').pushNode($node_enhancement, 'enhancement');
@@ -76,16 +79,19 @@ function render_weapon_name(i) {
 function render_weapon(i) {
     if (i.slot !== definitions_1.InventorySlot.weapon)
         throw new Error(`render_weapon(): can't render a ${i.slot}!`);
-    const builder = RichText.span()
-        .addClass('item', 'item--weapon', 'item--quality--' + i.quality)
-        .pushNode(render_weapon_name(i), 'weapon_name');
+    const $node_quality = RichText.span().pushText(i.quality).done();
     const [min, max] = logic_weapons_1.get_damage_interval(i);
     const $node_values = RichText.span()
-        .addClass('weapon-values')
+        .addClass('weapon--values')
         .pushText(`[${min} ↔ ${max}]`)
         .done();
-    builder.pushText(' ').pushNode($node_values, 'values');
-    return builder.done();
+    return RichText.span()
+        .addClass('item', 'item--weapon', 'item--quality--' + i.quality)
+        .pushText('{{quality}} {{name}} {{values}}')
+        .pushRawNode($node_quality, 'quality')
+        .pushRawNode(render_weapon_name(i), 'name')
+        .pushRawNode($node_values, 'values')
+        .done();
 }
 exports.render_weapon = render_weapon;
 function render_item(i) {

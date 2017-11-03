@@ -13,6 +13,7 @@ interface Builder {
 	pushText(str: string): Builder
 	pushStrong(str: string, id?: string): Builder
 	pushEmphasized(str: string, id?: string): Builder
+	pushRawNode(node: Node, id?: string): Builder
 	pushNode(node: Node, id?: string): Builder
 	pushLineBreak(): Builder
 	pushHorizontalRule(): Builder
@@ -35,6 +36,7 @@ function factory($type: NodeType): Builder {
 		pushText,
 		pushStrong,
 		pushEmphasized,
+		pushRawNode,
 		pushNode,
 		pushLineBreak,
 		pushHorizontalRule,
@@ -53,6 +55,17 @@ function factory($type: NodeType): Builder {
 		return builder
 	}
 
+	function pushRawNode(node: Node, id: string): Builder {
+		$node.$sub[id] = node
+		return builder
+	}
+
+	function pushNode(node: Node, id?: string): Builder {
+		id = id || ('s' + ++sub_id)
+		$node.$content += `{{${id}}}`
+		return pushRawNode(node, id)
+	}
+
 	function pushStrong(str: string, id?: string): Builder {
 		const node = strong()
 			.pushText(str)
@@ -67,13 +80,6 @@ function factory($type: NodeType): Builder {
 			.done()
 
 		return pushNode(node, id)
-	}
-
-	function pushNode(node: Node, id?: string): Builder {
-		id = id || ('s' + ++sub_id)
-		$node.$content += `{{${id}}}`
-		$node.$sub[id] = node
-		return builder
 	}
 
 	function pushLineBreak(): Builder {

@@ -4,6 +4,7 @@ interface Builder {
     pushText(str: string): Builder;
     pushStrong(str: string, id?: string): Builder;
     pushEmphasized(str: string, id?: string): Builder;
+    pushRawNode(node: Node, id?: string): Builder;
     pushNode(node: Node, id?: string): Builder;
     pushLineBreak(): Builder;
     pushHorizontalRule(): Builder;
