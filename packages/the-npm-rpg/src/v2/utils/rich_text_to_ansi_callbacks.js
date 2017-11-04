@@ -12,12 +12,13 @@ const WIDTH_COMPENSATION = ' '
 function apply_type($type, str) {
 	switch($type) {
 		case 'li':
-		case 'ol':
 		case 'p':
 		case 'span':
-		case 'ul':
 			// nothing to do for those one
 			return str
+		case 'ol':
+		case 'ul':
+			return str + '\n'
 		case 'strong':
 			return stylize_string.bold(str)
 		case 'em':
@@ -65,6 +66,10 @@ function apply_class($class, str) {
 		case 'armor--values':
 		case 'weapon--values':
 		case 'item':
+		case 'inventory--equipment':
+		case 'inventory--wallet':
+		case 'inventory--unslotted':
+		case '':
 			// no style
 			return str
 

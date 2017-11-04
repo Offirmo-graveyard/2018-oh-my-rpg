@@ -27,6 +27,7 @@ import {
 	render_inventory,
 	render_equipment,
 	render_wallet,
+	render_full_inventory,
 } from '.'
 
 
@@ -70,6 +71,18 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 		describe('demo', function() {
 			it('shows off', () => {
 				let inventory = inventory_factory()
+				inventory = add_item(inventory, generate_random_demo_weapon())
+				inventory = add_item(inventory, generate_random_demo_weapon())
+				inventory = add_item(inventory, generate_random_demo_armor())
+				inventory = add_item(inventory, generate_random_demo_weapon())
+				inventory = add_item(inventory, generate_random_demo_armor())
+				inventory = add_item(inventory, generate_random_demo_armor())
+				inventory = add_item(inventory, generate_random_demo_weapon())
+				inventory = add_item(inventory, generate_random_demo_weapon())
+				inventory = add_item(inventory, generate_random_demo_armor())
+				inventory = add_item(inventory, generate_random_demo_weapon())
+				inventory = add_item(inventory, generate_random_demo_armor())
+				inventory = add_item(inventory, generate_random_demo_armor())
 				inventory = add_item(inventory, generate_random_demo_weapon())
 				inventory = add_item(inventory, generate_random_demo_weapon())
 				inventory = add_item(inventory, generate_random_demo_armor())
@@ -149,8 +162,8 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 			it('should render properly', () => {
 				let wallet = wallet_factory()
 
-				wallet = add_amount(wallet, Currency.coin, 12)
-				wallet = add_amount(wallet, Currency.token, 34)
+				wallet = add_amount(wallet, Currency.coin, 12345)
+				wallet = add_amount(wallet, Currency.token, 67)
 
 				const $doc = render_wallet(wallet)
 				const str = RichText.to_text($doc)
@@ -170,6 +183,34 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 				wallet = add_amount(wallet, Currency.token, 34)
 
 				const $doc = render_wallet(wallet)
+				console.log(rich_text_to_ansi($doc))
+			})
+		})
+
+	})
+
+	describe('⚔ 🛡 💰 📦  full inventory rendering', function() {
+
+		describe('demo', function() {
+			it('shows off', () => {
+				let inventory = inventory_factory()
+				inventory = add_item(inventory, DEMO_WEAPON_1)
+				inventory = add_item(inventory, DEMO_ARMOR_2)
+				inventory = equip_item(inventory, 0)
+				inventory = equip_item(inventory, 0)
+				inventory = add_item(inventory, generate_random_demo_weapon())
+				inventory = add_item(inventory, generate_random_demo_weapon())
+				inventory = add_item(inventory, generate_random_demo_armor())
+				inventory = add_item(inventory, generate_random_demo_weapon())
+				inventory = add_item(inventory, generate_random_demo_armor())
+				inventory = add_item(inventory, generate_random_demo_armor())
+				inventory = remove_item(inventory, 4)
+
+				let wallet = wallet_factory()
+				wallet = add_amount(wallet, Currency.coin, 12345)
+				wallet = add_amount(wallet, Currency.token, 67)
+
+				const $doc = render_full_inventory(inventory, wallet)
 				console.log(rich_text_to_ansi($doc))
 			})
 		})

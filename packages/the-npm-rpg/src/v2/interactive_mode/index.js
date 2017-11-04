@@ -3,9 +3,15 @@
 const tbrpg = require('@oh-my-rpg/state-the-boring-rpg')
 const { factory: tty_chat_ui_factory } = require('@oh-my-rpg/view-chat/src/ui/tty')
 const { factory: chat_factory } = require('@oh-my-rpg/view-chat')
+const {
+	render_equipment,
+	render_wallet,
+	render_full_inventory,
+} = require('@oh-my-rpg/view-text')
 
 const { rich_text_to_ansi } = require('../utils/rich_text_to_ansi')
-
+const { stylize_string } = require('../libs')
+const { render_header } = require('../view')
 const { prettify_json_for_debug } = require('../utils/debug')
 
 function get_recap({config}) {
@@ -25,23 +31,25 @@ function start_loop(options) {
 	const DEBUG = options.verbose
 	if (DEBUG) console.log('all options:', prettify_json_for_debug(options))
 
+	render_header(options)
+
 	const {config} = options
 	//const state = config.store
 
 	function* gen_next_step() {
-		const state = {
+		const chat_state = {
 			count: 0,
 			mode: 'main',
 		}
 
 		const MODE_MAIN = {
 			msg_main: `What do you want to do?`,
-			callback: value => { console.log({value}); state.mode = value},
+			callback: value => { chat_state.mode = value },
 			choices: [
 				{
 					msg_cta: 'Play',
 					value: 'play',
-					msgg_as_user: () => 'Let’s play!',
+					msgg_as_user: () => 'Let’s go adventuring!',
 					callback: () => console.log('TODO play')
 				},
 				{
@@ -58,15 +66,17 @@ function start_loop(options) {
 		}
 
 		function get_MODE_INVENTORY() {
-			// TOTO display inventory
+			const state = config.store
+			const $doc = render_full_inventory(state.inventory, state.wallet)
+
 			return {
-				msg_main: `What do you want to do?`,
+				msg_main: rich_text_to_ansi($doc) + `\nWhat do you want to do?`,
 				choices: [
 					{
 						msg_cta: 'Go back to adventuring.',
 						value: 'x',
 						msgg_as_user: () => 'Let’s do something else.',
-						callback: () => state.mode = 'main',
+						callback: () => chat_state.mode = 'main',
 					},
 				]
 			}
@@ -92,19 +102,27 @@ function start_loop(options) {
 			],
 			*/
 		}
+
 		let yielded
 
 		// intro
-		state.count++
+		chat_state.count++
 		yielded = yield {
 			type: 'simple_message',
 			msg_main: get_recap(options),
 		}
 
+		// how to quit
+		chat_state.count++
+		yielded = yield {
+			type: 'simple_message',
+			msg_main: `Note: Press ${stylize_string.inverse(' Ctrl+C ')} at anytime to ${stylize_string.red('quit')}, your game is auto-saved.`,
+		}
+
 		// tip
 		let tip_msg = get_tip(options)
 		if (tip_msg) {
-			state.count++
+			chat_state.count++
 			yielded = yield {
 				type: 'simple_message',
 				msg_main: tip_msg,
@@ -113,25 +131,25 @@ function start_loop(options) {
 
 		// main step
 		do {
-			console.log(state)
-			switch(state.mode) {
+			if (true && DEBUG) console.log({state: chat_state})
+			switch(chat_state.mode) {
 				case 'main':
-					state.count++
+					chat_state.count++
 					yielded = yield MODE_MAIN
 					break
 				case 'inventory':
-					state.count++
+					chat_state.count++
 					yielded = yield get_MODE_INVENTORY()
 					break
 				case 'character':
-					state.count++
+					chat_state.count++
 					yielded = yield get_MODE_INVENTORY()
 					break
 				default:
-					console.error(`Unknown mode: "${state.mode}"`)
+					console.error(`Unknown mode: "${chat_state.mode}"`)
 					process.exit(1)
 			}
-		} while (state.count < 10)
+		} while (chat_state.count < 10)
 
 		/*yield* [
 

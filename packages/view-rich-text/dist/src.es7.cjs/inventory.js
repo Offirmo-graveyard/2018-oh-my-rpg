@@ -6,10 +6,12 @@ const RichText = require("@oh-my-rpg/rich-text-format");
 const state_wallet_1 = require("@oh-my-rpg/state-wallet");
 const items_1 = require("./items");
 function inventory_coordinate_to_sortable_alpha_index(coord) {
-    return ('0' + (coord + 1)).slice(-2);
+    return (' ' + (coord + 1)).slice(-2);
 }
 function render_inventory(inventory) {
-    const $doc = RichText.ordered_list().done();
+    const $doc = RichText.ordered_list()
+        .addClass('inventory--unslotted')
+        .done();
     const misc_items = Array.from(state_inventory_1.iterables_unslotted(inventory));
     misc_items.forEach((i, index) => {
         if (!i)
@@ -21,7 +23,9 @@ function render_inventory(inventory) {
 }
 exports.render_inventory = render_inventory;
 function render_equipment(inventory) {
-    const $doc = RichText.unordered_list().done();
+    const $doc = RichText.unordered_list()
+        .addClass('inventory--equipment')
+        .done();
     definitions_1.ITEM_SLOTS.forEach((slot) => {
         const item = state_inventory_1.get_item_in_slot(inventory, slot);
         const $doc_item = RichText.span()
@@ -37,7 +41,9 @@ function render_equipment(inventory) {
 }
 exports.render_equipment = render_equipment;
 function render_wallet(wallet) {
-    const $doc = RichText.unordered_list().done();
+    const $doc = RichText.unordered_list()
+        .addClass('inventory--wallet')
+        .done();
     state_wallet_1.ALL_CURRENCIES.forEach((c) => {
         const amount = state_wallet_1.get_currency_amount(wallet, c);
         const $doc_currency = RichText.span()
@@ -50,4 +56,16 @@ function render_wallet(wallet) {
     return $doc;
 }
 exports.render_wallet = render_wallet;
+function render_full_inventory(inventory, wallet) {
+    const $doc = RichText.paragraph()
+        .pushText('Active equipment:')
+        .pushNode(render_equipment(inventory), 'equipped')
+        .pushText('Wallet:')
+        .pushNode(render_wallet(wallet), 'wallet')
+        .pushText('Inventory:')
+        .pushNode(render_inventory(inventory), 'inventory')
+        .done();
+    return $doc;
+}
+exports.render_full_inventory = render_full_inventory;
 //# sourceMappingURL=inventory.js.map

@@ -11,7 +11,7 @@ import {
 } from '.'
 
 
-describe.only('⚔ 👑 😪  The Boring RPG - contextual messages', function() {
+describe('⚔ 👑 😪  The Boring RPG - contextual messages', function() {
 	beforeEach(() => xxx_internal_reset_prng_cache())
 
 	describe('get recap', function() {

@@ -3,8 +3,8 @@
 "use strict";
 
 const readline = require('readline')
-const termSize = require('term-size')
-const { indent_string, wrap_string, prettify_json } = require('../libs')
+const term_size = require('term-size')
+const { stylize_string, indent_string, wrap_string, prettify_json } = require('../libs')
 const { prettify_params_for_debug, get_shared_start } = require('../utils')
 
 
@@ -13,7 +13,8 @@ const MANY_SPACES = '                                                           
 const LIB = 'view-chat/tty'
 
 function alpha_to_nice_unicode(char) {
-	return ' ' + char + '\u20e3'
+	// return ' ' + char + '\u20e3'
+	return '╴' + stylize_string.inverse(' ' + char.toUpperCase() + ' ') + ' ' + stylize_string.blue('→')
 }
 
 function key_to_string(key) {
@@ -31,14 +32,12 @@ function factory({DEBUG, shouldCenter}) {
 	if (!process.stdout.isTTY)
 		throw new Error('start_loop: current term is not a tty !')
 
-	const {columns: TERM_WIDTH} = termSize()
+	const {columns: TERM_WIDTH} = term_size()
 	if (DEBUG) console.log({TERM_WIDTH})
-	if (TERM_WIDTH < 40)
+	if (TERM_WIDTH < 80)
 		throw new Error('Your terminal is too narrow!')
-	const USED_WIDTH = Math.min(TERM_WIDTH, 80)
-	const MSG_WIDTH = USED_WIDTH <= 50
-		? USED_WIDTH
-		: Math.max(50, Math.round(USED_WIDTH * .5))
+	const USED_WIDTH = Math.min(TERM_WIDTH, 100)
+	const MSG_WIDTH = Math.max(80, Math.round(USED_WIDTH * .7))
 	if (DEBUG) console.log({USED_WIDTH, MSG_WIDTH})
 	const MSG_BASELINE = MANY_BOX_HORIZ.slice(0, MSG_WIDTH - 2)
 	const MSG_L_INDENT = shouldCenter

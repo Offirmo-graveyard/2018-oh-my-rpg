@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const state_prng_1 = require("@oh-my-rpg/state-prng");
 const RichText = require("@oh-my-rpg/rich-text-format");
 const _1 = require(".");
-describe.only('⚔ 👑 😪  The Boring RPG - contextual messages', function () {
+describe('⚔ 👑 😪  The Boring RPG - contextual messages', function () {
     beforeEach(() => state_prng_1.xxx_internal_reset_prng_cache());
     describe('get recap', function () {
         context('when the user has just started a new game', function () {

@@ -1,24 +1,20 @@
 const {
-	stylizeString,
-	clearCli,
-} = require('./deps')
+	stylize_string,
+} = require('./libs')
 
 /////////////////////////////////////////////////
 
 function divide() {
-	console.log('\n---------------------------------------------------------------\n')
+	console.log('--------------------------------------------------------------------------------')
 }
 
 function render_header({may_clear_screen, version}) {
-	if (may_clear_screen)
-		clearCli()
-	else
-		divide()
+	divide()
 
-	console.log(stylizeString.dim(
-		stylizeString.bold('The npm RPG')
+	console.log(stylize_string.dim(
+		stylize_string.bold('The npm RPG')
 		+ ` - v${version} - `
-		+ stylizeString.underline('http://www.online-adventur.es/the-npm-rpg')
+		+ stylize_string.underline('http://www.online-adventur.es/the-npm-rpg')
 		+ '\n'
 	))
 }

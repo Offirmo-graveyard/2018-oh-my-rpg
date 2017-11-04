@@ -34,15 +34,27 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
                 const $doc = _1.render_inventory(inventory);
                 const str = RichText.to_text($doc);
                 expect(str).to.be.a.string;
-                expect(str).not.to.contain('00.');
-                expect(str).to.contain('01.');
-                expect(str).to.contain('05.');
-                expect(str).not.to.contain('06.');
+                expect(str).not.to.contain(' 0.');
+                expect(str).to.contain(' 1.');
+                expect(str).to.contain(' 5.');
+                expect(str).not.to.contain(' 6.');
             });
         });
         describe('demo', function () {
             it('shows off', () => {
                 let inventory = state_inventory_1.factory();
+                inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
+                inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
+                inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
+                inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
+                inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
+                inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
+                inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
+                inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
+                inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
+                inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
+                inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
+                inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
                 inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
                 inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
                 inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
@@ -106,14 +118,14 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
         context('when not empty', function () {
             it('should render properly', () => {
                 let wallet = state_wallet_1.factory();
-                wallet = state_wallet_1.add_amount(wallet, state_wallet_1.Currency.coin, 12);
-                wallet = state_wallet_1.add_amount(wallet, state_wallet_1.Currency.token, 34);
+                wallet = state_wallet_1.add_amount(wallet, state_wallet_1.Currency.coin, 12345);
+                wallet = state_wallet_1.add_amount(wallet, state_wallet_1.Currency.token, 67);
                 const $doc = _1.render_wallet(wallet);
                 const str = RichText.to_text($doc);
                 expect(str).to.be.a.string;
                 expect(str).not.to.contain('0');
-                expect(str).to.contain(' 12 coins');
-                expect(str).to.contain(' 34 tokens');
+                expect(str).to.contain(' 12345 coins');
+                expect(str).to.contain(' 67 tokens');
             });
         });
         describe('demo', function () {
@@ -122,6 +134,29 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
                 wallet = state_wallet_1.add_amount(wallet, state_wallet_1.Currency.coin, 12);
                 wallet = state_wallet_1.add_amount(wallet, state_wallet_1.Currency.token, 34);
                 const $doc = _1.render_wallet(wallet);
+                console.log(rich_text_to_ansi($doc));
+            });
+        });
+    });
+    describe('⚔ 🛡 💰 📦  full inventory rendering', function () {
+        describe('demo', function () {
+            it('shows off', () => {
+                let inventory = state_inventory_1.factory();
+                inventory = state_inventory_1.add_item(inventory, logic_weapons_1.DEMO_WEAPON_1);
+                inventory = state_inventory_1.add_item(inventory, logic_armors_1.DEMO_ARMOR_2);
+                inventory = state_inventory_1.equip_item(inventory, 0);
+                inventory = state_inventory_1.equip_item(inventory, 0);
+                inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
+                inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
+                inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
+                inventory = state_inventory_1.add_item(inventory, logic_weapons_1.generate_random_demo_weapon());
+                inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
+                inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
+                inventory = state_inventory_1.remove_item(inventory, 4);
+                let wallet = state_wallet_1.factory();
+                wallet = state_wallet_1.add_amount(wallet, state_wallet_1.Currency.coin, 12345);
+                wallet = state_wallet_1.add_amount(wallet, state_wallet_1.Currency.token, 67);
+                const $doc = _1.render_full_inventory(inventory, wallet);
                 console.log(rich_text_to_ansi($doc));
             });
         });

@@ -15,7 +15,7 @@ function get_recap(state) {
             .done();
     }
     return RichText.paragraph()
-        .pushText('TODO')
+        .pushText('TODO recap')
         .done();
 }
 exports.get_recap = get_recap;
@@ -23,7 +23,8 @@ function get_tip(state) {
     const hasEverPlayed = !!state.click_count;
     if (!hasEverPlayed)
         return RichText.paragraph()
-            .pushText('Tip: Select ')
+            .pushStrong('Tip: ')
+            .pushText('Select ')
             .pushStrong('play')
             .pushText(' to start adventuring!')
             .done();

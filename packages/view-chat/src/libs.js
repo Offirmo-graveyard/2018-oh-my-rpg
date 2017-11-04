@@ -1,5 +1,6 @@
 "use strict";
 
+const stylize_string = require('chalk')
 
 const prettyjson = require('prettyjson')
 function prettify_json(data, options) {
@@ -40,6 +41,7 @@ const enclose_in_box = boxen
 ////////////
 
 module.exports = {
+	stylize_string,
 	prettify_json,
 	indent_string,
 	wrap_string,

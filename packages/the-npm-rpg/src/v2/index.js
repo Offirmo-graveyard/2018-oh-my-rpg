@@ -16,7 +16,7 @@ const { version } = loadJsonFile.sync(PACKAGE_JSON_PATH)
 
 const options = {
 	version,
-	verbose: true, // XXX
+	verbose: false, // XXX
 	is_interactive: true,
 	may_clear_screen: true,
 	term_width: MINIMAL_TERMINAL_WIDTH,
@@ -43,4 +43,4 @@ if (!options.is_interactive) {
 	//render_cta(options)
 }
 
-console.log('\n---------------------------------------------------------------\n')
+//console.log('\n---------------------------------------------------------------\n')

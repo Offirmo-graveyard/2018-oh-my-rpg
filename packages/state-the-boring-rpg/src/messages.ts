@@ -23,7 +23,7 @@ function get_recap(state: Readonly<State>): RichText.Document {
 	}
 
 	return RichText.paragraph()
-		.pushText('TODO')
+		.pushText('TODO recap')
 		.done()
 }
 
@@ -32,7 +32,8 @@ function get_tip(state: Readonly<State>): RichText.Document | null {
 
 	if(!hasEverPlayed)
 		return RichText.paragraph()
-			.pushText('Tip: Select ')
+			.pushStrong('Tip: ')
+			.pushText('Select ')
 			.pushStrong('play')
 			.pushText(' to start adventuring!')
 			.done()
