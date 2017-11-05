@@ -10,9 +10,15 @@
 	},
 	"bin": "./bin/index.js",
 	"scripts": {
-		"start": "node src/v2/index.js",
-		"bin": "bin/index.js",
-		"build": "webpack --config meta/webpack.config.ts"
+		"__dev": "~~~~~~~ DEVELOPMENT ~~~~~~~",
+		"clean:build": "rm -rf dist",
+		"clean:deps": "rm -rf package-lock.json node_modules",
+		"build:prod": "webpack --config meta/webpack.config.ts",
+		"start": "node src/index.js",
+		"__helpers": "----------- Helpers -----------",
+		"build": "run-s clean:build build:prod",
+		"clean": "run-s clean:build clean:deps",
+		"bin": "bin/index.js"
 	},
 	"dependencies": {
 		"conf": "^1.1.2"
@@ -32,6 +38,7 @@
 		"env-paths": "^1.0.0",
 		"fetchival": "^0.3.2",
 		"latest-version": "^3.1.0",
+		"npm-run-all": "^4.1.1",
 		"package-json": "^4.0.1",
 		"prettyjson": "^1.2.1",
 		"strip-ansi": "^4.0.0",

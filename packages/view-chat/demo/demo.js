@@ -117,5 +117,5 @@ const chat = chat_factory({
 })
 
 chat.start()
-	.then(console.log)
+	.then(() => console.log('bye'))
 	.catch(console.error)

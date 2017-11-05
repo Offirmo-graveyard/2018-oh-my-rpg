@@ -15,7 +15,23 @@ module.exports = {
 	},
 	externals: {
 		conf: 'commonjs conf',
-		globalize: 'commonjs globalize',
-		'cldr-data': 'commonjs cldr-data',
-	}
+	},
+	module: {
+		loaders: [
+			{
+				test: /\.js$/,
+				exclude: /node_modules/,
+				loader: 'babel-loader',
+				query: {
+					presets: [
+						["@babel/env", {
+							"targets": {
+								"node": "8.3"
+							}
+						}]
+					]
+				}
+			}
+		],
+	},
 }

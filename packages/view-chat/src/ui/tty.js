@@ -1,5 +1,3 @@
-#!/bin/sh
-':' //# http://sambal.org/?p=1014 ; exec /usr/bin/env node "$0" "$@"
 "use strict";
 
 const readline = require('readline')
@@ -134,11 +132,19 @@ function factory({DEBUG, shouldCenter}) {
 
 		// find colliding choices with same key
 		function find_unaffected_key(hintstr) {
-			hintstr = hintstr + 'abcdefghijklmnopqrstuvwxyz1234567890'
+			hintstr = (hintstr + 'abcdefghijklmnopqrstuvwxyz1234567890').toLowerCase()
 			for (let i=0; i < hintstr.length; i++) {
 				let candidate_key = {
 					name: hintstr.charAt(i)
 				}
+
+				// https://stackoverflow.com/a/25352300/587407
+				const code = hintstr.charCodeAt(i)
+				if (!(code > 47 && code < 58) && // numeric (0-9)
+					!(code > 96 && code < 123)) { // lower alpha (a-z)
+					continue
+				}
+
 				let candidate_keystr = key_to_string(candidate_key)
 				if (!affected_keys.has(candidate_keystr))
 					return candidate_key

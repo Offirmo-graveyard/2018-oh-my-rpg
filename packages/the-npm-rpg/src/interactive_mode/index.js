@@ -50,9 +50,7 @@ function start_loop(options) {
 			count: 0,
 			mode: 'character',
 			sub: {
-				inventory: {
-					selected: null,
-				},
+				inventory: {},
 				character: {},
 			}
 		}
@@ -114,7 +112,7 @@ function start_loop(options) {
 		function get_MODE_INVENTORY() {
 			const state = config.store
 
-			let msg_main = 'TODO'
+			let msg_main = 'TODO inv step'
 			const choices = []
 
 			if (chat_state.sub.inventory.selected) {
@@ -205,26 +203,74 @@ function start_loop(options) {
 		function get_MODE_CHARACTER() {
 			const state = config.store
 
-			let msg_main = 'TODO'
+			let msg_main = 'TODO char step'
 			const choices = []
 
-			if (chat_state.sub.character.x) {
 
+			if (chat_state.sub.character.changeClass) {
+				CHARACTER_CLASSES.forEach(klass => {
+					if (klass === 'novice') return
+
+					const msg_cta = (klass === state.avatar.klass)
+							? `Stay a ${klass}`
+							: `Switch class to ${klass}`
+
+					choices.push({
+						msg_cta: `Switch class to ${klass}`,
+						value: klass,
+						msgg_as_user: () => `I want to follow the path of the ${klass}!`,
+						msgg_acknowledge: name => `You’ll make an amazing ${klass}.`,
+						callback: value => {
+							change_class(options, value)
+							chat_state.sub.character = {}
+						}
+					})
+				})
+			}
+			else if (chat_state.sub.character.rename) {
+				return {
+					type: 'ask_for_string',
+					msg_main: `What’s your name?`,
+					msgg_as_user: value => `My name is "${value}".`,
+					msgg_acknowledge: name => `You are now known as ${name}!`,
+					callback: value => {
+						rename_avatar(options, value)
+						chat_state.sub.character = {}
+					},
+				}
 			}
 			else {
 				const $doc = render_character_sheet(state.avatar)
 				msg_main = 'Here is your character sheet:\n\n' + rich_text_to_ansi($doc) + `\nWhat do you want to do?`
 
-				choices.push({
-					msg_cta: 'Go back to adventuring.',
-					key_hint: { name: 'x' },
-					value: 'x',
-					msgg_as_user: () => 'Let’s do something else.',
-					callback: () => {
-						chat_state.sub.character = {}
-						chat_state.mode = 'main'
-					}
-				})
+				choices.push(
+					{
+						msg_cta: 'Change class',
+						value: 'c',
+						msgg_as_user: () => 'I want to follow the path of…',
+						callback: () => {
+							chat_state.sub.character.changeClass = true
+						}
+					},
+					{
+						msg_cta: 'Rename hero',
+						value: 'r',
+						msgg_as_user: () => 'Let’s fix my name…',
+						callback: () => {
+							chat_state.sub.character.rename = true
+						}
+					},
+					{
+						msg_cta: 'Go back to adventuring.',
+						key_hint: { name: 'x' },
+						value: 'x',
+						msgg_as_user: () => 'Let’s do something else.',
+						callback: () => {
+							chat_state.sub.character = {}
+							chat_state.mode = 'main'
+						}
+					},
+				)
 			}
 
 			return {
@@ -235,7 +281,7 @@ function start_loop(options) {
 
 		// main step
 		do {
-			if (true && DEBUG) console.log({state: chat_state})
+			if (DEBUG) console.log(prettify_json_for_debug(chat_state))
 			switch(chat_state.mode) {
 				case 'main':
 					chat_state.count++

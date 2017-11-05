@@ -17,7 +17,8 @@
 		"__helpers": "----------- Helpers -----------",
 		"dev": "run-s clean:build build:dev:watch",
 		"build": "run-s clean:build build:dev",
-		"clean": "run-s clean:build clean:deps"
+		"clean": "run-s clean:build clean:deps",
+		"demo": "./demo/demo.js"
 	},
 	"dependencies": {
 		"@oh-my-rpg/data": "^0.0.1",

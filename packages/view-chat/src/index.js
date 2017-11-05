@@ -3,6 +3,7 @@
 const { prettify_json } = require('./libs')
 const { prettify_params_for_debug } = require('./utils')
 
+const LIB = 'view-chat'
 
 function factory({DEBUG, gen_next_step, ui}) {
 	if (DEBUG) console.log('↘ factory()')
@@ -31,11 +32,11 @@ function factory({DEBUG, gen_next_step, ui}) {
 				}
 
 			if (!step.msg_main)
-				throw new Error('Step is missing main message!')
+				throw new Error(`${LIB}: Step is missing main message!`)
 
 			if (!step.type) {
 				if (!step.choices)
-					throw new Error('Step type is unknown and not inferrable!')
+					throw new Error(`${LIB}: Step type is unknown and not inferrable!`)
 
 				step.type = 'ask_for_choice'
 			}
@@ -48,6 +49,24 @@ function factory({DEBUG, gen_next_step, ui}) {
 			}
 
 			step.choices = step.choices.map(uniformize_choice)
+
+			if (step.choices.length) {
+				const known_values = new Set()
+				step.choices.forEach((choice, index) => {
+					if (known_values.has(choice.value)) {
+						const err = new Error(`${LIB}: colliding choices with the same value!`)
+						err.details = {
+							choice,
+							value: choice.value,
+							index,
+						}
+						throw err
+					}
+					known_values.add(choice.value)
+				})
+			}
+
+
 			return step
 		}
 		catch (e) {
@@ -92,7 +111,7 @@ function factory({DEBUG, gen_next_step, ui}) {
 		} while (!ok)
 
 		let acknowledged = false
-		if (step.choices) {
+		if (step.choices.length) {
 			const selected_choice = step.choices.find(choice => choice.value === answer)
 			if (selected_choice.msgg_acknowledge) {
 				await ui.display_message({msg: selected_choice.msgg_acknowledge(answer)})
@@ -127,7 +146,7 @@ function factory({DEBUG, gen_next_step, ui}) {
 				const answer = await ask_user(step)
 
 				let reported = false
-				if (step.choices) {
+				if (step.choices.length) {
 					const selected_choice = step.choices.find(choice => choice.value === answer)
 					if (selected_choice.callback) {
 						await selected_choice.callback(answer)
