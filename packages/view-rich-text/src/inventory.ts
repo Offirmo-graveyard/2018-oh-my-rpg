@@ -7,26 +7,12 @@ import { State as WalletState, ALL_CURRENCIES, Currency, get_currency_amount } f
 import { render_item } from './items'
 
 function inventory_coordinate_to_sortable_alpha_index(coord: InventoryCoordinates): string {
-	return (' ' + (coord + 1)).slice(-2)
-}
-
-function render_inventory(inventory: InventoryState): RichText.Document {
-	const $doc = RichText.ordered_list()
-		.addClass('inventory--unslotted')
-		.done()
-
-	const misc_items = Array.from(iterables_unslotted(inventory))
-	misc_items.forEach((i: Item, index: number) => {
-		if (!i) return
-		$doc.$sub[inventory_coordinate_to_sortable_alpha_index(index)] = render_item(i)
-		// TODO add coordinates
-	})
-
-	return $doc
+	//return (' ' + (coord + 1)).slice(-2)
+	return String.fromCharCode(97 + coord)
 }
 
 function render_equipment(inventory: InventoryState): RichText.Document {
-	const $doc = RichText.unordered_list()
+	const $doc_list = RichText.unordered_list()
 		.addClass('inventory--equipment')
 		.done()
 
@@ -41,14 +27,19 @@ function render_equipment(inventory: InventoryState): RichText.Document {
 				: RichText.span().pushText('-').done()
 			)
 			.done()
-		$doc.$sub[slot] = $doc_item
+		$doc_list.$sub[slot] = $doc_item
 	})
+
+	const $doc = RichText.paragraph()
+		.pushNode(RichText.heading().pushText('Active equipment:').done(), 'header')
+		.pushNode($doc_list, 'list')
+		.done()
 
 	return $doc
 }
 
 function render_wallet(wallet: WalletState): RichText.Document {
-	const $doc = RichText.unordered_list()
+	const $doc_list = RichText.unordered_list()
 		.addClass('inventory--wallet')
 		.done()
 
@@ -60,19 +51,41 @@ function render_wallet(wallet: WalletState): RichText.Document {
 			.done()
 
 		$doc_currency.$sub.qty = RichText.span().pushText('' + amount).done() // TODO format according to locale?
-		$doc.$sub[c] = $doc_currency
+		$doc_list.$sub[c] = $doc_currency
 	})
+
+	const $doc = RichText.paragraph()
+		.pushNode(RichText.heading().pushText('Wallet:').done(), 'header')
+		.pushNode($doc_list, 'list')
+		.done()
+
+	return $doc
+}
+
+function render_inventory(inventory: InventoryState): RichText.Document {
+	const $doc_list = RichText.ordered_list()
+		.addClass('inventory--unslotted')
+		.done()
+
+	const misc_items = Array.from(iterables_unslotted(inventory))
+	misc_items.forEach((i: Item, index: number) => {
+		if (!i) return
+		$doc_list.$sub[inventory_coordinate_to_sortable_alpha_index(index)] = render_item(i)
+		// TODO add coordinates
+	})
+
+	const $doc = RichText.paragraph()
+		.pushNode(RichText.heading().pushText('Inventory:').done(), 'header')
+		.pushNode($doc_list, 'list')
+		.done()
 
 	return $doc
 }
 
 function render_full_inventory(inventory: InventoryState, wallet: WalletState): RichText.Document {
-	const $doc = RichText.paragraph()
-		.pushText('Active equipment:')
+	const $doc = RichText.section()
 		.pushNode(render_equipment(inventory), 'equipped')
-		.pushText('Wallet:')
 		.pushNode(render_wallet(wallet), 'wallet')
-		.pushText('Inventory:')
 		.pushNode(render_inventory(inventory), 'inventory')
 		.done()
 

@@ -21,6 +21,7 @@
 	},
 	"dependencies": {
 		"@oh-my-rpg/data": "^0.0.1",
+		"ansi-escapes": "^2.0.0",
 		"boxen": "^1.2.1",
 		"chalk": "^2.2.0",
 		"indent-string": "^3.2.0",

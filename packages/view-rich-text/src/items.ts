@@ -44,7 +44,16 @@ function render_armor_name(i: Armor): RichText.Document {
 	return $doc
 }
 
-function render_armor(i: Armor): RichText.Document {
+interface RenderItemOptions {
+	display_quality?: boolean
+	display_values?: boolean
+}
+const DEFAULT_RENDER_ITEM_OPTIONS = {
+	display_quality: true,
+	display_values: true,
+}
+
+function render_armor(i: Armor, options: RenderItemOptions = DEFAULT_RENDER_ITEM_OPTIONS): RichText.Document {
 	if (i.slot !== InventorySlot.armor)
 		throw new Error(`render_armor(): can't render a ${i.slot}!`)
 
@@ -56,13 +65,21 @@ function render_armor(i: Armor): RichText.Document {
 		.pushText(`[${min} ↔ ${max}]`)
 		.done()
 
-	return RichText.span()
+	const builder = RichText.span()
 		.addClass('item', 'item--armor', 'item--quality--' + i.quality)
-		.pushText('{{quality}} {{name}} {{values}}')
 		.pushRawNode($node_quality, 'quality')
 		.pushRawNode(render_armor_name(i), 'name')
 		.pushRawNode($node_values, 'values')
-		.done()
+
+	if(options.display_quality)
+		builder.pushText('{{quality}} ')
+
+	builder.pushText('{{name}}')
+
+	if(options.display_values)
+		builder.pushText(' {{values}}')
+
+	return builder.done()
 }
 
 function render_weapon_name(i: Weapon): RichText.Document {
@@ -99,7 +116,7 @@ function render_weapon_name(i: Weapon): RichText.Document {
 	return $doc
 }
 
-function render_weapon(i: Weapon): RichText.Document {
+function render_weapon(i: Weapon, options: RenderItemOptions = DEFAULT_RENDER_ITEM_OPTIONS): RichText.Document {
 	if (i.slot !== InventorySlot.weapon)
 		throw new Error(`render_weapon(): can't render a ${i.slot}!`)
 
@@ -111,32 +128,42 @@ function render_weapon(i: Weapon): RichText.Document {
 		.pushText(`[${min} ↔ ${max}]`)
 		.done()
 
-	return RichText.span()
+	const builder = RichText.span()
 		.addClass('item', 'item--weapon', 'item--quality--' + i.quality)
-		.pushText('{{quality}} {{name}} {{values}}')
 		.pushRawNode($node_quality, 'quality')
 		.pushRawNode(render_weapon_name(i), 'name')
 		.pushRawNode($node_values, 'values')
-		.done()
+
+	if(options.display_quality)
+		builder.pushText('{{quality}} ')
+
+	builder.pushText('{{name}}')
+
+	if(options.display_values)
+		builder.pushText(' {{values}}')
+
+	return builder.done()
 }
 
-function render_item(i?: Item): RichText.Document {
+function render_item(i: Item, options: RenderItemOptions = DEFAULT_RENDER_ITEM_OPTIONS): RichText.Document {
 	if (!i)
 		return RichText.span().pushText('').done()
 
 	switch(i.slot) {
 		case InventorySlot.armor:
-			return render_armor(i as Armor)
+			return render_armor(i as Armor, options)
 		case InventorySlot.weapon:
-			return render_weapon(i as Weapon)
+			return render_weapon(i as Weapon, options)
 		default:
 			throw new Error(`render_item(): don't know how to render a "${i.slot}" !`)
 	}
 }
 
 export {
-	render_item,
-	render_armor,
+	RenderItemOptions,
 	render_armor_name,
+	render_armor,
+	render_weapon_name,
 	render_weapon,
+	render_item,
 }

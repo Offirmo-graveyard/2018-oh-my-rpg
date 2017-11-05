@@ -14,6 +14,7 @@ function apply_type($type, str) {
 		case 'li':
 		case 'p':
 		case 'span':
+		case 'section':
 			// nothing to do for those one
 			return str
 		case 'ol':
@@ -21,6 +22,8 @@ function apply_type($type, str) {
 			return str + '\n'
 		case 'strong':
 			return stylize_string.bold(str)
+		case 'heading':
+			return '\n' + stylize_string.bold(str)
 		case 'em':
 			return stylize_string.italic(str)
 		default:

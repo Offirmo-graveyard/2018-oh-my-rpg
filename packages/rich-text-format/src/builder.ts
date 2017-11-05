@@ -29,6 +29,7 @@ function factory($type: NodeType): Builder {
 		$classes: [],
 		$content: '',
 		$sub: {},
+		$hints: {},
 	}
 
 	const builder: Builder = {
@@ -99,6 +100,14 @@ function factory($type: NodeType): Builder {
 	return builder
 }
 
+function section(): Builder {
+	return factory(NodeType.section)
+}
+
+function heading(): Builder {
+	return factory(NodeType.heading)
+}
+
 function paragraph(): Builder {
 	return factory(NodeType.p)
 }
@@ -128,6 +137,8 @@ export {
 	Document,
 	Builder,
 	factory,
+	section,
+	heading,
 	paragraph,
 	span,
 	ordered_list,

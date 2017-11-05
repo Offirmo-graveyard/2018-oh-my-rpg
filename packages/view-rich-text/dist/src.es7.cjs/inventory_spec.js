@@ -34,10 +34,10 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
                 const $doc = _1.render_inventory(inventory);
                 const str = RichText.to_text($doc);
                 expect(str).to.be.a.string;
-                expect(str).not.to.contain(' 0.');
-                expect(str).to.contain(' 1.');
-                expect(str).to.contain(' 5.');
-                expect(str).not.to.contain(' 6.');
+                expect(str).not.to.contain('00.');
+                expect(str).to.contain('01.');
+                expect(str).to.contain('05.');
+                expect(str).not.to.contain('06.');
             });
         });
         describe('demo', function () {
@@ -124,8 +124,8 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
                 const str = RichText.to_text($doc);
                 expect(str).to.be.a.string;
                 expect(str).not.to.contain('0');
-                expect(str).to.contain(' 12345 coins');
-                expect(str).to.contain(' 67 tokens');
+                expect(str).to.contain(' 12 coins');
+                expect(str).to.contain(' 34 tokens');
             });
         });
         describe('demo', function () {
@@ -140,7 +140,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
     });
     describe('⚔ 🛡 💰 📦  full inventory rendering', function () {
         describe('demo', function () {
-            it('shows off', () => {
+            it.only('shows off', () => {
                 let inventory = state_inventory_1.factory();
                 inventory = state_inventory_1.add_item(inventory, logic_weapons_1.DEMO_WEAPON_1);
                 inventory = state_inventory_1.add_item(inventory, logic_armors_1.DEMO_ARMOR_2);

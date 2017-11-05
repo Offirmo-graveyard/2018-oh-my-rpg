@@ -9,13 +9,13 @@ function play({config}) {
 	config.set(state)
 }
 
-function equip_item({config}, coordinates) {
+function equip_item_at_coordinates({config}, coordinates) {
 	let state = config.store
 	state = tbrpg.equip_item(state, coordinates)
 	config.set(state)
 }
 
-function sell_item({config}, coordinates) {
+function sell_item_at_coordinates({config}, coordinates) {
 	let state = config.store
 	state = tbrpg.sell_item(state, coordinates)
 	config.set(state)
@@ -45,8 +45,8 @@ function change_class({config}, new_class) {
 
 module.exports = {
 	play,
-	equip_item,
-	sell_item,
+	equip_item_at_coordinates,
+	sell_item_at_coordinates,
 	does_item_exist_at_coordinate,
 	appraise_item_at_coordinates,
 	rename_avatar,

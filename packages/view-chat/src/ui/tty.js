@@ -34,11 +34,18 @@ function factory({DEBUG, shouldCenter}) {
 
 	const {columns: TERM_WIDTH} = term_size()
 	if (DEBUG) console.log({TERM_WIDTH})
+
 	if (TERM_WIDTH < 80)
 		throw new Error('Your terminal is too narrow!')
-	const USED_WIDTH = Math.min(TERM_WIDTH, 100)
-	const MSG_WIDTH = Math.max(80, Math.round(USED_WIDTH * .7))
-	if (DEBUG) console.log({USED_WIDTH, MSG_WIDTH})
+
+	// too wide doesn't look that good, cap it
+	const USED_WIDTH = Math.min(TERM_WIDTH, 120)
+
+	// a msg is not taking the fill width, to clearly see left/right
+	const MSG_WIDTH = Math.round(USED_WIDTH * .8)
+
+	if (DEBUG) console.log({TERM_WIDTH, USED_WIDTH, MSG_WIDTH})
+
 	const MSG_BASELINE = MANY_BOX_HORIZ.slice(0, MSG_WIDTH - 2)
 	const MSG_L_INDENT = shouldCenter
 		? Math.round((TERM_WIDTH - USED_WIDTH) / 2)
@@ -115,6 +122,7 @@ function factory({DEBUG, shouldCenter}) {
 			affected_keys.add(key_hash)
 
 			choice.key = choice.key_hint
+			choice._ui_tty.key = choice.key_hint
 		})
 
 		// naive affectation for unhinted ones (may collide)
@@ -175,7 +183,7 @@ function factory({DEBUG, shouldCenter}) {
 
 					if (affected_keys.has(candidate_key_hash)) {
 						// find another one
-						candidate_key = find_unaffected_key(hintstr)
+						candidate_key = find_unaffected_key(choice.msg_cta)
 						candidate_key_hash = key_to_string(candidate_key)
 					}
 					choice._ui_tty.key = candidate_key

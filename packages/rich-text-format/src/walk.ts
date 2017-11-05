@@ -14,6 +14,7 @@ function normalize_node($raw_node: Node): CheckedNode {
 		$classes = [],
 		$content = '',
 		$sub = {},
+		$hints = {},
 	} = $raw_node
 
 	// TODO validation
@@ -26,6 +27,7 @@ function normalize_node($raw_node: Node): CheckedNode {
 		$classes,
 		$content,
 		$sub,
+		$hints,
 	}
 
 	return $node

@@ -6,24 +6,11 @@ const RichText = require("@oh-my-rpg/rich-text-format");
 const state_wallet_1 = require("@oh-my-rpg/state-wallet");
 const items_1 = require("./items");
 function inventory_coordinate_to_sortable_alpha_index(coord) {
-    return (' ' + (coord + 1)).slice(-2);
+    //return (' ' + (coord + 1)).slice(-2)
+    return String.fromCharCode(97 + coord);
 }
-function render_inventory(inventory) {
-    const $doc = RichText.ordered_list()
-        .addClass('inventory--unslotted')
-        .done();
-    const misc_items = Array.from(state_inventory_1.iterables_unslotted(inventory));
-    misc_items.forEach((i, index) => {
-        if (!i)
-            return;
-        $doc.$sub[inventory_coordinate_to_sortable_alpha_index(index)] = items_1.render_item(i);
-        // TODO add coordinates
-    });
-    return $doc;
-}
-exports.render_inventory = render_inventory;
 function render_equipment(inventory) {
-    const $doc = RichText.unordered_list()
+    const $doc_list = RichText.unordered_list()
         .addClass('inventory--equipment')
         .done();
     definitions_1.ITEM_SLOTS.forEach((slot) => {
@@ -35,13 +22,17 @@ function render_equipment(inventory) {
             ? items_1.render_item(item)
             : RichText.span().pushText('-').done())
             .done();
-        $doc.$sub[slot] = $doc_item;
+        $doc_list.$sub[slot] = $doc_item;
     });
+    const $doc = RichText.paragraph()
+        .pushNode(RichText.heading().pushText('Active equipment:').done(), 'header')
+        .pushNode($doc_list, 'list')
+        .done();
     return $doc;
 }
 exports.render_equipment = render_equipment;
 function render_wallet(wallet) {
-    const $doc = RichText.unordered_list()
+    const $doc_list = RichText.unordered_list()
         .addClass('inventory--wallet')
         .done();
     state_wallet_1.ALL_CURRENCIES.forEach((c) => {
@@ -51,18 +42,37 @@ function render_wallet(wallet) {
             .pushText('{{qty}} ' + c + (amount === 1 ? '' : 's')) // TODO localize properly ;)
             .done();
         $doc_currency.$sub.qty = RichText.span().pushText('' + amount).done(); // TODO format according to locale?
-        $doc.$sub[c] = $doc_currency;
+        $doc_list.$sub[c] = $doc_currency;
     });
+    const $doc = RichText.paragraph()
+        .pushNode(RichText.heading().pushText('Wallet:').done(), 'header')
+        .pushNode($doc_list, 'list')
+        .done();
     return $doc;
 }
 exports.render_wallet = render_wallet;
-function render_full_inventory(inventory, wallet) {
+function render_inventory(inventory) {
+    const $doc_list = RichText.ordered_list()
+        .addClass('inventory--unslotted')
+        .done();
+    const misc_items = Array.from(state_inventory_1.iterables_unslotted(inventory));
+    misc_items.forEach((i, index) => {
+        if (!i)
+            return;
+        $doc_list.$sub[inventory_coordinate_to_sortable_alpha_index(index)] = items_1.render_item(i);
+        // TODO add coordinates
+    });
     const $doc = RichText.paragraph()
-        .pushText('Active equipment:')
+        .pushNode(RichText.heading().pushText('Inventory:').done(), 'header')
+        .pushNode($doc_list, 'list')
+        .done();
+    return $doc;
+}
+exports.render_inventory = render_inventory;
+function render_full_inventory(inventory, wallet) {
+    const $doc = RichText.section()
         .pushNode(render_equipment(inventory), 'equipped')
-        .pushText('Wallet:')
         .pushNode(render_wallet(wallet), 'wallet')
-        .pushText('Inventory:')
         .pushNode(render_inventory(inventory), 'inventory')
         .done();
     return $doc;

@@ -9,6 +9,8 @@ declare const NodeType: {
     li: "li";
     strong: "strong";
     em: "em";
+    section: "section";
+    heading: "heading";
 };
 declare type NodeType = Enum<typeof NodeType>;
 interface CheckedNode {
@@ -18,6 +20,9 @@ interface CheckedNode {
     $content: string;
     $sub: {
         [id: string]: Partial<CheckedNode>;
+    };
+    $hints: {
+        [k: string]: any;
     };
 }
 declare type Node = Partial<CheckedNode>;

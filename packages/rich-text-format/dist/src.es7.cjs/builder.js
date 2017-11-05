@@ -10,6 +10,7 @@ function factory($type) {
         $classes: [],
         $content: '',
         $sub: {},
+        $hints: {},
     };
     const builder = {
         addClass,
@@ -66,6 +67,14 @@ function factory($type) {
     return builder;
 }
 exports.factory = factory;
+function section() {
+    return factory(types_1.NodeType.section);
+}
+exports.section = section;
+function heading() {
+    return factory(types_1.NodeType.heading);
+}
+exports.heading = heading;
 function paragraph() {
     return factory(types_1.NodeType.p);
 }

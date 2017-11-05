@@ -12,17 +12,23 @@ const NodeType = Enum(
 	'li',
 	'strong',
 	'em',
+	'section',
+	'heading',
 )
 type NodeType = Enum<typeof NodeType>
 
 
 interface CheckedNode {
-	$v: number
+	$v: number // schema version
 	$type: NodeType
 	$classes: string[]
 	$content: string
 	$sub: {
 		[id: string]: Partial<CheckedNode>
+	}
+	// hints for some renderer. May or may not be used.
+	$hints: {
+		[k: string]: any
 	}
 }
 

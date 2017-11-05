@@ -1,18 +1,29 @@
 "use strict";
 
 const tbrpg = require('@oh-my-rpg/state-the-boring-rpg')
+const { iterables_unslotted, get_item_at_coordinates } = require('@oh-my-rpg/state-inventory')
 const { factory: tty_chat_ui_factory } = require('@oh-my-rpg/view-chat/src/ui/tty')
 const { factory: chat_factory } = require('@oh-my-rpg/view-chat')
 const {
+	render_item,
 	render_equipment,
 	render_wallet,
 	render_full_inventory,
-} = require('@oh-my-rpg/view-text')
+} = require('@oh-my-rpg/view-rich-text')
 
 const { rich_text_to_ansi } = require('../utils/rich_text_to_ansi')
 const { stylize_string } = require('../libs')
 const { render_header } = require('../view')
 const { prettify_json_for_debug } = require('../utils/debug')
+const {
+	play,
+	equip_item_at_coordinates,
+	sell_item_at_coordinates,
+	does_item_exist_at_coordinate,
+	appraise_item_at_coordinates,
+	rename_avatar,
+	change_class,
+} = require('../actions')
 
 function get_recap({config}) {
 	const state = config.store
@@ -40,67 +51,12 @@ function start_loop(options) {
 		const chat_state = {
 			count: 0,
 			mode: 'main',
-		}
-
-		const MODE_MAIN = {
-			msg_main: `What do you want to do?`,
-			callback: value => { chat_state.mode = value },
-			choices: [
-				{
-					msg_cta: 'Play',
-					value: 'play',
-					msgg_as_user: () => 'Let’s go adventuring!',
-					callback: () => console.log('TODO play')
+			sub: {
+				inventory: {
+					selected: null,
 				},
-				{
-					msg_cta: 'Manage Inventory',
-					value: 'inventory',
-					msgg_as_user: () => 'Let’s sort out my stuff.',
-				},
-				{
-					msg_cta: 'Manage Character',
-					value: 'character',
-					msgg_as_user: () => 'Let’s see how I’m doing!',
-				},
-			]
-		}
-
-		function get_MODE_INVENTORY() {
-			const state = config.store
-			const $doc = render_full_inventory(state.inventory, state.wallet)
-
-			return {
-				msg_main: rich_text_to_ansi($doc) + `\nWhat do you want to do?`,
-				choices: [
-					{
-						msg_cta: 'Go back to adventuring.',
-						value: 'x',
-						msgg_as_user: () => 'Let’s do something else.',
-						callback: () => chat_state.mode = 'main',
-					},
-				]
+				character: {},
 			}
-			/*
-			inventory: [
-				{
-					key: '[a-t]',
-					key_for_display: 'a↔t',
-					description: 'select inventory slot a…t for equipping, selling…',
-					cb(key) {
-						const selected_item_index = key.charCodeAt(0) - 97
-						if (!does_item_exist_at_coordinate(options, selected_item_index))
-							return
-						ui_state = ui.select_item(ui_state, selected_item_index)
-						ui_state = ui.switch_screen(ui_state, 'inventory_select')
-					},
-				},
-				{
-					key: 'x',
-					description: 'go back to adventuring!',
-					cb() { ui_state = ui.switch_screen(ui_state, 'adventure') }
-				},
-			],
-			*/
 		}
 
 		let yielded
@@ -129,13 +85,132 @@ function start_loop(options) {
 			}
 		}
 
+
+		function get_MODE_MAIN() {
+			// TODO add tip action
+			return {
+				msg_main: `What do you want to do?`,
+				callback: value => { chat_state.mode = value },
+				choices: [
+					{
+						msg_cta: 'Play',
+						value: 'play',
+						msgg_as_user: () => 'Let’s go adventuring!',
+						callback: () => console.log('TODO play')
+					},
+					{
+						msg_cta: 'Manage Inventory',
+						value: 'inventory',
+						msgg_as_user: () => 'Let’s sort out my stuff.',
+						msgg_acknowledge: () => `Sure. Here is your full inventory:`,
+					},
+					{
+						msg_cta: 'Manage Character',
+						value: 'character',
+						msgg_as_user: () => 'Let’s see how I’m doing!',
+					},
+				],
+			}
+		}
+
+		function get_MODE_INVENTORY() {
+			const state = config.store
+
+			let msg_main = 'TODO'
+			const choices = []
+
+			if (chat_state.sub.inventory.selected) {
+				const coords = chat_state.sub.inventory.selected - 1
+				const selected_item = get_item_at_coordinates(state.inventory, coords)
+				const sell_price = tbrpg.appraise_item_at_coordinates(state, coords)
+				const item_ascii = rich_text_to_ansi(render_item(selected_item, {
+					display_quality: true,
+					display_values: false,
+				}))
+
+				msg_main = 'What do you want to do with your ' + item_ascii + '?'
+
+				choices.push({
+					msg_cta: 'Equip it.',
+					value: 'equip',
+					msgg_as_user: () => 'I want to equip it.',
+					msgg_acknowledge: () => 'Done!',
+					callback: () => {
+						equip_item_at_coordinates(options, coords)
+						chat_state.sub.inventory = {}
+					}
+				})
+				choices.push({
+					msg_cta: `Sell for ${sell_price} coins.`,
+					value: 'sell',
+					msgg_as_user: () => `Deal for ${sell_price} coins.`,
+					msgg_acknowledge: () => `Here are you ${sell_price} coins. Please to do business with you!`,
+					callback: () => {
+						sell_item_at_coordinates(options, coords)
+						chat_state.sub.inventory = {}
+					}
+				})
+
+				choices.push({
+					msg_cta: 'Go back to inventory.',
+					key_hint: { name: 'x' },
+					value: 'exit',
+					msgg_as_user: () => 'I’m done with it.',
+					msgg_acknowledge: () => 'OK. Here is your inventory:',
+					callback: () => {
+						chat_state.sub.inventory = {}
+					}
+				})
+			}
+			else {
+				const $doc = render_full_inventory(state.inventory, state.wallet)
+				msg_main = 'Here is your inventory:\n' + rich_text_to_ansi($doc) + `\nWhat do you want to do?`
+				const misc_items = Array.from(iterables_unslotted(state.inventory))
+				misc_items.forEach((item, index) => {
+					if (!item) return
+
+					const item_ascii = rich_text_to_ansi(render_item(item, {
+						display_quality: true,
+						display_values: false,
+					}))
+					choices.push({
+						msg_cta: 'Select ' + item_ascii,
+						value: index,
+						key_hint: {
+							name: String.fromCharCode(97 + index),
+						},
+						msgg_as_user: () => 'I inspect ' + item_ascii,
+						callback: value => {
+							chat_state.sub.inventory.selected = value + 1 // to avoid 0
+						},
+					})
+				})
+
+				choices.push({
+					msg_cta: 'Go back to adventuring.',
+					key_hint: { name: 'x' },
+					value: 'x',
+					msgg_as_user: () => 'Let’s do something else.',
+					callback: () => {
+						chat_state.sub.inventory = {}
+						chat_state.mode = 'main'
+					}
+				})
+			}
+
+			return {
+				msg_main,
+				choices,
+			}
+		}
+
 		// main step
 		do {
 			if (true && DEBUG) console.log({state: chat_state})
 			switch(chat_state.mode) {
 				case 'main':
 					chat_state.count++
-					yielded = yield MODE_MAIN
+					yielded = yield get_MODE_MAIN()
 					break
 				case 'inventory':
 					chat_state.count++

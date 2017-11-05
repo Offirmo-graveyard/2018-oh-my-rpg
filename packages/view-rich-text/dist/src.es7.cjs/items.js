@@ -33,7 +33,11 @@ function render_armor_name(i) {
     return $doc;
 }
 exports.render_armor_name = render_armor_name;
-function render_armor(i) {
+const DEFAULT_RENDER_ITEM_OPTIONS = {
+    display_quality: true,
+    display_values: true,
+};
+function render_armor(i, options = DEFAULT_RENDER_ITEM_OPTIONS) {
     if (i.slot !== definitions_1.InventorySlot.armor)
         throw new Error(`render_armor(): can't render a ${i.slot}!`);
     const $node_quality = RichText.span().pushText(i.quality).done();
@@ -42,13 +46,17 @@ function render_armor(i) {
         .addClass('armor--values')
         .pushText(`[${min} ↔ ${max}]`)
         .done();
-    return RichText.span()
+    const builder = RichText.span()
         .addClass('item', 'item--armor', 'item--quality--' + i.quality)
-        .pushText('{{quality}} {{name}} {{values}}')
         .pushRawNode($node_quality, 'quality')
         .pushRawNode(render_armor_name(i), 'name')
-        .pushRawNode($node_values, 'values')
-        .done();
+        .pushRawNode($node_values, 'values');
+    if (options.display_quality)
+        builder.pushText('{{quality}} ');
+    builder.pushText('{{name}}');
+    if (options.display_values)
+        builder.pushText(' {{values}}');
+    return builder.done();
 }
 exports.render_armor = render_armor;
 function render_weapon_name(i) {
@@ -76,7 +84,8 @@ function render_weapon_name(i) {
     $doc.$sub.q2 = RichText.span().pushText(q2).done();
     return $doc;
 }
-function render_weapon(i) {
+exports.render_weapon_name = render_weapon_name;
+function render_weapon(i, options = DEFAULT_RENDER_ITEM_OPTIONS) {
     if (i.slot !== definitions_1.InventorySlot.weapon)
         throw new Error(`render_weapon(): can't render a ${i.slot}!`);
     const $node_quality = RichText.span().pushText(i.quality).done();
@@ -85,23 +94,27 @@ function render_weapon(i) {
         .addClass('weapon--values')
         .pushText(`[${min} ↔ ${max}]`)
         .done();
-    return RichText.span()
+    const builder = RichText.span()
         .addClass('item', 'item--weapon', 'item--quality--' + i.quality)
-        .pushText('{{quality}} {{name}} {{values}}')
         .pushRawNode($node_quality, 'quality')
         .pushRawNode(render_weapon_name(i), 'name')
-        .pushRawNode($node_values, 'values')
-        .done();
+        .pushRawNode($node_values, 'values');
+    if (options.display_quality)
+        builder.pushText('{{quality}} ');
+    builder.pushText('{{name}}');
+    if (options.display_values)
+        builder.pushText(' {{values}}');
+    return builder.done();
 }
 exports.render_weapon = render_weapon;
-function render_item(i) {
+function render_item(i, options = DEFAULT_RENDER_ITEM_OPTIONS) {
     if (!i)
         return RichText.span().pushText('').done();
     switch (i.slot) {
         case definitions_1.InventorySlot.armor:
-            return render_armor(i);
+            return render_armor(i, options);
         case definitions_1.InventorySlot.weapon:
-            return render_weapon(i);
+            return render_weapon(i, options);
         default:
             throw new Error(`render_item(): don't know how to render a "${i.slot}" !`);
     }

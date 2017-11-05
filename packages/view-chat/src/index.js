@@ -41,7 +41,7 @@ function factory({DEBUG, gen_next_step, ui}) {
 			}
 
 			step = {
-				msgg_acknowledge: () => `OK.`,
+				//msgg_acknowledge: () => `OK.`, Is that really mandatory? Next message may be enough of a reaction
 				validator: null,
 				choices: [],
 				...step
@@ -104,9 +104,10 @@ function factory({DEBUG, gen_next_step, ui}) {
 			acknowledged = true
 		}
 		if (!acknowledged) {
-			const err = new Error('CNF acknowledge msg')
-			err.step = step
-			throw err
+			//const err = new Error('CNF acknowledge msg')
+			//err.step = step
+			//throw err
+			// Fine!
 		}
 
 		return answer
