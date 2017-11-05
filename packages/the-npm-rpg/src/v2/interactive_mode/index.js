@@ -4,10 +4,10 @@ const tbrpg = require('@oh-my-rpg/state-the-boring-rpg')
 const { iterables_unslotted, get_item_at_coordinates } = require('@oh-my-rpg/state-inventory')
 const { factory: tty_chat_ui_factory } = require('@oh-my-rpg/view-chat/src/ui/tty')
 const { factory: chat_factory } = require('@oh-my-rpg/view-chat')
+const { CHARACTER_CLASSES } = require('@oh-my-rpg/state-character')
 const {
 	render_item,
-	render_equipment,
-	render_wallet,
+	render_character_sheet,
 	render_full_inventory,
 } = require('@oh-my-rpg/view-rich-text')
 
@@ -19,8 +19,6 @@ const {
 	play,
 	equip_item_at_coordinates,
 	sell_item_at_coordinates,
-	does_item_exist_at_coordinate,
-	appraise_item_at_coordinates,
 	rename_avatar,
 	change_class,
 } = require('../actions')
@@ -50,7 +48,7 @@ function start_loop(options) {
 	function* gen_next_step() {
 		const chat_state = {
 			count: 0,
-			mode: 'main',
+			mode: 'character',
 			sub: {
 				inventory: {
 					selected: null,
@@ -93,19 +91,19 @@ function start_loop(options) {
 				callback: value => { chat_state.mode = value },
 				choices: [
 					{
-						msg_cta: 'Play',
+						msg_cta: 'Play!',
 						value: 'play',
 						msgg_as_user: () => 'Let’s go adventuring!',
 						callback: () => console.log('TODO play')
 					},
 					{
-						msg_cta: 'Manage Inventory',
+						msg_cta: 'Manage Inventory (equip, sell…)',
 						value: 'inventory',
 						msgg_as_user: () => 'Let’s sort out my stuff.',
 						msgg_acknowledge: () => `Sure. Here is your full inventory:`,
 					},
 					{
-						msg_cta: 'Manage Character',
+						msg_cta: 'Manage Character (rename, change class…)',
 						value: 'character',
 						msgg_as_user: () => 'Let’s see how I’m doing!',
 					},
@@ -204,6 +202,37 @@ function start_loop(options) {
 			}
 		}
 
+		function get_MODE_CHARACTER() {
+			const state = config.store
+
+			let msg_main = 'TODO'
+			const choices = []
+
+			if (chat_state.sub.character.x) {
+
+			}
+			else {
+				const $doc = render_character_sheet(state.avatar)
+				msg_main = 'Here is your character sheet:\n\n' + rich_text_to_ansi($doc) + `\nWhat do you want to do?`
+
+				choices.push({
+					msg_cta: 'Go back to adventuring.',
+					key_hint: { name: 'x' },
+					value: 'x',
+					msgg_as_user: () => 'Let’s do something else.',
+					callback: () => {
+						chat_state.sub.character = {}
+						chat_state.mode = 'main'
+					}
+				})
+			}
+
+			return {
+				msg_main,
+				choices,
+			}
+		}
+
 		// main step
 		do {
 			if (true && DEBUG) console.log({state: chat_state})
@@ -218,7 +247,7 @@ function start_loop(options) {
 					break
 				case 'character':
 					chat_state.count++
-					yielded = yield get_MODE_INVENTORY()
+					yielded = yield get_MODE_CHARACTER()
 					break
 				default:
 					console.error(`Unknown mode: "${chat_state.mode}"`)

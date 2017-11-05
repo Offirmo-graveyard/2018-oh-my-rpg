@@ -35,6 +35,8 @@ function apply_type($type, str) {
 function apply_class($class, str) {
 	switch($class) {
 		case 'item__name':
+		case 'avatar__name':
+		case 'avatar__class':
 			return stylize_string.bold(str)
 
 		case 'item--quality--common':
@@ -59,16 +61,28 @@ function apply_class($class, str) {
 		case 'currency--token':
 			return '💠 ' + WIDTH_COMPENSATION + str
 
-		/*
+		case 'attribute--level':
+			return '👶 ' + WIDTH_COMPENSATION + str
+		case 'attribute--health':
+			return '💗 ' + WIDTH_COMPENSATION + str
+		case 'attribute--mana':
+			return '💙 ' + WIDTH_COMPENSATION + str
+		case 'attribute--agility':
+			return '🤸 ' + WIDTH_COMPENSATION + str
+		case 'attribute--luck':
+			return '🤹 ' + WIDTH_COMPENSATION + str
+		case 'attribute--strength':
+			return '🏋 ' + WIDTH_COMPENSATION + str
+		case 'attribute--charisma':
+			return '👨‍🎤 ' + WIDTH_COMPENSATION + str
+		case 'attribute--wisdom':
+			return '👵 ' + WIDTH_COMPENSATION + str
 
-
-	return `💰  ${wallet.coin_count} coins${coins_update_notice}
-💠  ${wallet.token_count} tokens${tokens_update_notice}`
-		 */
 		case 'item--enhancement':
 		case 'armor--values':
 		case 'weapon--values':
 		case 'item':
+		case 'attributes':
 		case 'inventory--equipment':
 		case 'inventory--wallet':
 		case 'inventory--unslotted':

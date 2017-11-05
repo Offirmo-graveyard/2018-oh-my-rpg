@@ -1,8 +1,9 @@
 import { partial } from 'lodash'
-import { ItemQuality, InventorySlot, Item, ITEM_SLOTS } from '@oh-my-rpg/definitions'
+
+import { InventorySlot, Item, ITEM_SLOTS } from '@oh-my-rpg/definitions'
 import { InventoryCoordinates, State as InventoryState, iterables_unslotted, get_item_in_slot } from '@oh-my-rpg/state-inventory'
-import * as RichText from '@oh-my-rpg/rich-text-format'
 import { State as WalletState, ALL_CURRENCIES, Currency, get_currency_amount } from '@oh-my-rpg/state-wallet'
+import * as RichText from '@oh-my-rpg/rich-text-format'
 
 import { render_item } from './items'
 

@@ -2,7 +2,6 @@
 	"name": "the-npm-rpg",
 	"version": "0.4.0",
 	"description": "The Boring RPG, a command line RPG game. Just `npx the-npm-rpg`!",
-	"main": "src/index.js",
 	"author": "Offirmo <offirmo.net@gmail.com>",
 	"license": "UNLICENSED",
 	"repository": {
@@ -24,6 +23,7 @@
 		"@oh-my-rpg/logic-armors": "^0.0.1",
 		"@oh-my-rpg/logic-weapons": "^0.0.1",
 		"@oh-my-rpg/rich-text-format": "^0.0.1",
+		"@oh-my-rpg/state-character": "^0.0.1",
 		"@oh-my-rpg/state-inventory": "^0.0.1",
 		"@oh-my-rpg/state-the-boring-rpg": "^0.0.1",
 		"@oh-my-rpg/view-chat": "^0.0.1",

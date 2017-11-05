@@ -38,6 +38,9 @@ function get_tip(state: Readonly<State>): RichText.Document | null {
 			.pushText(' to start adventuring!')
 			.done()
 
+	// TODO suggest changing name
+	// TODO suggest changing class
+
 	return null
 }
 

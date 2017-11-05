@@ -1,8 +1,5 @@
-,
-	"include": [
-		"../../typings-custom/**/*.ts",
-		"../../src/**/*.ts"
-	]
+
+TOREAD https://josephg.com/blog/fixing-fortnite/
 
 Schema:
 http://www.vertabelo.com/blog/technical-articles/a-song-of-ice-and-databases-a-game-of-thrones-data-model
@@ -10,8 +7,6 @@ http://www.vertabelo.com/blog/technical-articles/a-song-of-ice-and-databases-a-g
 
 TODO:
 * lerna commands:
-  lerna mkdir node_modules  -> for webstorm
-  lerna hoist ?
 * CQRS
   if switch to immutable: change all action parameters to Readonly<State>
 * random
@@ -25,13 +20,7 @@ TODO:
 
 
 
-
-"@offirmo/random": "^2.0.4",
-"lodash": "^4.17.4",
-"typescript-string-enums": "^0.3.5"
 spacetime
-
-
 
 
 http://paizo.com/pathfinderRPG

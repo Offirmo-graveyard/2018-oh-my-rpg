@@ -18,6 +18,21 @@ const immutable = (state: State) => state
 /////////////////////
 
 const CHARACTER_STATS = Enum.keys(CharacterAttribute)
+const CHARACTER_STATS_SORTED: CharacterAttribute[] = [
+	'level',
+	'health',
+	'mana',
+
+	'strength',
+	'agility',
+	'charisma',
+	'wisdom',
+	'luck',
+]
+if (CHARACTER_STATS.length !== CHARACTER_STATS_SORTED.length)
+	throw new Error(`${LIB_ID}: CHARACTER_STATS to update!`)
+
+const CHARACTER_CLASSES = Enum.keys(CharacterClass)
 
 ///////
 
@@ -148,6 +163,9 @@ export {
 	State,
 
 	CHARACTER_STATS,
+	CHARACTER_STATS_SORTED,
+	CHARACTER_CLASSES,
+
 	factory,
 	rename,
 	switch_class,

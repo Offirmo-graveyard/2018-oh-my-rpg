@@ -12,6 +12,21 @@ const immutable = (state) => state;
 /////////////////////
 const CHARACTER_STATS = typescript_string_enums_1.Enum.keys(types_1.CharacterAttribute);
 exports.CHARACTER_STATS = CHARACTER_STATS;
+const CHARACTER_STATS_SORTED = [
+    'level',
+    'health',
+    'mana',
+    'strength',
+    'agility',
+    'charisma',
+    'wisdom',
+    'luck',
+];
+exports.CHARACTER_STATS_SORTED = CHARACTER_STATS_SORTED;
+if (CHARACTER_STATS.length !== CHARACTER_STATS_SORTED.length)
+    throw new Error(`${consts_1.LIB_ID}: CHARACTER_STATS to update!`);
+const CHARACTER_CLASSES = typescript_string_enums_1.Enum.keys(types_1.CharacterClass);
+exports.CHARACTER_CLASSES = CHARACTER_CLASSES;
 ///////
 function factory() {
     return immutable({

@@ -192,7 +192,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 	describe('⚔ 🛡 💰 📦  full inventory rendering', function() {
 
 		describe('demo', function() {
-			it.only('shows off', () => {
+			it('shows off', () => {
 				let inventory = inventory_factory()
 				inventory = add_item(inventory, DEMO_WEAPON_1)
 				inventory = add_item(inventory, DEMO_ARMOR_2)

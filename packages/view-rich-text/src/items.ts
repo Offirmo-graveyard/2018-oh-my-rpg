@@ -1,14 +1,18 @@
 import { InventorySlot, Item } from '@oh-my-rpg/definitions'
-import { Armor, get_damage_reduction_interval as get_armor_damage_reduction_interval } from '@oh-my-rpg/logic-armors'
-import { Weapon, get_damage_interval as get_weapon_damage_interval } from '@oh-my-rpg/logic-weapons'
+import {
+	Armor,
+	get_damage_reduction_interval as get_armor_damage_reduction_interval
+} from '@oh-my-rpg/logic-armors'
+import {
+	Weapon,
+	get_damage_interval as get_weapon_damage_interval
+} from '@oh-my-rpg/logic-weapons'
 
 import * as RichText from '@oh-my-rpg/rich-text-format'
 
-//import { i18n_messages: I18N_ADVENTURES } from '@oh-my-rpg/logic-adventures'
 import { i18n_messages as I18N_ARMORS } from '@oh-my-rpg/logic-armors'
 import { i18n_messages as I18N_WEAPONS } from '@oh-my-rpg/logic-weapons'
 
-import { TextClass } from './types' // TODO use?
 
 function render_armor_name(i: Armor): RichText.Document {
 	if (i.slot !== InventorySlot.armor)

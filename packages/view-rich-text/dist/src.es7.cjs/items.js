@@ -4,7 +4,6 @@ const definitions_1 = require("@oh-my-rpg/definitions");
 const logic_armors_1 = require("@oh-my-rpg/logic-armors");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
 const RichText = require("@oh-my-rpg/rich-text-format");
-//import { i18n_messages: I18N_ADVENTURES } from '@oh-my-rpg/logic-adventures'
 const logic_armors_2 = require("@oh-my-rpg/logic-armors");
 const logic_weapons_2 = require("@oh-my-rpg/logic-weapons");
 function render_armor_name(i) {

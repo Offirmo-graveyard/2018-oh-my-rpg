@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const definitions_1 = require("@oh-my-rpg/definitions");
 const state_inventory_1 = require("@oh-my-rpg/state-inventory");
-const RichText = require("@oh-my-rpg/rich-text-format");
 const state_wallet_1 = require("@oh-my-rpg/state-wallet");
+const RichText = require("@oh-my-rpg/rich-text-format");
 const items_1 = require("./items");
 function inventory_coordinate_to_sortable_alpha_index(coord) {
     //return (' ' + (coord + 1)).slice(-2)

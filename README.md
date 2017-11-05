@@ -1,7 +1,7 @@
 # Oh My RPG ⚔ 👑
 
 **If you're looking for:**
-- **the npm rpg** → go here: [README.md](packages/the-npm-rpg/README.md)
+- **the npm rpg** → go here: [the-npm-rpg/README.md](packages/the-npm-rpg/README.md)
 
 
 
@@ -47,7 +47,7 @@ lerna run clean:build
 lerna --sort run build
 ```
 
-misc
+misc/TOSORT
 ```bash
 lerna exec -- rm -rf dist
 rm -f package-lock.json & lerna exec -- rm -f package-lock.json
