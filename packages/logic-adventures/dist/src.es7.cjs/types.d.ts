@@ -29,8 +29,8 @@ interface AdventureArchetype {
         lowest_charac: boolean;
         class_main_charac: boolean;
         class_secondary_charac: boolean;
-        coins: CoinsGain;
-        tokens: number;
+        coin: CoinsGain;
+        token: number;
         armor: boolean;
         weapon: boolean;
         armor_or_weapon: boolean;

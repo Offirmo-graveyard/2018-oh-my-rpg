@@ -1,4 +1,6 @@
-export const messages = {
+import { I18nMessages } from '@oh-my-rpg/definitions'
+
+export const messages: I18nMessages = {
 	weapon: {
 		base: {
 			axe: 'axe',

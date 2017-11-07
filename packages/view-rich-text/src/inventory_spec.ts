@@ -17,7 +17,7 @@ import {
 	add_amount,
 } from '@oh-my-rpg/state-wallet'
 
-const { rich_text_to_ansi } = require('../../../the-npm-rpg/src/v2/utils/rich_text_to_ansi')
+const { rich_text_to_ansi } = require('../../../the-npm-rpg/src/utils/rich_text_to_ansi')
 const prettyjson = require('prettyjson')
 function prettify_json(data: any, options = {}) {
 	return prettyjson.render(data, options)
@@ -41,7 +41,9 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 				let inventory = inventory_factory()
 				const $doc = render_inventory(inventory)
 				const str = RichText.to_text($doc)
-				expect(str).to.equal('')
+
+				expect(str).to.be.a.string
+				expect(str).to.contain('empty')
 			})
 		})
 
@@ -61,10 +63,10 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 				const str = RichText.to_text($doc)
 
 				expect(str).to.be.a.string
-				expect(str).not.to.contain('00.')
-				expect(str).to.contain('01.')
-				expect(str).to.contain('05.')
-				expect(str).not.to.contain('06.')
+				expect(str).not.to.contain(' 0.')
+				expect(str).to.contain(' a.')
+				expect(str).to.contain(' e.')
+				expect(str).not.to.contain(' f.')
 			})
 		})
 
@@ -142,53 +144,6 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 		})
 	})
 
-	describe('💰  wallet rendering', function() {
-
-		context('when empty', function() {
-
-			it('should render properly', () => {
-				let wallet = wallet_factory()
-				const $doc = render_wallet(wallet)
-				const str = RichText.to_text($doc)
-
-				expect(str).to.be.a.string
-				expect(str).to.contain(' 0 coins')
-				expect(str).to.contain(' 0 tokens')
-			})
-		})
-
-		context('when not empty', function() {
-
-			it('should render properly', () => {
-				let wallet = wallet_factory()
-
-				wallet = add_amount(wallet, Currency.coin, 12345)
-				wallet = add_amount(wallet, Currency.token, 67)
-
-				const $doc = render_wallet(wallet)
-				const str = RichText.to_text($doc)
-
-				expect(str).to.be.a.string
-				expect(str).not.to.contain('0')
-				expect(str).to.contain(' 12 coins')
-				expect(str).to.contain(' 34 tokens')
-			})
-		})
-
-		describe('demo', function() {
-			it('shows off', () => {
-				let wallet = wallet_factory()
-
-				wallet = add_amount(wallet, Currency.coin, 12)
-				wallet = add_amount(wallet, Currency.token, 34)
-
-				const $doc = render_wallet(wallet)
-				console.log(rich_text_to_ansi($doc))
-			})
-		})
-
-	})
-
 	describe('⚔ 🛡 💰 📦  full inventory rendering', function() {
 
 		describe('demo', function() {
@@ -214,7 +169,5 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 				console.log(rich_text_to_ansi($doc))
 			})
 		})
-
 	})
-
 })

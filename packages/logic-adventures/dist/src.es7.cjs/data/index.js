@@ -1,23 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const i18n_en_1 = require("./i18n_en");
-const i18n_messages = {
-    en: i18n_en_1.messages,
-};
-exports.i18n_messages = i18n_messages;
 const types_1 = require("../types");
 const story = types_1.AdventureType.story;
 const fight = types_1.AdventureType.fight;
 const ENTRIES = [
     { good: false, type: story, hid: 'bad_default', outcome: {} },
-    { good: true, type: fight, hid: 'fight_won_coins', outcome: { coins: 'small' } },
+    { good: true, type: fight, hid: 'fight_won_coins', outcome: { coin: 'small' } },
     { good: true, type: fight, hid: 'fight_won_loot', outcome: { armor_or_weapon: true } },
     { good: true, type: fight, hid: 'fight_won_any', outcome: { random_charac: true } },
     { good: true, type: fight, hid: 'fight_lost_any', outcome: { random_charac: true } },
     { good: true, type: fight, hid: 'fight_lost_shortcoming', outcome: { lowest_charac: true } },
     { good: true, type: story, hid: 'bored_log', outcome: { strength: true } },
-    { good: true, type: story, hid: 'caravan', outcome: { coins: 'small' } },
-    { good: true, type: story, hid: 'dying_man', outcome: { coins: 'medium' } },
+    { good: true, type: story, hid: 'caravan', outcome: { coin: 'small' } },
+    { good: true, type: story, hid: 'dying_man', outcome: { coin: 'medium' } },
     { good: true, type: story, hid: 'ate_bacon', outcome: { level: true } },
     { good: true, type: story, hid: 'ate_zombie', outcome: { mana: true } },
     { good: true, type: story, hid: 'refreshing_nap', outcome: { health: true } },
@@ -38,7 +34,7 @@ const ENTRIES = [
     { good: true, type: story, hid: 'talk_to_all_villagers', outcome: { charisma: true } },
     { good: true, type: story, hid: 'always_keep_potions', outcome: { health: true } },
     { good: true, type: story, hid: 'lost', outcome: { health: true } },
-    { good: true, type: story, hid: 'fate_sword', outcome: { coins: 'small' } },
+    { good: true, type: story, hid: 'fate_sword', outcome: { coin: 'small' } },
     { good: true, type: story, hid: 'grinding', outcome: { level: true } },
     { good: true, type: story, hid: 'so_many_potions', outcome: { strength: true } },
     { good: true, type: story, hid: 'rematch', outcome: { level: true } },
@@ -46,10 +42,14 @@ const ENTRIES = [
     { good: true, type: story, hid: 'escort', outcome: { health: true } },
     { good: true, type: story, hid: 'rare_goods_seller', outcome: { armor_or_weapon: true } },
     { good: true, type: story, hid: 'progress_loop', outcome: { armor_or_weapon: true } },
-    { good: true, type: story, hid: 'idiot_bandits', outcome: { coins: 'medium' } },
-    { good: true, type: story, hid: 'princess', outcome: { coins: 'medium', armor_or_weapon_improvement: true } },
+    { good: true, type: story, hid: 'idiot_bandits', outcome: { coin: 'medium' } },
+    { good: true, type: story, hid: 'princess', outcome: { coin: 'medium', armor_or_weapon_improvement: true } },
     { good: true, type: story, hid: 'bad_village', outcome: { mana: true } },
     { good: true, type: story, hid: 'mana_mana', outcome: { mana: true } },
 ];
 exports.ENTRIES = ENTRIES;
+const i18n_messages = {
+    en: i18n_en_1.messages,
+};
+exports.i18n_messages = i18n_messages;
 //# sourceMappingURL=index.js.map

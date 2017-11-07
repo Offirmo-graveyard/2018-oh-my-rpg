@@ -1,7 +1,6 @@
+import { I18nMessages } from '@oh-my-rpg/definitions'
+
 import { messages as en } from './i18n_en'
-const i18n_messages = {
-	en,
-}
 
 import { CoinsGain, OutcomeArchetype, AdventureType } from '../types'
 
@@ -19,15 +18,15 @@ const fight = AdventureType.fight
 const ENTRIES: RawAdventureArchetypeEntry[] = [
 	{ good: false, type: story, hid: 'bad_default',           outcome: {}},
 
-	{ good: true, type: fight, hid: 'fight_won_coins',        outcome: { coins: 'small' }},
+	{ good: true, type: fight, hid: 'fight_won_coins',        outcome: { coin: 'small' }},
 	{ good: true, type: fight, hid: 'fight_won_loot',         outcome: { armor_or_weapon: true }},
 	{ good: true, type: fight, hid: 'fight_won_any',          outcome: { random_charac: true }},
 	{ good: true, type: fight, hid: 'fight_lost_any',         outcome: { random_charac: true }},
 	{ good: true, type: fight, hid: 'fight_lost_shortcoming', outcome: { lowest_charac: true }},
 
 	{ good: true, type: story, hid: 'bored_log',              outcome: { strength: true }},
-	{ good: true, type: story, hid: 'caravan',                outcome: { coins: 'small' }},
-	{ good: true, type: story, hid: 'dying_man',              outcome: { coins: 'medium' }},
+	{ good: true, type: story, hid: 'caravan',                outcome: { coin: 'small' }},
+	{ good: true, type: story, hid: 'dying_man',              outcome: { coin: 'medium' }},
 	{ good: true, type: story, hid: 'ate_bacon',              outcome: { level: true }},
 	{ good: true, type: story, hid: 'ate_zombie',             outcome: { mana: true }},
 	{ good: true, type: story, hid: 'refreshing_nap',         outcome: { health: true }},
@@ -50,7 +49,7 @@ const ENTRIES: RawAdventureArchetypeEntry[] = [
 	{ good: true, type: story, hid: 'talk_to_all_villagers',  outcome: { charisma: true }},
 	{ good: true, type: story, hid: 'always_keep_potions',    outcome: { health: true }},
 	{ good: true, type: story, hid: 'lost',                   outcome: { health: true }},
-	{ good: true, type: story, hid: 'fate_sword',             outcome: { coins: 'small' }},
+	{ good: true, type: story, hid: 'fate_sword',             outcome: { coin: 'small' }},
 	{ good: true, type: story, hid: 'grinding',               outcome: { level: true }},
 	{ good: true, type: story, hid: 'so_many_potions',        outcome: { strength: true }},
 	{ good: true, type: story, hid: 'rematch',                outcome: { level: true }},
@@ -58,14 +57,20 @@ const ENTRIES: RawAdventureArchetypeEntry[] = [
 	{ good: true, type: story, hid: 'escort',                 outcome: { health: true }},
 	{ good: true, type: story, hid: 'rare_goods_seller',      outcome: { armor_or_weapon: true }},
 	{ good: true, type: story, hid: 'progress_loop',          outcome: { armor_or_weapon: true }},
-	{ good: true, type: story, hid: 'idiot_bandits',          outcome: { coins: 'medium' }},
-	{ good: true, type: story, hid: 'princess',               outcome: { coins: 'medium', armor_or_weapon_improvement: true }},
+	{ good: true, type: story, hid: 'idiot_bandits',          outcome: { coin: 'medium' }},
+	{ good: true, type: story, hid: 'princess',               outcome: { coin: 'medium', armor_or_weapon_improvement: true }},
 	{ good: true, type: story, hid: 'bad_village',            outcome: { mana: true }},
 	{ good: true, type: story, hid: 'mana_mana',              outcome: { mana: true }},
 
 	// meteorite
 
 ]
+
+
+const i18n_messages: I18nMessages = {
+	en,
+}
+
 
 
 export {

@@ -32,11 +32,12 @@ function apply_type($type, str) {
 	}
 }
 
-function apply_class($class, str) {
+function apply_class($class, str, hints = {}) {
 	switch($class) {
 		case 'item__name':
 		case 'avatar__name':
 		case 'avatar__class':
+		case 'monster__name':
 			return stylize_string.bold(str)
 
 		case 'item--quality--common':
@@ -78,6 +79,21 @@ function apply_class($class, str) {
 		case 'attribute--wisdom':
 			return '👵 ' + WIDTH_COMPENSATION + str
 
+		case 'monster':
+			return str + ' ' + hints.possible_emoji + WIDTH_COMPENSATION
+		case 'monster--rank--common':
+			return stylize_string.yellow(str)
+		case 'monster--rank--elite':
+			return stylize_string.yellow(str)
+		case 'monster--rank--boss':
+			return stylize_string.red(str)
+		case 'rank--common':
+			return str
+		case 'rank--elite':
+			return stylize_string.bold(str + '★')
+		case 'rank--boss':
+			return stylize_string.bold(str + ' 👑' + WIDTH_COMPENSATION)
+
 		case 'item--enhancement':
 		case 'armor--values':
 		case 'weapon--values':
@@ -113,7 +129,7 @@ const callbacks = {
 	on_node_enter: () => '',
 	on_concatenate_str: ({state, str}) => state + str,
 	on_concatenate_sub_node,
-	on_class_after: ({state, $class}) => apply_class($class, state),
+	on_class_after: ({state, $class, $node}) => apply_class($class, state, $node.$hints),
 	on_type: ({state, $type}) => apply_type($type, state),
 	on_type_br: ({state}) => state + '\n',
 	on_type_hr: ({state}) => state + '\n------------------------------------------------------------\n',

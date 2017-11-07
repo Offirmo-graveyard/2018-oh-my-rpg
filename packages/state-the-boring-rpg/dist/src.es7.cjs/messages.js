@@ -28,6 +28,8 @@ function get_tip(state) {
             .pushStrong('play')
             .pushText(' to start adventuring!')
             .done();
+    // TODO suggest changing name
+    // TODO suggest changing class
     return null;
 }
 exports.get_tip = get_tip;

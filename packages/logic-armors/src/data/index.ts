@@ -1,4 +1,5 @@
-import { I18nMessages, messages as en } from './i18n_en'
+import { I18nMessages } from '@oh-my-rpg/definitions'
+import { messages as en } from './i18n_en'
 
 const i18n_messages: I18nMessages = {
 	en,

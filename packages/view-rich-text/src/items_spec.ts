@@ -4,7 +4,7 @@ import { InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
 import { generate_random_demo_weapon, DEMO_WEAPON_1, DEMO_WEAPON_2 } from '@oh-my-rpg/logic-weapons'
 import { generate_random_demo_armor, DEMO_ARMOR_1, DEMO_ARMOR_2 } from '@oh-my-rpg/logic-armors'
 
-const { rich_text_to_ansi } = require('../../../the-npm-rpg/src/v2/utils/rich_text_to_ansi')
+const { rich_text_to_ansi } = require('../../../the-npm-rpg/src/utils/rich_text_to_ansi')
 const prettyjson = require('prettyjson')
 function prettify_json(data: any, options = {}) {
 	return prettyjson.render(data, options)
@@ -17,7 +17,7 @@ import {
 } from '.'
 
 
-describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
+describe('⚔ 🛡 item rendering', function() {
 
 	describe('⚔  weapon rendering', function() {
 
@@ -108,41 +108,8 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 			})
 		})
 	})
-/*
-	describe('⚔ 🛡  equipment rendering', function() {
 
-		context('when empty', function() {
-
-			it('should render properly', () => {
-				let inventory = inventory_factory()
-				const str = render_equipment(inventory, {
-					globalize: Globalize('en'),
-					stylize: (style: string, s: string) => s
-				})
-				expect(str).to.be.a.string
-			})
-		})
-
-		context('when not empty', function() {
-
-			it('should render properly', () => {
-				let inventory = inventory_factory()
-				inventory = add_item(inventory, generate_random_demo_weapon())
-				inventory = add_item(inventory, generate_random_demo_armor())
-				inventory = equip_item(inventory, 0)
-				inventory = equip_item(inventory, 0)
-
-				const str = render_equipment(inventory, {
-					globalize: Globalize('en'),
-					stylize: (style: string, s: string) => s
-				})
-				expect(str).to.be.a.string
-			})
-		})
-	})
-	*/
-
-	describe('demo', function() {
+	describe('demos', function() {
 
 		it('shows off weapons', () => {
 
@@ -155,8 +122,8 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 			console.log(rich_text_to_ansi(doc1))
 
 			for(let i = 0; i < 10; ++i) {
-				const i = generate_random_demo_weapon()
-				const doc = render_weapon(i)
+				const item = generate_random_demo_weapon()
+				const doc = render_weapon(item)
 				//console.log(prettify_json(doc))
 				console.log(rich_text_to_ansi(doc))
 			}
@@ -173,8 +140,8 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 			console.log(rich_text_to_ansi(doc1))
 
 			for(let i = 0; i < 10; ++i) {
-				const i = generate_random_demo_armor()
-				const doc = render_armor(i)
+				const item = generate_random_demo_armor()
+				const doc = render_armor(item)
 				//console.log(prettify_json(doc))
 				console.log(rich_text_to_ansi(doc))
 			}

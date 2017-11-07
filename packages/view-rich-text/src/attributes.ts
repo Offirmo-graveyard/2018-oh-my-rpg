@@ -1,5 +1,3 @@
-import { partial } from 'lodash'
-
 import * as RichText from '@oh-my-rpg/rich-text-format'
 import { State as CharacterState, CharacterAttribute, CHARACTER_STATS_SORTED } from '@oh-my-rpg/state-character'
 

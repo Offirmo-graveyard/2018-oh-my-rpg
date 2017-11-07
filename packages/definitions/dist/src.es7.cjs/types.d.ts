@@ -1,4 +1,7 @@
 import { Enum } from 'typescript-string-enums';
+interface I18nMessages {
+    [k: string]: string | I18nMessages;
+}
 declare const ItemQuality: {
     common: "common";
     uncommon: "uncommon";
@@ -19,4 +22,4 @@ interface Item {
     quality: ItemQuality;
 }
 declare type ReportUp = (event: string, options: Object) => boolean;
-export { ItemQuality, InventorySlot, Item, ReportUp };
+export { I18nMessages, ItemQuality, InventorySlot, Item, ReportUp };

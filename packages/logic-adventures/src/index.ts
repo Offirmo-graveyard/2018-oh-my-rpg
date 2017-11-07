@@ -33,8 +33,8 @@ const ALL_ADVENTURE_ARCHETYPES: AdventureArchetype[] = ENTRIES
 			class_main_charac     : !!raw_outcome.class_main_charac,
 			class_secondary_charac: !!raw_outcome.class_secondary_charac,
 
-			coins   :   (raw_outcome.coins as CoinsGain) || CoinsGain.none,
-			tokens  :   raw_outcome.tokens || 0,
+			coin    :   (raw_outcome.coin as CoinsGain) || CoinsGain.none,
+			token   :   raw_outcome.token || 0,
 			armor   : !!raw_outcome.armor,
 			weapon  : !!raw_outcome.weapon,
 			armor_or_weapon   : !!raw_outcome.armor_or_weapon,

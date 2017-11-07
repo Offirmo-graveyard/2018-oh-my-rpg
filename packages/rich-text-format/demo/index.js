@@ -7,7 +7,7 @@ console.log('Hello world!')
 const RichText = require('../dist/src.es7.cjs')
 
 const callbacks_debug = require('./to_debug')
-const callbacks_ansi = require('../../the-npm-rpg/src/v2/utils/rich_text_to_ansi_callbacks')
+const callbacks_ansi = require('../../the-npm-rpg/src/utils/rich_text_to_ansi_callbacks')
 
 const WEAPON_01_NAME = {
 	$classes: ['item-name', 'item-weapon-name'],

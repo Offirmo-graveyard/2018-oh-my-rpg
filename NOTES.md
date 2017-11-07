@@ -15,7 +15,6 @@ TODO:
 * time
   * seasonal content
 * countdowns
-* refact to string enums
 * accumulator on non-play
 
 

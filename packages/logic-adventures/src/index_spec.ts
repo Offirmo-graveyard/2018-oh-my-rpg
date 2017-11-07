@@ -90,8 +90,9 @@ describe('⚔ 💰  adventures', function() {
 		ALL_ADVENTURE_ARCHETYPES.forEach(function({hid}) {
 			describe(`hid "${hid}"`, function() {
 				it('should have an en i18n message', () => {
-					expect(i18n_messages.en).to.have.deep.property(`adventures.${hid}`)
-					expect((i18n_messages.en.adventures as any)[hid]).to.be.a.string
+					const _: any = i18n_messages.en
+					expect(_).to.have.nested.property(`adventures.${hid}`)
+					expect(_.adventures[hid]).to.be.a.string
 				})
 			})
 		})

@@ -4,13 +4,13 @@ const RichText = require("@oh-my-rpg/rich-text-format");
 const definitions_1 = require("@oh-my-rpg/definitions");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
 const logic_armors_1 = require("@oh-my-rpg/logic-armors");
-const { rich_text_to_ansi } = require('../../../the-npm-rpg/src/v2/utils/rich_text_to_ansi');
+const { rich_text_to_ansi } = require('../../../the-npm-rpg/src/utils/rich_text_to_ansi');
 const prettyjson = require('prettyjson');
 function prettify_json(data, options = {}) {
     return prettyjson.render(data, options);
 }
 const _1 = require(".");
-describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
+describe('⚔ 🛡 item rendering', function () {
     describe('⚔  weapon rendering', function () {
         context('when not enhanced', function () {
             it('should render properly', () => {
@@ -91,40 +91,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
             });
         });
     });
-    /*
-        describe('⚔ 🛡  equipment rendering', function() {
-    
-            context('when empty', function() {
-    
-                it('should render properly', () => {
-                    let inventory = inventory_factory()
-                    const str = render_equipment(inventory, {
-                        globalize: Globalize('en'),
-                        stylize: (style: string, s: string) => s
-                    })
-                    expect(str).to.be.a.string
-                })
-            })
-    
-            context('when not empty', function() {
-    
-                it('should render properly', () => {
-                    let inventory = inventory_factory()
-                    inventory = add_item(inventory, generate_random_demo_weapon())
-                    inventory = add_item(inventory, generate_random_demo_armor())
-                    inventory = equip_item(inventory, 0)
-                    inventory = equip_item(inventory, 0)
-    
-                    const str = render_equipment(inventory, {
-                        globalize: Globalize('en'),
-                        stylize: (style: string, s: string) => s
-                    })
-                    expect(str).to.be.a.string
-                })
-            })
-        })
-        */
-    describe('demo', function () {
+    describe('demos', function () {
         it('shows off weapons', () => {
             const doc2 = _1.render_weapon(logic_weapons_1.DEMO_WEAPON_2);
             //console.log(prettify_json(doc2))
@@ -133,8 +100,8 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
             //console.log(prettify_json(doc1))
             console.log(rich_text_to_ansi(doc1));
             for (let i = 0; i < 10; ++i) {
-                const i = logic_weapons_1.generate_random_demo_weapon();
-                const doc = _1.render_weapon(i);
+                const item = logic_weapons_1.generate_random_demo_weapon();
+                const doc = _1.render_weapon(item);
                 //console.log(prettify_json(doc))
                 console.log(rich_text_to_ansi(doc));
             }
@@ -147,8 +114,8 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
             //console.log(prettify_json(doc1))
             console.log(rich_text_to_ansi(doc1));
             for (let i = 0; i < 10; ++i) {
-                const i = logic_armors_1.generate_random_demo_armor();
-                const doc = _1.render_armor(i);
+                const item = logic_armors_1.generate_random_demo_armor();
+                const doc = _1.render_armor(item);
                 //console.log(prettify_json(doc))
                 console.log(rich_text_to_ansi(doc));
             }

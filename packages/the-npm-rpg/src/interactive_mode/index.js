@@ -48,7 +48,7 @@ function start_loop(options) {
 	function* gen_next_step() {
 		const chat_state = {
 			count: 0,
-			mode: 'character',
+			mode: 'main',
 			sub: {
 				inventory: {},
 				character: {},
@@ -92,7 +92,17 @@ function start_loop(options) {
 						msg_cta: 'Play!',
 						value: 'play',
 						msgg_as_user: () => 'Let’s go adventuring!',
-						callback: () => console.log('TODO play')
+						callback: () => {
+							play(options)
+						},
+						msgg_acknowledge: () => {
+							const { good_click_count, last_adventure } = state
+							let msg = `Episode #${good_click_count}:\n`
+							const $doc = render_adventure(last_adventure)
+							msg += rich_text_to_ansi($doc)
+							msg += `\nWhat do you want to do?`
+							return msg
+						},
 					},
 					{
 						msg_cta: 'Manage Inventory (equip, sell…)',
@@ -206,14 +216,9 @@ function start_loop(options) {
 			let msg_main = 'TODO char step'
 			const choices = []
 
-
 			if (chat_state.sub.character.changeClass) {
 				CHARACTER_CLASSES.forEach(klass => {
 					if (klass === 'novice') return
-
-					const msg_cta = (klass === state.avatar.klass)
-							? `Stay a ${klass}`
-							: `Switch class to ${klass}`
 
 					choices.push({
 						msg_cta: `Switch class to ${klass}`,
@@ -300,56 +305,6 @@ function start_loop(options) {
 					process.exit(1)
 			}
 		} while (chat_state.count < 10)
-
-		/*yield* [
-
-			{
-				type: 'ask_for_string',
-				msg_main: `What's your name?`,
-				//validator: null, // TODO
-				msgg_as_user: value => `My name is "${value}".`,
-				msgg_acknowledge: name => `Thanks for the answer, ${name}!`,
-				callback: value => { state.name = value }
-			},
-			{
-				type: 'ask_for_string',
-				msg_main: `What city do you live in?`,
-				msgg_as_user: value => `I live in "${value}".`,
-				msgg_acknowledge: value => `${value}, a fine city indeed!`,
-				callback: value => { state.city = value }
-			},
-			{
-				type: 'simple_message',
-				msg_main: `Please wait for a moment...`,
-			},
-			// TODO wait with feedback
-			/*{
-               type: 'delay',
-               msg_main: `Please wait for a moment...`,
-           },*/
-			/*{
-				msg_main: `Make your choice`,
-				callback: value => { state.mode = value },
-				choices: [
-					{
-						msg_cta: 'Choice 1',
-						value: 1,
-					},
-					{
-						msg_cta: 'Choice 2',
-						value: 2,
-					},
-				]
-			}
-		]*/
-
-		/*
-           {
-               type: 'ask_for_confirmation',
-               //msgg_main: name => `Do you confirm?`,
-               callback: value => { }
-           },
-        */
 	}
 
 	const chat = chat_factory({
@@ -358,7 +313,9 @@ function start_loop(options) {
 		ui: tty_chat_ui_factory({DEBUG: false}),
 	})
 
-	return chat.start()
+	return chat
+		.start()
+		.then(() => console.log('Bye!'))
 }
 
 

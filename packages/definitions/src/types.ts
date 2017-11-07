@@ -2,6 +2,12 @@ import { Enum } from 'typescript-string-enums'
 
 /////////////////////
 
+interface I18nMessages {
+	[k: string]: string | I18nMessages
+}
+
+/////////////////////
+
 const ItemQuality = Enum(
 	'common',
 	'uncommon',
@@ -36,6 +42,7 @@ type ReportUp = (event: string, options: Object) => boolean
 /////////////////////
 
 export {
+	I18nMessages,
 	ItemQuality,
 	InventorySlot,
 	Item,

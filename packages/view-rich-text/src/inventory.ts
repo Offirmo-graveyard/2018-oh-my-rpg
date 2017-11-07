@@ -1,11 +1,10 @@
-import { partial } from 'lodash'
-
 import { InventorySlot, Item, ITEM_SLOTS } from '@oh-my-rpg/definitions'
 import { InventoryCoordinates, State as InventoryState, iterables_unslotted, get_item_in_slot } from '@oh-my-rpg/state-inventory'
-import { State as WalletState, ALL_CURRENCIES, Currency, get_currency_amount } from '@oh-my-rpg/state-wallet'
+import { State as WalletState } from '@oh-my-rpg/state-wallet'
 import * as RichText from '@oh-my-rpg/rich-text-format'
 
 import { render_item } from './items'
+import { render_wallet } from './wallet'
 
 function inventory_coordinate_to_sortable_alpha_index(coord: InventoryCoordinates): string {
 	//return (' ' + (coord + 1)).slice(-2)
@@ -39,32 +38,8 @@ function render_equipment(inventory: InventoryState): RichText.Document {
 	return $doc
 }
 
-function render_wallet(wallet: WalletState): RichText.Document {
-	const $doc_list = RichText.unordered_list()
-		.addClass('inventory--wallet')
-		.done()
-
-	ALL_CURRENCIES.forEach((c: Currency) => {
-		const amount = get_currency_amount(wallet, c)
-		const $doc_currency = RichText.span()
-			.addClass('currency--' + c)
-			.pushText('{{qty}} ' + c + (amount === 1 ? '' : 's')) // TODO localize properly ;)
-			.done()
-
-		$doc_currency.$sub.qty = RichText.span().pushText('' + amount).done() // TODO format according to locale?
-		$doc_list.$sub[c] = $doc_currency
-	})
-
-	const $doc = RichText.paragraph()
-		.pushNode(RichText.heading().pushText('Wallet:').done(), 'header')
-		.pushNode($doc_list, 'list')
-		.done()
-
-	return $doc
-}
-
 function render_inventory(inventory: InventoryState): RichText.Document {
-	const $doc_list = RichText.ordered_list()
+	let $doc_list = RichText.ordered_list()
 		.addClass('inventory--unslotted')
 		.done()
 
@@ -74,6 +49,12 @@ function render_inventory(inventory: InventoryState): RichText.Document {
 		$doc_list.$sub[inventory_coordinate_to_sortable_alpha_index(index)] = render_item(i)
 		// TODO add coordinates
 	})
+
+	if (Object.keys($doc_list.$sub).length === 0) {
+		// completely empty
+		$doc_list.$type = RichText.NodeType.ul
+		$doc_list.$sub['-'] = RichText.span().pushText('(empty)').done()
+	}
 
 	const $doc = RichText.paragraph()
 		.pushNode(RichText.heading().pushText('Inventory:').done(), 'header')
@@ -96,6 +77,5 @@ function render_full_inventory(inventory: InventoryState, wallet: WalletState): 
 export {
 	render_inventory,
 	render_equipment,
-	render_wallet,
 	render_full_inventory,
 }

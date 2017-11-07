@@ -105,8 +105,8 @@ function instantiate_adventure_archetype(rng, aa, character, inventory) {
             charisma: should_gain.charisma ? 1 : 0,
             wisdom: should_gain.wisdom ? 1 : 0,
             luck: should_gain.luck ? 1 : 0,
-            coins: logic_adventures_1.generate_random_coin_gain(rng, should_gain.coins, new_player_level),
-            tokens: should_gain.tokens ? 1 : 0,
+            coin: logic_adventures_1.generate_random_coin_gain(rng, should_gain.coin, new_player_level),
+            token: should_gain.token ? 1 : 0,
             armor: should_gain.armor ? logic_armors_1.factory(rng) : null,
             weapon: should_gain.weapon ? logic_weapons_1.factory(rng) : null,
             armor_improvement: should_gain.armor_improvement,
@@ -177,13 +177,13 @@ function play_good(state, explicit_adventure_archetype_hid) {
         gain_count++;
         state = receive_stat_increase(state, state_character_1.CharacterAttribute.luck, gained.luck);
     }
-    if (gained.coins) {
+    if (gained.coin) {
         gain_count++;
-        state = receive_coins(state, gained.coins);
+        state = receive_coins(state, gained.coin);
     }
-    if (gained.tokens) {
+    if (gained.token) {
         gain_count++;
-        state = receive_tokens(state, gained.tokens);
+        state = receive_tokens(state, gained.token);
     }
     if (gained.weapon) {
         gain_count++;
@@ -260,7 +260,7 @@ exports.change_avatar_class = change_avatar_class;
 // a full featured, non-trivial demo state
 // needed for demos
 const DEMO_STATE = deepFreeze({
-    schema_version: 2,
+    schema_version: 3,
     revision: 203,
     meta: MetaState.DEMO_STATE,
     avatar: CharacterState.DEMO_STATE,
@@ -285,8 +285,8 @@ const DEMO_STATE = deepFreeze({
             charisma: 0,
             wisdom: 0,
             luck: 1,
-            coins: 0,
-            tokens: 0,
+            coin: 0,
+            token: 0,
             armor: null,
             weapon: null,
             armor_improvement: false,

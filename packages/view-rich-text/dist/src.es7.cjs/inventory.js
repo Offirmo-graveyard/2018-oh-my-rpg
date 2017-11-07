@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const definitions_1 = require("@oh-my-rpg/definitions");
 const state_inventory_1 = require("@oh-my-rpg/state-inventory");
-const state_wallet_1 = require("@oh-my-rpg/state-wallet");
 const RichText = require("@oh-my-rpg/rich-text-format");
 const items_1 = require("./items");
+const wallet_1 = require("./wallet");
 function inventory_coordinate_to_sortable_alpha_index(coord) {
     //return (' ' + (coord + 1)).slice(-2)
     return String.fromCharCode(97 + coord);
@@ -31,28 +31,8 @@ function render_equipment(inventory) {
     return $doc;
 }
 exports.render_equipment = render_equipment;
-function render_wallet(wallet) {
-    const $doc_list = RichText.unordered_list()
-        .addClass('inventory--wallet')
-        .done();
-    state_wallet_1.ALL_CURRENCIES.forEach((c) => {
-        const amount = state_wallet_1.get_currency_amount(wallet, c);
-        const $doc_currency = RichText.span()
-            .addClass('currency--' + c)
-            .pushText('{{qty}} ' + c + (amount === 1 ? '' : 's')) // TODO localize properly ;)
-            .done();
-        $doc_currency.$sub.qty = RichText.span().pushText('' + amount).done(); // TODO format according to locale?
-        $doc_list.$sub[c] = $doc_currency;
-    });
-    const $doc = RichText.paragraph()
-        .pushNode(RichText.heading().pushText('Wallet:').done(), 'header')
-        .pushNode($doc_list, 'list')
-        .done();
-    return $doc;
-}
-exports.render_wallet = render_wallet;
 function render_inventory(inventory) {
-    const $doc_list = RichText.ordered_list()
+    let $doc_list = RichText.ordered_list()
         .addClass('inventory--unslotted')
         .done();
     const misc_items = Array.from(state_inventory_1.iterables_unslotted(inventory));
@@ -62,6 +42,11 @@ function render_inventory(inventory) {
         $doc_list.$sub[inventory_coordinate_to_sortable_alpha_index(index)] = items_1.render_item(i);
         // TODO add coordinates
     });
+    if (Object.keys($doc_list.$sub).length === 0) {
+        // completely empty
+        $doc_list.$type = RichText.NodeType.ul;
+        $doc_list.$sub['-'] = RichText.span().pushText('(empty)').done();
+    }
     const $doc = RichText.paragraph()
         .pushNode(RichText.heading().pushText('Inventory:').done(), 'header')
         .pushNode($doc_list, 'list')
@@ -72,7 +57,7 @@ exports.render_inventory = render_inventory;
 function render_full_inventory(inventory, wallet) {
     const $doc = RichText.section()
         .pushNode(render_equipment(inventory), 'equipped')
-        .pushNode(render_wallet(wallet), 'wallet')
+        .pushNode(wallet_1.render_wallet(wallet), 'wallet')
         .pushNode(render_inventory(inventory), 'inventory')
         .done();
     return $doc;

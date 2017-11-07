@@ -62,8 +62,9 @@ describe('⚔ 💰  adventures', function () {
         _1.ALL_ADVENTURE_ARCHETYPES.forEach(function ({ hid }) {
             describe(`hid "${hid}"`, function () {
                 it('should have an en i18n message', () => {
-                    expect(_1.i18n_messages.en).to.have.deep.property(`adventures.${hid}`);
-                    expect(_1.i18n_messages.en.adventures[hid]).to.be.a.string;
+                    const _ = _1.i18n_messages.en;
+                    expect(_).to.have.nested.property(`adventures.${hid}`);
+                    expect(_.adventures[hid]).to.be.a.string;
                 });
             });
         });

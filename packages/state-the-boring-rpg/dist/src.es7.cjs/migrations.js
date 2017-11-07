@@ -19,7 +19,7 @@ function migrate_to_latest(legacy_state, hints = {}) {
     else {
         // TODO logger
         console.warn(`${consts_1.LIB_ID}: attempting to migrate schema from v${src_version} to v${consts_1.SCHEMA_VERSION}:`);
-        state = migrate_to_2(legacy_state, hints);
+        state = migrate_to_3(legacy_state, hints);
     }
     // migrate sub-reducers if any...
     state.meta = MetaState.migrate_to_latest(state.meta, hints.meta);
@@ -27,10 +27,23 @@ function migrate_to_latest(legacy_state, hints = {}) {
     state.inventory = InventoryState.migrate_to_latest(state.inventory, hints.inventory);
     state.wallet = WalletState.migrate_to_latest(state.wallet, hints.wallet);
     state.prng = PRNGState.migrate_to_latest(state.prng, hints.prng);
-    // TODO migrate adventure
     return state;
 }
 exports.migrate_to_latest = migrate_to_latest;
+/////////////////////
+function migrate_to_3(legacy_state, hints) {
+    if (legacy_state.schema_version !== 2)
+        legacy_state = migrate_to_2(legacy_state, hints);
+    console.info(`${consts_1.LIB_ID}: migrating schema from v${legacy_state.schema_version} to v${legacy_state.schema_version + 1}…`);
+    const { last_adventure } = legacy_state;
+    if (last_adventure) {
+        last_adventure.gains.coin = last_adventure.gains.coins;
+        last_adventure.gains.token = last_adventure.gains.tokens;
+        delete last_adventure.gains.coins;
+        delete last_adventure.gains.tokens;
+    }
+    return Object.assign({}, legacy_state, { last_adventure, schema_version: 3 });
+}
 /////////////////////
 function migrate_to_2(legacy_state, hints) {
     if (legacy_state.schema_version !== 1)

@@ -18,8 +18,8 @@ declare const GainType: {
     strength: "strength";
     charisma: "charisma";
     wisdom: "wisdom";
-    coins: "coins";
-    tokens: "tokens";
+    coin: "coin";
+    token: "token";
     weapon_improvement: "weapon_improvement";
     armor_improvement: "armor_improvement";
 };
@@ -37,8 +37,8 @@ interface Adventure {
         charisma: number;
         wisdom: number;
         luck: number;
-        coins: number;
-        tokens: number;
+        coin: number;
+        token: number;
         weapon: null | Weapon;
         armor: null | Armor;
         weapon_improvement: boolean;

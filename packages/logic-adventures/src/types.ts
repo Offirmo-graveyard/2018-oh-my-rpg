@@ -26,6 +26,12 @@ interface AdventureArchetype {
 	type: AdventureType
 	good: boolean
 	outcome: {
+		// MUST be:
+		// - Attributes
+		// - Currencies
+		// - Item Slots
+		// + some variants resolving to one of the above
+
 		level: boolean
 
 		health: boolean
@@ -40,8 +46,8 @@ interface AdventureArchetype {
 		class_main_charac: boolean
 		class_secondary_charac: boolean
 
-		coins: CoinsGain
-		tokens: number
+		coin: CoinsGain
+		token: number
 
 		armor: boolean
 		weapon: boolean

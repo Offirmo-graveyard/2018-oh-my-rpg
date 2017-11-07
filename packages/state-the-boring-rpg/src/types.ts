@@ -23,8 +23,8 @@ const GainType = Enum(
 	'charisma',
 	'wisdom',
 	'luck',
-	'coins',
-	'tokens',
+	'coin',
+	'token',
 	'weapon',
 	'armor',
 	'weapon_improvement',
@@ -46,8 +46,8 @@ interface Adventure {
 		charisma: number
 		wisdom: number
 		luck: number
-		coins: number
-		tokens: number
+		coin: number
+		token: number
 		weapon: null | Weapon
 		armor: null | Armor
 		weapon_improvement: boolean,
