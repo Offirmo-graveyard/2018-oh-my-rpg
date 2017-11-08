@@ -101,7 +101,7 @@ function apply_class($class, str, hints = {}) {
 		case 'attributes':
 		case 'inventory--equipment':
 		case 'inventory--wallet':
-		case 'inventory--unslotted':
+		case 'inventory--backpack':
 		case '':
 			// no style
 			return str

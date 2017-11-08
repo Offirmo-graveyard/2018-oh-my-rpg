@@ -155,8 +155,8 @@ Fortunately, you find a {{item}} at the bottom of a well!`,
 		idiot_bandits: `
 You are being talked about since you slayed the dragon and defeated the sorceress.
 Bandits embush you, aiming for your wealth. What a silly idea!
-You read in the eyes of last one that he realizes it on moment
-before your fireball incinerate him.
+You read in the eyes of last one that he realizes it one moment
+before your fireball incinerates him.
 Fortunately, gold doesn't burn: +{{coin}}!`,
 		// don't remember the source for this one
 		princess: `

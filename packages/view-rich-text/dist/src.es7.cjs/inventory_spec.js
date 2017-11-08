@@ -12,11 +12,11 @@ function prettify_json(data, options = {}) {
 }
 const _1 = require(".");
 describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
-    describe('📦  inventory rendering', function () {
+    describe('📦  backpack rendering', function () {
         context('when empty', function () {
             it('should render properly', () => {
                 let inventory = state_inventory_1.factory();
-                const $doc = _1.render_inventory(inventory);
+                const $doc = _1.render_backpack(inventory);
                 const str = RichText.to_text($doc);
                 expect(str).to.be.a.string;
                 expect(str).to.contain('empty');
@@ -32,7 +32,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
                 inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
                 inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
                 inventory = state_inventory_1.remove_item(inventory, 4);
-                const $doc = _1.render_inventory(inventory);
+                const $doc = _1.render_backpack(inventory);
                 const str = RichText.to_text($doc);
                 expect(str).to.be.a.string;
                 expect(str).not.to.contain(' 0.');
@@ -63,12 +63,12 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
                 inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
                 inventory = state_inventory_1.add_item(inventory, logic_armors_1.generate_random_demo_armor());
                 inventory = state_inventory_1.remove_item(inventory, 4);
-                const $doc = _1.render_inventory(inventory);
+                const $doc = _1.render_backpack(inventory);
                 console.log(rich_text_to_ansi($doc));
             });
         });
     });
-    describe('⚔ 🛡  equipment rendering', function () {
+    describe('⚔ 🛡  active equipment rendering', function () {
         context('when empty', function () {
             it('should render properly', () => {
                 let inventory = state_inventory_1.factory();

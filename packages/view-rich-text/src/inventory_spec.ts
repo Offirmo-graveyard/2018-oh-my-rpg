@@ -24,22 +24,21 @@ function prettify_json(data: any, options = {}) {
 }
 
 import {
-	render_inventory,
+	render_backpack,
 	render_equipment,
-	render_wallet,
 	render_full_inventory,
 } from '.'
 
 
 describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 
-	describe('📦  inventory rendering', function() {
+	describe('📦  backpack rendering', function() {
 
 		context('when empty', function() {
 
 			it('should render properly', () => {
 				let inventory = inventory_factory()
-				const $doc = render_inventory(inventory)
+				const $doc = render_backpack(inventory)
 				const str = RichText.to_text($doc)
 
 				expect(str).to.be.a.string
@@ -59,7 +58,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 				inventory = add_item(inventory, generate_random_demo_armor())
 				inventory = remove_item(inventory, 4)
 
-				const $doc = render_inventory(inventory)
+				const $doc = render_backpack(inventory)
 				const str = RichText.to_text($doc)
 
 				expect(str).to.be.a.string
@@ -93,13 +92,13 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 				inventory = add_item(inventory, generate_random_demo_armor())
 				inventory = remove_item(inventory, 4)
 
-				const $doc = render_inventory(inventory)
+				const $doc = render_backpack(inventory)
 				console.log(rich_text_to_ansi($doc))
 			})
 		})
 	})
 
-	describe('⚔ 🛡  equipment rendering', function() {
+	describe('⚔ 🛡  active equipment rendering', function() {
 
 		context('when empty', function() {
 

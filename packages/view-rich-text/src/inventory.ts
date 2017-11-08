@@ -38,9 +38,9 @@ function render_equipment(inventory: InventoryState): RichText.Document {
 	return $doc
 }
 
-function render_inventory(inventory: InventoryState): RichText.Document {
+function render_backpack(inventory: InventoryState): RichText.Document {
 	let $doc_list = RichText.ordered_list()
-		.addClass('inventory--unslotted')
+		.addClass('inventory--backpack')
 		.done()
 
 	const misc_items = Array.from(iterables_unslotted(inventory))
@@ -57,7 +57,7 @@ function render_inventory(inventory: InventoryState): RichText.Document {
 	}
 
 	const $doc = RichText.paragraph()
-		.pushNode(RichText.heading().pushText('Inventory:').done(), 'header')
+		.pushNode(RichText.heading().pushText('backpack:').done(), 'header')
 		.pushNode($doc_list, 'list')
 		.done()
 
@@ -68,14 +68,14 @@ function render_full_inventory(inventory: InventoryState, wallet: WalletState): 
 	const $doc = RichText.section()
 		.pushNode(render_equipment(inventory), 'equipped')
 		.pushNode(render_wallet(wallet), 'wallet')
-		.pushNode(render_inventory(inventory), 'inventory')
+		.pushNode(render_backpack(inventory), 'backpack')
 		.done()
 
 	return $doc
 }
 
 export {
-	render_inventory,
+	render_backpack,
 	render_equipment,
 	render_full_inventory,
 }

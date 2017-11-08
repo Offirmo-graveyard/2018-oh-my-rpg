@@ -1,7 +1,7 @@
 "use strict";
 
 const tbrpg = require('@oh-my-rpg/state-the-boring-rpg')
-const { iterables_unslotted, get_item_at_coordinates } = require('@oh-my-rpg/state-inventory')
+const { iterables_unslotted, get_item_at_coordinates, get_item_in_slot } = require('@oh-my-rpg/state-inventory')
 const { factory: tty_chat_ui_factory } = require('@oh-my-rpg/view-chat/src/ui/tty')
 const { factory: chat_factory } = require('@oh-my-rpg/view-chat')
 const { CHARACTER_CLASSES } = require('@oh-my-rpg/state-character')
@@ -9,6 +9,7 @@ const {
 	render_item,
 	render_character_sheet,
 	render_full_inventory,
+	render_adventure,
 } = require('@oh-my-rpg/view-rich-text')
 
 const { rich_text_to_ansi } = require('../utils/rich_text_to_ansi')
@@ -50,6 +51,7 @@ function start_loop(options) {
 			count: 0,
 			mode: 'main',
 			sub: {
+				main: {},
 				inventory: {},
 				character: {},
 			}
@@ -83,8 +85,28 @@ function start_loop(options) {
 
 
 		function get_MODE_MAIN() {
-			// TODO add tip action
-			return {
+			const steps = []
+
+			const state = config.store
+			//console.log(state)
+			const { good_click_count, last_adventure } = state
+
+			if (state.last_adventure && chat_state.sub.main.last_adventure !== state.last_adventure) {
+				const { good_click_count, last_adventure } = state
+				//console.log({ good_click_count, last_adventure })
+				let msg_main = `Episode #${good_click_count}:\n`
+				const $doc = render_adventure(last_adventure)
+				msg_main += rich_text_to_ansi($doc)
+				chat_state.sub.main.last_adventure = state.last_adventure
+				steps.push({
+					type: 'simple_message',
+					msg_main,
+				})
+			}
+
+			// TODO add possible tip action
+
+			steps.push({
 				msg_main: `What do you want to do?`,
 				callback: value => { chat_state.mode = value },
 				choices: [
@@ -95,20 +117,12 @@ function start_loop(options) {
 						callback: () => {
 							play(options)
 						},
-						msgg_acknowledge: () => {
-							const { good_click_count, last_adventure } = state
-							let msg = `Episode #${good_click_count}:\n`
-							const $doc = render_adventure(last_adventure)
-							msg += rich_text_to_ansi($doc)
-							msg += `\nWhat do you want to do?`
-							return msg
-						},
 					},
 					{
 						msg_cta: 'Manage Inventory (equip, sell…)',
 						value: 'inventory',
 						msgg_as_user: () => 'Let’s sort out my stuff.',
-						msgg_acknowledge: () => `Sure. Here is your full inventory:`,
+						msgg_acknowledge: () => `Sure.`,
 					},
 					{
 						msg_cta: 'Manage Character (rename, change class…)',
@@ -116,25 +130,43 @@ function start_loop(options) {
 						msgg_as_user: () => 'Let’s see how I’m doing!',
 					},
 				],
-			}
+			})
+
+			return steps
 		}
 
 		function get_MODE_INVENTORY() {
-			const state = config.store
-
-			let msg_main = 'TODO inv step'
+			const steps = []
+			let msg_main = `What do you want to do?`
 			const choices = []
+
+			const state = config.store
 
 			if (chat_state.sub.inventory.selected) {
 				const coords = chat_state.sub.inventory.selected - 1
 				const selected_item = get_item_at_coordinates(state.inventory, coords)
 				const sell_price = tbrpg.appraise_item_at_coordinates(state, coords)
-				const item_ascii = rich_text_to_ansi(render_item(selected_item, {
-					display_quality: true,
-					display_values: false,
-				}))
+				const item_ascii_full = rich_text_to_ansi(render_item(selected_item))
 
-				msg_main = 'What do you want to do with your ' + item_ascii + '?'
+				steps.push({
+					type: 'simple_message',
+					msg_main: 'You inspect the ' + item_ascii_full + ' in your backpack.'
+				})
+
+				const slot = selected_item.slot
+				const equipped_item_in_same_slot = get_item_in_slot(state.inventory, slot)
+				if (!equipped_item_in_same_slot) {
+					steps.push({
+						type: 'simple_message',
+						msg_main: `You currently have no item equipped for this category (${slot}).`
+					})
+				}
+				else {
+					steps.push({
+						type: 'simple_message',
+						msg_main: `You compare it to your currently equipped ${slot}: ` + rich_text_to_ansi(render_item(equipped_item_in_same_slot))
+					})
+				}
 
 				choices.push({
 					msg_cta: 'Equip it.',
@@ -147,7 +179,7 @@ function start_loop(options) {
 					}
 				})
 				choices.push({
-					msg_cta: `Sell for ${sell_price} coins.`,
+					msg_cta: `Sell it for ${sell_price} coins.`,
 					value: 'sell',
 					msgg_as_user: () => `Deal for ${sell_price} coins.`,
 					msgg_acknowledge: () => `Here are you ${sell_price} coins. Please to do business with you!`,
@@ -170,7 +202,11 @@ function start_loop(options) {
 			}
 			else {
 				const $doc = render_full_inventory(state.inventory, state.wallet)
-				msg_main = 'Here is your inventory:\n' + rich_text_to_ansi($doc) + `\nWhat do you want to do?`
+				steps.push({
+					type: 'simple_message',
+					msg_main: 'Here is your full inventory:\n' + rich_text_to_ansi($doc)
+				})
+
 				const misc_items = Array.from(iterables_unslotted(state.inventory))
 				misc_items.forEach((item, index) => {
 					if (!item) return
@@ -204,19 +240,24 @@ function start_loop(options) {
 				})
 			}
 
-			return {
+			steps.push({
 				msg_main,
 				choices,
-			}
+			})
+
+			return steps
 		}
 
 		function get_MODE_CHARACTER() {
+			const steps = []
 			const state = config.store
 
 			let msg_main = 'TODO char step'
 			const choices = []
 
 			if (chat_state.sub.character.changeClass) {
+				msg_main = 'Choose your path wisely:'
+
 				CHARACTER_CLASSES.forEach(klass => {
 					if (klass === 'novice') return
 
@@ -233,7 +274,7 @@ function start_loop(options) {
 				})
 			}
 			else if (chat_state.sub.character.rename) {
-				return {
+				return [{
 					type: 'ask_for_string',
 					msg_main: `What’s your name?`,
 					msgg_as_user: value => `My name is "${value}".`,
@@ -242,11 +283,16 @@ function start_loop(options) {
 						rename_avatar(options, value)
 						chat_state.sub.character = {}
 					},
-				}
+				}]
 			}
 			else {
 				const $doc = render_character_sheet(state.avatar)
-				msg_main = 'Here is your character sheet:\n\n' + rich_text_to_ansi($doc) + `\nWhat do you want to do?`
+				steps.push({
+					type: 'simple_message',
+					msg_main: 'Here is your character sheet:\n\n' + rich_text_to_ansi($doc)
+				})
+
+				msg_main = `What do you want to do?`
 
 				choices.push(
 					{
@@ -278,33 +324,45 @@ function start_loop(options) {
 				)
 			}
 
-			return {
+			steps.push({
 				msg_main,
 				choices,
-			}
+			})
+
+			return steps
 		}
 
-		// main step
+		if (DEBUG) console.log(prettify_json_for_debug(chat_state))
+		let shouldExit = false
+		let loopDetector = 0
 		do {
-			if (DEBUG) console.log(prettify_json_for_debug(chat_state))
 			switch(chat_state.mode) {
 				case 'main':
 					chat_state.count++
-					yielded = yield get_MODE_MAIN()
+					yielded = yield* get_MODE_MAIN()
 					break
 				case 'inventory':
 					chat_state.count++
-					yielded = yield get_MODE_INVENTORY()
+					yielded = yield* get_MODE_INVENTORY()
 					break
 				case 'character':
 					chat_state.count++
-					yielded = yield get_MODE_CHARACTER()
+					yielded = yield* get_MODE_CHARACTER()
 					break
 				default:
 					console.error(`Unknown mode: "${chat_state.mode}"`)
 					process.exit(1)
 			}
-		} while (chat_state.count < 10)
+
+			if (chat_state.count % 10 === 0) {
+				const now = Date.now()
+				if ((now - loopDetector) < 1000) {
+					// loop detected: it's a bug
+					throw new Error('Loop detected in chat interface')
+				}
+				loopDetector = now
+			}
+		} while(!shouldExit)
 	}
 
 	const chat = chat_factory({

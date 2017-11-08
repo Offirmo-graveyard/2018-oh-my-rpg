@@ -31,9 +31,9 @@ function render_equipment(inventory) {
     return $doc;
 }
 exports.render_equipment = render_equipment;
-function render_inventory(inventory) {
+function render_backpack(inventory) {
     let $doc_list = RichText.ordered_list()
-        .addClass('inventory--unslotted')
+        .addClass('inventory--backpack')
         .done();
     const misc_items = Array.from(state_inventory_1.iterables_unslotted(inventory));
     misc_items.forEach((i, index) => {
@@ -48,17 +48,17 @@ function render_inventory(inventory) {
         $doc_list.$sub['-'] = RichText.span().pushText('(empty)').done();
     }
     const $doc = RichText.paragraph()
-        .pushNode(RichText.heading().pushText('Inventory:').done(), 'header')
+        .pushNode(RichText.heading().pushText('backpack:').done(), 'header')
         .pushNode($doc_list, 'list')
         .done();
     return $doc;
 }
-exports.render_inventory = render_inventory;
+exports.render_backpack = render_backpack;
 function render_full_inventory(inventory, wallet) {
     const $doc = RichText.section()
         .pushNode(render_equipment(inventory), 'equipped')
         .pushNode(wallet_1.render_wallet(wallet), 'wallet')
-        .pushNode(render_inventory(inventory), 'inventory')
+        .pushNode(render_backpack(inventory), 'backpack')
         .done();
     return $doc;
 }
