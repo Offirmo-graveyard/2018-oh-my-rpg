@@ -1,7 +1,7 @@
 "use strict";
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const uuidv4 = require("uuid/v4");
+const definitions_1 = require("@oh-my-rpg/definitions");
 const deepFreeze = require("deep-freeze-strict");
 const consts_1 = require("./consts");
 /////////////////////
@@ -12,7 +12,7 @@ function factory() {
     return {
         schema_version: consts_1.SCHEMA_VERSION,
         revision: 0,
-        uuid: uuidv4(),
+        uuid: definitions_1.generate_uuid(),
         name: DEFAULT_NAME,
         email: null,
         allow_telemetry: true,
@@ -41,7 +41,7 @@ exports.set_email = set_email;
 const DEMO_STATE = deepFreeze({
     schema_version: 1,
     revision: 5,
-    uuid: 'd4759a75-81a2-4730-a0ef-79c7d0356ee8',
+    uuid: 'uu1LdI~EVAdXlW5_p23Ro4OH',
     name: 'Offirmo',
     email: 'offirmo.net@gmail.com',
     allow_telemetry: false,
@@ -51,7 +51,7 @@ exports.DEMO_STATE = DEMO_STATE;
 // must correspond to state above
 const OLDEST_LEGACY_STATE_FOR_TESTS = deepFreeze({
     // no schema_version = 0
-    uuid: 'd4759a75-81a2-4730-a0ef-79c7d0356ee8',
+    uuid: 'uu1LdI~EVAdXlW5_p23Ro4OH',
     name: 'Offirmo',
     email: 'offirmo.net@gmail.com',
     allow_telemetry: false,

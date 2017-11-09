@@ -9,7 +9,7 @@ const DATA_v0 = state_1.OLDEST_LEGACY_STATE_FOR_TESTS;
 const DATA_OLDEST = DATA_v0;
 const DATA_v1_20171025 = deepFreeze({
     meta: {
-        uuid: 'd4759a75-81a2-4730-a0ef-79c7d0356ee8',
+        uuid: 'uu1V4PPv0QjSAn23hrbyRE7P',
         name: 'Offirmo',
         email: 'offirmo.net@gmail.com',
         allow_telemetry: false
@@ -130,7 +130,7 @@ const DATA_v2_20171026 = {
     "meta": {
         "schema_version": 1,
         "revision": 5,
-        "uuid": "d4759a75-81a2-4730-a0ef-79c7d0356ee8",
+        "uuid": "uu1V4PPv0QjSAn23hrbyRE7P",
         "name": "Offirmo",
         "email": "offirmo.net@gmail.com",
         "allow_telemetry": false
@@ -262,7 +262,7 @@ const DATA_v3_20171108 = {
     "meta": {
         "schema_version": 1,
         "revision": 5,
-        "uuid": "d4759a75-81a2-4730-a0ef-79c7d0356ee8",
+        "uuid": "uu1V4PPv0QjSAn23hrbyRE7P",
         "name": "Offirmo",
         "email": "offirmo.net@gmail.com",
         "allow_telemetry": false

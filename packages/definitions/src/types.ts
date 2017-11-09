@@ -30,6 +30,7 @@ type InventorySlot = Enum<typeof InventorySlot>
 ///////
 
 interface Item {
+	uuid: string
 	slot: InventorySlot
 	quality: ItemQuality
 }

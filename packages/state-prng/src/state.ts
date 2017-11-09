@@ -137,6 +137,10 @@ const MIGRATION_HINTS_FOR_TESTS: any = deepFreeze({
 
 /////////////////////
 
+TODO serialize?
+
+/////////////////////
+
 export {
 	State,
 	DEFAULT_SEED,

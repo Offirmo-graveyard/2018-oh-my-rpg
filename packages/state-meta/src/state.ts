@@ -1,6 +1,6 @@
 /////////////////////
 
-import * as uuidv4 from 'uuid/v4'
+import { generate_uuid } from '@oh-my-rpg/definitions'
 import * as deepFreeze from 'deep-freeze-strict'
 
 import { LIB_ID, SCHEMA_VERSION } from './consts'
@@ -20,7 +20,7 @@ function factory(): State {
 		schema_version: SCHEMA_VERSION,
 		revision: 0,
 
-		uuid: uuidv4(), // ok this breaks functional programming, nevermind
+		uuid: generate_uuid(), // ok this breaks functional programming, nevermind
 		name: DEFAULT_NAME,
 		email: null,
 		allow_telemetry: true,
@@ -57,7 +57,7 @@ const DEMO_STATE: State = deepFreeze({
 	schema_version: 1,
 	revision: 5,
 
-	uuid: 'd4759a75-81a2-4730-a0ef-79c7d0356ee8',
+	uuid: 'uu1LdI~EVAdXlW5_p23Ro4OH',
 	name: 'Offirmo',
 	email: 'offirmo.net@gmail.com',
 	allow_telemetry: false,
@@ -68,7 +68,7 @@ const DEMO_STATE: State = deepFreeze({
 const OLDEST_LEGACY_STATE_FOR_TESTS: any = deepFreeze({
 	// no schema_version = 0
 
-	uuid: 'd4759a75-81a2-4730-a0ef-79c7d0356ee8',
+	uuid: 'uu1LdI~EVAdXlW5_p23Ro4OH',
 	name: 'Offirmo',
 	email: 'offirmo.net@gmail.com',
 	allow_telemetry: false,

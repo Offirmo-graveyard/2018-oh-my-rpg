@@ -12,13 +12,14 @@
 		"clean:deps": "rm -rf package-lock.json node_modules",
 		"build:dev": "../../node_modules/.bin/tsc --project meta/dev",
 		"build:dev:watch": "npm run build:dev -- --watch",
-		"test": "../../node_modules/.bin/mocha --opts ../../node_modules/@offirmo/unit-test-toolbox/mocha.opts ../../node_modules/@offirmo/unit-test-toolbox/mocha-chai-init-node.js 'dist/src.es7.amd/**/*spec.js'",
+		"test": "../../node_modules/.bin/mocha --opts ../../node_modules/@offirmo/unit-test-toolbox/mocha.opts ../../node_modules/@offirmo/unit-test-toolbox/mocha-chai-init-node.js 'dist/src.es7.cjs/**/*spec.js'",
 		"__helpers": "----------- Helpers -----------",
 		"dev": "run-s clean:build build:dev:watch",
 		"build": "run-s clean:build build:dev",
 		"clean": "run-s clean:build clean:deps"
 	},
 	"dependencies": {
+		"nanoid": "^1.0.1",
 		"typescript-string-enums": "^0.3.5"
 	},
 	"devDependencies": {

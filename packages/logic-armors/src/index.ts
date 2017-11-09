@@ -1,5 +1,6 @@
 /////////////////////
 
+import { generate_uuid } from '@oh-my-rpg/definitions'
 import { Random, Engine } from '@offirmo/random'
 import { ItemQuality, InventorySlot } from '@oh-my-rpg/definitions'
 
@@ -61,6 +62,7 @@ const pick_random_base_strength = Random.integer(MIN_STRENGTH, MAX_STRENGTH)
 function factory(rng: Engine, hints: Partial<Armor> = {}): Armor {
 	// TODO add a check for hints to be in existing components
 	return {
+		uuid: generate_uuid(),
 		slot: InventorySlot.armor,
 		base_hid: hints.base_hid || pick_random_base(rng),
 		qualifier1_hid: hints.qualifier1_hid || pick_random_qualifier1(rng),
