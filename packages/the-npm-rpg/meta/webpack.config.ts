@@ -16,22 +16,4 @@ module.exports = {
 	externals: {
 		conf: 'commonjs conf',
 	},
-	module: {
-		loaders: [
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				loader: 'babel-loader',
-				query: {
-					presets: [
-						["@babel/env", {
-							"targets": {
-								"node": "8.3"
-							}
-						}]
-					]
-				}
-			}
-		],
-	},
 }

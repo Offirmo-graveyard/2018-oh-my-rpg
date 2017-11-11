@@ -26,10 +26,11 @@ function create({DEBUG, gen_next_step, ui}) {
 	function uniformize_step(step) {
 		try {
 			if (step.type === 'ask_for_confirmation' && step !== STEP_CONFIRM)
-				step = {
-					...STEP_CONFIRM,
-					...step,
-				}
+				step = Object.assign(
+					{},
+					STEP_CONFIRM,
+					step,
+				)
 
 			if (!step.msg_main)
 				throw new Error(`${LIB}: Step is missing main message!`)
@@ -41,12 +42,13 @@ function create({DEBUG, gen_next_step, ui}) {
 				step.type = 'ask_for_choice'
 			}
 
-			step = {
-				//msgg_acknowledge: () => `OK.`, Is that really mandatory? Next message may be enough of a reaction
-				validator: null,
-				choices: [],
-				...step
-			}
+			step = Object.assign(
+				{
+					validator: null,
+					choices: [],
+				},
+				step,
+			)
 
 			step.choices = step.choices.map(uniformize_choice)
 

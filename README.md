@@ -45,6 +45,7 @@ npm run clean:deps & lerna run clean:deps
 lerna bootstrap --hoist
 lerna run clean:build
 lerna --sort run build
+lerna --sort run test
 ```
 
 misc/TOSORT
@@ -53,8 +54,6 @@ lerna exec -- rm -rf dist
 rm -f package-lock.json & lerna exec -- rm -f package-lock.json
 rm -rf node_modules & lerna exec -- rm -rf node_modules
 
-
-lerna bootstrap
 lerna exec -- npm outdated
 ```
 

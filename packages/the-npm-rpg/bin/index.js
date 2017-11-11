@@ -12,4 +12,6 @@
 //console.log(`Current file: ${__filename}`);
 process.chdir(require('path').join(__dirname, '..'));
 
+console.log(process)
+
 require('../dist/bundled')

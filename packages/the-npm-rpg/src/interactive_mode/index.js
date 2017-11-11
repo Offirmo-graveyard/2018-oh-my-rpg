@@ -51,7 +51,12 @@ function start_loop(options) {
 			count: 0,
 			mode: 'main',
 			sub: {
-				main: {},
+				main: {
+					last_displayed_adventure_uuid: (() => {
+						const { last_adventure } = config.store
+						return last_adventure && last_adventure.uuid
+					})()
+				},
 				inventory: {},
 				character: {},
 			}
@@ -89,10 +94,10 @@ function start_loop(options) {
 
 			const state = config.store
 			//console.log(state)
-			const { good_click_count, last_adventure } = state
+			const { last_adventure } = state
 
-			if (state.last_adventure && chat_state.sub.main.last_adventure !== state.last_adventure) {
-				const { good_click_count, last_adventure } = state
+			if (last_adventure && chat_state.sub.main.last_displayed_adventure_uuid !== last_adventure.uuid) {
+				const { good_click_count } = state
 				//console.log({ good_click_count, last_adventure })
 				let msg_main = `Episode #${good_click_count}:\n`
 				const $doc = render_adventure(last_adventure)
@@ -102,6 +107,7 @@ function start_loop(options) {
 					type: 'simple_message',
 					msg_main,
 				})
+				chat_state.sub.main.last_displayed_adventure_uuid = last_adventure.uuid
 			}
 
 			// TODO add possible tip action
