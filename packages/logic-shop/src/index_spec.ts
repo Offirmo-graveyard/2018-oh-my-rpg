@@ -28,7 +28,7 @@ describe('📦 💰 📤 📥  shop logic:', function() {
 					base_strength: 14,
 					enhancement_level: 3,
 				} as Armor)
-				expect(price).to.be.a.number
+				expect(price).to.be.a('number')
 				expect(price).to.equal(3670)
 			})
 		})
@@ -43,7 +43,7 @@ describe('📦 💰 📤 📥  shop logic:', function() {
 					base_strength: 14,
 					enhancement_level: 3,
 				} as Weapon)
-				expect(price).to.be.a.number
+				expect(price).to.be.a('number')
 				expect(price).to.equal(3262)
 			})
 		})

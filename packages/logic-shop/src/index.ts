@@ -16,7 +16,7 @@ import {
 
 import {
 	WEAPON_STRENGTH_TO_COINS_COEFFICIENT,
-} from './constants'
+} from './consts'
 
 /////////////////////
 

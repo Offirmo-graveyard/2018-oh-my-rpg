@@ -57,7 +57,7 @@ const DEMO_STATE: State = deepFreeze({
 	schema_version: 1,
 	revision: 5,
 
-	uuid: 'uu1LdI~EVAdXlW5_p23Ro4OH',
+	uuid: 'uu1dgqu3h0FydqWyQ~6cYv3g',
 	name: 'Offirmo',
 	email: 'offirmo.net@gmail.com',
 	allow_telemetry: false,
@@ -68,7 +68,7 @@ const DEMO_STATE: State = deepFreeze({
 const OLDEST_LEGACY_STATE_FOR_TESTS: any = deepFreeze({
 	// no schema_version = 0
 
-	uuid: 'uu1LdI~EVAdXlW5_p23Ro4OH',
+	uuid: 'uu1dgqu3h0FydqWyQ~6cYv3g',
 	name: 'Offirmo',
 	email: 'offirmo.net@gmail.com',
 	allow_telemetry: false,
@@ -77,7 +77,7 @@ const OLDEST_LEGACY_STATE_FOR_TESTS: any = deepFreeze({
 // some hints may be needed to migrate to demo state
 const MIGRATION_HINTS_FOR_TESTS: any = deepFreeze({
 	to_v1: {
-		revision: 5
+		revision: 5,
 	},
 })
 

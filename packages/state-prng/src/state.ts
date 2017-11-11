@@ -32,8 +32,6 @@ function set_seed(state: State, seed: number): State {
 	return state
 }
 
-declare const console: any // TODO
-
 function update_use_count(state: State, prng: MT19937, options: any = {}): State {
 	const new_use_count = prng.getUseCount()
 

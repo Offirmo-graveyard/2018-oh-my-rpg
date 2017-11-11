@@ -14,9 +14,18 @@ function migrate_to_latest(legacy_state: any, hints: any = {}): State {
 	else if (src_version > SCHEMA_VERSION)
 		throw new Error(`${LIB_ID}: Your data is from a more recent version of this lib. Please update!`)
 	else {
-		// TODO logger
-		console.warn(`${LIB_ID}: attempting to migrate schema from v${src_version} to v${SCHEMA_VERSION}:`)
-		state = migrate_to_2(legacy_state, hints)
+		try {
+			// TODO logger
+			console.warn(`${LIB_ID}: attempting to migrate schema from v${src_version} to v${SCHEMA_VERSION}:`)
+			state = migrate_to_2(legacy_state, hints)
+			console.info(`${LIB_ID}: schema migration successful.`)
+		}
+		catch (e) {
+			// failed, reset all
+			// TODO send event upwards
+			console.error(`${LIB_ID}: failed migrating schema, performing full reset !`)
+			state = create()
+		}
 	}
 
 	// migrate sub-reducers if any...
@@ -52,15 +61,7 @@ function migrate_to_1(legacy_state: any, hints: any): any {
 			}
 	}
 
-	return fail_migration_by_resetting()
-}
-
-/////////////////////
-
-function fail_migration_by_resetting(): State {
-	// TODO send event upwards
-	console.error(`${LIB_ID}: failed migrating schema, performing full reset !`)
-	return create()
+	throw new Error(`Unrecognized schema, most likely too old, can't migrate!`)
 }
 
 /////////////////////

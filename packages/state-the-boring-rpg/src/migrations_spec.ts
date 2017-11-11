@@ -12,7 +12,7 @@ const DATA_OLDEST = DATA_v0
 
 const DATA_v1_20171025 = deepFreeze({
 	meta: {
-		uuid: 'uu1V4PPv0QjSAn23hrbyRE7P',
+		uuid: 'uu1dgqu3h0FydqWyQ~6cYv3g',
 		name: 'Offirmo',
 		email: 'offirmo.net@gmail.com',
 		allow_telemetry: false
@@ -134,7 +134,7 @@ const DATA_v2_20171026: any = {
 	"meta": {
 		"schema_version": 1,
 		"revision": 5,
-		"uuid": "uu1V4PPv0QjSAn23hrbyRE7P",
+		"uuid": "uu1dgqu3h0FydqWyQ~6cYv3g",
 		"name": "Offirmo",
 		"email": "offirmo.net@gmail.com",
 		"allow_telemetry": false
@@ -267,7 +267,7 @@ const DATA_v3_20171108: any = {
 	"meta": {
 		"schema_version": 1,
 		"revision": 5,
-		"uuid": "uu1V4PPv0QjSAn23hrbyRE7P",
+		"uuid": "uu1dgqu3h0FydqWyQ~6cYv3g",
 		"name": "Offirmo",
 		"email": "offirmo.net@gmail.com",
 		"allow_telemetry": false
@@ -365,6 +365,7 @@ const DATA_v3_20171108: any = {
 	},
 	"last_adventure": {
 		"hid": "fight_lost_any",
+		"uuid": "uu1de1~EVAdXlW5_p23Ro4OH",
 		"good": true,
 		"encounter": {
 			"name": "chicken",

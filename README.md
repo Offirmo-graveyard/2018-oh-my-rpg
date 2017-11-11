@@ -28,7 +28,7 @@ Those modules are either in TypeScript or JavaScript, whatever makes the most se
 nvm install
 npm install --global lerna
 lerna bootstrap --hoist
-lerna run build
+lerna --sort run build
 ```
 
 

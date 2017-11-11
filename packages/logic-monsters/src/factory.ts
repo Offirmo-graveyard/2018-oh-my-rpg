@@ -39,7 +39,7 @@ function create(rng: Engine, hints: Partial<Monster> = {}): Monster {
 	if (!hints.level)
 		level = Random.integer(1, MAX_LEVEL)(rng)
 	else {
-		// provide a little variation around the given level
+		// stay close to the given level
 		const reference_level = hints.level
 		const variation = Math.round(Math.max(1, reference_level * MONSTER_RELATIVE_LEVEL_SPREAD))
 		level = Math.max(1, Math.min(MAX_LEVEL,
@@ -63,11 +63,19 @@ function generate_random_demo_monster(): Monster {
 	return create(rng)
 }
 
+const DEMO_MONSTER_01: Monster = {
+	name: 'chicken',
+	level: 7,
+	rank: MonsterRank.elite,
+	possible_emoji: '🐓',
+}
+
 /////////////////////
 
 export {
 	create,
 	generate_random_demo_monster,
+	DEMO_MONSTER_01,
 }
 
 /////////////////////

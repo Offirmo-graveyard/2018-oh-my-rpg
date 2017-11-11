@@ -62,7 +62,7 @@ const pick_random_base_strength = Random.integer(MIN_STRENGTH, MAX_STRENGTH)
 function create(rng: Engine, hints: Partial<Armor> = {}): Armor {
 	// TODO add a check for hints to be in existing components
 	return {
-		uuid: generate_uuid(),
+		//uuid: generate_uuid(), TODO
 		slot: InventorySlot.armor,
 		base_hid: hints.base_hid || pick_random_base(rng),
 		qualifier1_hid: hints.qualifier1_hid || pick_random_qualifier1(rng),

@@ -4,6 +4,8 @@ import {
 	Adventure,
 	create,
 	play,
+	DEMO_ADVENTURE_01,
+	DEMO_ADVENTURE_02,
 } from '@oh-my-rpg/state-the-boring-rpg'
 
 const { rich_text_to_ansi } = require('../../../the-npm-rpg/src/utils/rich_text_to_ansi')
@@ -18,27 +20,7 @@ function prettify_json(data: any, options = {}) {
 describe('📃  adventure rendering', function() {
 
 	it('should render properly - simple case', () => {
-		const adventure: Adventure = {
-			hid: 'dying_man',
-			good: true,
-			gains: {
-				level: 0,
-				health: 0,
-				mana: 0,
-				strength: 0,
-				agility: 0,
-				charisma: 0,
-				wisdom: 0,
-				luck: 0,
-				coin: 1234,
-				token: 0,
-				weapon: null,
-				armor: null,
-				weapon_improvement: false,
-				armor_improvement: false,
-			}
-		}
-		const $doc = render_adventure(adventure)
+		const $doc = render_adventure(DEMO_ADVENTURE_02)
 		//console.log(prettify_json($doc))
 
 		const str = rich_text_to_ansi($doc)

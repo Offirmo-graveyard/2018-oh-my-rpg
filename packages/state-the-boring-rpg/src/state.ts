@@ -55,6 +55,7 @@ import {
 
 import {
 	create as create_monster,
+	DEMO_MONSTER_01,
 } from '@oh-my-rpg/logic-monsters'
 
 import {
@@ -365,6 +366,49 @@ function change_avatar_class(state: State, klass: CharacterClass): State {
 
 // a full featured, non-trivial demo state
 // needed for demos
+const DEMO_ADVENTURE_01: Adventure = deepFreeze({
+	hid: 'fight_lost_any',
+	uuid: 'uu1de1~EVAdXlW5_p23Ro4OH',
+	good: true,
+	encounter: DEMO_MONSTER_01,
+	gains: {
+		level: 0,
+		health: 0,
+		mana: 0,
+		strength: 0,
+		agility: 0,
+		charisma: 0,
+		wisdom: 0,
+		luck: 1,
+		coin: 0,
+		token: 0,
+		armor: null,
+		weapon: null,
+		armor_improvement: false,
+		weapon_improvement: false,
+	},
+})
+const DEMO_ADVENTURE_02: Adventure = deepFreeze({
+	hid: 'dying_man',
+	uuid: 'uu1de2~p23Ro4OH_EVAdXlW5',
+	good: true,
+	gains: {
+		level: 0,
+		health: 0,
+		mana: 0,
+		strength: 0,
+		agility: 0,
+		charisma: 0,
+		wisdom: 0,
+		luck: 0,
+		coin: 1234,
+		token: 0,
+		weapon: null,
+		armor: null,
+		weapon_improvement: false,
+		armor_improvement: false,
+	}
+})
 const DEMO_STATE: State = deepFreeze({
 	schema_version: 3,
 	revision: 203,
@@ -375,32 +419,8 @@ const DEMO_STATE: State = deepFreeze({
 	wallet: WalletState.DEMO_STATE,
 	prng: PRNGState.DEMO_STATE,
 
-	last_adventure: {
-		hid: 'fight_lost_any',
-		good: true,
-		encounter: {
-			name: 'chicken',
-			level: 7,
-			rank: 'elite',
-			possible_emoji: '🐓',
-		},
-		gains: {
-			level: 0,
-			health: 0,
-			mana: 0,
-			strength: 0,
-			agility: 0,
-			charisma: 0,
-			wisdom: 0,
-			luck: 1,
-			coin: 0,
-			token: 0,
-			armor: null,
-			weapon: null,
-			armor_improvement: false,
-			weapon_improvement: false,
-		},
-	},
+	last_adventure: DEMO_ADVENTURE_01,
+
 	click_count:                  86,
 	good_click_count:             86,
 	meaningful_interaction_count: 86,
@@ -450,6 +470,10 @@ const OLDEST_LEGACY_STATE_FOR_TESTS: any = deepFreeze({
 
 // some hints may be needed to migrate to demo state
 const MIGRATION_HINTS_FOR_TESTS: any = deepFreeze({
+	to_v3: {
+		last_adventure_uuid: 'uu1de1~EVAdXlW5_p23Ro4OH'
+	},
+
 	to_v2: {
 		revision: 203
 	},
@@ -478,6 +502,8 @@ export {
 	rename_avatar,
 	change_avatar_class,
 
+	DEMO_ADVENTURE_01,
+	DEMO_ADVENTURE_02,
 	DEMO_STATE,
 	OLDEST_LEGACY_STATE_FOR_TESTS,
 	MIGRATION_HINTS_FOR_TESTS,

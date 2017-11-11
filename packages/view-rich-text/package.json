@@ -34,6 +34,7 @@
 	},
 	"devDependencies": {
 		"@oh-my-rpg/state-prng": "^0.0.1",
+		"@types/node": "^8.0.51",
 		"npm-run-all": "^4.1.1",
 		"tslib": "^1.7.1"
 	},
