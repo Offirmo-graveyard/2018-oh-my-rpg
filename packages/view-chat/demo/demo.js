@@ -2,8 +2,8 @@
 ':' //# http://sambal.org/?p=1014 ; exec /usr/bin/env node "$0" "$@"
 'use strict';
 
-const { factory: tty_chat_ui_factory } = require('../src/ui/tty')
-const { factory: chat_factory } = require('../src')
+const { create: create_tty_chat_ui } = require('../src/ui/tty')
+const { create: create_chat } = require('../src')
 
 const DEBUG = false
 
@@ -108,11 +108,11 @@ const no_ui = {
 }
 
 
-const chat = chat_factory({
+const chat = create_chat({
 	DEBUG,
 	gen_next_step: get_next_step1(),
 	ui: process.stdout.isTTY
-		? tty_chat_ui_factory({DEBUG})
+		? create_tty_chat_ui({DEBUG})
 		: no_ui,
 })
 

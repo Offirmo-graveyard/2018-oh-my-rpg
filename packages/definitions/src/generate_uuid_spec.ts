@@ -1,4 +1,4 @@
-import { generate_uuid } from '.'
+import { generate_uuid, UUID_LENGTH } from '.'
 
 
 describe('generate_uuid()', function() {
@@ -8,7 +8,7 @@ describe('generate_uuid()', function() {
 			const uuid = generate_uuid()
 			console.log(uuid)
 			expect(uuid).to.be.a.string
-			expect(uuid).to.have.lengthOf(24)
+			expect(uuid).to.have.lengthOf(UUID_LENGTH)
 			expect(uuid.startsWith(('uu1'))).to.be.true
 		}
 	})

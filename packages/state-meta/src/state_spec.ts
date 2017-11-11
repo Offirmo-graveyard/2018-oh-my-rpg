@@ -3,7 +3,7 @@ import { LIB_ID, SCHEMA_VERSION } from './consts'
 import {
 	State,
 
-	factory,
+	create,
 } from '.'
 
 describe('🤕 ❤️  Meta state - reducer', function() {
@@ -12,7 +12,7 @@ describe('🤕 ❤️  Meta state - reducer', function() {
 		const TEST_UUID_v1 = 'uu1dgqu3h0FydqWyQ~6cYv3g'
 
 		it('should have correct defaults and a unique uuid', function() {
-			let state = factory()
+			let state = create()
 
 			// uuid is random
 			expect(state.uuid).to.have.lengthOf(TEST_UUID_v1.length)

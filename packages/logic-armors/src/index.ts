@@ -11,7 +11,7 @@ import {
 	Armor,
 } from './types'
 
-import { get_interval } from './constants'
+import { get_interval } from './consts'
 
 const ARMOR_BASES =
 	static_armor_data.filter((armor_component: any) => armor_component.type === ArmorPartType.base) as
@@ -59,7 +59,7 @@ const pick_random_base_strength = Random.integer(MIN_STRENGTH, MAX_STRENGTH)
 
 /////////////////////
 
-function factory(rng: Engine, hints: Partial<Armor> = {}): Armor {
+function create(rng: Engine, hints: Partial<Armor> = {}): Armor {
 	// TODO add a check for hints to be in existing components
 	return {
 		uuid: generate_uuid(),
@@ -78,7 +78,7 @@ function factory(rng: Engine, hints: Partial<Armor> = {}): Armor {
 // for demo purpose, all attributes having the same probability + also random enhancement level
 function generate_random_demo_armor(): Armor {
 	const rng: Engine = Random.engines.mt19937().autoSeed()
-	return factory(rng, {
+	return create(rng, {
 		enhancement_level: Random.integer(0, MAX_ENHANCEMENT_LEVEL)(rng)
 	})
 }
@@ -139,7 +139,8 @@ export {
 	MAX_ENHANCEMENT_LEVEL,
 	MIN_STRENGTH,
 	MAX_STRENGTH,
-	factory,
+
+	create,
 	generate_random_demo_armor,
 	enhance,
 	get_damage_reduction_interval,

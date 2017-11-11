@@ -4,7 +4,7 @@ import { LIB_ID, SCHEMA_VERSION } from './consts'
 
 import {
 	DEFAULT_SEED,
-	factory,
+	create,
 
 	set_seed,
 	update_use_count,
@@ -20,7 +20,7 @@ describe('🎲  Persistable PRNG state - reducer', function() {
 	describe('🆕  initial value', function() {
 
 		it('should have correct defaults', function() {
-			const state = factory()
+			const state = create()
 
 			expect(state).to.deep.equal({
 				schema_version: SCHEMA_VERSION,
@@ -40,7 +40,7 @@ describe('🎲  Persistable PRNG state - reducer', function() {
 	describe('update after use', function() {
 
 		it('should correctly persist prng state', function() {
-			let state = factory()
+			let state = create()
 
 			let prng = get_prng(state)
 			expect(Random.integer(0, 10)(prng), 'random 1').to.equal(2)
@@ -54,7 +54,7 @@ describe('🎲  Persistable PRNG state - reducer', function() {
 	describe('get_prng', function() {
 
 		it('should return a working PRNG engine', function() {
-			const state = factory()
+			const state = create()
 
 			const prng = get_prng(state)
 
@@ -69,7 +69,7 @@ describe('🎲  Persistable PRNG state - reducer', function() {
 		})
 
 		it('should return a repeatable PRNG engine', function() {
-			let state = factory()
+			let state = create()
 
 			let prng = get_prng(state)
 			expect(Random.integer(0, 10)(prng), 'random 1').to.equal(2)

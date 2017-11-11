@@ -20,7 +20,7 @@ function start_loop(options) {
 		if (!process.stdout.isTTY)
 			throw new Error('start_loop: current term is not a tty !')
 
-		let ui_state = ui.factory({options})
+		let ui_state = ui.create({options})
 
 		const COMMANDS_FOR_SCREEN = {
 			'*': [

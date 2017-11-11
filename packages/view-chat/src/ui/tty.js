@@ -20,8 +20,8 @@ function key_to_string(key) {
 }
 
 
-function factory({DEBUG, shouldCenter}) {
-	if (DEBUG) console.log('↘ tty_chat_ui_factory()')
+function create({DEBUG, shouldCenter}) {
+	if (DEBUG) console.log('↘ tty_chat_ui.create()')
 	const state = {
 		is_closing: false,
 		keypress_callback: null,
@@ -357,5 +357,5 @@ function factory({DEBUG, shouldCenter}) {
 
 
 module.exports = {
-	factory,
+	create,
 }

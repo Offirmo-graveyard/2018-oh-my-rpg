@@ -23,7 +23,7 @@ interface Chat {
 	start: () => Promise<void>
 }
 
-function factory(o: Options): Chat {
+function create(o: Options): Chat {
 
 	async function start(): Promise<void> {
 		let mode = o.initial_mode
@@ -47,7 +47,7 @@ export {
 
 	Options,
 	Chat,
-	factory,
+	create,
 }
 
 /////////////////////

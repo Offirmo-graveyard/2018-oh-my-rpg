@@ -4,7 +4,7 @@ import {
 	CharacterClass,
 	State,
 
-	factory,
+	create,
 	increase_stat,
 } from '.'
 
@@ -13,7 +13,7 @@ describe('🤕 ❤️  Character state - reducer', function() {
 	describe('🆕  initial state', function() {
 
 		it('should have correct defaults', function() {
-			const state = factory()
+			const state = create()
 			expect(state).to.deep.equal({
 				schema_version: SCHEMA_VERSION,
 				revision: 0,
@@ -39,7 +39,7 @@ describe('🤕 ❤️  Character state - reducer', function() {
 	describe('⬆ stat increase', function() {
 
 		it('should fail on invalid amount', function() {
-			let state = factory()
+			let state = create()
 
 			function increase_0() {
 				state = increase_stat(state, CharacterAttribute.agility, 0)
@@ -53,7 +53,7 @@ describe('🤕 ❤️  Character state - reducer', function() {
 		})
 
 		it('should work in nominal case', function() {
-			let state = factory()
+			let state = create()
 
 			state = increase_stat(state, CharacterAttribute.agility)
 			expect(state.attributes.agility).to.equal(2)

@@ -4,7 +4,7 @@ import { generate_random_demo_weapon, DEMO_WEAPON_1, DEMO_WEAPON_2 } from '@oh-m
 import { generate_random_demo_armor, DEMO_ARMOR_1, DEMO_ARMOR_2 } from '@oh-my-rpg/logic-armors'
 
 import {
-	factory as inventory_factory,
+	create as create_inventory,
 	equip_item,
 	add_item,
 	remove_item,
@@ -13,7 +13,7 @@ import {
 import {
 	Currency,
 	State as WalletState,
-	factory as wallet_factory,
+	create as create_wallet,
 	add_amount,
 } from '@oh-my-rpg/state-wallet'
 
@@ -37,7 +37,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 		context('when empty', function() {
 
 			it('should render properly', () => {
-				let inventory = inventory_factory()
+				let inventory = create_inventory()
 				const $doc = render_backpack(inventory)
 				const str = RichText.to_text($doc)
 
@@ -49,7 +49,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 		context('when not empty', function() {
 
 			it('should render properly', () => {
-				let inventory = inventory_factory()
+				let inventory = create_inventory()
 				inventory = add_item(inventory, generate_random_demo_weapon())
 				inventory = add_item(inventory, generate_random_demo_weapon())
 				inventory = add_item(inventory, generate_random_demo_armor())
@@ -71,7 +71,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 
 		describe('demo', function() {
 			it('shows off', () => {
-				let inventory = inventory_factory()
+				let inventory = create_inventory()
 				inventory = add_item(inventory, generate_random_demo_weapon())
 				inventory = add_item(inventory, generate_random_demo_weapon())
 				inventory = add_item(inventory, generate_random_demo_armor())
@@ -103,7 +103,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 		context('when empty', function() {
 
 			it('should render properly', () => {
-				let inventory = inventory_factory()
+				let inventory = create_inventory()
 				const $doc = render_equipment(inventory)
 				const str = RichText.to_text($doc)
 				expect(str).to.be.a.string
@@ -115,7 +115,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 		context('when not empty', function() {
 
 			it('should render properly', () => {
-				let inventory = inventory_factory()
+				let inventory = create_inventory()
 				inventory = add_item(inventory, DEMO_WEAPON_1)
 				inventory = add_item(inventory, DEMO_ARMOR_2)
 				inventory = equip_item(inventory, 0)
@@ -131,7 +131,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 
 		describe('demo', function() {
 			it('shows off', () => {
-				let inventory = inventory_factory()
+				let inventory = create_inventory()
 				inventory = add_item(inventory, DEMO_WEAPON_1)
 				inventory = add_item(inventory, DEMO_ARMOR_2)
 				inventory = equip_item(inventory, 0)
@@ -147,7 +147,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 
 		describe('demo', function() {
 			it('shows off', () => {
-				let inventory = inventory_factory()
+				let inventory = create_inventory()
 				inventory = add_item(inventory, DEMO_WEAPON_1)
 				inventory = add_item(inventory, DEMO_ARMOR_2)
 				inventory = equip_item(inventory, 0)
@@ -160,7 +160,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 				inventory = add_item(inventory, generate_random_demo_armor())
 				inventory = remove_item(inventory, 4)
 
-				let wallet = wallet_factory()
+				let wallet = create_wallet()
 				wallet = add_amount(wallet, Currency.coin, 12345)
 				wallet = add_amount(wallet, Currency.token, 67)
 

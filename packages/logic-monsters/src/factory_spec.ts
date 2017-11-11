@@ -3,7 +3,7 @@ import { Random, Engine } from '@offirmo/random'
 import {
 	Monster,
 	MonsterRank,
-	factory,
+	create,
 	generate_random_demo_monster,
 } from '.'
 
@@ -13,7 +13,7 @@ describe('🐀 🐉  monster logic - logic:', function() {
 
 		it('should allow creating a random monster', function() {
 			const rng: Engine = Random.engines.mt19937().seed(789)
-			const monster1 = factory(rng)
+			const monster1 = create(rng)
 			expect(monster1).to.deep.equal({
 				name: 'drop bear',
 				level: 808,
@@ -22,14 +22,14 @@ describe('🐀 🐉  monster logic - logic:', function() {
 			})
 			expect((rng as any).getUseCount(), '# rng draws 1').to.equal(2)
 
-			const monster2 = factory(rng)
+			const monster2 = create(rng)
 			expect((rng as any).getUseCount(), '# rng draws 2').to.equal(4)
 			expect(monster2).not.to.deep.equal(monster1)
 		})
 
 		it('should allow creating a partially predefined monster', function() {
 			const rng: Engine = Random.engines.mt19937().seed(123)
-			const monster = factory(rng, {
+			const monster = create(rng, {
 				name: 'crab',
 				level: 12,
 			})

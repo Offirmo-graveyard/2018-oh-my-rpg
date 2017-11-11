@@ -3,7 +3,7 @@ import * as RichText from '@oh-my-rpg/rich-text-format'
 import {
 	Currency,
 	DEMO_STATE,
-	factory as wallet_factory,
+	create as create_wallet,
 	add_amount,
 } from '@oh-my-rpg/state-wallet'
 
@@ -19,7 +19,7 @@ describe('💰  wallet rendering', function() {
 	context('when empty', function() {
 
 		it('should render properly', () => {
-			let wallet = wallet_factory()
+			let wallet = create_wallet()
 			const $doc = render_wallet(wallet)
 			const str = RichText.to_text($doc)
 
@@ -32,7 +32,7 @@ describe('💰  wallet rendering', function() {
 	context('when not empty', function() {
 
 		it('should render properly', () => {
-			let wallet = wallet_factory()
+			let wallet = create_wallet()
 			wallet = add_amount(wallet, Currency.coin, 12345)
 			wallet = add_amount(wallet, Currency.token, 67)
 

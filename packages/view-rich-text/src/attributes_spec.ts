@@ -1,7 +1,6 @@
 import * as RichText from '@oh-my-rpg/rich-text-format'
 
 import {
-	factory as character_factory,
 	DEMO_STATE,
 } from '@oh-my-rpg/state-character'
 

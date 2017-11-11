@@ -18,9 +18,9 @@ declare const InventorySlot: {
 };
 declare type InventorySlot = Enum<typeof InventorySlot>;
 interface Item {
-    uuid: string;
     slot: InventorySlot;
     quality: ItemQuality;
 }
+declare type UUID = string;
 declare type ReportUp = (event: string, options: Object) => boolean;
-export { I18nMessages, ItemQuality, InventorySlot, Item, ReportUp };
+export { I18nMessages, ItemQuality, InventorySlot, Item, UUID, ReportUp };

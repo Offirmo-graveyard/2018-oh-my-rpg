@@ -13,7 +13,7 @@ import {
 
 const DEFAULT_SEED = 987
 
-function factory(): State {
+function create(): State {
 	return {
 		schema_version: SCHEMA_VERSION,
 		revision: 0,
@@ -137,14 +137,14 @@ const MIGRATION_HINTS_FOR_TESTS: any = deepFreeze({
 
 /////////////////////
 
-TODO serialize?
+// TODO serialize?
 
 /////////////////////
 
 export {
 	State,
 	DEFAULT_SEED,
-	factory,
+	create,
 
 	set_seed,
 	update_use_count,

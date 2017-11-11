@@ -1,6 +1,6 @@
 import { I18nMessages } from '@oh-my-rpg/definitions'
 
-// XXX we allow line returns for ease of writinq
+// XXX we allow line returns for ease of writing
 // but they'll be automatically removed, see bottom of this file.
 const raw_messages: I18nMessages = {
 	adventures: {
@@ -23,7 +23,7 @@ You figured out techniques to flee more efficiently: +{{attr}} {{attr_name}}!`,
 You were attacked by a {{encounter}} and that didn't went well... but you got away just before it was about to kill you.
 You reflect on your lack of {{attr_name}} during this fight and train hard: +{{attr}} {{attr_name}}!`,
 
-		// from the original game
+		// scavenged from screens of the original game
 		bored_log: `
 You were so bored, you punched a log for hours!
 You gained +{{strength}} strength!`,
@@ -59,7 +59,7 @@ You gained +{{wisdom}} wisdom!`,
 You found a green mushroom.
 You gained +{{level}} level!`,
 
-		// from me, inferred
+		// from me, inferred and extended
 		found_red_mushroom: `
 You found a red mushroom.
 You gained +{{health}} health!`,
@@ -105,16 +105,15 @@ Well done, your health is top-notch!`,
 		lost: `
 With all those quests, you forgot where you had to go…
 But circling around the whole map is good for your health: +{{health}} health!`,
+		grinding: `
+For lack of a better idea, you grind for hours and hours…
+So what? It's an RPG, what did you expect?
+But it pays: +{{level}} level!`,
 		// DK
 		fate_sword: `
 To thank you for saving his wife and his children, the farmer offer you "Destiny",
 the heirloom sword passed in his family from generations.
 30 minutes later, the merchant only gives you {{coin}} for it… Ahh those poors!`,
-		// dorkly
-		grinding: `
-For lack of a better idea, you grind for hours and hours…
-So what? It's an RPG, what did you expect?
-But it pays: +{{level}} level!`,
 		// ?
 		so_many_potions: `
 The fight against the final boss was hard, very hard…
@@ -198,11 +197,11 @@ const messages: I18nMessages = {
 }
 
 Object.keys(raw_messages.adventures).forEach((entry: string) => {
-	(messages.adventures as any)[entry] = clean_multiline_message((raw_messages as any).adventures[entry])
+	(messages.adventures as any)[entry] = clean_multiline_string((raw_messages as any).adventures[entry])
 })
 
-function clean_multiline_message(raw_message_multiline: string): string {
-	return raw_message_multiline
+function clean_multiline_string(str: string): string {
+	return str
 		.split('\n')
 		.map((s: string) => s.trim())
 		.filter((s: string) => !!s)

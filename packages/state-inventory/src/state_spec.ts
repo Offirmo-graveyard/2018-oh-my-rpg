@@ -10,7 +10,7 @@ import {
 	Item,
 	State,
 
-	factory,
+	create,
 	add_item,
 	remove_item,
 	equip_item,
@@ -30,7 +30,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 	describe('🆕 initial state', function() {
 
 		it('should have correct defaults', function() {
-			const state = factory()
+			const state = create()
 
 			expect(state).to.deep.equal({
 				schema_version: SCHEMA_VERSION,
@@ -76,7 +76,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 
 		it('should work on empty state', function() {
 			const item: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
-			let state = factory()
+			let state = create()
 			state = add_item(state, item)
 			expect(state.unslotted).to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH)
 			expect(get_item_count(state)).to.equal(1)
@@ -84,7 +84,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 
 		it('should work on simple non-empty state', function() {
 			const item: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
-			let state = factory()
+			let state = create()
 			state = add_item(state, item)
 			state = add_item(state, item)
 			expect(state.unslotted, 'unslotted').to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH)
@@ -93,7 +93,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 
 		it('should fail when the inventory is full', function() {
 			const item: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
-			let state = factory()
+			let state = create()
 			state = add_item(state, item)
 			state = add_item(state, item)
 			state = add_item(state, item)
@@ -124,7 +124,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 		it('should find a free slot when some items where recently removed', function() {
 			const item1: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
 			const item2: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
-			let state = factory()
+			let state = create()
 			state = add_item(state, item1)
 			state = add_item(state, item1)
 			state = remove_item(state, 0)
@@ -139,7 +139,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 	describe('📤 item removal', function() {
 
 		it('should throw on empty target slot', function() {
-			let state = factory()
+			let state = create()
 			function remove_one() {
 				state = remove_item(state, 0)
 			}
@@ -148,7 +148,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 
 		it('should work in nominal case', function() {
 			const item: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
-			let state = factory()
+			let state = create()
 			state = add_item(state, item)
 			state = add_item(state, item)
 			state = remove_item(state, 0)
@@ -161,7 +161,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 	describe('⬆ item equipping', function() {
 
 		it('should fail on missing item', function() {
-			let state = factory()
+			let state = create()
 			function equip_empty() {
 				state = equip_item(state, 0)
 			}
@@ -169,7 +169,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 		})
 
 		it('should fail on non-equipable item', function() {
-			let state = factory()
+			let state = create()
 			const item: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
 			state = add_item(state, item)
 			function equip_unequipable() {
@@ -179,7 +179,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 		})
 
 		it('should work on simple non-empty state, equip to the correct slot and correctly remove from unslotted', function() {
-			let state = factory()
+			let state = create()
 			const item: Item = { slot: InventorySlot.weapon, quality: ItemQuality.common }
 			state = add_item(state, item)
 			expect(get_equiped_item_count(state), 'e1').to.equal(0)
@@ -192,7 +192,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 		})
 
 		it('should work on simple non-empty state and correctly swap if the slot was occupied', function() {
-			let state = factory()
+			let state = create()
 
 			const item1: Item = { slot: InventorySlot.weapon, quality: ItemQuality.common }
 			state = add_item(state, item1)
@@ -214,7 +214,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 	describe('⬇ item unequipping', function() {
 
 		it('should fail on missing slot', function() {
-			let state = factory()
+			let state = create()
 			function unequip_empty() {
 				state = unequip_item(state, InventorySlot.weapon)
 			}
@@ -222,7 +222,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 		})
 
 		it('should work on simple non-empty state, unequip to the correct slot and correctly add to unslotted', function() {
-			let state = factory()
+			let state = create()
 			const item: Item = { slot: InventorySlot.weapon, quality: ItemQuality.common }
 			state = add_item(state, item)
 			state = equip_item(state, 0)
@@ -233,7 +233,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 		})
 
 		it('should fail when the inventory is full', function() {
-			let state = factory()
+			let state = create()
 
 			const item: Item = { slot: InventorySlot.weapon, quality: ItemQuality.common }
 			state = add_item(state, item)
@@ -277,7 +277,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 			const item1: Item = { slot: InventorySlot.armor, quality: ItemQuality.common }
 			const item2: Item = { slot: InventorySlot.weapon, quality: ItemQuality.common }
 			const item3: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
-			let state = factory()
+			let state = create()
 
 			state = add_item(state, item1)
 			state = add_item(state, item2)

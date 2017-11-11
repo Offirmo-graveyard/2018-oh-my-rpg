@@ -12,8 +12,6 @@ const CoinsGain = Enum(
 type CoinsGain = Enum<typeof CoinsGain>
 
 
-
-
 const AdventureType = Enum(
 	'story',
 	'fight',
@@ -26,7 +24,7 @@ interface AdventureArchetype {
 	type: AdventureType
 	good: boolean
 	outcome: {
-		// MUST be:
+		// field MUST be:
 		// - Attributes
 		// - Currencies
 		// - Item Slots

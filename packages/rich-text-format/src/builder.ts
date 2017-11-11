@@ -21,7 +21,7 @@ interface Builder {
 }
 
 
-function factory($type: NodeType): Builder {
+function create($type: NodeType): Builder {
 
 	const $node: CheckedNode = {
 		$v: SCHEMA_VERSION,
@@ -101,42 +101,44 @@ function factory($type: NodeType): Builder {
 }
 
 function section(): Builder {
-	return factory(NodeType.section)
+	return create(NodeType.section)
 }
 
 function heading(): Builder {
-	return factory(NodeType.heading)
+	return create(NodeType.heading)
 }
 
 function paragraph(): Builder {
-	return factory(NodeType.p)
+	return create(NodeType.p)
 }
 
 function strong(): Builder {
-	return factory(NodeType.strong)
+	return create(NodeType.strong)
 }
 
 function emphasized(): Builder {
-	return factory(NodeType.em)
+	return create(NodeType.em)
 }
 
 function span(): Builder {
-	return factory(NodeType.span)
+	return create(NodeType.span)
 }
 
 function ordered_list(): Builder {
-	return factory(NodeType.ol)
+	return create(NodeType.ol)
 }
 
 function unordered_list(): Builder {
-	return factory(NodeType.ul)
+	return create(NodeType.ul)
 }
 
 export {
 	NodeType,
 	Document,
 	Builder,
-	factory,
+
+	create,
+
 	section,
 	heading,
 	paragraph,

@@ -36,7 +36,7 @@ const CHARACTER_CLASSES = Enum.keys(CharacterClass)
 
 ///////
 
-function factory(): State {
+function create(): State {
 	return immutable({
 		schema_version: SCHEMA_VERSION,
 		revision: 0,
@@ -166,7 +166,7 @@ export {
 	CHARACTER_STATS_SORTED,
 	CHARACTER_CLASSES,
 
-	factory,
+	create,
 	rename,
 	switch_class,
 	increase_stat,

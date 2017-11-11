@@ -5,7 +5,7 @@ import {
 	State,
 	ALL_CURRENCIES,
 
-	factory,
+	create,
 	add_amount,
 	remove_amount,
 
@@ -19,7 +19,7 @@ describe('💰 💰 💎  Currencies wallet state - reducer', function() {
 	describe('🆕 initial state', function() {
 
 		it('should have correct defaults to 0', function() {
-			const state = factory()
+			const state = create()
 
 			expect(state).to.deep.equal({
 				schema_version: SCHEMA_VERSION,
@@ -39,14 +39,14 @@ describe('💰 💰 💎  Currencies wallet state - reducer', function() {
 	describe('📥 currency addition', function() {
 
 		it('should work on initial state', function() {
-			let state = factory()
+			let state = create()
 			state = add_amount(state, Currency.coin, 3)
 			expect(get_currency_amount(state, Currency.coin), Currency.coin).to.equal(3)
 			expect(get_currency_amount(state, Currency.token), Currency.token).to.equal(0)
 		})
 
 		it('should work on simple non-empty state', function() {
-			let state = factory()
+			let state = create()
 			state = add_amount(state, Currency.coin, 3)
 			state = add_amount(state, Currency.coin, 6)
 			expect(get_currency_amount(state, Currency.coin), Currency.coin).to.equal(9)
@@ -59,7 +59,7 @@ describe('💰 💰 💎  Currencies wallet state - reducer', function() {
 	describe('📤 currency withdraw', function() {
 
 		it('should throw on empty currency slot', function() {
-			let state = factory()
+			let state = create()
 			function remove() {
 				state = remove_amount(state, Currency.coin, 3)
 			}
@@ -67,7 +67,7 @@ describe('💰 💰 💎  Currencies wallet state - reducer', function() {
 		})
 
 		it('should throw on currency slot too low', function() {
-			let state = factory()
+			let state = create()
 			state = add_amount(state, Currency.coin, 3)
 			function remove() {
 				state = remove_amount(state, Currency.coin, 6)
@@ -76,7 +76,7 @@ describe('💰 💰 💎  Currencies wallet state - reducer', function() {
 		})
 
 		it('should work in nominal case', function() {
-			let state = factory()
+			let state = create()
 			state = add_amount(state, Currency.coin, 3)
 			state = remove_amount(state, Currency.coin, 2)
 

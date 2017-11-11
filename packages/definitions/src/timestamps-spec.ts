@@ -4,7 +4,7 @@ import {
 } from '.'
 
 
-describe.only('timestamps', function() {
+describe('timestamps', function() {
 
 	describe('get_UTC_timestamp_ms()', function() {
 

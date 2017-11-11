@@ -38,7 +38,6 @@ type Node = Partial<CheckedNode>
 
 // aliases
 type Document = Node
-//type RichTextDoc = Node
 
 ////////////
 

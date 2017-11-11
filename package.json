@@ -23,6 +23,6 @@
 		"lerna": "^2.2.0",
 		"lodash": "^4.17.4",
 		"npm-run-all": "^4.1.1",
-		"typescript": "^2.7.0-dev.20171025"
+		"typescript": "^2.7.0-dev.20171110"
 	}
 }

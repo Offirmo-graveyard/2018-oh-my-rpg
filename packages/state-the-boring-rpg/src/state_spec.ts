@@ -21,7 +21,7 @@ import {
 import { LIB_ID, SCHEMA_VERSION } from './consts'
 
 import {
-	factory,
+	create,
 	migrate_to_latest,
 	play,
 } from '.'
@@ -32,7 +32,7 @@ describe('⚔ 👑 😪  The Boring RPG - reducer', function() {
 	describe('🆕  initial state', function() {
 
 		it('should be correct', function() {
-			const state = factory()
+			const state = create()
 
 			expect(Object.keys(state)).to.have.lengthOf(11) // this test should be updated if that changes
 
@@ -71,14 +71,14 @@ describe('⚔ 👑 😪  The Boring RPG - reducer', function() {
 			context('✅  when the cooldown has passed', function() {
 
 				it('should sometime generate a story adventure', () => {
-					const state = play(factory())
+					const state = play(create())
 
 					expect(state.last_adventure).not.to.be.null
 					expect(state.last_adventure!.good).to.be.true
 				})
 
 				it('should correctly increment counters', () => {
-					const state = play(factory())
+					const state = play(create())
 
 					expect(state).to.have.property('click_count', 1)
 					expect(state).to.have.property('good_click_count', 1)
@@ -87,7 +87,7 @@ describe('⚔ 👑 😪  The Boring RPG - reducer', function() {
 
 				it('should sometime generate a fight adventure', () => {
 					let fightCount = 0
-					let state = factory()
+					let state = create()
 					for(let i = 0; i < 20; ++i) {
 						state = play(state)
 						if (state.last_adventure!.hid.startsWith('fight_'))
@@ -101,7 +101,7 @@ describe('⚔ 👑 😪  The Boring RPG - reducer', function() {
 					describe('the outcome', function() {
 
 						it('should sometime be a coin gain', () => {
-							let state = factory()
+							let state = create()
 							state = play(state, 'dying_man')
 
 							// we got money
@@ -111,7 +111,7 @@ describe('⚔ 👑 😪  The Boring RPG - reducer', function() {
 						it('should sometime be a token gain')
 						it('should sometime be a stat gain')
 						it('should sometime be an item gain', () => {
-							let state = factory()
+							let state = create()
 							state = play(state, 'rare_goods_seller')
 
 							// check our 2 predefined items are still present and equipped
@@ -128,7 +128,7 @@ describe('⚔ 👑 😪  The Boring RPG - reducer', function() {
 				context('when the adventure is a fight', function() {
 
 					it('should generate a suitable enemy', () => {
-						let state = factory()
+						let state = create()
 						state.avatar.attributes.level = 500
 						for(let i = 0; i < 20; ++i) {
 							state = play(state)
@@ -157,7 +157,7 @@ describe('⚔ 👑 😪  The Boring RPG - reducer', function() {
 		ALL_GOOD_ADVENTURE_ARCHETYPES.forEach(({hid, good}) => {
 			describe(`${good ? '✅' : '🚫'}  adventure "${hid}"`, function() {
 				it('should be playable', () => {
-					let state = factory()
+					let state = create()
 					state = play(state, hid)
 				})
 			})

@@ -15,7 +15,7 @@ const DEFAULT_NAME = 'anonymous'
 
 ///////
 
-function factory(): State {
+function create(): State {
 	return {
 		schema_version: SCHEMA_VERSION,
 		revision: 0,
@@ -87,7 +87,7 @@ export {
 	State,
 
 	DEFAULT_NAME,
-	factory,
+	create,
 	rename,
 	set_email,
 

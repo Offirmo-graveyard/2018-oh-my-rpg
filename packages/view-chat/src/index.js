@@ -5,8 +5,8 @@ const { prettify_params_for_debug } = require('./utils')
 
 const LIB = 'view-chat'
 
-function factory({DEBUG, gen_next_step, ui}) {
-	if (DEBUG) console.log('↘ factory()')
+function create({DEBUG, gen_next_step, ui}) {
+	if (DEBUG) console.log('↘ create()')
 
 	const STEP_CONFIRM = uniformize_step({
 		msg_main: `Are you sure?`,
@@ -204,5 +204,5 @@ function factory({DEBUG, gen_next_step, ui}) {
 
 
 module.exports = {
-	factory,
+	create,
 }

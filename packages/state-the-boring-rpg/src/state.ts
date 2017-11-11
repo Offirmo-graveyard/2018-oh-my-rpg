@@ -9,6 +9,7 @@ import {
 	InventorySlot,
 	ItemQuality,
 	Item,
+	generate_uuid,
 } from '@oh-my-rpg/definitions'
 
 import * as MetaState from '@oh-my-rpg/state-meta'
@@ -40,20 +41,20 @@ import {
 
 import {
 	Weapon,
-	factory as weapon_factory,
+	create as create_weapon,
 	enhance as enhance_weapon,
 	MAX_ENHANCEMENT_LEVEL as MAX_WEAPON_ENHANCEMENT_LEVEL,
 } from '@oh-my-rpg/logic-weapons'
 
 import {
 	Armor,
-	factory as armor_factory,
+	create as create_armor,
 	enhance as enhance_armor,
 	MAX_ENHANCEMENT_LEVEL as MAX_ARMOR_ENHANCEMENT_LEVEL,
 } from '@oh-my-rpg/logic-armors'
 
 import {
-	factory as monster_factory,
+	create as create_monster,
 } from '@oh-my-rpg/logic-monsters'
 
 import {
@@ -83,16 +84,16 @@ import {
 
 /////////////////////
 
-function factory(): State {
+function create(): State {
 	let state: State = {
 		schema_version: SCHEMA_VERSION,
 		revision: 0,
 
-		meta: MetaState.factory(),
-		avatar: CharacterState.factory(),
-		inventory: InventoryState.factory(),
-		wallet: WalletState.factory(),
-		prng: PRNGState.factory(),
+		meta: MetaState.create(),
+		avatar: CharacterState.create(),
+		inventory: InventoryState.create(),
+		wallet: WalletState.create(),
+		prng: PRNGState.create(),
 
 		last_adventure: null,
 		click_count: 0,
@@ -102,7 +103,7 @@ function factory(): State {
 
 	let rng = get_prng(state.prng)
 
-	const start_weapon = weapon_factory(rng, {
+	const start_weapon = create_weapon(rng, {
 		base_hid: 'spoon',
 		qualifier1_hid: 'used',
 		qualifier2_hid: 'noob',
@@ -112,7 +113,7 @@ function factory(): State {
 	state = receive_item(state, start_weapon)
 	state = equip_item(state, 0)
 
-	const start_armor = armor_factory(rng, {
+	const start_armor = create_armor(rng, {
 		base_hid: 'socks',
 		qualifier1_hid: 'used',
 		qualifier2_hid: 'noob',
@@ -166,9 +167,10 @@ function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, ch
 
 	// TODO check multiple charac gain (should not happen)
 	return {
+		uuid: generate_uuid(),
 		hid,
 		good,
-		encounter: type === AdventureType.fight ? monster_factory(rng, {level: character.level}) : undefined,
+		encounter: type === AdventureType.fight ? create_monster(rng, {level: character.level}) : undefined,
 		gains: {
 			level:    should_gain.level    ? 1 : 0,
 			health:   should_gain.health   ? 1 : 0,
@@ -180,8 +182,8 @@ function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, ch
 			luck:     should_gain.luck     ? 1 : 0,
 			coin:     generate_random_coin_gain(rng, should_gain.coin, new_player_level),
 			token:    should_gain.token    ? 1 : 0,
-			armor:    should_gain.armor    ? armor_factory(rng) : null,
-			weapon:   should_gain.weapon   ? weapon_factory(rng) : null,
+			armor:    should_gain.armor    ? create_armor(rng) : null,
+			weapon:   should_gain.weapon   ? create_weapon(rng) : null,
 			armor_improvement:  should_gain.armor_improvement,
 			weapon_improvement: should_gain.weapon_improvement,
 		}
@@ -468,7 +470,7 @@ export {
 
 	appraise_item_at_coordinates,
 
-	factory,
+	create,
 
 	play,
 	equip_item,

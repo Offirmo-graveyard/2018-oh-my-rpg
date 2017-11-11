@@ -16,11 +16,12 @@ import {
 
 /////////////////////
 
-function factory(): State {
+function create(): State {
 	return {
 		schema_version: SCHEMA_VERSION,
 		revision: 0,
 
+		// todo rename equipped / backpack
 		unslotted_capacity: 20,
 		slotted: {},
 		unslotted: [
@@ -56,6 +57,7 @@ function find_unused_coordinates(state: Readonly<State>, item: Readonly<Item>): 
 }
 
 function auto_sort(state: State): State {
+	// TODO sort by slot/strength
 	state.unslotted.sort()
 	return state
 }
@@ -236,7 +238,7 @@ export {
 	Item,
 	State,
 
-	factory,
+	create,
 	add_item,
 	remove_item,
 	equip_item,

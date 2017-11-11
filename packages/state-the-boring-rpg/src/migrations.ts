@@ -9,14 +9,14 @@ import * as PRNGState from '@oh-my-rpg/state-prng'
 
 import { LIB_ID, SCHEMA_VERSION } from './consts'
 import { State } from './types'
-import { factory } from './state'
+import { create } from './state'
 
 /////////////////////
 
 function migrate_to_latest(legacy_state: any, hints: any = {}): State {
 	const src_version = legacy_state.schema_version || 0
 
-	let state: State = factory()
+	let state: State = create()
 
 	if (src_version === SCHEMA_VERSION)
 		state = legacy_state as State
@@ -51,6 +51,7 @@ function migrate_to_3(legacy_state: any, hints: any): State {
 		last_adventure.gains.token = last_adventure.gains.tokens
 		delete last_adventure.gains.coins
 		delete last_adventure.gains.tokens
+		last_adventure.uuid =
 	}
 	return {
 		...legacy_state,
@@ -89,7 +90,7 @@ function migrate_to_1(legacy_state: any, hints: any): any {
 function fail_migration_by_resetting(): State {
 	// TODO send event upwards
 	console.error(`${LIB_ID}: failed migrating schema, performing full reset !`)
-	return factory()
+	return create()
 }
 
 /////////////////////

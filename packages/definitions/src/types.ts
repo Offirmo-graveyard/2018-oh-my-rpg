@@ -30,12 +30,14 @@ type InventorySlot = Enum<typeof InventorySlot>
 ///////
 
 interface Item {
-	uuid: string
+	//uuid: string TODO one day
 	slot: InventorySlot
 	quality: ItemQuality
 }
 
 ///////
+
+type UUID = string
 
 // TODO
 type ReportUp = (event: string, options: Object) => boolean
@@ -47,6 +49,7 @@ export {
 	ItemQuality,
 	InventorySlot,
 	Item,
+	UUID,
 	ReportUp,
 }
 

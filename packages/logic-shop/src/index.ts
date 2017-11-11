@@ -4,12 +4,12 @@ import { Random, Engine } from '@offirmo/random'
 import { Item, ItemQuality, InventorySlot } from '@oh-my-rpg/definitions'
 import {
 	Weapon,
-	factory as weapon_factory,
+	create as create_weapon,
 	get_medium_damage,
 } from '@oh-my-rpg/logic-weapons'
 import {
 	Armor,
-	factory as armor_factory,
+	create as create_armor,
 	get_medium_damage_reduction,
 } from '@oh-my-rpg/logic-armors'
 
@@ -20,7 +20,7 @@ import {
 
 /////////////////////
 
-function factory(rng: Engine): void {
+function create(rng: Engine): void {
 	// TODO one day
 }
 
@@ -29,7 +29,7 @@ function factory(rng: Engine): void {
 // for demo purpose, all attributes having the same probability + also random enhancement level
 function generate_random_demo_shop(): void {
 	const rng: Engine = Random.engines.mt19937().autoSeed()
-	return factory(rng)
+	return create(rng)
 }
 
 /////////////////////
@@ -60,7 +60,8 @@ function appraise(item: Item): number {
 /////////////////////
 
 export {
-	factory,
+	generate_random_demo_shop,
+	create,
 	appraise,
 }
 

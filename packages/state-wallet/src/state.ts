@@ -16,7 +16,7 @@ const ALL_CURRENCIES = [
 	Currency.token,
 ]
 
-function factory(): State {
+function create(): State {
 	return {
 		schema_version: SCHEMA_VERSION,
 		revision: 0,
@@ -113,7 +113,7 @@ export {
 	State,
 	ALL_CURRENCIES,
 
-	factory,
+	create,
 	add_amount,
 	remove_amount,
 

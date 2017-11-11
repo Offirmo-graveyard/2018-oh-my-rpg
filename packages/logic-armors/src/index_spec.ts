@@ -2,9 +2,8 @@ import { InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
 import { Random, Engine } from '@offirmo/random'
 
 import {
-	Armor,
 	MAX_ENHANCEMENT_LEVEL,
-	factory,
+	create,
 	generate_random_demo_armor,
 	enhance,
 	get_damage_reduction_interval,
@@ -17,7 +16,7 @@ describe('🛡 👕  armor logic:', function() {
 
 		it('should allow creating a random armor', function() {
 			const rng: Engine = Random.engines.mt19937().seed(789)
-			const armor1 = factory(rng)
+			const armor1 = create(rng)
 			expect(armor1).to.deep.equal({
 				slot: InventorySlot.armor,
 				base_hid: 'socks',
@@ -29,14 +28,14 @@ describe('🛡 👕  armor logic:', function() {
 			})
 			expect((rng as any).getUseCount(), '# rng draws 1').to.equal(6)
 
-			const armor2 = factory(rng)
+			const armor2 = create(rng)
 			expect((rng as any).getUseCount(), '# rng draws 2').to.equal(11)
 			expect(armor2).not.to.deep.equal(armor1)
 		})
 
 		it('should allow creating a partially predefined armor', function() {
 			const rng: Engine = Random.engines.mt19937().seed(789)
-			const armor = factory(rng, {
+			const armor = create(rng, {
 				base_hid: 'shoes',
 				quality: 'artifact',
 			})

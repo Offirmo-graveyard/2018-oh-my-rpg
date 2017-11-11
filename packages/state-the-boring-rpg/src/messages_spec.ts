@@ -5,7 +5,7 @@ import * as RichText from '@oh-my-rpg/rich-text-format'
 
 
 import {
-	factory,
+	create,
 	get_recap,
 	get_tip,
 } from '.'
@@ -19,7 +19,7 @@ describe('⚔ 👑 😪  The Boring RPG - contextual messages', function() {
 		context('when the user has just started a new game', function() {
 
 			it('should return an intro', () => {
-				const state = factory()
+				const state = create()
 				const doc = get_recap(state)
 				const str = RichText.to_text(doc)
 				expect(str).to.include('A great saga just started')
@@ -37,7 +37,7 @@ describe('⚔ 👑 😪  The Boring RPG - contextual messages', function() {
 		context('when the user has just started a new game', function() {
 
 			it('should suggest to play', () => {
-				const state = factory()
+				const state = create()
 				const doc = get_tip(state)
 				const str = RichText.to_text(doc!)
 				//console.log(`"${str}"`)

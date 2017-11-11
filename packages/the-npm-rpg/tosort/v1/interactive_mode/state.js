@@ -1,6 +1,6 @@
 
 
-function factory({options}) {
+function create({options}) {
 	return {
 		options,
 		version: options.version,
@@ -27,7 +27,7 @@ function select_item(state, item_coordinates) {
 }
 
 module.exports = {
-	factory,
+	create,
 	switch_screen,
 	select_item,
 }

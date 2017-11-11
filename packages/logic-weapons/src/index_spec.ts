@@ -5,7 +5,7 @@ import { Random, Engine } from '@offirmo/random'
 import {
 	Weapon,
 	MAX_ENHANCEMENT_LEVEL,
-	factory,
+	create,
 	generate_random_demo_weapon,
 	enhance,
 	get_damage_interval,
@@ -18,7 +18,7 @@ describe('⚔ 🏹  weapon logic:', function() {
 
 		it('should allow creating a random weapon', function() {
 			const rng: Engine = Random.engines.mt19937().seed(789)
-			const weapon1 = factory(rng)
+			const weapon1 = create(rng)
 			expect(weapon1).to.deep.equal({
 				slot: InventorySlot.weapon,
 				base_hid: 'luth',
@@ -30,14 +30,14 @@ describe('⚔ 🏹  weapon logic:', function() {
 			})
 			expect((rng as any).getUseCount(), '# rng draws 1').to.equal(6)
 
-			const weapon2 = factory(rng)
+			const weapon2 = create(rng)
 			expect((rng as any).getUseCount(), '# rng draws 2').to.equal(11)
 			expect(weapon2).not.to.deep.equal(weapon1)
 		})
 
 		it('should allow creating a partially predefined weapon', function() {
 			const rng: Engine = Random.engines.mt19937().seed(789)
-			const weapon = factory(rng, {
+			const weapon = create(rng, {
 				base_hid: 'spoon',
 				quality: 'artifact',
 			})

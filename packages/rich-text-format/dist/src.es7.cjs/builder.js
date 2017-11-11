@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const consts_1 = require("./consts");
 const types_1 = require("./types");
 exports.NodeType = types_1.NodeType;
-function factory($type) {
+function create($type) {
     const $node = {
         $v: consts_1.SCHEMA_VERSION,
         $type,
@@ -66,35 +66,35 @@ function factory($type) {
     }
     return builder;
 }
-exports.factory = factory;
+exports.create = create;
 function section() {
-    return factory(types_1.NodeType.section);
+    return create(types_1.NodeType.section);
 }
 exports.section = section;
 function heading() {
-    return factory(types_1.NodeType.heading);
+    return create(types_1.NodeType.heading);
 }
 exports.heading = heading;
 function paragraph() {
-    return factory(types_1.NodeType.p);
+    return create(types_1.NodeType.p);
 }
 exports.paragraph = paragraph;
 function strong() {
-    return factory(types_1.NodeType.strong);
+    return create(types_1.NodeType.strong);
 }
 function emphasized() {
-    return factory(types_1.NodeType.em);
+    return create(types_1.NodeType.em);
 }
 function span() {
-    return factory(types_1.NodeType.span);
+    return create(types_1.NodeType.span);
 }
 exports.span = span;
 function ordered_list() {
-    return factory(types_1.NodeType.ol);
+    return create(types_1.NodeType.ol);
 }
 exports.ordered_list = ordered_list;
 function unordered_list() {
-    return factory(types_1.NodeType.ul);
+    return create(types_1.NodeType.ul);
 }
 exports.unordered_list = unordered_list;
 //# sourceMappingURL=builder.js.map
