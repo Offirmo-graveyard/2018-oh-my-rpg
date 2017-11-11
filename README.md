@@ -57,6 +57,9 @@ rm -rf node_modules & lerna exec -- rm -rf node_modules
 lerna exec -- npm outdated
 ```
 
+TODO
+- remove node typings
+
 
 ## Misc / TOSORT
 

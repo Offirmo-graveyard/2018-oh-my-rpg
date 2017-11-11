@@ -8,6 +8,9 @@
 		"type": "git",
 		"url": "git+https://github.com/online-adventures/oh-my-rpg.git"
 	},
+	"engines" : {
+		"node" : ">=8"
+	},
 	"bin": "./bin/index.js",
 	"scripts": {
 		"__dev": "~~~~~~~ DEVELOPMENT ~~~~~~~",

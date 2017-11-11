@@ -7,11 +7,9 @@
 // + some dynamic stuff
 
 // move to the dir where webpack bundled
-//console.log(`Current directory: ${process.cwd()}`);
-//console.log(`Current file dir: ${__dirname}`);
-//console.log(`Current file: ${__filename}`);
-process.chdir(require('path').join(__dirname, '..'));
-
-console.log(process)
+//console.log(`Current directory: ${process.cwd()}`)
+//console.log(`Current file dir: ${__dirname}`)
+//console.log(`Current file: ${__filename}`)
+process.chdir(require('path').join(__dirname, '..'))
 
 require('../dist/bundled')
