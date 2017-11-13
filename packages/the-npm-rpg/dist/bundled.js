@@ -13869,9 +13869,14 @@ const consts_1 = __webpack_require__(44);
 const state_1 = __webpack_require__(43);
 /////////////////////
 function migrate_to_latest(legacy_state, hints = {}) {
-    const src_version = legacy_state.schema_version || 0;
+    const src_version = (legacy_state && legacy_state.schema_version) || 0;
     let state = state_1.create();
-    if (src_version === consts_1.SCHEMA_VERSION)
+    if (Object.keys(legacy_state).length === 0) {
+        // = empty object
+        // It happen with some deserialization techniques.
+        // It's a new state, keep freshly created one.
+    }
+    else if (src_version === consts_1.SCHEMA_VERSION)
         state = legacy_state;
     else if (src_version > consts_1.SCHEMA_VERSION)
         throw new Error(`${consts_1.LIB_ID}: Your data is from a more recent version of this lib. Please update!`);
@@ -13895,8 +13900,11 @@ function migrate_to_latest(legacy_state, hints = {}) {
 exports.migrate_to_latest = migrate_to_latest;
 /////////////////////
 function migrate_to_1(legacy_state, hints) {
-    console.info(`${consts_1.LIB_ID}: migrating schema from v0/non-versioned to v1...`);
-    return Object.assign({}, legacy_state, { schema_version: 1, revision: (hints && hints.to_v1 && hints.to_v1.revision) || 0 });
+    if (Object.keys(legacy_state).length === Object.keys(state_1.OLDEST_LEGACY_STATE_FOR_TESTS).length) {
+        console.info(`${consts_1.LIB_ID}: migrating schema from v0/non-versioned to v1...`);
+        return Object.assign({}, legacy_state, { schema_version: 1, revision: (hints && hints.to_v1 && hints.to_v1.revision) || 0 });
+    }
+    throw new Error(`Unrecognized schema, most likely too old, can't migrate!`);
 }
 //# sourceMappingURL=migrations.js.map
 
@@ -13927,9 +13935,14 @@ const consts_1 = __webpack_require__(46);
 const state_1 = __webpack_require__(45);
 /////////////////////
 function migrate_to_latest(legacy_state, hints = {}) {
-    const src_version = legacy_state.schema_version || 0;
+    const src_version = (legacy_state && legacy_state.schema_version) || 0;
     let state = state_1.create();
-    if (src_version === consts_1.SCHEMA_VERSION)
+    if (Object.keys(legacy_state).length === 0) {
+        // = empty object
+        // It happen with some deserialization techniques.
+        // It's a new state, keep freshly created one.
+    }
+    else if (src_version === consts_1.SCHEMA_VERSION)
         state = legacy_state;
     else if (src_version > consts_1.SCHEMA_VERSION)
         throw new Error(`${consts_1.LIB_ID}: Your data is from a more recent version of this lib. Please update!`);
@@ -13960,7 +13973,8 @@ function migrate_to_2(legacy_state, hints) {
 }
 /////////////////////
 function migrate_to_1(legacy_state, hints) {
-    if (legacy_state.hasOwnProperty('characteristics')) {
+    if (Object.keys(legacy_state).length === Object.keys(state_1.OLDEST_LEGACY_STATE_FOR_TESTS).length
+        && legacy_state.hasOwnProperty('characteristics')) {
         console.info(`${consts_1.LIB_ID}: migrating schema from v0/non-versioned to v1...`);
         const { name, klass, characteristics } = legacy_state;
         return {
@@ -14000,9 +14014,14 @@ const consts_1 = __webpack_require__(48);
 const state_1 = __webpack_require__(47);
 /////////////////////
 function migrate_to_latest(legacy_state, hints = {}) {
-    const src_version = legacy_state.schema_version || 0;
+    const src_version = (legacy_state && legacy_state.schema_version) || 0;
     let state = state_1.create();
-    if (src_version === consts_1.SCHEMA_VERSION)
+    if (Object.keys(legacy_state).length === 0) {
+        // = empty object
+        // It happen with some deserialization techniques.
+        // It's a new state, keep freshly created one.
+    }
+    else if (src_version === consts_1.SCHEMA_VERSION)
         state = legacy_state;
     else if (src_version > consts_1.SCHEMA_VERSION)
         throw new Error(`${consts_1.LIB_ID}: Your data is from a more recent version of this lib. Please update!`);
@@ -14026,8 +14045,11 @@ function migrate_to_latest(legacy_state, hints = {}) {
 exports.migrate_to_latest = migrate_to_latest;
 /////////////////////
 function migrate_to_1(legacy_state, hints) {
-    console.info(`${consts_1.LIB_ID}: migrating schema from v0/non-versioned to v1...`);
-    return Object.assign({}, legacy_state, { schema_version: 1, revision: (hints && hints.to_v1 && hints.to_v1.revision) || 0 });
+    if (Object.keys(legacy_state).length === Object.keys(state_1.OLDEST_LEGACY_STATE_FOR_TESTS).length) {
+        console.info(`${consts_1.LIB_ID}: migrating schema from v0/non-versioned to v1...`);
+        return Object.assign({}, legacy_state, { schema_version: 1, revision: (hints && hints.to_v1 && hints.to_v1.revision) || 0 });
+    }
+    throw new Error(`Unrecognized schema, most likely too old, can't migrate!`);
 }
 //# sourceMappingURL=migrations.js.map
 
@@ -14691,9 +14713,14 @@ const consts_1 = __webpack_require__(50);
 const state_1 = __webpack_require__(49);
 /////////////////////
 function migrate_to_latest(legacy_state, hints = {}) {
-    const src_version = legacy_state.schema_version || 0;
+    const src_version = (legacy_state && legacy_state.schema_version) || 0;
     let state = state_1.create();
-    if (src_version === consts_1.SCHEMA_VERSION)
+    if (Object.keys(legacy_state).length === 0) {
+        // = empty object
+        // It happen with some deserialization techniques.
+        // It's a new state, keep freshly created one.
+    }
+    else if (src_version === consts_1.SCHEMA_VERSION)
         state = legacy_state;
     else if (src_version > consts_1.SCHEMA_VERSION)
         throw new Error(`${consts_1.LIB_ID}: Your data is from a more recent version of this lib. Please update!`);
@@ -14718,8 +14745,11 @@ function migrate_to_latest(legacy_state, hints = {}) {
 exports.migrate_to_latest = migrate_to_latest;
 /////////////////////
 function migrate_to_1(legacy_state, hints) {
-    console.info(`${consts_1.LIB_ID}: migrating schema from v0/non-versioned to v1...`);
-    return Object.assign({}, legacy_state, { schema_version: 1, revision: (hints && hints.to_v1 && hints.to_v1.revision) || 0 });
+    if (Object.keys(legacy_state).length === Object.keys(state_1.OLDEST_LEGACY_STATE_FOR_TESTS).length) {
+        console.info(`${consts_1.LIB_ID}: migrating schema from v0/non-versioned to v1...`);
+        return Object.assign({}, legacy_state, { schema_version: 1, revision: (hints && hints.to_v1 && hints.to_v1.revision) || 0 });
+    }
+    throw new Error(`Unrecognized schema, most likely too old, can't migrate!`);
 }
 //# sourceMappingURL=migrations.js.map
 
@@ -14735,9 +14765,14 @@ const consts_1 = __webpack_require__(52);
 const state_1 = __webpack_require__(51);
 /////////////////////
 function migrate_to_latest(legacy_state, hints = {}) {
-    const src_version = legacy_state.schema_version || 0;
+    const src_version = (legacy_state && legacy_state.schema_version) || 0;
     let state = state_1.create();
-    if (src_version === consts_1.SCHEMA_VERSION)
+    if (Object.keys(legacy_state).length === 0) {
+        // = empty object
+        // It happen with some deserialization techniques.
+        // It's a new state, keep freshly created one.
+    }
+    else if (src_version === consts_1.SCHEMA_VERSION)
         state = legacy_state;
     else if (src_version > consts_1.SCHEMA_VERSION)
         throw new Error(`${consts_1.LIB_ID}: Your data is from a more recent version of this lib. Please update!`);
@@ -14761,8 +14796,11 @@ function migrate_to_latest(legacy_state, hints = {}) {
 exports.migrate_to_latest = migrate_to_latest;
 /////////////////////
 function migrate_to_1(legacy_state, hints) {
-    console.info(`${consts_1.LIB_ID}: migrating schema from v0/non-versioned to v1...`);
-    return Object.assign({}, legacy_state, { schema_version: 1, revision: (hints && hints.to_v1 && hints.to_v1.revision) || 0 });
+    if (Object.keys(legacy_state).length === Object.keys(state_1.OLDEST_LEGACY_STATE_FOR_TESTS).length) {
+        console.info(`${consts_1.LIB_ID}: migrating schema from v0/non-versioned to v1...`);
+        return Object.assign({}, legacy_state, { schema_version: 1, revision: (hints && hints.to_v1 && hints.to_v1.revision) || 0 });
+    }
+    throw new Error(`Unrecognized schema, most likely too old, can't migrate!`);
 }
 //# sourceMappingURL=migrations.js.map
 
@@ -16010,9 +16048,14 @@ const consts_1 = __webpack_require__(56);
 const state_1 = __webpack_require__(40);
 /////////////////////
 function migrate_to_latest(legacy_state, hints = {}) {
-    const src_version = legacy_state.schema_version || 0;
+    const src_version = (legacy_state && legacy_state.schema_version) || 0;
     let state = state_1.create();
-    if (src_version === consts_1.SCHEMA_VERSION)
+    if (Object.keys(legacy_state).length === 0) {
+        // = empty object
+        // It happen with some deserialization techniques.
+        // It's a new state, keep freshly created one.
+    }
+    else if (src_version === consts_1.SCHEMA_VERSION)
         state = legacy_state;
     else if (src_version > consts_1.SCHEMA_VERSION)
         throw new Error(`${consts_1.LIB_ID}: Your data is from a more recent version of this lib. Please update!`);
@@ -16065,8 +16108,11 @@ function migrate_to_2(legacy_state, hints) {
 }
 /////////////////////
 function migrate_to_1(legacy_state, hints) {
-    console.info(`${consts_1.LIB_ID}: migrating schema from v0/non-versioned to v1...`);
-    return Object.assign({}, legacy_state, { schema_version: 1, revision: (hints && hints.to_v1 && hints.to_v1.revision) || 0 });
+    if (Object.keys(legacy_state).length === Object.keys(state_1.OLDEST_LEGACY_STATE_FOR_TESTS).length) {
+        console.info(`${consts_1.LIB_ID}: migrating schema from v0/non-versioned to v1...`);
+        return Object.assign({}, legacy_state, { schema_version: 1, revision: (hints && hints.to_v1 && hints.to_v1.revision) || 0 });
+    }
+    throw new Error(`Unrecognized schema, most likely too old, can't migrate!`);
 }
 exports.migrate_to_1 = migrate_to_1;
 //# sourceMappingURL=migrations.js.map
@@ -34796,7 +34842,7 @@ function apply_class($class, str, hints = {}) {
 		case 'item--quality--common':
 			//return stylize_string.gray(str)
 			// no color cause we can't know if the user has a dark or light background = keep default
-			return str  
+			return str
 		case 'item--quality--uncommon':
 			return stylize_string.green(str)
 		case 'item--quality--rare':

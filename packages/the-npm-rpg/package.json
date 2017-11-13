@@ -1,6 +1,6 @@
 {
 	"name": "the-npm-rpg",
-	"version": "0.5.0",
+	"version": "0.5.1",
 	"description": "The Boring RPG, a command line RPG game. Just `npx the-npm-rpg`!",
 	"author": "Offirmo <offirmo.net@gmail.com>",
 	"license": "UNLICENSED",

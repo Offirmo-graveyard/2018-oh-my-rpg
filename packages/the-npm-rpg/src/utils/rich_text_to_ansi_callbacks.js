@@ -43,7 +43,7 @@ function apply_class($class, str, hints = {}) {
 		case 'item--quality--common':
 			//return stylize_string.gray(str)
 			// no color cause we can't know if the user has a dark or light background = keep default
-			return str  
+			return str
 		case 'item--quality--uncommon':
 			return stylize_string.green(str)
 		case 'item--quality--rare':
