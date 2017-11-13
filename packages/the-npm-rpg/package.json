@@ -1,6 +1,6 @@
 {
 	"name": "the-npm-rpg",
-	"version": "0.4.0",
+	"version": "0.5.0",
 	"description": "The Boring RPG, a command line RPG game. Just `npx the-npm-rpg`!",
 	"author": "Offirmo <offirmo.net@gmail.com>",
 	"license": "UNLICENSED",
@@ -8,8 +8,8 @@
 		"type": "git",
 		"url": "git+https://github.com/online-adventures/oh-my-rpg.git"
 	},
-	"engines" : {
-		"node" : ">=8"
+	"engines": {
+		"node": ">=8"
 	},
 	"bin": "./bin/index.js",
 	"scripts": {

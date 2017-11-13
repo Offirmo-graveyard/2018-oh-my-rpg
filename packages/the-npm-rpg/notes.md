@@ -1,4 +1,16 @@
 
+HOWTO publish
+
+``` bash
+npm version minor
+npm run build
+npm publish
+
+# https://docs.npmjs.com/cli/deprecate
+npm deprecate the-npm-rpg@"< 0.4" "Please use the latest version"
+```
+
+
 Market:
 * https://asciinema.org/
 
@@ -8,7 +20,7 @@ https://github.com/iarna/gauge
 https://github.com/sindresorhus/term-img
 
 
-https://docs.npmjs.com/cli/deprecate
+
 
 
 https://app.graphcms.com/
