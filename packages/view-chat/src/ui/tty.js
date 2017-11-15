@@ -2,6 +2,7 @@
 
 const readline = require('readline')
 const term_size = require('term-size')
+const strip_ansi = require('strip-ansi');
 const { stylize_string, indent_string, wrap_string, prettify_json } = require('../libs')
 const { prettify_params_for_debug, get_shared_start } = require('../utils')
 
@@ -94,6 +95,7 @@ function create({DEBUG, shouldCenter}) {
 		// init
 		step.choices.forEach(choice => {
 			choice._ui_tty = choice._ui_tty || {}
+			choice._ui_tty.clean_cta = strip_ansi(choice.msg_cta).toLowerCase().split(/\s/).join('')
 		})
 
 		const affected_keys = new Set()
@@ -126,12 +128,14 @@ function create({DEBUG, shouldCenter}) {
 		// naive affectation for unhinted ones (may collide)
 		unhinted_choices.forEach(choice => {
 			choice._ui_tty.key = {
-					name: choice.msg_cta.toLowerCase()[0]
+					name: choice._ui_tty.clean_cta[0]
 				}
 		})
 
 		// find colliding choices with same key
 		function find_unaffected_key(hintstr) {
+			// clean hintstr from white chars
+			hintstr = hintstr.split(' ').join('')
 			hintstr = (hintstr + 'abcdefghijklmnopqrstuvwxyz1234567890').toLowerCase()
 			for (let i=0; i < hintstr.length; i++) {
 				let candidate_key = {
@@ -178,18 +182,19 @@ function create({DEBUG, shouldCenter}) {
 					return
 				}
 
+
 				// collision
 				const colliding_choices = groups[key_hash]
-				const common_value_part = get_shared_start(colliding_choices.map(choice => choice.msg_cta.toLowerCase()))
+				const common_value_part = get_shared_start(colliding_choices.map(choice => choice._ui_tty.clean_cta))
 				colliding_choices.forEach(choice => {
 					let candidate_key = {
-						name: choice.msg_cta.toLowerCase().slice(common_value_part.length)[0]
+						name: choice._ui_tty.clean_cta.slice(common_value_part.length)[0]
 					}
 					let candidate_key_hash = key_to_string(candidate_key)
 
 					if (affected_keys.has(candidate_key_hash)) {
 						// find another one
-						candidate_key = find_unaffected_key(choice.msg_cta)
+						candidate_key = find_unaffected_key(choice._ui_tty.clean_cta)
 						candidate_key_hash = key_to_string(candidate_key)
 					}
 					choice._ui_tty.key = candidate_key
@@ -198,8 +203,8 @@ function create({DEBUG, shouldCenter}) {
 			})
 		} while(have_collisions)
 
-		const allowed_keys = step.choices.map(choice => choice._ui_tty.key.name).join(',')
-		if (DEBUG) console.log('  available choices: ' + allowed_keys)
+		const allowed_keys = step.choices.map(choice => '[' + choice._ui_tty.key.name + ']').join(',')
+		if (true && DEBUG) console.log('  available choices: ' + allowed_keys)
 	}
 
 

@@ -1,7 +1,7 @@
 {
 	"name": "oh-my-rpg",
 	"version": "0.0.1",
-	"description": "My RPG framework, with composable building blocks + final RPG implementations. Isomorphic (node & browser), text based with progressive augmentations.",
+	"description": "⚔🛡💰 My RPG framework, with composable building blocks + final RPG implementations. Isomorphic (node & browser), text based with progressive augmentations.",
 	"author": "Offirmo <offirmo.net@gmail.com>",
 	"license": "UNLICENSED",
 	"repository": {

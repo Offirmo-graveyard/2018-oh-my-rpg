@@ -7,7 +7,7 @@ function render_monster(m: Monster): RichText.Document {
 		.addClass('monster', 'monster--rank--' + m.rank)
 		.pushText('{{level}} {{rank}} {{name||Capitalize}}')
 		.pushRawNode(
-			RichText.span() .pushText('L') .pushText('' + m.level).done(),
+			RichText.span().pushText('L') .pushText('' + m.level).done(),
 			'level',
 		)
 		.pushRawNode(

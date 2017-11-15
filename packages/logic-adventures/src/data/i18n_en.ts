@@ -186,6 +186,11 @@ Après une brève hésitation sur l’éthique de l’extermination de créature
 		 */
 
 		/*
+		princess rich turn out very nice very nice
+		Rich, powerful
+		*/
+
+		/*
 		 // "make friends" necromancy
 		 xmake_friends:
 		 '',

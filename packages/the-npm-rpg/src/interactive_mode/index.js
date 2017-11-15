@@ -1,5 +1,7 @@
 "use strict";
 
+const opn = require('opn');
+
 const tbrpg = require('@oh-my-rpg/state-the-boring-rpg')
 const { iterables_unslotted, get_item_at_coordinates, get_item_in_slot } = require('@oh-my-rpg/state-inventory')
 const { create: create_tty_chat_ui } = require('@oh-my-rpg/view-chat/src/ui/tty')
@@ -10,6 +12,7 @@ const {
 	render_character_sheet,
 	render_full_inventory,
 	render_adventure,
+	render_account_info,
 } = require('@oh-my-rpg/view-rich-text')
 
 const { rich_text_to_ansi } = require('../utils/rich_text_to_ansi')
@@ -59,6 +62,7 @@ function start_loop(options) {
 				},
 				inventory: {},
 				character: {},
+				meta: {},
 			}
 		}
 
@@ -133,6 +137,11 @@ function start_loop(options) {
 					{
 						msg_cta: 'Manage Character (rename, change class…)',
 						value: 'character',
+						msgg_as_user: () => 'Let’s see how I’m doing!',
+					},
+					{
+						msg_cta: 'Manage other stuff…',
+						value: 'meta',
 						msgg_as_user: () => 'Let’s see how I’m doing!',
 					},
 				],
@@ -338,6 +347,105 @@ function start_loop(options) {
 			return steps
 		}
 
+		function get_MODE_META() {
+			const steps = []
+			const state = config.store
+
+			steps.push({
+				type: 'simple_message',
+				msg_main: rich_text_to_ansi(render_account_info(
+					state.meta,
+					{
+						'game version': options.version,
+						'Your savegame path': config.path,
+					}))
+			})
+
+			let msg_main = `What do you want to do?`
+			const choices = []
+
+			const URL_OF_WEBSITE = 'https://www.online-adventur.es/the-npm-rpg.html'
+			const URL_OF_NPM_PAGE = 'https://www.npmjs.com/package/the-npm-rpg'
+			const URL_OF_REPO = 'https://github.com/online-adventures/oh-my-rpg'
+			const URL_OF_PRODUCT_HUNT_PAGE = 'https://www.producthunt.com/upcoming/the-npm-rpg'
+			const URL_OF_FORK = 'https://github.com/online-adventures/oh-my-rpg/#fork'
+			const URL_OF_ISSUES = 'https://github.com/online-adventures/oh-my-rpg/issues'
+			//const URL_OF_REDDIT_PAGE = 'TODO RED'
+
+			choices.push(
+				{
+					msg_cta: 'Visit game official website',
+					value: URL_OF_WEBSITE,
+					msgg_as_user: () => 'Let’s have a look…',
+				},
+				{
+					msg_cta: `💰 Reward the game author with a ${stylize_string.bgRed(
+						stylize_string.white(' npm ')
+					)} star ★`,
+					value: URL_OF_NPM_PAGE,
+					msgg_as_user: () => 'You’re awesome…',
+				},
+				{
+					msg_cta: `💰 Reward the game author with a ${stylize_string.bgWhite(
+						stylize_string.black(' GitHub ')
+					)} star ★`,
+					value: URL_OF_REPO,
+					msgg_as_user: () => 'You’re awesome…',
+				},
+				/*{
+					msg_cta: 'Reward the game author with a reddit like 👍',
+					value: URL_OF_REDDIT_PAGE,
+					msgg_as_user: () => 'You’re awesome…',
+				},*/
+				{
+					msg_cta: `💰 Reward the game author with a ${stylize_string.bgRed(
+						stylize_string.white(' Product Hunt ')
+					)} upvote ⇧`,
+					value: URL_OF_PRODUCT_HUNT_PAGE,
+					msgg_as_user: () => 'You’re awesome…',
+				},
+				{
+					msg_cta: 'Fork on GitHub 🐙 😹',
+					value: URL_OF_FORK,
+					msgg_as_user: () => 'I’d like to contribute!',
+				},
+				{
+					msg_cta: 'Report a bug',
+					value: URL_OF_ISSUES,
+					msgg_as_user: () => 'There is this annoying bug…',
+				},
+				{
+					msg_cta: 'Reset your savegame',
+					value: 'reset',
+					msgg_as_user: () => 'I want to start over…',
+					callback: () => {
+						console.error('TODO')
+					}
+				},
+				{
+					msg_cta: 'Go back to adventuring.',
+					key_hint: { name: 'x' },
+					value: 'x',
+					msgg_as_user: () => 'Let’s do something else.',
+					callback: () => {
+						chat_state.sub.character = {}
+						chat_state.mode = 'main'
+					}
+				},
+			)
+
+			steps.push({
+				msg_main,
+				choices,
+				msgg_acknowledge: url => `Now opening ` + url,
+				callback: url => {
+					opn(url)
+				}
+			})
+
+			return steps
+		}
+
 		if (DEBUG) console.log(prettify_json_for_debug(chat_state))
 		let shouldExit = false
 		let loopDetector = 0
@@ -354,6 +462,10 @@ function start_loop(options) {
 				case 'character':
 					chat_state.count++
 					yielded = yield* get_MODE_CHARACTER()
+					break
+				case 'meta':
+					chat_state.count++
+					yielded = yield* get_MODE_META()
 					break
 				default:
 					console.error(`Unknown mode: "${chat_state.mode}"`)
