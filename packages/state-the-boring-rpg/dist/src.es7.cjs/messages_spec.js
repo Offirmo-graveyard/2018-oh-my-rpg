@@ -11,7 +11,7 @@ describe('⚔ 👑 😪  The Boring RPG - contextual messages', function () {
                 const state = _1.create();
                 const doc = _1.get_recap(state);
                 const str = RichText.to_text(doc);
-                expect(str).to.include('A great saga just started');
+                expect(str).to.include('for glory and loot');
             });
         });
         context('when the user has already played', function () {

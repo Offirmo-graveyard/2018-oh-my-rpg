@@ -25,6 +25,7 @@ const {
 	sell_item_at_coordinates,
 	rename_avatar,
 	change_class,
+	reset_all,
 } = require('../actions')
 
 function get_recap({config}) {
@@ -68,34 +69,15 @@ function start_loop(options) {
 
 		let yielded
 
-		// intro
-		chat_state.count++
-		yielded = yield {
-			type: 'simple_message',
-			msg_main: get_recap(options),
-		}
-
 		// how to quit
 		chat_state.count++
 		yielded = yield {
 			type: 'simple_message',
-			msg_main: `Note: Press ${stylize_string.inverse(' Ctrl+C ')} at anytime to ${stylize_string.red('quit')}, your game is auto-saved.`,
+			msg_main: `Note: Press ${stylize_string.inverse(' Ctrl+C ')} anytime to ${stylize_string.red('quit')}, your game is auto-saved.`,
 		}
-
-		// tip
-		let tip_msg = get_tip(options)
-		if (tip_msg) {
-			chat_state.count++
-			yielded = yield {
-				type: 'simple_message',
-				msg_main: tip_msg,
-			}
-		}
-
 
 		function get_MODE_MAIN() {
 			const steps = []
-
 			const state = config.store
 			//console.log(state)
 			const { last_adventure } = state
@@ -113,8 +95,22 @@ function start_loop(options) {
 				})
 				chat_state.sub.main.last_displayed_adventure_uuid = last_adventure.uuid
 			}
+			else {
+				// recap
+				steps.push({
+					type: 'simple_message',
+					msg_main: get_recap(options),
+				})
+			}
 
-			// TODO add possible tip action
+			// tip
+			let tip_msg = get_tip(options)
+			if (tip_msg) {
+				steps.push({
+					type: 'simple_message',
+					msg_main: tip_msg,
+				})
+			}
 
 			steps.push({
 				msg_main: `What do you want to do?`,
@@ -351,97 +347,127 @@ function start_loop(options) {
 			const steps = []
 			const state = config.store
 
-			steps.push({
-				type: 'simple_message',
-				msg_main: rich_text_to_ansi(render_account_info(
-					state.meta,
+			if (chat_state.sub.meta.reseting) {
+				steps.push({
+					msg_main: 'Reset your game and start over, are you really really sure?',
+					choices: [
+						{
+							msg_cta: 'Really reset your savegame, loose all your progression and start over 💀',
+							value: 'reset',
+							msgg_as_user: () => 'Definitely.',
+							msgg_acknowledge: () => 'So be it...',
+							callback: () => {
+								reset_all(options)
+								chat_state.sub.meta = {}
+							}
+						},
+						{
+							msg_cta: 'Don’t reset and go back to game.',
+							value: 'hold',
+							msgg_as_user: () => 'Hold on, I changed my mind!',
+							msgg_acknowledge: () => 'A wise choice. The world needs you, hero!',
+							callback: () => {
+								chat_state.sub.meta = {}
+							}
+						},
+					],
+				})
+			}
+			else {
+				steps.push({
+					type: 'simple_message',
+					msg_main: rich_text_to_ansi(render_account_info(
+						state.meta,
+						{
+							'game version': options.version,
+							'Your savegame path': config.path,
+						}))
+				})
+
+				let msg_main = `What do you want to do?`
+				const choices = []
+
+				const URL_OF_WEBSITE = 'https://www.online-adventur.es/the-npm-rpg.html'
+				const URL_OF_NPM_PAGE = 'https://www.npmjs.com/package/the-npm-rpg'
+				const URL_OF_REPO = 'https://github.com/online-adventures/oh-my-rpg'
+				const URL_OF_PRODUCT_HUNT_PAGE = 'https://www.producthunt.com/upcoming/the-npm-rpg'
+				const URL_OF_FORK = 'https://github.com/online-adventures/oh-my-rpg/#fork'
+				const URL_OF_ISSUES = 'https://github.com/online-adventures/oh-my-rpg/issues'
+				//const URL_OF_REDDIT_PAGE = 'TODO RED'
+
+				choices.push(
 					{
-						'game version': options.version,
-						'Your savegame path': config.path,
-					}))
-			})
+						msg_cta: 'Visit game official website',
+						value: URL_OF_WEBSITE,
+						msgg_as_user: () => 'Let’s have a look…',
+					},
+					{
+						msg_cta: `💰 Reward the game author with a ${stylize_string.bgRed(
+							stylize_string.white(' npm ')
+						)} star ★`,
+						value: URL_OF_NPM_PAGE,
+						msgg_as_user: () => 'You’re awesome…',
+					},
+					{
+						msg_cta: `💰 Reward the game author with a ${stylize_string.bgWhite(
+							stylize_string.black(' GitHub ')
+						)} star ★`,
+						value: URL_OF_REPO,
+						msgg_as_user: () => 'You’re awesome…',
+					},
+					/*{
+                       msg_cta: 'Reward the game author with a reddit like 👍',
+                       value: URL_OF_REDDIT_PAGE,
+                       msgg_as_user: () => 'You’re awesome…',
+                   },*/
+					{
+						msg_cta: `💰 Reward the game author with a ${stylize_string.bgRed(
+							stylize_string.white(' Product Hunt ')
+						)} upvote ⇧`,
+						value: URL_OF_PRODUCT_HUNT_PAGE,
+						msgg_as_user: () => 'You’re awesome…',
+					},
+					{
+						msg_cta: 'Fork on GitHub 🐙 😹',
+						value: URL_OF_FORK,
+						msgg_as_user: () => 'I’d like to contribute!',
+					},
+					{
+						msg_cta: 'Report a bug 🐞',
+						value: URL_OF_ISSUES,
+						msgg_as_user: () => 'There is this annoying bug…',
+					},
+					{
+						msg_cta: 'Reset your savegame 💀',
+						value: 'reset',
+						msgg_as_user: () => 'I want to start over…',
+						msgg_acknowledge: url => `You can't be serious?`,
+						callback: () => {
+							chat_state.sub.meta.reseting = true
+						}
+					},
+					{
+						msg_cta: 'Go back to adventuring.',
+						key_hint: { name: 'x' },
+						value: 'x',
+						msgg_as_user: () => 'Let’s do something else.',
+						msgg_acknowledge: url => `Yay, for loot and glory!`,
+						callback: () => {
+							chat_state.sub.character = {}
+							chat_state.mode = 'main'
+						}
+					},
+				)
 
-			let msg_main = `What do you want to do?`
-			const choices = []
-
-			const URL_OF_WEBSITE = 'https://www.online-adventur.es/the-npm-rpg.html'
-			const URL_OF_NPM_PAGE = 'https://www.npmjs.com/package/the-npm-rpg'
-			const URL_OF_REPO = 'https://github.com/online-adventures/oh-my-rpg'
-			const URL_OF_PRODUCT_HUNT_PAGE = 'https://www.producthunt.com/upcoming/the-npm-rpg'
-			const URL_OF_FORK = 'https://github.com/online-adventures/oh-my-rpg/#fork'
-			const URL_OF_ISSUES = 'https://github.com/online-adventures/oh-my-rpg/issues'
-			//const URL_OF_REDDIT_PAGE = 'TODO RED'
-
-			choices.push(
-				{
-					msg_cta: 'Visit game official website',
-					value: URL_OF_WEBSITE,
-					msgg_as_user: () => 'Let’s have a look…',
-				},
-				{
-					msg_cta: `💰 Reward the game author with a ${stylize_string.bgRed(
-						stylize_string.white(' npm ')
-					)} star ★`,
-					value: URL_OF_NPM_PAGE,
-					msgg_as_user: () => 'You’re awesome…',
-				},
-				{
-					msg_cta: `💰 Reward the game author with a ${stylize_string.bgWhite(
-						stylize_string.black(' GitHub ')
-					)} star ★`,
-					value: URL_OF_REPO,
-					msgg_as_user: () => 'You’re awesome…',
-				},
-				/*{
-					msg_cta: 'Reward the game author with a reddit like 👍',
-					value: URL_OF_REDDIT_PAGE,
-					msgg_as_user: () => 'You’re awesome…',
-				},*/
-				{
-					msg_cta: `💰 Reward the game author with a ${stylize_string.bgRed(
-						stylize_string.white(' Product Hunt ')
-					)} upvote ⇧`,
-					value: URL_OF_PRODUCT_HUNT_PAGE,
-					msgg_as_user: () => 'You’re awesome…',
-				},
-				{
-					msg_cta: 'Fork on GitHub 🐙 😹',
-					value: URL_OF_FORK,
-					msgg_as_user: () => 'I’d like to contribute!',
-				},
-				{
-					msg_cta: 'Report a bug',
-					value: URL_OF_ISSUES,
-					msgg_as_user: () => 'There is this annoying bug…',
-				},
-				{
-					msg_cta: 'Reset your savegame',
-					value: 'reset',
-					msgg_as_user: () => 'I want to start over…',
-					callback: () => {
-						console.error('TODO')
+				steps.push({
+					msg_main,
+					choices,
+					msgg_acknowledge: url => `Now opening ` + url,
+					callback: url => {
+						opn(url)
 					}
-				},
-				{
-					msg_cta: 'Go back to adventuring.',
-					key_hint: { name: 'x' },
-					value: 'x',
-					msgg_as_user: () => 'Let’s do something else.',
-					callback: () => {
-						chat_state.sub.character = {}
-						chat_state.mode = 'main'
-					}
-				},
-			)
-
-			steps.push({
-				msg_main,
-				choices,
-				msgg_acknowledge: url => `Now opening ` + url,
-				callback: url => {
-					opn(url)
-				}
-			})
+				})
+			}
 
 			return steps
 		}

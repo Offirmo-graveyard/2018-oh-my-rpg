@@ -1,9 +1,4 @@
-import * as RichText from '@oh-my-rpg/rich-text-format'
-
-import {
-	DEMO_STATE,
-} from '@oh-my-rpg/state-character'
-
+import { DEMO_STATE } from '@oh-my-rpg/state-character'
 const { rich_text_to_ansi } = require('../../../the-npm-rpg/src/utils/rich_text_to_ansi')
 
 

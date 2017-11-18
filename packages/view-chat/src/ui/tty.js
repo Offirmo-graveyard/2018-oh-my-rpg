@@ -31,26 +31,34 @@ function create({DEBUG, shouldCenter}) {
 	if (!process.stdout.isTTY)
 		throw new Error('start_loop: current term is not a tty !')
 
-	const {columns: TERM_WIDTH} = term_size()
-	if (DEBUG) console.log({TERM_WIDTH})
+	function compute_display_base_elements() {
+		const TERMINAL_WIDTH = term_size().columns
+		if (DEBUG) console.log({terminal_width: TERMINAL_WIDTH})
 
-	if (TERM_WIDTH < 80)
-		throw new Error('Your terminal is too narrow!')
+		if (TERMINAL_WIDTH < 80)
+			throw new Error('Your terminal is too narrow!')
 
-	// too wide doesn't look that good, cap it
-	const USED_WIDTH = Math.min(TERM_WIDTH, 120)
+		// too wide doesn't look that good, cap it
+		const USED_WIDTH = Math.min(TERMINAL_WIDTH, 120)
 
-	// a msg is not taking the fill width, to clearly see left/right
-	const MSG_WIDTH = Math.round(USED_WIDTH * .8)
+		// a msg is not taking the fill width, to clearly see left/right
+		const MSG_MAX_WIDTH = Math.round(USED_WIDTH * .8)
 
-	if (DEBUG) console.log({TERM_WIDTH, USED_WIDTH, MSG_WIDTH})
+		if (DEBUG) console.log({terminal_width: TERMINAL_WIDTH, USED_WIDTH, MSG_WIDTH: MSG_MAX_WIDTH})
 
-	const MSG_BASELINE = MANY_BOX_HORIZ.slice(0, MSG_WIDTH - 2)
-	const MSG_L_INDENT = shouldCenter
-		? Math.round((TERM_WIDTH - USED_WIDTH) / 2)
-		: 0
-	const MSG_R_INDENT = MSG_L_INDENT + USED_WIDTH - MSG_WIDTH
-	const PROMPT = MANY_SPACES.slice(0, MSG_L_INDENT + 2)
+		const MSG_BASELINE = MANY_BOX_HORIZ.slice(0, MSG_MAX_WIDTH - 2)
+		const MSG_L_INDENT = shouldCenter
+			? Math.round((TERMINAL_WIDTH - USED_WIDTH) / 2)
+			: 0
+		const MSG_R_INDENT = MSG_L_INDENT + USED_WIDTH - MSG_MAX_WIDTH
+
+		return {
+			MSG_MAX_WIDTH,
+			MSG_BASELINE,
+			MSG_L_INDENT,
+			MSG_R_INDENT,
+		}
+	}
 
 	process.stdin.setRawMode(true)
 	readline.emitKeypressEvents(process.stdin)
@@ -58,7 +66,6 @@ function create({DEBUG, shouldCenter}) {
 	const rli = readline.createInterface({
 		input: process.stdin,
 		output: process.stdout,
-		prompt: PROMPT,
 	})
 
 	rli.on('line', (input) => {
@@ -182,7 +189,6 @@ function create({DEBUG, shouldCenter}) {
 					return
 				}
 
-
 				// collision
 				const colliding_choices = groups[key_hash]
 				const common_value_part = get_shared_start(colliding_choices.map(choice => choice._ui_tty.clean_cta))
@@ -192,7 +198,7 @@ function create({DEBUG, shouldCenter}) {
 					}
 					let candidate_key_hash = key_to_string(candidate_key)
 
-					if (affected_keys.has(candidate_key_hash)) {
+					if (!candidate_key.name || affected_keys.has(candidate_key_hash)) {
 						// find another one
 						candidate_key = find_unaffected_key(choice._ui_tty.clean_cta)
 						candidate_key_hash = key_to_string(candidate_key)
@@ -204,7 +210,7 @@ function create({DEBUG, shouldCenter}) {
 		} while(have_collisions)
 
 		const allowed_keys = step.choices.map(choice => '[' + choice._ui_tty.key.name + ']').join(',')
-		if (true && DEBUG) console.log('  available choices: ' + allowed_keys)
+		if (DEBUG) console.log('  available choices: ' + allowed_keys)
 	}
 
 
@@ -222,7 +228,15 @@ function create({DEBUG, shouldCenter}) {
 			throw new Error(`display_message(): incorrect invocation!`)
 		if (!msg)
 			throw new Error(`display_message(): no msg!`)
-		msg = wrap_string(msg, MSG_WIDTH - 1)
+
+		const {
+			MSG_MAX_WIDTH,
+			MSG_BASELINE,
+			MSG_L_INDENT,
+			MSG_R_INDENT,
+		} = compute_display_base_elements()
+
+		msg = wrap_string(msg, MSG_MAX_WIDTH - 1)
 		msg = indent_string(msg, 1, {indent: '│'})
 
 		const has_choices = choices && choices.length > 0

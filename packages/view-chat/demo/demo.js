@@ -16,6 +16,10 @@ function* get_next_step1() {
 	}
 
 	yield* [
+		/*{
+			type: 'ask_for_confirmation',
+			callback: value => { }
+		},*/
 		{
 			type: 'simple_message',
 			msg_main: `Welcome. I'll have a few questions…`,

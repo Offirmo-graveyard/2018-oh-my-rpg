@@ -194,6 +194,9 @@ Après une brève hésitation sur l’éthique de l’extermination de créature
 		Rich, powerful
 		*/
 
+		/* Ma Backer bandit woman
+		*/
+
 		/*
 		 // "make friends" necromancy
 		 xmake_friends:

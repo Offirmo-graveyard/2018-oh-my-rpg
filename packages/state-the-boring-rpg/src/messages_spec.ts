@@ -22,7 +22,7 @@ describe('⚔ 👑 😪  The Boring RPG - contextual messages', function() {
 				const state = create()
 				const doc = get_recap(state)
 				const str = RichText.to_text(doc)
-				expect(str).to.include('A great saga just started')
+				expect(str).to.include('for glory and loot')
 			})
 		})
 

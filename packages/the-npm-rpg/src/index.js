@@ -1,13 +1,13 @@
+"use strict";
+
 /////////////////////////////////////////////////
 // node <8 zone
 var loadJsonFile = require('load-json-file')
 var PACKAGE_JSON_PATH = require('path').join('.', 'package.json')
-var package = {
-	json: loadJsonFile.sync(PACKAGE_JSON_PATH)
-}
+var package_json = loadJsonFile.sync(PACKAGE_JSON_PATH)
 var semver = require('semver')
-if (!semver.satisfies(process.version, package.json.engines.node)) {
-	console.error('ERROR: Invalid node, must be: ' + package.json.engines.node + '!\n')
+if (!semver.satisfies(process.version, package_json.engines.node)) {
+	console.error('ERROR: Invalid node, must be: ' + package_json.engines.node + '!\n')
 	process.exit(3)
 }
 
@@ -24,7 +24,7 @@ const { start_loop } = require('./interactive_mode')
 
 const MINIMAL_TERMINAL_WIDTH = 80
 
-const { version } = package.json
+const { version } = package_json
 const options = {
 	version,
 	verbose: false, // XXX

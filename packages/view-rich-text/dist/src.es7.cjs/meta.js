@@ -11,6 +11,9 @@ function render_meta_infos(metas) {
 function render_account_info(m, extra = {}) {
     const meta_infos = extra;
     meta_infos['internal user id'] = m.uuid;
+    meta_infos['telemetry allowed'] = String(m.allow_telemetry);
+    if (m.email)
+        meta_infos['email'] = m.email;
     const $doc = RichText.span()
         .pushText('Account infos:')
         .pushNode(render_meta_infos(meta_infos), 'list')

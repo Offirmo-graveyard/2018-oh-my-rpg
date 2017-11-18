@@ -12,7 +12,6 @@ import {
 
 import {
 	Currency,
-	State as WalletState,
 	create as create_wallet,
 	add_amount,
 } from '@oh-my-rpg/state-wallet'

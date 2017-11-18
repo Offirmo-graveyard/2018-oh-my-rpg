@@ -19,7 +19,10 @@ function render_meta_infos(metas: {[k: string]: string | number | undefined}): R
 
 function render_account_info(m: State, extra: {[k: string]: string | number | undefined} = {}): RichText.Document {
 	const meta_infos = extra
+
 	meta_infos['internal user id'] = m.uuid
+	meta_infos['telemetry allowed'] = String(m.allow_telemetry)
+	if (m.email) meta_infos['email'] = m.email
 
 	const $doc = RichText.span()
 		.pushText('Account infos:')

@@ -1,3 +1,5 @@
+"use strict";
+
 const tbrpg = require('@oh-my-rpg/state-the-boring-rpg')
 const {
 	get_item_at_coordinates
@@ -43,6 +45,13 @@ function change_class({config}, new_class) {
 	config.set(state)
 }
 
+function reset_all({config}) {
+	const state = tbrpg.create()
+	// TODO shuffle the seed
+	config.clear()
+	config.set(state)
+}
+
 module.exports = {
 	play,
 	equip_item_at_coordinates,
@@ -51,4 +60,5 @@ module.exports = {
 	appraise_item_at_coordinates,
 	rename_avatar,
 	change_class,
+	reset_all,
 }

@@ -5,17 +5,25 @@ function get_recap(state) {
     const isNewGame = (state.meaningful_interaction_count === 0);
     if (isNewGame) {
         return RichText.paragraph()
-            .pushText(''
-            + 'Great sages prophesied your coming,{{br}}'
-            + 'commoners are waiting for their hero{{br}}'
-            + 'and kings are trembling from fear of change...{{br}}'
-            + '…undoubtedly, you’ll make a name in this world and fulfill your destiny!{{br}}'
-            + '{{br}}')
-            .pushStrong('A great saga just started.')
+            .pushStrong('You are an otherworlder.{{br}}')
+            .pushText('Congratulations, adventurer from another world!{{br}}')
+            .pushText('You were chosen to enter the unknown realm of ')
+            .pushStrong('Jaema')
+            .pushText('.{{br}}')
+            .pushText('Maybe were you just more courageous, cunning and curious than your peers?{{br}}')
+            .pushText('But for now, let’s go on an adventure, for glory ⚔ and loot 📦 💰 !')
             .done();
     }
     return RichText.paragraph()
-        .pushText('TODO recap')
+        .pushText('You are ')
+        .pushNode(RichText.span().addClass('avatar__name').pushText(state.avatar.name).done(), 'name')
+        .pushText(', the ')
+        .pushNode(RichText.span().addClass('avatar__class').pushText(state.avatar.klass).done(), 'class')
+        .pushText(' from another world.{{br}}')
+        .pushText('You are adventuring in the mysterious world of ')
+        .pushStrong('Jaema')
+        .pushText('…{{br}}')
+        .pushStrong('For glory ⚔  and loot 📦 💰 !')
         .done();
 }
 exports.get_recap = get_recap;
@@ -34,14 +42,6 @@ function get_tip(state) {
 }
 exports.get_tip = get_tip;
 /*
-    const MSG_INTRO = {
-        type: 'simple_message',
-        msg_main: stylize_string.bold(`Congratulations, adventurer!\n`)
-        + `Your are more courageous, cunning and curious than your peers:
-You dared to enter this unknown realm, for glory and adventures! (and loot 💰 ;)`,
-    }
-
-
     const {
         level,
         health,
@@ -55,25 +55,6 @@ You dared to enter this unknown realm, for glory and adventures! (and loot 💰 
     return `The great saga of ${stylize_string.bold(state.avatar.name)}, ${state.avatar.klass} LVL${level}
 HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS:${wisdom} LUCK:${luck}`
 }
-
-
-
-
-function start_loop(options) {
-    const DEBUG = options.verbose
-    if (DEBUG) console.log('all options:', prettify_json_for_debug(options))
-
-    const state = {
-        count: 0,
-        mode: 'main',
-    }
-
-    const MSG_INTRO = {
-        type: 'simple_message',
-        msg_main: stylize_string.bold(`Congratulations, adventurer!\n`)
-        + `Your are more courageous, cunning and curious than your peers:
-You dared to enter this unknown realm, for glory and adventures! (and loot 💰 ;)`,
-    }
 
  */
 //# sourceMappingURL=messages.js.map

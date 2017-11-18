@@ -20,10 +20,9 @@ function migrate_to_latest(legacy_state: any, hints: any = {}): State {
 
 	let state: State = create()
 
-	if (Object.keys(legacy_state).length === 0) {
-		// = empty object
-		// It happen with some deserialization techniques.
-		// It's a new state, keep freshly created one.
+	if (!legacy_state || Object.keys(legacy_state).length === 0) {
+		// = empty or empty object (happen, with some deserialization techniques)
+		// It's a new state, keep the freshly created one.
 	} else if (src_version === SCHEMA_VERSION)
 		state = legacy_state as State
 	else if (src_version > SCHEMA_VERSION)

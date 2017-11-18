@@ -1,3 +1,5 @@
+"use strict";
+
 const Conf = require('conf')
 
 const { migrate_to_latest } = require('@oh-my-rpg/state-the-boring-rpg')
