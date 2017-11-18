@@ -1141,6 +1141,9 @@ tslib_1.__exportStar(__webpack_require__(160), exports);
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 // simply rename / clean the APIs
 
 /////////////////////////////////////////////////
@@ -1879,6 +1882,8 @@ module.exports = require("child_process");
 /***/ }),
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
 const {
@@ -6480,6 +6485,9 @@ exports.SCHEMA_VERSION = SCHEMA_VERSION;
 /* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 const tbrpg = __webpack_require__(19)
 const {
 	get_item_at_coordinates
@@ -6525,6 +6533,13 @@ function change_class({config}, new_class) {
 	config.set(state)
 }
 
+function reset_all({config}) {
+	const state = tbrpg.create()
+	// TODO shuffle the seed
+	config.clear()
+	config.set(state)
+}
+
 module.exports = {
 	play,
 	equip_item_at_coordinates,
@@ -6533,6 +6548,7 @@ module.exports = {
 	appraise_item_at_coordinates,
 	rename_avatar,
 	change_class,
+	reset_all,
 }
 
 
@@ -6605,16 +6621,17 @@ exports.render_monster = render_monster;
 /* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 /////////////////////////////////////////////////
 // node <8 zone
 var loadJsonFile = __webpack_require__(65)
 var PACKAGE_JSON_PATH = __webpack_require__(4).join('.', 'package.json')
-var package = {
-	json: loadJsonFile.sync(PACKAGE_JSON_PATH)
-}
+var package_json = loadJsonFile.sync(PACKAGE_JSON_PATH)
 var semver = __webpack_require__(77)
-if (!semver.satisfies(process.version, package.json.engines.node)) {
-	console.error('ERROR: Invalid node, must be: ' + package.json.engines.node + '!\n')
+if (!semver.satisfies(process.version, package_json.engines.node)) {
+	console.error('ERROR: Invalid node, must be: ' + package_json.engines.node + '!\n')
 	process.exit(3)
 }
 
@@ -6631,7 +6648,7 @@ const { start_loop } = __webpack_require__(176)
 
 const MINIMAL_TERMINAL_WIDTH = 80
 
-const { version } = package.json
+const { version } = package_json
 const options = {
 	version,
 	verbose: false, // XXX
@@ -6656,7 +6673,7 @@ if (options.is_interactive) {
 /////////////////////////////////////////////////
 
 if (!options.is_interactive) {
-	throw new Error('TODO')
+	throw new Error('Non-interactive mode or non-tty terminals are not supported at this time, sorry!')
 	play(options)
 	//render_cta(options)
 }
@@ -13701,6 +13718,9 @@ x.iTerm.setCwd = cwd => '\u001B]50;CurrentDir=' + (cwd || process.cwd()) + '\u00
 /* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 const Conf = __webpack_require__(141)
 
 const { migrate_to_latest } = __webpack_require__(19)
@@ -16050,10 +16070,9 @@ const state_1 = __webpack_require__(42);
 function migrate_to_latest(legacy_state, hints = {}) {
     const src_version = (legacy_state && legacy_state.schema_version) || 0;
     let state = state_1.create();
-    if (Object.keys(legacy_state).length === 0) {
-        // = empty object
-        // It happen with some deserialization techniques.
-        // It's a new state, keep freshly created one.
+    if (!legacy_state || Object.keys(legacy_state).length === 0) {
+        // = empty or empty object (happen, with some deserialization techniques)
+        // It's a new state, keep the freshly created one.
     }
     else if (src_version === consts_1.SCHEMA_VERSION)
         state = legacy_state;
@@ -16129,17 +16148,25 @@ function get_recap(state) {
     const isNewGame = (state.meaningful_interaction_count === 0);
     if (isNewGame) {
         return RichText.paragraph()
-            .pushText(''
-            + 'Great sages prophesied your coming,{{br}}'
-            + 'commoners are waiting for their hero{{br}}'
-            + 'and kings are trembling from fear of change...{{br}}'
-            + '…undoubtedly, you’ll make a name in this world and fulfill your destiny!{{br}}'
-            + '{{br}}')
-            .pushStrong('A great saga just started.')
+            .pushStrong('You are an otherworlder.{{br}}')
+            .pushText('Congratulations, adventurer from another world!{{br}}')
+            .pushText('You were chosen to enter the unknown realm of ')
+            .pushStrong('Jaema')
+            .pushText('.{{br}}')
+            .pushText('Maybe were you just more courageous, cunning and curious than your peers?{{br}}')
+            .pushText('But for now, let’s go on an adventure, for glory ⚔ and loot 📦 💰 !')
             .done();
     }
     return RichText.paragraph()
-        .pushText('TODO recap')
+        .pushText('You are ')
+        .pushNode(RichText.span().addClass('avatar__name').pushText(state.avatar.name).done(), 'name')
+        .pushText(', the ')
+        .pushNode(RichText.span().addClass('avatar__class').pushText(state.avatar.klass).done(), 'class')
+        .pushText(' from another world.{{br}}')
+        .pushText('You are adventuring in the mysterious world of ')
+        .pushStrong('Jaema')
+        .pushText('…{{br}}')
+        .pushStrong('For glory ⚔  and loot 📦 💰 !')
         .done();
 }
 exports.get_recap = get_recap;
@@ -16158,14 +16185,6 @@ function get_tip(state) {
 }
 exports.get_tip = get_tip;
 /*
-    const MSG_INTRO = {
-        type: 'simple_message',
-        msg_main: stylize_string.bold(`Congratulations, adventurer!\n`)
-        + `Your are more courageous, cunning and curious than your peers:
-You dared to enter this unknown realm, for glory and adventures! (and loot 💰 ;)`,
-    }
-
-
     const {
         level,
         health,
@@ -16179,25 +16198,6 @@ You dared to enter this unknown realm, for glory and adventures! (and loot 💰 
     return `The great saga of ${stylize_string.bold(state.avatar.name)}, ${state.avatar.klass} LVL${level}
 HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS:${wisdom} LUCK:${luck}`
 }
-
-
-
-
-function start_loop(options) {
-    const DEBUG = options.verbose
-    if (DEBUG) console.log('all options:', prettify_json_for_debug(options))
-
-    const state = {
-        count: 0,
-        mode: 'main',
-    }
-
-    const MSG_INTRO = {
-        type: 'simple_message',
-        msg_main: stylize_string.bold(`Congratulations, adventurer!\n`)
-        + `Your are more courageous, cunning and curious than your peers:
-You dared to enter this unknown realm, for glory and adventures! (and loot 💰 ;)`,
-    }
 
  */
 //# sourceMappingURL=messages.js.map
@@ -16411,6 +16411,7 @@ const {
 	sell_item_at_coordinates,
 	rename_avatar,
 	change_class,
+	reset_all,
 } = __webpack_require__(61)
 
 function get_recap({config}) {
@@ -16454,34 +16455,15 @@ function start_loop(options) {
 
 		let yielded
 
-		// intro
-		chat_state.count++
-		yielded = yield {
-			type: 'simple_message',
-			msg_main: get_recap(options),
-		}
-
 		// how to quit
 		chat_state.count++
 		yielded = yield {
 			type: 'simple_message',
-			msg_main: `Note: Press ${stylize_string.inverse(' Ctrl+C ')} at anytime to ${stylize_string.red('quit')}, your game is auto-saved.`,
+			msg_main: `Note: Press ${stylize_string.inverse(' Ctrl+C ')} anytime to ${stylize_string.red('quit')}, your game is auto-saved.`,
 		}
-
-		// tip
-		let tip_msg = get_tip(options)
-		if (tip_msg) {
-			chat_state.count++
-			yielded = yield {
-				type: 'simple_message',
-				msg_main: tip_msg,
-			}
-		}
-
 
 		function get_MODE_MAIN() {
 			const steps = []
-
 			const state = config.store
 			//console.log(state)
 			const { last_adventure } = state
@@ -16499,8 +16481,22 @@ function start_loop(options) {
 				})
 				chat_state.sub.main.last_displayed_adventure_uuid = last_adventure.uuid
 			}
+			else {
+				// recap
+				steps.push({
+					type: 'simple_message',
+					msg_main: get_recap(options),
+				})
+			}
 
-			// TODO add possible tip action
+			// tip
+			let tip_msg = get_tip(options)
+			if (tip_msg) {
+				steps.push({
+					type: 'simple_message',
+					msg_main: tip_msg,
+				})
+			}
 
 			steps.push({
 				msg_main: `What do you want to do?`,
@@ -16737,97 +16733,127 @@ function start_loop(options) {
 			const steps = []
 			const state = config.store
 
-			steps.push({
-				type: 'simple_message',
-				msg_main: rich_text_to_ansi(render_account_info(
-					state.meta,
+			if (chat_state.sub.meta.reseting) {
+				steps.push({
+					msg_main: 'Reset your game and start over, are you really really sure?',
+					choices: [
+						{
+							msg_cta: 'Really reset your savegame, loose all your progression and start over 💀',
+							value: 'reset',
+							msgg_as_user: () => 'Definitely.',
+							msgg_acknowledge: () => 'So be it...',
+							callback: () => {
+								reset_all(options)
+								chat_state.sub.meta = {}
+							}
+						},
+						{
+							msg_cta: 'Don’t reset and go back to game.',
+							value: 'hold',
+							msgg_as_user: () => 'Hold on, I changed my mind!',
+							msgg_acknowledge: () => 'A wise choice. The world needs you, hero!',
+							callback: () => {
+								chat_state.sub.meta = {}
+							}
+						},
+					],
+				})
+			}
+			else {
+				steps.push({
+					type: 'simple_message',
+					msg_main: rich_text_to_ansi(render_account_info(
+						state.meta,
+						{
+							'game version': options.version,
+							'Your savegame path': config.path,
+						}))
+				})
+
+				let msg_main = `What do you want to do?`
+				const choices = []
+
+				const URL_OF_WEBSITE = 'https://www.online-adventur.es/the-npm-rpg.html'
+				const URL_OF_NPM_PAGE = 'https://www.npmjs.com/package/the-npm-rpg'
+				const URL_OF_REPO = 'https://github.com/online-adventures/oh-my-rpg'
+				const URL_OF_PRODUCT_HUNT_PAGE = 'https://www.producthunt.com/upcoming/the-npm-rpg'
+				const URL_OF_FORK = 'https://github.com/online-adventures/oh-my-rpg/#fork'
+				const URL_OF_ISSUES = 'https://github.com/online-adventures/oh-my-rpg/issues'
+				//const URL_OF_REDDIT_PAGE = 'TODO RED'
+
+				choices.push(
 					{
-						'game version': options.version,
-						'Your savegame path': config.path,
-					}))
-			})
+						msg_cta: 'Visit game official website',
+						value: URL_OF_WEBSITE,
+						msgg_as_user: () => 'Let’s have a look…',
+					},
+					{
+						msg_cta: `💰 Reward the game author with a ${stylize_string.bgRed(
+							stylize_string.white(' npm ')
+						)} star ★`,
+						value: URL_OF_NPM_PAGE,
+						msgg_as_user: () => 'You’re awesome…',
+					},
+					{
+						msg_cta: `💰 Reward the game author with a ${stylize_string.bgWhite(
+							stylize_string.black(' GitHub ')
+						)} star ★`,
+						value: URL_OF_REPO,
+						msgg_as_user: () => 'You’re awesome…',
+					},
+					/*{
+                       msg_cta: 'Reward the game author with a reddit like 👍',
+                       value: URL_OF_REDDIT_PAGE,
+                       msgg_as_user: () => 'You’re awesome…',
+                   },*/
+					{
+						msg_cta: `💰 Reward the game author with a ${stylize_string.bgRed(
+							stylize_string.white(' Product Hunt ')
+						)} upvote ⇧`,
+						value: URL_OF_PRODUCT_HUNT_PAGE,
+						msgg_as_user: () => 'You’re awesome…',
+					},
+					{
+						msg_cta: 'Fork on GitHub 🐙 😹',
+						value: URL_OF_FORK,
+						msgg_as_user: () => 'I’d like to contribute!',
+					},
+					{
+						msg_cta: 'Report a bug 🐞',
+						value: URL_OF_ISSUES,
+						msgg_as_user: () => 'There is this annoying bug…',
+					},
+					{
+						msg_cta: 'Reset your savegame 💀',
+						value: 'reset',
+						msgg_as_user: () => 'I want to start over…',
+						msgg_acknowledge: url => `You can't be serious?`,
+						callback: () => {
+							chat_state.sub.meta.reseting = true
+						}
+					},
+					{
+						msg_cta: 'Go back to adventuring.',
+						key_hint: { name: 'x' },
+						value: 'x',
+						msgg_as_user: () => 'Let’s do something else.',
+						msgg_acknowledge: url => `Yay, for loot and glory!`,
+						callback: () => {
+							chat_state.sub.character = {}
+							chat_state.mode = 'main'
+						}
+					},
+				)
 
-			let msg_main = `What do you want to do?`
-			const choices = []
-
-			const URL_OF_WEBSITE = 'https://www.online-adventur.es/the-npm-rpg.html'
-			const URL_OF_NPM_PAGE = 'https://www.npmjs.com/package/the-npm-rpg'
-			const URL_OF_REPO = 'https://github.com/online-adventures/oh-my-rpg'
-			const URL_OF_PRODUCT_HUNT_PAGE = 'https://www.producthunt.com/upcoming/the-npm-rpg'
-			const URL_OF_FORK = 'https://github.com/online-adventures/oh-my-rpg/#fork'
-			const URL_OF_ISSUES = 'https://github.com/online-adventures/oh-my-rpg/issues'
-			//const URL_OF_REDDIT_PAGE = 'TODO RED'
-
-			choices.push(
-				{
-					msg_cta: 'Visit game official website',
-					value: URL_OF_WEBSITE,
-					msgg_as_user: () => 'Let’s have a look…',
-				},
-				{
-					msg_cta: `💰 Reward the game author with a ${stylize_string.bgRed(
-						stylize_string.white(' npm ')
-					)} star ★`,
-					value: URL_OF_NPM_PAGE,
-					msgg_as_user: () => 'You’re awesome…',
-				},
-				{
-					msg_cta: `💰 Reward the game author with a ${stylize_string.bgWhite(
-						stylize_string.black(' GitHub ')
-					)} star ★`,
-					value: URL_OF_REPO,
-					msgg_as_user: () => 'You’re awesome…',
-				},
-				/*{
-					msg_cta: 'Reward the game author with a reddit like 👍',
-					value: URL_OF_REDDIT_PAGE,
-					msgg_as_user: () => 'You’re awesome…',
-				},*/
-				{
-					msg_cta: `💰 Reward the game author with a ${stylize_string.bgRed(
-						stylize_string.white(' Product Hunt ')
-					)} upvote ⇧`,
-					value: URL_OF_PRODUCT_HUNT_PAGE,
-					msgg_as_user: () => 'You’re awesome…',
-				},
-				{
-					msg_cta: 'Fork on GitHub 🐙 😹',
-					value: URL_OF_FORK,
-					msgg_as_user: () => 'I’d like to contribute!',
-				},
-				{
-					msg_cta: 'Report a bug',
-					value: URL_OF_ISSUES,
-					msgg_as_user: () => 'There is this annoying bug…',
-				},
-				{
-					msg_cta: 'Reset your savegame',
-					value: 'reset',
-					msgg_as_user: () => 'I want to start over…',
-					callback: () => {
-						console.error('TODO')
+				steps.push({
+					msg_main,
+					choices,
+					msgg_acknowledge: url => `Now opening ` + url,
+					callback: url => {
+						opn(url)
 					}
-				},
-				{
-					msg_cta: 'Go back to adventuring.',
-					key_hint: { name: 'x' },
-					value: 'x',
-					msgg_as_user: () => 'Let’s do something else.',
-					callback: () => {
-						chat_state.sub.character = {}
-						chat_state.mode = 'main'
-					}
-				},
-			)
-
-			steps.push({
-				msg_main,
-				choices,
-				msgg_acknowledge: url => `Now opening ` + url,
-				callback: url => {
-					opn(url)
-				}
-			})
+				})
+			}
 
 			return steps
 		}
@@ -17058,26 +17084,34 @@ function create({DEBUG, shouldCenter}) {
 	if (!process.stdout.isTTY)
 		throw new Error('start_loop: current term is not a tty !')
 
-	const {columns: TERM_WIDTH} = term_size()
-	if (DEBUG) console.log({TERM_WIDTH})
+	function compute_display_base_elements() {
+		const TERMINAL_WIDTH = term_size().columns
+		if (DEBUG) console.log({terminal_width: TERMINAL_WIDTH})
 
-	if (TERM_WIDTH < 80)
-		throw new Error('Your terminal is too narrow!')
+		if (TERMINAL_WIDTH < 80)
+			throw new Error('Your terminal is too narrow!')
 
-	// too wide doesn't look that good, cap it
-	const USED_WIDTH = Math.min(TERM_WIDTH, 120)
+		// too wide doesn't look that good, cap it
+		const USED_WIDTH = Math.min(TERMINAL_WIDTH, 120)
 
-	// a msg is not taking the fill width, to clearly see left/right
-	const MSG_WIDTH = Math.round(USED_WIDTH * .8)
+		// a msg is not taking the fill width, to clearly see left/right
+		const MSG_MAX_WIDTH = Math.round(USED_WIDTH * .8)
 
-	if (DEBUG) console.log({TERM_WIDTH, USED_WIDTH, MSG_WIDTH})
+		if (DEBUG) console.log({terminal_width: TERMINAL_WIDTH, USED_WIDTH, MSG_WIDTH: MSG_MAX_WIDTH})
 
-	const MSG_BASELINE = MANY_BOX_HORIZ.slice(0, MSG_WIDTH - 2)
-	const MSG_L_INDENT = shouldCenter
-		? Math.round((TERM_WIDTH - USED_WIDTH) / 2)
-		: 0
-	const MSG_R_INDENT = MSG_L_INDENT + USED_WIDTH - MSG_WIDTH
-	const PROMPT = MANY_SPACES.slice(0, MSG_L_INDENT + 2)
+		const MSG_BASELINE = MANY_BOX_HORIZ.slice(0, MSG_MAX_WIDTH - 2)
+		const MSG_L_INDENT = shouldCenter
+			? Math.round((TERMINAL_WIDTH - USED_WIDTH) / 2)
+			: 0
+		const MSG_R_INDENT = MSG_L_INDENT + USED_WIDTH - MSG_MAX_WIDTH
+
+		return {
+			MSG_MAX_WIDTH,
+			MSG_BASELINE,
+			MSG_L_INDENT,
+			MSG_R_INDENT,
+		}
+	}
 
 	process.stdin.setRawMode(true)
 	readline.emitKeypressEvents(process.stdin)
@@ -17085,7 +17119,6 @@ function create({DEBUG, shouldCenter}) {
 	const rli = readline.createInterface({
 		input: process.stdin,
 		output: process.stdout,
-		prompt: PROMPT,
 	})
 
 	rli.on('line', (input) => {
@@ -17209,7 +17242,6 @@ function create({DEBUG, shouldCenter}) {
 					return
 				}
 
-
 				// collision
 				const colliding_choices = groups[key_hash]
 				const common_value_part = get_shared_start(colliding_choices.map(choice => choice._ui_tty.clean_cta))
@@ -17219,7 +17251,7 @@ function create({DEBUG, shouldCenter}) {
 					}
 					let candidate_key_hash = key_to_string(candidate_key)
 
-					if (affected_keys.has(candidate_key_hash)) {
+					if (!candidate_key.name || affected_keys.has(candidate_key_hash)) {
 						// find another one
 						candidate_key = find_unaffected_key(choice._ui_tty.clean_cta)
 						candidate_key_hash = key_to_string(candidate_key)
@@ -17231,7 +17263,7 @@ function create({DEBUG, shouldCenter}) {
 		} while(have_collisions)
 
 		const allowed_keys = step.choices.map(choice => '[' + choice._ui_tty.key.name + ']').join(',')
-		if (true && DEBUG) console.log('  available choices: ' + allowed_keys)
+		if (DEBUG) console.log('  available choices: ' + allowed_keys)
 	}
 
 
@@ -17249,7 +17281,15 @@ function create({DEBUG, shouldCenter}) {
 			throw new Error(`display_message(): incorrect invocation!`)
 		if (!msg)
 			throw new Error(`display_message(): no msg!`)
-		msg = wrap_string(msg, MSG_WIDTH - 1)
+
+		const {
+			MSG_MAX_WIDTH,
+			MSG_BASELINE,
+			MSG_L_INDENT,
+			MSG_R_INDENT,
+		} = compute_display_base_elements()
+
+		msg = wrap_string(msg, MSG_MAX_WIDTH - 1)
 		msg = indent_string(msg, 1, {indent: '│'})
 
 		const has_choices = choices && choices.length > 0
@@ -35042,6 +35082,9 @@ function render_meta_infos(metas) {
 function render_account_info(m, extra = {}) {
     const meta_infos = extra;
     meta_infos['internal user id'] = m.uuid;
+    meta_infos['telemetry allowed'] = String(m.allow_telemetry);
+    if (m.email)
+        meta_infos['email'] = m.email;
     const $doc = RichText.span()
         .pushText('Account infos:')
         .pushNode(render_meta_infos(meta_infos), 'list')
@@ -35222,9 +35265,10 @@ module.exports = callbacks
 /* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const {
-	stylize_string,
-} = __webpack_require__(10)
+"use strict";
+
+
+const { stylize_string } = __webpack_require__(10)
 
 /////////////////////////////////////////////////
 
