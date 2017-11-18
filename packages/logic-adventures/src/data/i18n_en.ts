@@ -140,7 +140,7 @@ You feel useless and reflect on your role in the world. +{{wisdom}} wisdom!`,
 		// memecenter.com
 		escort: `
 You are escorting an important NPC.
-Unfortunately, if you walk, he's faster thant you.
+Unfortunately, if you walk, he's faster than you.
 However, if you run, you're faster than him!
 By slaloming and running into circles, you manage.
 +{{health}} health thanks to those efforts!`,
@@ -183,6 +183,10 @@ Good opportunity to practice your magic: +{{mana}} mana.`,
 		/*
 		Vous vous présentez au capitaine de la garde. Votre mission : tuer 10 kobolds.
 Après une brève hésitation sur l’éthique de l’extermination de créatures pensantes, vous acceptez ; vous avez trop besoin de loot et d’XP.
+		 */
+
+		/* master's quotes
+		https://github.com/kodeguild/winter-spirits/blob/master/src/data/cookies/en-us.js#L25
 		 */
 
 		/*

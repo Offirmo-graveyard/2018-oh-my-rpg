@@ -49,7 +49,7 @@ if (options.is_interactive) {
 /////////////////////////////////////////////////
 
 if (!options.is_interactive) {
-	throw new Error('TODO')
+	throw new Error('Non-interactive mode or non-tty terminals are not supported at this time, sorry!')
 	play(options)
 	//render_cta(options)
 }
