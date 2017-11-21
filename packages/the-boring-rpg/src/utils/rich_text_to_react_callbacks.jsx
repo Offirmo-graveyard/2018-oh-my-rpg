@@ -1,8 +1,6 @@
-"use strict";
+import React from 'react'
 
-const LIB = 'rich_text_to_html'
-
-const WIDTH_COMPENSATION = ''
+const LIB = 'rich_text_to_react'
 
 
 function apply_type($type, str) {
@@ -52,33 +50,33 @@ function apply_class($class, str, hints = {}) {
 			return stylize_string.yellow(str)
 
 		case 'item--armor':
-			return '🛡 ' + WIDTH_COMPENSATION + str
+			return '🛡 ' + str
 		case 'item--weapon':
-			return '⚔ ' + WIDTH_COMPENSATION + str
+			return '⚔ ' + str
 		case 'currency--coin':
-			return '💰 ' + WIDTH_COMPENSATION + str
+			return '💰 ' + str
 		case 'currency--token':
-			return '💠 ' + WIDTH_COMPENSATION + str
+			return '💠 ' + str
 
 		case 'attribute--level':
-			return '👶 ' + WIDTH_COMPENSATION + str
+			return '👶 ' + str
 		case 'attribute--health':
-			return '💗 ' + WIDTH_COMPENSATION + str
+			return '💗 ' + str
 		case 'attribute--mana':
-			return '💙 ' + WIDTH_COMPENSATION + str
+			return '💙 ' + str
 		case 'attribute--agility':
-			return '🤸 ' + WIDTH_COMPENSATION + str
+			return '🤸 ' + str
 		case 'attribute--luck':
-			return '🤹 ' + WIDTH_COMPENSATION + str
+			return '🤹 ' + str
 		case 'attribute--strength':
-			return '🏋 ' + WIDTH_COMPENSATION + str
+			return '🏋 ' + str
 		case 'attribute--charisma':
-			return '👨🎤 ' + WIDTH_COMPENSATION + str
+			return '👨🎤 ' + str
 		case 'attribute--wisdom':
-			return '👵 ' + WIDTH_COMPENSATION + str
+			return '👵 ' + str
 
 		case 'monster':
-			return str + ' ' + hints.possible_emoji + WIDTH_COMPENSATION
+			return str + ' ' + hints.possible_emoji
 		case 'monster--rank--common':
 			return stylize_string.yellow(str)
 		case 'monster--rank--elite':
@@ -90,7 +88,7 @@ function apply_class($class, str, hints = {}) {
 		case 'rank--elite':
 			return stylize_string.bold(str + '★')
 		case 'rank--boss':
-			return stylize_string.bold(str + ' 👑' + WIDTH_COMPENSATION)
+			return stylize_string.bold(str + ' 👑')
 
 		case 'item--enhancement':
 		case 'armor--values':
@@ -123,8 +121,15 @@ function on_concatenate_sub_node({state, sub_state, $id, $parent_node}) {
 	return state + sub_state
 }
 
+
+function createNodeState() {
+	return {
+
+	}
+}
 const callbacks = {
-	on_node_enter: () => '',
+	on_node_enter: createNodeState,
+	on_node_exit: () => null,
 	on_concatenate_str: ({state, str}) => state + str,
 	on_concatenate_sub_node,
 	on_class_after: ({state, $class, $node}) => apply_class($class, state, $node.$hints),

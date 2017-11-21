@@ -4,7 +4,7 @@ const opn = require('opn');
 
 const tbrpg = require('@oh-my-rpg/state-the-boring-rpg')
 const { iterables_unslotted, get_item_at_coordinates, get_item_in_slot } = require('@oh-my-rpg/state-inventory')
-const { create: create_tty_chat_ui } = require('@oh-my-rpg/view-chat/src/ui/tty')
+const { create: create_tty_chat_ui } = require('@oh-my-rpg/view-chat-ui-tty')
 const { create: create_chat } = require('@oh-my-rpg/view-chat')
 const { CHARACTER_CLASSES } = require('@oh-my-rpg/state-character')
 const {
@@ -193,7 +193,7 @@ function start_loop(options) {
 					msg_cta: `Sell it for ${sell_price} coins.`,
 					value: 'sell',
 					msgg_as_user: () => `Deal for ${sell_price} coins.`,
-					msgg_acknowledge: () => `Here are you ${sell_price} coins. Please to do business with you!`,
+					msgg_acknowledge: () => `Here are you ${sell_price} coins. Pleased to do business with you!`,
 					callback: () => {
 						sell_item_at_coordinates(options, coords)
 						chat_state.sub.inventory = {}
@@ -513,6 +513,7 @@ function start_loop(options) {
 		DEBUG: false,
 		gen_next_step: gen_next_step(),
 		ui: create_tty_chat_ui({DEBUG: false}),
+		inter_msg_delay_ms: 500,
 	})
 
 	return chat

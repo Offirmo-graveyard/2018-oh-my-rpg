@@ -1,6 +1,6 @@
 {
 	"name": "the-npm-rpg",
-	"version": "0.6.0",
+	"version": "0.7.0",
 	"description": "⚔🛡💰 The npm RPG, a command line RPG game. Just ⌨ `npx the-npm-rpg`!",
 	"author": "Offirmo <offirmo.net@gmail.com>",
 	"license": "UNLICENSED",
@@ -37,6 +37,7 @@
 		"@oh-my-rpg/state-inventory": "^0.0.1",
 		"@oh-my-rpg/state-the-boring-rpg": "^0.0.1",
 		"@oh-my-rpg/view-chat": "^0.0.1",
+		"@oh-my-rpg/view-chat-ui-tty": "^0.0.1",
 		"@oh-my-rpg/view-rich-text": "^0.0.1",
 		"chalk": "^2.2.0",
 		"env-paths": "^1.0.0",
