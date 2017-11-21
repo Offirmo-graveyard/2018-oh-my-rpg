@@ -136,7 +136,7 @@ You feel useless and reflect on your role in the world. +{{wisdom}} wisdom!`,
         // memecenter.com
         escort: `
 You are escorting an important NPC.
-Unfortunately, if you walk, he's faster thant you.
+Unfortunately, if you walk, he's faster than you.
 However, if you run, you're faster than him!
 By slaloming and running into circles, you manage.
 +{{health}} health thanks to those efforts!`,

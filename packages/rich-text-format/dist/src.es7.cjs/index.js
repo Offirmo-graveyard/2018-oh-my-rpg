@@ -2,6 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const walk_1 = require("./walk");
+const to_debug_1 = require("./to_debug");
+function to_debug($doc) {
+    return walk_1.walk($doc, to_debug_1.callbacks);
+}
+exports.to_debug = to_debug;
 const to_text_1 = require("./to_text");
 function to_text($doc) {
     return walk_1.walk($doc, to_text_1.callbacks);

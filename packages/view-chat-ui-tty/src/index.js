@@ -2,9 +2,12 @@
 
 const readline = require('readline')
 const term_size = require('term-size')
-const strip_ansi = require('strip-ansi');
-const { stylize_string, indent_string, wrap_string, prettify_json } = require('../libs')
-const { prettify_params_for_debug, get_shared_start } = require('../utils')
+const strip_ansi = require('strip-ansi')
+const create_ora_spinner = require('ora')
+const Gauge = require('gauge')
+const promiseFinally = require('p-finally')
+const { stylize_string, indent_string, wrap_string, prettify_json } = require('./libs')
+const { prettify_params_for_debug, get_shared_start } = require('./utils')
 
 
 const MANY_BOX_HORIZ = '────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────'
@@ -66,19 +69,20 @@ function create({DEBUG, shouldCenter}) {
 	const rli = readline.createInterface({
 		input: process.stdin,
 		output: process.stdout,
+		prompt: '   ',
 	})
 
 	rli.on('line', (input) => {
-		if (DEBUG) console.log(`[Received line: ${input}]`);
+		if (DEBUG) console.log(`[Received line: ${input}]`)
 	})
 
 	rli.on('close', () => {
-		if (DEBUG) console.log(`[Received close]`);
+		if (DEBUG) console.log(`[Received close]`)
 		state.is_closing = true
 	})
 
 	process.stdin.on('keypress', (str, key_pressed) => {
-		if (DEBUG) console.log(`[keypress]`);
+		if (DEBUG) console.log(`[keypress]`)
 		if (!state.keypress_callback)
 			return
 		if (state.is_closing)
@@ -213,7 +217,57 @@ function create({DEBUG, shouldCenter}) {
 		if (DEBUG) console.log('  available choices: ' + allowed_keys)
 	}
 
+	function spin_until_resolution(anything) {
+		const spinner = create_ora_spinner({
+			interval: 100,
+			//spinner: 'simpleDots',
+			spinner: 'simpleDotsScrolling',
+			stream: process.stdout,
+		}).start()
 
+		return promiseFinally(
+			Promise.resolve(anything),
+			() => spinner.stop(),
+		)
+	}
+
+	function pretend_to_think(duration_ms) {
+		return spin_until_resolution(new Promise(resolve => {
+			setTimeout(resolve, duration_ms)
+		}))
+	}
+
+	function display_progress({progress_promise, msg = 'loading', msgg_acknowledge} = {}) {
+		const gauge = new Gauge()
+		const progress_msg = msg + '...'
+		gauge.show(progress_msg, 0)
+		const auto_pulse = setInterval(() => gauge.pulse(), 100)
+
+		if (progress_promise.onProgress) {
+			progress_promise.onProgress(progress => {
+				gauge.show(progress_msg, progress)
+			})
+		}
+
+		progress_promise
+			.then(() => true, () => false)
+			.then(success => {
+				clearInterval(auto_pulse)
+				gauge.hide()
+
+				let final_msg = success ? stylize_string.green('✔') : stylize_string.red('❌')
+				final_msg += ' ' + msg
+				if (msgg_acknowledge)
+					final_msg += ': ' + msgg_acknowledge(success)
+				console.log(final_msg)
+			})
+			.catch(err => {
+				console.error('unexpected', err)
+				return false
+			})
+
+		return progress_promise
+	}
 
 	function render_choice(choice) {
 		const {msg_cta} = choice
@@ -370,6 +424,9 @@ function create({DEBUG, shouldCenter}) {
 		setup: () => {console.log('')},
 		display_message,
 		read_answer,
+		spin_until_resolution,
+		pretend_to_think,
+		display_progress,
 		teardown,
 	}
 }

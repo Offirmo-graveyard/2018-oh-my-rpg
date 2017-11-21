@@ -26,7 +26,7 @@ interface CheckedNode {
 	$sub: {
 		[id: string]: Partial<CheckedNode>
 	}
-	// hints for some renderer. May or may not be used.
+	// hints for renderers. May or may not be used.
 	$hints: {
 		[k: string]: any
 	}

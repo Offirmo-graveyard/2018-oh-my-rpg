@@ -3,21 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const consts_1 = require("./consts");
 const types_1 = require("./types");
 exports.NodeType = types_1.NodeType;
-function normalize_node($raw_node) {
-    const { $v = 1, $type = types_1.NodeType.span, $classes = [], $content = '', $sub = {}, $hints = {}, } = $raw_node;
-    // TODO validation
-    if ($v !== consts_1.SCHEMA_VERSION)
-        throw new Error(`${consts_1.LIB_ID}: unknown schema version "${$v}"!`);
-    const $node = {
-        $v,
-        $type,
-        $classes,
-        $content,
-        $sub,
-        $hints,
-    };
-    return $node;
-}
+const utils_1 = require("./utils");
 function get_default_callbacks() {
     function nothing() { }
     function identity({ state }) {
@@ -33,7 +19,7 @@ function get_default_callbacks() {
         on_sub_node_id: identity,
         on_filter: identity,
         on_filter_Capitalize: ({ state }) => {
-            if (typeof state === 'string') {
+            if (typeof state === 'string' && state) {
                 const str = '' + state;
                 return str[0].toUpperCase() + str.slice(1);
             }
@@ -64,12 +50,14 @@ function walk_content($node, callbacks, state, depth) {
         if (split2.length !== 2)
             throw new Error(`${consts_1.LIB_ID}: syntax error in content "${$content}"!`);
         const [sub_node_id, ...$filters] = split2.shift().split('|');
+        /*
         state = callbacks.on_sub_node_id({
             $id: sub_node_id,
             state,
             $node,
             depth,
-        });
+        })
+        */
         let $sub_node = $sub_nodes[sub_node_id];
         if (!$sub_node && sub_node_id === 'br')
             $sub_node = SUB_NODE_BR;
@@ -106,7 +94,7 @@ function walk_content($node, callbacks, state, depth) {
             $id: sub_node_id,
             $parent_node: $node,
             state,
-            $node: normalize_node($sub_node),
+            $node: utils_1.normalize_node($sub_node),
             depth,
         });
         state = callbacks.on_concatenate_str({
@@ -122,7 +110,7 @@ function walk_content($node, callbacks, state, depth) {
 function walk($raw_node, raw_callbacks, 
     // internal opts when recursing:
     { $parent_node, $id = 'root', depth = 0, } = {}) {
-    const $node = normalize_node($raw_node);
+    const $node = utils_1.normalize_node($raw_node);
     const { $type, $classes, $sub: $sub_nodes, } = $node;
     let callbacks = raw_callbacks;
     const isRoot = !$parent_node;
@@ -157,7 +145,7 @@ function walk($raw_node, raw_callbacks,
                 state,
                 sub_state,
                 $id: key,
-                $node: normalize_node($sub_node),
+                $node: utils_1.normalize_node($sub_node),
                 $parent_node: $node,
                 depth,
             });
@@ -171,7 +159,7 @@ function walk($raw_node, raw_callbacks,
         state = callbacks[fine_type_cb]({ $type, state, $node, depth });
     else
         state = callbacks.on_type({ $type, state, $node, depth });
-    state = callbacks.on_node_exit({ $id, state, $node, depth });
+    state = callbacks.on_node_exit({ $node, $id, state, depth });
     if (!$parent_node)
         callbacks.end();
     return state;

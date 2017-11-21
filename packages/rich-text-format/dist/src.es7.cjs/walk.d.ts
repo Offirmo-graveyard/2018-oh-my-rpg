@@ -17,7 +17,6 @@ interface WalkerCallbacks<State> {
     on_node_exit: WalkerReducer<State, AnyParams<State>>;
     on_concatenate_str: WalkerReducer<State, AnyParams<State>>;
     on_concatenate_sub_node: WalkerReducer<State, AnyParams<State>>;
-    on_sub_node_id: WalkerReducer<State, AnyParams<State>>;
     on_filter: WalkerReducer<State, AnyParams<State>>;
     on_filter_Capitalize: WalkerReducer<State, AnyParams<State>>;
     on_class_before: WalkerReducer<State, AnyParams<State>>;

@@ -1,29 +1,31 @@
 "use strict";
 
-const { prettify_json } = require('./libs')
+// TODO remove prettify_json dependency
+const { PromiseWithProgress, prettify_json } = require('./libs')
 const { prettify_params_for_debug } = require('./utils')
 
-const LIB = 'view-chat'
+const LIB = '@oh-my-rpg/view-chat'
 
-function create({DEBUG, gen_next_step, ui}) {
+function create({DEBUG, gen_next_step, ui, inter_msg_delay_ms = 700}) {
 	if (DEBUG) console.log('↘ create()')
 
-	const STEP_CONFIRM = uniformize_step({
-		msg_main: `Are you sure?`,
-		msgg_as_user: ok => ok ? 'Yes, I confirm.' : 'No, I changed my mind…',
-		choices: [
-			{
-				msg_cta: 'Yes, confirm',
-				value: true,
-			},
-			{
-				msg_cta: 'No, cancel',
-				value: false,
-			},
-		]
-	})
+	function create_dummy_progress_promise({DURATION_MS = 2000, PERIOD_MS = 100} = {}) {
+		return new PromiseWithProgress((resolve, reject, progress) => {
+			let count = 0
+			const auto_pulse = setInterval(() => {
+				count++
+				const completion_rate = 1. * (count * PERIOD_MS) / DURATION_MS
+				progress(completion_rate)
 
-	function uniformize_step(step) {
+				if (completion_rate >= 1) {
+					clearInterval(auto_pulse)
+					resolve()
+				}
+			}, PERIOD_MS)
+		})
+	}
+
+	function normalize_step(step) {
 		try {
 			if (step.type === 'ask_for_confirmation' && step !== STEP_CONFIRM)
 				step = Object.assign(
@@ -50,7 +52,7 @@ function create({DEBUG, gen_next_step, ui}) {
 				step,
 			)
 
-			step.choices = step.choices.map(uniformize_choice)
+			step.choices = step.choices.map(normalize_choice)
 
 			if (step.choices.length) {
 				const known_values = new Set()
@@ -77,7 +79,8 @@ function create({DEBUG, gen_next_step, ui}) {
 		}
 	}
 
-	function uniformize_choice(choice) {
+	function normalize_choice(choice) {
+		// TODO auto-id
 		try {
 			if (!choice.hasOwnProperty('value') || typeof choice.value === 'undefined')
 				throw new Error('Choice has no value!')
@@ -90,22 +93,11 @@ function create({DEBUG, gen_next_step, ui}) {
 		}
 	}
 
-	async function ask_user_for_confirmation(msg) {
-		if (DEBUG) console.log(`↘ ask_user_for_confirmation(${msg})`)
-		await ui.display_message({
-			msg: msg || STEP_CONFIRM.msg_main,
-			choices: STEP_CONFIRM.choices
-		})
-		let ok = await ui.read_answer(STEP_CONFIRM)
-		if (!ok)
-			await ui.display_message({ msg: 'No worries, let’s try again...' })
-		return ok
-	}
-
 	async function ask_user(step) {
 		if (DEBUG) console.log(`↘ ask_user(\n${prettify_params_for_debug(step)}\n)`)
-		let ok = true
+
 		let answer = ''
+		let ok = true // TODO used for confirmation
 		do {
 			await ui.display_message({msg: step.msg_main, choices: step.choices})
 			answer = await ui.read_answer(step)
@@ -116,19 +108,19 @@ function create({DEBUG, gen_next_step, ui}) {
 		if (step.choices.length) {
 			const selected_choice = step.choices.find(choice => choice.value === answer)
 			if (selected_choice.msgg_acknowledge) {
+				await ui.pretend_to_think(inter_msg_delay_ms)
 				await ui.display_message({msg: selected_choice.msgg_acknowledge(answer)})
 				acknowledged = true
 			}
 		}
 		if (!acknowledged && step.msgg_acknowledge) {
+			await ui.pretend_to_think(inter_msg_delay_ms)
 			await ui.display_message({msg: step.msgg_acknowledge(answer)})
 			acknowledged = true
 		}
 		if (!acknowledged) {
-			//const err = new Error('CNF acknowledge msg')
-			//err.step = step
-			//throw err
-			// Fine!
+			// Fine! It's optional.
+			if (DEBUG) console.warn('You may want to add an acknowledge message to this step.')
 		}
 
 		return answer
@@ -139,12 +131,29 @@ function create({DEBUG, gen_next_step, ui}) {
 
 		switch (step.type) {
 			case 'simple_message':
-				return ui.display_message({
-					msg: step.msg_main,
-				})
+				await ui.pretend_to_think(inter_msg_delay_ms)
+				await ui.display_message({ msg: step.msg_main })
+				break
+
+			case 'progress':
+				await ui.display_progress({
+						progress_promise: step.progress_promise || create_dummy_progress_promise({
+							DURATION_MS: step.duration_ms
+						}),
+						msg: step.msg_main,
+						msgg_acknowledge: step.msgg_acknowledge
+					})
+					.then(() => true, () => false)
+					.then(success => {
+						if (step.callback)
+							step.callback(success)
+					})
+				break
+
 			case 'ask_for_confirmation':
 			case 'ask_for_string':
 			case 'ask_for_choice': {
+				await ui.pretend_to_think(inter_msg_delay_ms)
 				const answer = await ask_user(step)
 
 				let reported = false
@@ -160,7 +169,7 @@ function create({DEBUG, gen_next_step, ui}) {
 					reported = true
 				}
 				if (!reported) {
-					const err = new Error('CNF report ask for result')
+					const err = new Error('CNF reporting callback in ask for result!')
 					err.step = step
 					throw err
 				}
@@ -180,14 +189,13 @@ function create({DEBUG, gen_next_step, ui}) {
 			let last_step = undefined
 			let last_answer = undefined
 			do {
-				const {value: raw_step, done} = await gen_next_step.next({last_step, last_answer})
-				//console.log({raw_step, done})
+				const {value: raw_step, done} = await ui.spin_until_resolution(gen_next_step.next({last_step, last_answer}))
 				if (done) {
 					should_exit = true
 					continue
 				}
 
-				const step = uniformize_step(raw_step)
+				const step = normalize_step(raw_step)
 				await execute_step(step)
 			} while(!should_exit)
 			await ui.teardown()
@@ -206,5 +214,6 @@ function create({DEBUG, gen_next_step, ui}) {
 
 
 module.exports = {
+	PromiseWithProgress,
 	create,
 }

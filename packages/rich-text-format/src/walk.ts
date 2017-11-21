@@ -6,32 +6,10 @@ import {
 	Node,
 } from './types'
 
+import {
+	normalize_node,
+} from './utils'
 
-function normalize_node($raw_node: Node): CheckedNode {
-	const {
-		$v = 1,
-		$type = NodeType.span,
-		$classes = [],
-		$content = '',
-		$sub = {},
-		$hints = {},
-	} = $raw_node
-
-	// TODO validation
-	if ($v !== SCHEMA_VERSION)
-		throw new Error(`${LIB}: unknown schema version "${$v}"!`)
-
-	const $node: CheckedNode = {
-		$v,
-		$type,
-		$classes,
-		$content,
-		$sub,
-		$hints,
-	}
-
-	return $node
-}
 
 // TODO better
 interface BaseParams<State> {
@@ -56,7 +34,7 @@ interface WalkerCallbacks<State> {
 	on_node_exit: WalkerReducer<State, AnyParams<State>>,
 	on_concatenate_str: WalkerReducer<State, AnyParams<State>>,
 	on_concatenate_sub_node: WalkerReducer<State, AnyParams<State>>,
-	on_sub_node_id: WalkerReducer<State, AnyParams<State>>,
+	//on_sub_node_id: WalkerReducer<State, AnyParams<State>>,
 	on_filter: WalkerReducer<State, AnyParams<State>>,
 	on_filter_Capitalize: WalkerReducer<State, AnyParams<State>>,
 	on_class_before: WalkerReducer<State, AnyParams<State>>,
@@ -81,7 +59,7 @@ function get_default_callbacks<State>(): WalkerCallbacks<State> {
 		on_sub_node_id: identity,
 		on_filter: identity,
 		on_filter_Capitalize: ({state}: {state: State}) => {
-			if (typeof state === 'string') {
+			if (typeof state === 'string' && state) {
 				const str = '' + state
 				return str[0].toUpperCase() + str.slice(1) as any as State
 			}
@@ -125,12 +103,14 @@ function walk_content<State>(
 			throw new Error(`${LIB}: syntax error in content "${$content}"!`)
 
 		const [ sub_node_id, ...$filters ] = split2.shift()!.split('|')
+		/*
 		state = callbacks.on_sub_node_id({
 			$id: sub_node_id,
 			state,
 			$node,
 			depth,
 		})
+		*/
 
 		let $sub_node = $sub_nodes[sub_node_id]
 
@@ -280,7 +260,7 @@ function walk<State>(
 	else
 		state = callbacks.on_type({ $type, state, $node, depth })
 
-	state = callbacks.on_node_exit({$id, state, $node, depth})
+	state = callbacks.on_node_exit({$node, $id, state, depth})
 
 	if (!$parent_node)
 		callbacks.end()

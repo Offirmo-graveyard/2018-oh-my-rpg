@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+'use strict';
+
 const _ = require('lodash')
 const Globalize = require('globalize')
 Globalize.load(require('cldr-data').entireSupplemental())

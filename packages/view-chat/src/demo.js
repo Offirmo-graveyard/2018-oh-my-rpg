@@ -1,11 +1,4 @@
-#!/bin/sh
-':' //# http://sambal.org/?p=1014 ; exec /usr/bin/env node "$0" "$@"
 'use strict';
-
-const { create: create_tty_chat_ui } = require('../src/ui/tty')
-const { create: create_chat } = require('../src')
-
-const DEBUG = false
 
 
 function* get_next_step1() {
@@ -16,10 +9,20 @@ function* get_next_step1() {
 	}
 
 	yield* [
-		/*{
-			type: 'ask_for_confirmation',
-			callback: value => { }
-		},*/
+		{
+			type: 'progress',
+			duration_ms: 2000, // or provide a progress_promise
+			msg_main: `Waking up`,
+			callback: success => console.log(`[callback called: ${success}]`),
+			msgg_acknowledge: success => success ? `Awoken!` : 'Slumbering forever...',
+		},
+		{
+			type: 'progress',
+			progress_promise: new Promise((resolve, reject) => setTimeout(() => reject(new Error('Demo step 2 rejection!')), 2000)),
+			msg_main: `Warming up`,
+			callback: success => console.log(`[callback called: ${success}]`),
+			msgg_acknowledge: success => success ? `Ready!` : 'Too lazy...',
+		},
 		{
 			type: 'simple_message',
 			msg_main: `Welcome. I'll have a few questions…`,
@@ -43,11 +46,11 @@ function* get_next_step1() {
 			type: 'simple_message',
 			msg_main: `Please wait for a moment...`,
 		},
-		// TODO wait with feedback
-		/*{
-			type: 'delay',
-			msg_main: `Please wait for a moment...`,
-		},*/
+		{
+			type: 'progress',
+			duration_ms: 1000,
+			msg_main: `Calling server...`,
+		},
 		{
 			msg_main: `Make your choice`,
 			callback: value => { state.mode = value },
@@ -63,14 +66,6 @@ function* get_next_step1() {
 			]
 		}
 	]
-
-	/*
-		{
-			type: 'ask_for_confirmation',
-			//msgg_main: name => `Do you confirm?`,
-			callback: value => { }
-		},
-	 */
 }
 
 async function get_next_step2() {
@@ -100,26 +95,10 @@ async function get_next_step2() {
 	return state.name
 		? MAIN_MODE
 		: GET_NAME
-	//return GET_NAME
 }
 
 
-const no_ui = {
-	setup: () => {},
-	display_message: () => {},
-	read_answer: () => {},
-	teardown: () => {},
+module.exports = {
+	get_next_step1,
+	get_next_step2,
 }
-
-
-const chat = create_chat({
-	DEBUG,
-	gen_next_step: get_next_step1(),
-	ui: process.stdout.isTTY
-		? create_tty_chat_ui({DEBUG})
-		: no_ui,
-})
-
-chat.start()
-	.then(() => console.log('bye'))
-	.catch(console.error)

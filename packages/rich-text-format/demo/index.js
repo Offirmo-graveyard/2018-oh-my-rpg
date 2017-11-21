@@ -6,26 +6,22 @@ console.log('Hello world!')
 
 const RichText = require('../dist/src.es7.cjs')
 
-const callbacks_debug = require('./to_debug')
 const callbacks_ansi = require('../../the-npm-rpg/src/utils/rich_text_to_ansi_callbacks')
 
 const WEAPON_01_NAME = {
-	$classes: ['item-name', 'item-weapon-name'],
+	$classes: ['item__name', 'item-weapon-name'],
 	$content: '{{qualifier2|Capitalize}} {{qualifier1|Capitalize}} {{base|Capitalize}}',
 	$sub: {
 		qualifier2: {
 			$type: 'span',
-			$classes: ['weapon-qualifier-2'],
 			$content: 'warfield king’s',
 		},
 		qualifier1: {
 			$type: 'span',
-			$classes: ['weapon-qualifier-1'],
 			$content: 'onyx',
 		},
 		base: {
 			$type: 'span',
-			$classes: ['weapon-base'],
 			$content: 'longsword',
 		},
 	},
@@ -33,12 +29,13 @@ const WEAPON_01_NAME = {
 
 const WEAPON_01 = {
 	$type: 'span',
-	$classes: ['item', 'item-weapon', 'item-quality-legendary'],
+	$classes: ['item', 'item-weapon', 'item--quality--legendary'],
 	$content: '{{weapon_name}} {{enhancement}}',
 	$sub: {
 		weapon_name: WEAPON_01_NAME,
 		enhancement: {
 			$type: 'span',
+			$classes: ['item--enhancement'],
 			$content: '+3',
 		},
 	},
@@ -58,7 +55,7 @@ const PLACE_01 = {
 
 const NPC_01 = {
 	$type: 'span',
-	$classes: ['person', 'npc', 'boss'],
+	$classes: ['person', 'npc', 'monster--rank--boss'],
 	$content: 'John Smith',
 }
 
@@ -87,7 +84,10 @@ const MSG_02 = {
 
 ////////////////////////////////////
 console.log('\n------- 1 -------')
-const doc1 = MSG_02
+const doc1 = MSG_01
+
+console.log('\n------- to debug -------\n')
+RichText.to_debug(doc1)
 
 console.log('\n------- to text -------\n' + RichText.to_text(doc1))
 console.log('\n------- to ansi -------\n' + RichText.walk(doc1, callbacks_ansi))
@@ -105,18 +105,19 @@ console.log('\n------- to html -------\n' + RichText.to_html(doc1))
 
 
 ////////////////////////////////////
+if (false) {
+	console.log('\n------- 2 -------')
+	const doc2 = RichText.paragraph()
+		.pushText(''
+			+ 'Great sages prophetized your coming,{{br}}'
+			+ 'commoners are waiting for their hero{{br}}'
+			+ 'and kings are trembling from fear of change...{{br}}'
+			+ '…undoubtly, you’ll make a name in this world and fulfill your destiny!{{br}}'
+		)
+		.pushStrong('A great saga just started.')
+		.done()
 
-console.log('\n------- 2 -------')
-const doc2 = RichText.paragraph()
-	.pushText(''
-		+ 'Great sages prophetized your coming,{{br}}'
-		+ 'commoners are waiting for their hero{{br}}'
-		+ 'and kings are trembling from fear of change...{{br}}'
-		+ '…undoubtly, you’ll make a name in this world and fulfill your destiny!{{br}}'
-	)
-	.pushStrong('A great saga just started.')
-	.done()
-
-console.log('\n------- to text -------\n' + RichText.to_text(doc2))
-console.log('\n------- to ansi -------\n' + RichText.walk(doc2, callbacks_ansi))
-console.log('\n------- to html -------\n' + RichText.to_html(doc2))
+	console.log('\n------- to text -------\n' + RichText.to_text(doc2))
+	console.log('\n------- to ansi -------\n' + RichText.walk(doc2, callbacks_ansi))
+	console.log('\n------- to html -------\n' + RichText.to_html(doc2))
+}

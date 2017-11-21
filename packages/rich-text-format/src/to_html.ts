@@ -18,7 +18,6 @@ function apply_type($type: string, str: string, $classes: string[], $sub_node_co
 	if ($type === 'hr')
 		return '\n<hr/>\n'
 
-
 	let is_inline = false
 	switch($type) {
 		case 'strong':

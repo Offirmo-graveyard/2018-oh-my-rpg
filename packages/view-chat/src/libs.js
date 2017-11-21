@@ -1,5 +1,7 @@
 "use strict";
 
+const PromiseWithProgress = require('p-progress')
+
 const stylize_string = require('chalk')
 
 const prettyjson = require('prettyjson')
@@ -22,28 +24,11 @@ function indent_string(msg, indentation, options = {}) {
 		.join('\n')
 }
 
-// https://github.com/AnAppAMonth/linewrap
-const linewrap = require('linewrap')
-function wrap_string(s, size) {
-	return linewrap(size, {skipScheme: 'ansi-color'})(s)
-}
-
-
-// https://github.com/sindresorhus/boxen
-const boxen = require('boxen')
-const enclose_in_box = boxen
-
-
-
-// https://github.com/nexdrew/ansi-align
-
-
 ////////////
 
 module.exports = {
+	PromiseWithProgress,
 	stylize_string,
 	prettify_json,
 	indent_string,
-	wrap_string,
-	enclose_in_box,
 }
