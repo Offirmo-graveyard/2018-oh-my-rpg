@@ -1,6 +1,7 @@
 {
 	"name": "@oh-my-rpg/logic-weapons",
 	"version": "0.0.1",
+	"private": true,
 	"description": "weapon related logic",
 	"main": "dist/src.es7.cjs/index.js",
 	"typings": "dist/src.es7.cjs/index.js",

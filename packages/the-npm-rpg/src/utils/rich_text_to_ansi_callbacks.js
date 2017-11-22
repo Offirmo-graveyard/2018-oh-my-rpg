@@ -84,7 +84,7 @@ function apply_class($class, str, hints = {}) {
 		case 'monster':
 			return str + ' ' + hints.possible_emoji + WIDTH_COMPENSATION
 		case 'monster--rank--common':
-			return stylize_string.yellow(str)
+			return str
 		case 'monster--rank--elite':
 			return stylize_string.yellow(str)
 		case 'monster--rank--boss':

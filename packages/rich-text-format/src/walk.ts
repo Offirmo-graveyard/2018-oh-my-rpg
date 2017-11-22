@@ -27,8 +27,8 @@ interface AnyParams<State> extends BaseParams<State> {
 }
 
 interface WalkerCallbacks<State> {
-	begin(): void,
-	end(): void,
+	on_root_enter(): void,
+	on_root_exit(params: BaseParams<State>): any,
 	on_node_enter: any, // TODO
 	// TODO better types
 	on_node_exit: WalkerReducer<State, AnyParams<State>>,
@@ -50,8 +50,8 @@ function get_default_callbacks<State>(): WalkerCallbacks<State> {
 	}
 
 	return {
-		begin: nothing,
-		end: nothing,
+		on_root_enter: nothing,
+		on_root_exit: identity,
 		on_node_enter: identity,
 		on_node_exit: identity,
 		on_concatenate_str: identity,
@@ -60,6 +60,7 @@ function get_default_callbacks<State>(): WalkerCallbacks<State> {
 		on_filter: identity,
 		on_filter_Capitalize: ({state}: {state: State}) => {
 			if (typeof state === 'string' && state) {
+				//console.log(`${LIB} auto capitalizing...`, state)
 				const str = '' + state
 				return str[0].toUpperCase() + str.slice(1) as any as State
 			}
@@ -204,7 +205,7 @@ function walk<State>(
 			...get_default_callbacks<State>(),
 			...callbacks,
 		}
-		callbacks.begin()
+		callbacks.on_root_enter()
 	}
 
 	let state = callbacks.on_node_enter({ $node, $id, depth })
@@ -263,7 +264,7 @@ function walk<State>(
 	state = callbacks.on_node_exit({$node, $id, state, depth})
 
 	if (!$parent_node)
-		callbacks.end()
+		state = callbacks.on_root_exit({state, $node, depth: 0})
 
 	return state
 }

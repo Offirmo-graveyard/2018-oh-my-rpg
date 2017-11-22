@@ -41,9 +41,8 @@ Example: see `packages/the-npm-rpg`
 ## Contributing
 ```bash
 lerna clean --yes
-npm run clean:deps & lerna run clean:deps
+npm run clean:deps & lerna run clean:deps & lerna run clean:build
 lerna bootstrap --hoist
-lerna run clean:build
 lerna --sort run build
 lerna --sort run test
 ```

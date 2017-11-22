@@ -3,6 +3,7 @@ import { State as CharacterState, CharacterAttribute, CHARACTER_STATS_SORTED } f
 
 
 function render_avatar(state: CharacterState): RichText.Document {
+	// TODO refactor
 	const $doc = RichText.paragraph()
 		.pushText('name:  {{name}}{{br}}')
 		.pushText('class: {{class}}')
@@ -39,7 +40,7 @@ function render_attributes(state: CharacterState): RichText.Document {
 		$doc_list.$sub['' + index] = $doc_item
 	})
 
-	const $doc = RichText.paragraph()
+	const $doc = RichText.section()
 		.pushNode(RichText.heading().pushText('Attributes:').done(), 'header')
 		.pushNode($doc_list, 'list')
 		.done()
@@ -51,7 +52,7 @@ function render_attributes(state: CharacterState): RichText.Document {
 function render_character_sheet(state: CharacterState): RichText.Document {
 	const $doc = RichText.section()
 		.pushNode(render_avatar(state), 'avatar')
-		.pushText('{{br}}')
+		//.pushText('{{br}}')
 		.pushNode(render_attributes(state), 'attributes')
 		.done()
 

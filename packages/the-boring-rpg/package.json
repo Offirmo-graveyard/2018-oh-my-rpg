@@ -22,7 +22,7 @@
 		"__dev": "~~~~~~~ DEVELOPMENT ~~~~~~~",
 		"clean:build": "rm -rf dist",
 		"clean:deps": "rm -rf package-lock.json node_modules",
-		"build:prod": "webpack -p --config meta/webpack.config.ts --watch",
+		"build:prod": "webpack --config meta/webpack.config.ts --define process.env.NODE_ENV=\"production\"",
 		"start": "webpack-dev-server -d --config meta/webpack.config.ts",
 		"test": "echo 'TODO'",
 		"__helpers": "----------- Helpers -----------",
@@ -31,6 +31,7 @@
 		"bin": "bin/index.js"
 	},
 	"dependencies": {
+		"classnames": "^2.2.5",
 		"react": "^16.1.1",
 		"react-dom": "^16.1.1",
 		"react-router-dom": "^4.2.2"

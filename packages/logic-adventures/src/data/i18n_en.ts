@@ -96,7 +96,7 @@ You meet a mysterious old wizard…
 Before giving you the quest, he tells you his loooong story: You gain +{{wisdom}} wisdom!`,
 		// electricbunnycomics.com
 		good_necromancer: `
-You meet a child weeping over his dead hamster pet… Thanks to necromancy, you reanimate it an a hamster-zombie!
+You meet a child weeping over his dead hamster pet… Thanks to necromancy, you reanimate it as a hamster-zombie!
 Oddly, the child cries even more while running away.{{br}}
 Fortunately, you gain +{{agility}} agility for avoiding the stones thrown by the villagers.`,
 		// dorkly

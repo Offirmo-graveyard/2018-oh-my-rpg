@@ -1,6 +1,6 @@
 const { Document } = require('adf-builder')
 
-function begin() {
+function on_root_enter() {
 	const doc = new Document()
 	return {
 		doc
@@ -41,7 +41,7 @@ function apply_class($class, str, {$node, $type, $classes}) {
 }
 
 module.exports = {
-	begin,
+	on_root_enter,
 	end,
 	on_node: () => {},
 

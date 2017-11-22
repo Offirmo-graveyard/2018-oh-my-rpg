@@ -19,7 +19,7 @@ function render_wallet(wallet) {
         const amount = state_wallet_1.get_currency_amount(wallet, currency);
         $doc_list.$sub[currency] = render_currency_amount(currency, amount);
     });
-    const $doc = RichText.paragraph()
+    const $doc = RichText.section()
         .pushNode(RichText.heading().pushText('Wallet:').done(), 'header')
         .pushNode($doc_list, 'list')
         .done();

@@ -1,3 +1,5 @@
+"use strict";
+
 const LIB_ID = 'the-boring-rpg'
 
 const SCHEMA_VERSION = 1

@@ -2861,7 +2861,7 @@ function render_wallet(wallet) {
         const amount = state_wallet_1.get_currency_amount(wallet, currency);
         $doc_list.$sub[currency] = render_currency_amount(currency, amount);
     });
-    const $doc = RichText.paragraph()
+    const $doc = RichText.section()
         .pushNode(RichText.heading().pushText('Wallet:').done(), 'header')
         .pushNode($doc_list, 'list')
         .done();
@@ -6682,8 +6682,8 @@ function get_default_callbacks() {
         return state;
     }
     return {
-        begin: nothing,
-        end: nothing,
+        on_root_enter: nothing,
+        on_root_exit: identity,
         on_node_enter: identity,
         on_node_exit: identity,
         on_concatenate_str: identity,
@@ -6692,6 +6692,7 @@ function get_default_callbacks() {
         on_filter: identity,
         on_filter_Capitalize: ({ state }) => {
             if (typeof state === 'string' && state) {
+                //console.log(`${LIB} auto capitalizing...`, state)
                 const str = '' + state;
                 return str[0].toUpperCase() + str.slice(1);
             }
@@ -6788,7 +6789,7 @@ function walk($raw_node, raw_callbacks,
     const isRoot = !$parent_node;
     if (isRoot) {
         callbacks = Object.assign({}, get_default_callbacks(), callbacks);
-        callbacks.begin();
+        callbacks.on_root_enter();
     }
     let state = callbacks.on_node_enter({ $node, $id, depth });
     // TODO class begin / start ?
@@ -6833,7 +6834,7 @@ function walk($raw_node, raw_callbacks,
         state = callbacks.on_type({ $type, state, $node, depth });
     state = callbacks.on_node_exit({ $node, $id, state, depth });
     if (!$parent_node)
-        callbacks.end();
+        state = callbacks.on_root_exit({ state, $node, depth: 0 });
     return state;
 }
 exports.walk = walk;
@@ -16759,7 +16760,7 @@ You meet a mysterious old wizard…
 Before giving you the quest, he tells you his loooong story: You gain +{{wisdom}} wisdom!`,
         // electricbunnycomics.com
         good_necromancer: `
-You meet a child weeping over his dead hamster pet… Thanks to necromancy, you reanimate it an a hamster-zombie!
+You meet a child weeping over his dead hamster pet… Thanks to necromancy, you reanimate it as a hamster-zombie!
 Oddly, the child cries even more while running away.{{br}}
 Fortunately, you gain +{{agility}} agility for avoiding the stones thrown by the villagers.`,
         // dorkly
@@ -17073,8 +17074,14 @@ function debug_node_short($node) {
     return `${$type}."${$content}"`;
 }
 ////////////////////////////////////
-const begin = () => console.log('⟩ [begin]');
-const end = () => console.log('⟨ [end]');
+const on_root_enter = () => {
+    console.log('⟩ [on_root_enter]');
+};
+const on_root_exit = ({ state }) => {
+    console.log('⟨ [on_root_exit]');
+    console.log(`  [state="${state}"]`);
+    return state;
+};
 const on_node_enter = ({ $node, $id, depth }) => {
     console.log(indent(depth) + `⟩ [on_node_enter] #${$id} ` + debug_node_short($node));
     const state = '';
@@ -17083,6 +17090,7 @@ const on_node_enter = ({ $node, $id, depth }) => {
 };
 const on_node_exit = ({ $node, $id, state, depth }) => {
     console.log(indent(depth) + `⟨ [on_node_exit] #${$id}`);
+    console.log(indent(depth) + `  [state="${state}"]`);
     return state;
 };
 // when walking inside the content
@@ -17116,8 +17124,8 @@ const on_type = ({ $type, state, $node, depth }) => {
 };
 ////////////////////////////////////
 const callbacks = {
-    begin,
-    end,
+    on_root_enter,
+    on_root_exit,
     on_node_enter,
     on_node_exit,
     on_concatenate_str,
@@ -20632,7 +20640,7 @@ function render_adventure(a) {
     const story = _.adventures[a.hid];
     const hasLoot = !!Object.keys($loot_list.$sub).length;
     const $loot = hasLoot
-        ? RichText.paragraph().pushText('{{br}}{{br}}Loot:').pushNode($loot_list, 'list').done()
+        ? RichText.section().pushText('Loot:').pushNode($loot_list, 'list').done()
         : RichText.span().done();
     // TODO weap improvement ?
     // TODO charac gains?
@@ -37810,7 +37818,7 @@ function render_attributes(state) {
             .done();
         $doc_list.$sub['' + index] = $doc_item;
     });
-    const $doc = RichText.paragraph()
+    const $doc = RichText.section()
         .pushNode(RichText.heading().pushText('Attributes:').done(), 'header')
         .pushNode($doc_list, 'list')
         .done();
@@ -37820,7 +37828,6 @@ exports.render_attributes = render_attributes;
 function render_character_sheet(state) {
     const $doc = RichText.section()
         .pushNode(render_avatar(state), 'avatar')
-        .pushText('{{br}}')
         .pushNode(render_attributes(state), 'attributes')
         .done();
     return $doc;
@@ -37859,7 +37866,7 @@ function render_equipment(inventory) {
             .done();
         $doc_list.$sub[slot] = $doc_item;
     });
-    const $doc = RichText.paragraph()
+    const $doc = RichText.section()
         .pushNode(RichText.heading().pushText('Active equipment:').done(), 'header')
         .pushNode($doc_list, 'list')
         .done();
@@ -37882,7 +37889,7 @@ function render_backpack(inventory) {
         $doc_list.$type = RichText.NodeType.ul;
         $doc_list.$sub['-'] = RichText.span().pushText('(empty)').done();
     }
-    const $doc = RichText.paragraph()
+    const $doc = RichText.section()
         .pushNode(RichText.heading().pushText('backpack:').done(), 'header')
         .pushNode($doc_list, 'list')
         .done();
@@ -38041,7 +38048,7 @@ function apply_class($class, str, hints = {}) {
 		case 'monster':
 			return str + ' ' + hints.possible_emoji + WIDTH_COMPENSATION
 		case 'monster--rank--common':
-			return stylize_string.yellow(str)
+			return str
 		case 'monster--rank--elite':
 			return stylize_string.yellow(str)
 		case 'monster--rank--boss':

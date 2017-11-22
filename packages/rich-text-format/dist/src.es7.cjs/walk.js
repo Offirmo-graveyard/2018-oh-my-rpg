@@ -10,8 +10,8 @@ function get_default_callbacks() {
         return state;
     }
     return {
-        begin: nothing,
-        end: nothing,
+        on_root_enter: nothing,
+        on_root_exit: identity,
         on_node_enter: identity,
         on_node_exit: identity,
         on_concatenate_str: identity,
@@ -20,6 +20,7 @@ function get_default_callbacks() {
         on_filter: identity,
         on_filter_Capitalize: ({ state }) => {
             if (typeof state === 'string' && state) {
+                //console.log(`${LIB} auto capitalizing...`, state)
                 const str = '' + state;
                 return str[0].toUpperCase() + str.slice(1);
             }
@@ -116,7 +117,7 @@ function walk($raw_node, raw_callbacks,
     const isRoot = !$parent_node;
     if (isRoot) {
         callbacks = Object.assign({}, get_default_callbacks(), callbacks);
-        callbacks.begin();
+        callbacks.on_root_enter();
     }
     let state = callbacks.on_node_enter({ $node, $id, depth });
     // TODO class begin / start ?
@@ -161,7 +162,7 @@ function walk($raw_node, raw_callbacks,
         state = callbacks.on_type({ $type, state, $node, depth });
     state = callbacks.on_node_exit({ $node, $id, state, depth });
     if (!$parent_node)
-        callbacks.end();
+        state = callbacks.on_root_exit({ state, $node, depth: 0 });
     return state;
 }
 exports.walk = walk;

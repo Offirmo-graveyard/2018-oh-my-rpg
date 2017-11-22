@@ -1,6 +1,7 @@
 {
 	"name": "@oh-my-rpg/view-rich-text",
 	"version": "0.0.1",
+	"private": true,
 	"description": "view to string (using unicode and emojis)",
 	"main": "dist/src.es7.cjs/index.js",
 	"typings": "dist/src.es7.cjs/index.js",

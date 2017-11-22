@@ -3,7 +3,7 @@ import {
 	CheckedNode,
 	Node,
 } from './types'
-import { WalkerCallbacks, WalkerReducer, AnyParams } from './walk'
+import { WalkerCallbacks, BaseParams, WalkerReducer, AnyParams } from './walk'
 
 const MANY_SPACES = '                                                                                                '
 
@@ -21,8 +21,14 @@ function debug_node_short($node: CheckedNode) {
 
 ////////////////////////////////////
 
-const begin = () => console.log('⟩ [begin]')
-const end = () => console.log('⟨ [end]')
+const on_root_enter = () => {
+	console.log('⟩ [on_root_enter]')
+}
+const on_root_exit = ({state}: BaseParams<string>): string => {
+	console.log('⟨ [on_root_exit]')
+	console.log(`  [state="${state}"]`)
+	return state
+}
 
 const on_node_enter: WalkerReducer<string, AnyParams<string>> = ({$node, $id, depth}) => {
 	console.log(indent(depth) + `⟩ [on_node_enter] #${$id} ` + debug_node_short($node))
@@ -33,6 +39,8 @@ const on_node_enter: WalkerReducer<string, AnyParams<string>> = ({$node, $id, de
 
 const on_node_exit: WalkerReducer<string, AnyParams<string>> = ({$node, $id, state, depth}) => {
 	console.log(indent(depth) + `⟨ [on_node_exit] #${$id}`)
+	console.log(indent(depth) + `  [state="${state}"]`)
+
 	return state
 }
 
@@ -74,8 +82,8 @@ const on_type: WalkerReducer<string, AnyParams<string>> = ({$type, state, $node,
 ////////////////////////////////////
 
 const callbacks: Partial<WalkerCallbacks<string>> = {
-	begin,
-	end,
+	on_root_enter,
+	on_root_exit,
 	on_node_enter,
 	on_node_exit,
 	on_concatenate_str,

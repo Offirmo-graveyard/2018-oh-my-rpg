@@ -1,6 +1,7 @@
 {
 	"name": "@oh-my-rpg/logic-shop",
 	"version": "0.0.1",
+	"private": true,
 	"description": "shop related logic and utilities",
 	"main": "dist/src.es7.cjs/index.js",
 	"typings": "dist/src.es7.cjs/index.js",

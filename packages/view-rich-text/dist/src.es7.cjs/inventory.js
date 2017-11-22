@@ -24,7 +24,7 @@ function render_equipment(inventory) {
             .done();
         $doc_list.$sub[slot] = $doc_item;
     });
-    const $doc = RichText.paragraph()
+    const $doc = RichText.section()
         .pushNode(RichText.heading().pushText('Active equipment:').done(), 'header')
         .pushNode($doc_list, 'list')
         .done();
@@ -47,7 +47,7 @@ function render_backpack(inventory) {
         $doc_list.$type = RichText.NodeType.ul;
         $doc_list.$sub['-'] = RichText.span().pushText('(empty)').done();
     }
-    const $doc = RichText.paragraph()
+    const $doc = RichText.section()
         .pushNode(RichText.heading().pushText('backpack:').done(), 'header')
         .pushNode($doc_list, 'list')
         .done();

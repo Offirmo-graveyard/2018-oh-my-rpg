@@ -1,6 +1,7 @@
 {
 	"name": "@oh-my-rpg/data",
 	"version": "0.0.1",
+	"private": true,
 	"description": "Oh My RPG static data",
 	"main": "dist/src.es7.cjs/index.js",
 	"typings": "dist/src.es7.cjs/index.js",

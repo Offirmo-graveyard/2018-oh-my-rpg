@@ -4,18 +4,21 @@ const webpack = require('webpack')
 const PACKAGE_JSON_PATH = path.join('..', 'package.json')
 const { version } = require(PACKAGE_JSON_PATH)
 
+const PUBLIC_PATH = '/packages/the-boring-rpg'
+
 const config = {
 	entry: './src/index.jsx',
 	output: {
 		path: path.resolve(__dirname, '..'),
-		filename: 'index_bundle.js'
+		filename: 'index_bundle.js',
+		publicPath: PUBLIC_PATH,
 	},
 	module: {
 		rules: [
 			{
 				test: /\.(js|jsx)$/,
-				use: 'babel-loader',
 				exclude: /node_modules/, // https://github.com/babel/babel/issues/6041
+				use: 'babel-loader',
 			},
 			{
 				test: /\.css$/,
@@ -28,7 +31,8 @@ const config = {
 	},
 	plugins: [
 		new webpack.DefinePlugin({
-			'VERSION': JSON.stringify(version),
+			VERSION: JSON.stringify(version),
+			PUBLIC_PATH: JSON.stringify(PUBLIC_PATH),
 		}),
 		new HtmlWebpackPlugin({
 			template: 'src/index.html'
@@ -38,19 +42,22 @@ const config = {
 
 
 if (process.env.NODE_ENV === 'production') {
+	const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 	config.plugins.push(
 		new webpack.DefinePlugin({
 			'process.env': {
 				'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 			}
 		}),
-		new webpack.optimize.UglifyJsPlugin()
+		new UglifyJsPlugin(),
 	)
 }
 else {
 	config.devServer = {
-		historyApiFallback: true,
+		historyApiFallback: {
+			index: PUBLIC_PATH,
+		},
 	}
 }
 
-module.exports = config;
+module.exports = config

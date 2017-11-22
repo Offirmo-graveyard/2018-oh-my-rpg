@@ -11,8 +11,8 @@ interface AnyParams<State> extends BaseParams<State> {
     [x: string]: any;
 }
 interface WalkerCallbacks<State> {
-    begin(): void;
-    end(): void;
+    on_root_enter(): void;
+    on_root_exit(params: BaseParams<State>): any;
     on_node_enter: any;
     on_node_exit: WalkerReducer<State, AnyParams<State>>;
     on_concatenate_str: WalkerReducer<State, AnyParams<State>>;

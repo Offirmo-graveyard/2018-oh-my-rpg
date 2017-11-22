@@ -100,7 +100,7 @@ function render_adventure(a) {
     const story = _.adventures[a.hid];
     const hasLoot = !!Object.keys($loot_list.$sub).length;
     const $loot = hasLoot
-        ? RichText.paragraph().pushText('{{br}}{{br}}Loot:').pushNode($loot_list, 'list').done()
+        ? RichText.section().pushText('Loot:').pushNode($loot_list, 'list').done()
         : RichText.span().done();
     // TODO weap improvement ?
     // TODO charac gains?

@@ -1,6 +1,7 @@
 {
 	"name": "@oh-my-rpg/state-prng",
 	"version": "0.0.1",
+	"private": true,
 	"description": "evolving serializable and restorable pseudo random generator state and reducer",
 	"main": "dist/src.es7.cjs/index.js",
 	"typings": "dist/src.es7.cjs/index.js",

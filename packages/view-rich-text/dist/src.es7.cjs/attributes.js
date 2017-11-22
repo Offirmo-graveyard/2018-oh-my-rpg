@@ -28,7 +28,7 @@ function render_attributes(state) {
             .done();
         $doc_list.$sub['' + index] = $doc_item;
     });
-    const $doc = RichText.paragraph()
+    const $doc = RichText.section()
         .pushNode(RichText.heading().pushText('Attributes:').done(), 'header')
         .pushNode($doc_list, 'list')
         .done();
@@ -38,7 +38,6 @@ exports.render_attributes = render_attributes;
 function render_character_sheet(state) {
     const $doc = RichText.section()
         .pushNode(render_avatar(state), 'avatar')
-        .pushText('{{br}}')
         .pushNode(render_attributes(state), 'attributes')
         .done();
     return $doc;
