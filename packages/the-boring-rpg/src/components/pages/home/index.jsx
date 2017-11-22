@@ -16,18 +16,19 @@ class Home extends React.Component {
 		this.state = {
 			bubbles: []
 		}
-		this.addRichTextBubble(tbrpg.get_recap(this.props.workspace.state), true)
-		this.addRichTextBubble(tbrpg.get_tip(this.props.workspace.state), true)
+		this.addRichTextBubble(tbrpg.get_recap(this.props.workspace.state), {before_mount: true})
+		this.addRichTextBubble(tbrpg.get_tip(this.props.workspace.state), {before_mount: true})
+		this.addRichTextBubble('What do you want to do?', {before_mount: true})
 	}
 
-	addRichTextBubble(document, before_mount = false) {
+	addRichTextBubble(document, {before_mount = false, direction = 'ltr'} = {}) {
 		console.log('addRichTextBubble', document)
 		if (!document) return
 
 		const key = this.state.bubbles.length + 1
 		const bubble = (
-			<ChatBubble key={key}>
-				{rich_text_to_react(document)}
+			<ChatBubble key={key} direction={direction}>
+				{document.$v ? rich_text_to_react(document) : document}
 			</ChatBubble>
 		)
 
@@ -42,17 +43,14 @@ class Home extends React.Component {
 		const {workspace} = this.props
 		const {state} = workspace
 
-
-		const doc_tip = tbrpg.get_tip(state)
-
-		const doc_last_adventure = state.last_adventure && render_adventure(state.last_adventure)
-
 		this.element.addEventListener('click', event => {
 			console.log('click detected on', event.target)
 			const {workspace} = this.props
+			this.addRichTextBubble('Let’s go adventuring!', {direction: 'rtl'})
 			play(workspace)
 			this.addRichTextBubble(render_adventure(workspace.state.last_adventure))
 			this.addRichTextBubble(tbrpg.get_tip(workspace.state))
+			this.addRichTextBubble('What do you want to do?')
 		})
 	}
 

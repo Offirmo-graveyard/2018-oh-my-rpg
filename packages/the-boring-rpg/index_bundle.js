@@ -48035,22 +48035,6 @@ function get_tip(state) {
     return null;
 }
 exports.get_tip = get_tip;
-/*
-    const {
-        level,
-        health,
-        mana,
-        strength,
-        agility,
-        charisma,
-        wisdom,
-        luck,
-    } = state.avatar.attributes
-    return `The great saga of ${stylize_string.bold(state.avatar.name)}, ${state.avatar.klass} LVL${level}
-HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS:${wisdom} LUCK:${luck}`
-}
-
- */
 //# sourceMappingURL=messages.js.map
 
 /***/ }),
@@ -52209,15 +52193,20 @@ var Home = function (_React$Component) {
 		_this.state = {
 			bubbles: []
 		};
-		_this.addRichTextBubble(tbrpg.get_recap(_this.props.workspace.state), true);
-		_this.addRichTextBubble(tbrpg.get_tip(_this.props.workspace.state), true);
+		_this.addRichTextBubble(tbrpg.get_recap(_this.props.workspace.state), { before_mount: true });
+		_this.addRichTextBubble(tbrpg.get_tip(_this.props.workspace.state), { before_mount: true });
+		_this.addRichTextBubble('What do you want to do?', { before_mount: true });
 		return _this;
 	}
 
 	_createClass(Home, [{
 		key: 'addRichTextBubble',
 		value: function addRichTextBubble(document) {
-			var before_mount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+			var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+			    _ref$before_mount = _ref.before_mount,
+			    before_mount = _ref$before_mount === undefined ? false : _ref$before_mount,
+			    _ref$direction = _ref.direction,
+			    direction = _ref$direction === undefined ? 'ltr' : _ref$direction;
 
 			console.log('addRichTextBubble', document);
 			if (!document) return;
@@ -52225,8 +52214,8 @@ var Home = function (_React$Component) {
 			var key = this.state.bubbles.length + 1;
 			var bubble = _react2.default.createElement(
 				_chatInterface.ChatBubble,
-				{ key: key },
-				(0, _rich_text_to_react.rich_text_to_react)(document)
+				{ key: key, direction: direction },
+				document.$v ? (0, _rich_text_to_react.rich_text_to_react)(document) : document
 			);
 
 			if (before_mount) this.state.bubbles.push(bubble);else this.setState(function (state) {
@@ -52242,17 +52231,15 @@ var Home = function (_React$Component) {
 			var state = workspace.state;
 
 
-			var doc_tip = tbrpg.get_tip(state);
-
-			var doc_last_adventure = state.last_adventure && (0, _viewRichText.render_adventure)(state.last_adventure);
-
 			this.element.addEventListener('click', function (event) {
 				console.log('click detected on', event.target);
 				var workspace = _this2.props.workspace;
 
+				_this2.addRichTextBubble('Let’s go adventuring!', { direction: 'rtl' });
 				(0, _actions.play)(workspace);
 				_this2.addRichTextBubble((0, _viewRichText.render_adventure)(workspace.state.last_adventure));
 				_this2.addRichTextBubble(tbrpg.get_tip(workspace.state));
+				_this2.addRichTextBubble('What do you want to do?');
 			});
 		}
 	}, {
@@ -69693,7 +69680,8 @@ function Chat(_ref) {
 }
 
 function ChatBubble(_ref2) {
-	var direction = _ref2.direction,
+	var _ref2$direction = _ref2.direction,
+	    direction = _ref2$direction === undefined ? 'ltr' : _ref2$direction,
 	    children = _ref2.children;
 
 	var classes = (0, _classnames2.default)('chat__bubble', { 'chat__bubble--ltr': direction === 'ltr' }, { 'chat__bubble--rtl': direction === 'rtl' });
@@ -70152,7 +70140,7 @@ exports = module.exports = __webpack_require__(82)(undefined);
 
 
 // module
-exports.push([module.i, "\n.the-boring-rpg-nav {\n\tlist-style-type: none;\n\tpadding: 0;\n\tdisplay: flex;\n}\n\n.the-boring-rpg-nav li {\n}\n.the-boring-rpg-nav li:not(:first-child) {\n\tmargin-left: 20px;\n}\n\n.the-boring-rpg-nav a {\n\ttext-decoration: none;\n}\n.the-boring-rpg-nav a.active {\n\tfont-weight: bold;\n}\n.the-boring-rpg-nav a.active:before {\n\tcontent: '';\n}\n\n\n.chat__bubble {\n\tborder: solid 1px;\n\tpadding: 7px;\n\tborder-radius: 10px;\n\tmargin: 7px;\n}\n\n.item__name,\n.avatar__name,\n.avatar__class,\n.monster__name {\n\tfont-weight: bold;\n}\n\n.item--quality--common {\n\tcolor: #909090;\n}\n.item--quality--uncommon {\n\tcolor: forestgreen;\n}\n.item--quality--epic {\n\tcolor: mediumblue;\n}\n.item--quality--legendary {\n\tcolor: #d9534f;\n}\n.item--quality--artifact {\n\tcolor: #fad700;\n}\n\n.monster--rank--common {\n}\n.monster--rank--elite {\n\tcolor: #fad700;\n}\n.monster--rank--boss {\n\tcolor: #d9534f;\n}\n\n\n.item--weapon:before {\n\tcontent: '\\2694   ';\n}\n.item--armor:before {\n\tcontent: '\\1F6E1   ';\n}\n\n.currency--coin:before {\n\tcontent: '\\1F4B0   ';\n}\n.currency--token:before {\n\tcontent: '\\1F4A0    ';\n}\n/*\n\nswitch($class) {\n\n\t\tcase 'attribute--level':\n\t\t\treturn '👶 ' + WIDTH_COMPENSATION + str\n\t\tcase 'attribute--health':\n\t\t\treturn '💗 ' + WIDTH_COMPENSATION + str\n\t\tcase 'attribute--mana':\n\t\t\treturn '💙 ' + WIDTH_COMPENSATION + str\n\t\tcase 'attribute--agility':\n\t\t\treturn '🤸 ' + WIDTH_COMPENSATION + str\n\t\tcase 'attribute--luck':\n\t\t\treturn '🤹 ' + WIDTH_COMPENSATION + str\n\t\tcase 'attribute--strength':\n\t\t\treturn '🏋 ' + WIDTH_COMPENSATION + str\n\t\tcase 'attribute--charisma':\n\t\t\treturn '👨🎤 ' + WIDTH_COMPENSATION + str\n\t\tcase 'attribute--wisdom':\n\t\t\treturn '👵 ' + WIDTH_COMPENSATION + str\n\n\t\tcase 'monster':\n\t\t\treturn str + ' ' + hints.possible_emoji + WIDTH_COMPENSATION\n\t\tcase 'rank--common':\n\t\t\treturn str\n\t\tcase 'rank--elite':\n\t\t\treturn stylize_string.bold(str + '★')\n\t\tcase 'rank--boss':\n\t\t\treturn stylize_string.bold(str + ' 👑' + WIDTH_COMPENSATION)\n */\n", ""]);
+exports.push([module.i, "body {\n\tmargin: 12px auto;\n\tfont-family: \"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif;\n\tcolor: #333;\n\tmax-width: 650px;\n\tline-height: 1.6;\n\tfont-size: 12px;\n\tpadding: 0 10px;\n}\nh1, h2, h3 {\n\tline-height: 1.2;\n}\n\n.the-boring-rpg-nav {\n\tlist-style-type: none;\n\tpadding: 0;\n\tdisplay: flex;\n}\n\n.the-boring-rpg-nav li {\n}\n.the-boring-rpg-nav li:not(:first-child) {\n\tmargin-left: 20px;\n}\n\n.the-boring-rpg-nav a {\n\ttext-decoration: none;\n}\n.the-boring-rpg-nav a.active {\n\tfont-weight: bold;\n}\n.the-boring-rpg-nav a.active:before {\n\tcontent: '';\n}\n\n\n.chat {\n\tdisplay: flex;\n\tflex-direction: column;\n}\n.chat__bubble {\n\tborder: solid 1px;\n\tpadding: 7px;\n\txxborder-radius: 10px;\n\tborder-right: 0;\n\tborder-top: 0;\n\tmargin: 7px;\n\twidth: fit-content;\n\tmax-width: 70%;\n}\n.chat__bubble--ltr {\n\talign-self: flex-start;\n}\n.chat__bubble--rtl {\n\talign-self: flex-end;\n}\n\n.item__name,\n.avatar__name,\n.avatar__class,\n.monster__name {\n\tfont-weight: bold;\n}\n\n.item--quality--common {\n\tcolor: #909090;\n}\n.item--quality--uncommon {\n\tcolor: forestgreen;\n}\n.item--quality--epic {\n\tcolor: mediumblue;\n}\n.item--quality--legendary {\n\tcolor: #d9534f;\n}\n.item--quality--artifact {\n\tcolor: #fad700;\n}\n\n.monster--rank--common {\n}\n.monster--rank--elite {\n\tcolor: #fad700;\n}\n.monster--rank--boss {\n\tcolor: #d9534f;\n}\n\n\n.item--weapon:before {\n\tcontent: '\\2694   ';\n}\n.item--armor:before {\n\tcontent: '\\1F6E1   ';\n}\n\n.currency--coin:before {\n\tcontent: '\\1F4B0   ';\n}\n.currency--token:before {\n\tcontent: '\\1F4A0    ';\n}\n/*\n\nswitch($class) {\n\n\t\tcase 'attribute--level':\n\t\t\treturn '👶 ' + WIDTH_COMPENSATION + str\n\t\tcase 'attribute--health':\n\t\t\treturn '💗 ' + WIDTH_COMPENSATION + str\n\t\tcase 'attribute--mana':\n\t\t\treturn '💙 ' + WIDTH_COMPENSATION + str\n\t\tcase 'attribute--agility':\n\t\t\treturn '🤸 ' + WIDTH_COMPENSATION + str\n\t\tcase 'attribute--luck':\n\t\t\treturn '🤹 ' + WIDTH_COMPENSATION + str\n\t\tcase 'attribute--strength':\n\t\t\treturn '🏋 ' + WIDTH_COMPENSATION + str\n\t\tcase 'attribute--charisma':\n\t\t\treturn '👨🎤 ' + WIDTH_COMPENSATION + str\n\t\tcase 'attribute--wisdom':\n\t\t\treturn '👵 ' + WIDTH_COMPENSATION + str\n\n\t\tcase 'monster':\n\t\t\treturn str + ' ' + hints.possible_emoji + WIDTH_COMPENSATION\n\t\tcase 'rank--common':\n\t\t\treturn str\n\t\tcase 'rank--elite':\n\t\t\treturn stylize_string.bold(str + '★')\n\t\tcase 'rank--boss':\n\t\t\treturn stylize_string.bold(str + ' 👑' + WIDTH_COMPENSATION)\n */\n", ""]);
 
 // exports
 

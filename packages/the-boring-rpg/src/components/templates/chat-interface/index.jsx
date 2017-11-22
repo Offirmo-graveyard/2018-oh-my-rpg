@@ -10,7 +10,7 @@ function Chat({children}) {
 	)
 }
 
-function ChatBubble({direction, children}) {
+function ChatBubble({direction = 'ltr', children}) {
 	const classes = classNames(
 		'chat__bubble',
 		{ 'chat__bubble--ltr': direction === 'ltr'},

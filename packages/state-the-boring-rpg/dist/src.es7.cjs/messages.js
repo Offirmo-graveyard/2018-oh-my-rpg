@@ -41,20 +41,4 @@ function get_tip(state) {
     return null;
 }
 exports.get_tip = get_tip;
-/*
-    const {
-        level,
-        health,
-        mana,
-        strength,
-        agility,
-        charisma,
-        wisdom,
-        luck,
-    } = state.avatar.attributes
-    return `The great saga of ${stylize_string.bold(state.avatar.name)}, ${state.avatar.klass} LVL${level}
-HEALTH:${health} MANA:${mana} STR:${strength} AGI:${agility} CHA:${charisma} WIS:${wisdom} LUCK:${luck}`
-}
-
- */
 //# sourceMappingURL=messages.js.map

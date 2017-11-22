@@ -1,3 +1,15 @@
+body {
+	margin: 12px auto;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	color: #333;
+	max-width: 650px;
+	line-height: 1.6;
+	font-size: 12px;
+	padding: 0 10px;
+}
+h1, h2, h3 {
+	line-height: 1.2;
+}
 
 .the-boring-rpg-nav {
 	list-style-type: none;
@@ -22,11 +34,25 @@
 }
 
 
+.chat {
+	display: flex;
+	flex-direction: column;
+}
 .chat__bubble {
 	border: solid 1px;
 	padding: 7px;
-	border-radius: 10px;
+	xxborder-radius: 10px;
+	border-right: 0;
+	border-top: 0;
 	margin: 7px;
+	width: fit-content;
+	max-width: 70%;
+}
+.chat__bubble--ltr {
+	align-self: flex-start;
+}
+.chat__bubble--rtl {
+	align-self: flex-end;
 }
 
 .item__name,
