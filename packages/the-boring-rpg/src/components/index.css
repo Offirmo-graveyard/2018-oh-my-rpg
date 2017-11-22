@@ -1,17 +1,32 @@
 
 .the-boring-rpg-nav {
 	list-style-type: none;
+	padding: 0;
 	display: flex;
 }
 
 .the-boring-rpg-nav li {
-	margin-right: 10px;
 }
+.the-boring-rpg-nav li:not(:first-child) {
+	margin-left: 20px;
+}
+
 .the-boring-rpg-nav a {
 	text-decoration: none;
 }
 .the-boring-rpg-nav a.active {
 	font-weight: bold;
+}
+.the-boring-rpg-nav a.active:before {
+	content: '';
+}
+
+
+.chat__bubble {
+	border: solid 1px;
+	padding: 7px;
+	border-radius: 10px;
+	margin: 7px;
 }
 
 .item__name,

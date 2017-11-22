@@ -3,19 +3,56 @@ import React from 'react'
 const tbrpg = require('@oh-my-rpg/state-the-boring-rpg')
 import { render_adventure } from '@oh-my-rpg/view-rich-text'
 
+import { Chat, ChatBubble } from '../../templates/chat-interface'
 import { play } from '../../../services/actions'
 import { rich_text_to_react } from '../../../utils/rich_text_to_react'
 
 
 class Home extends React.Component {
 
+	constructor (props) {
+		super(props)
+
+		this.state = {
+			bubbles: []
+		}
+		this.addRichTextBubble(tbrpg.get_recap(this.props.workspace.state), true)
+		this.addRichTextBubble(tbrpg.get_tip(this.props.workspace.state), true)
+	}
+
+	addRichTextBubble(document, before_mount = false) {
+		console.log('addRichTextBubble', document)
+		if (!document) return
+
+		const key = this.state.bubbles.length + 1
+		const bubble = (
+			<ChatBubble key={key}>
+				{rich_text_to_react(document)}
+			</ChatBubble>
+		)
+
+		if (before_mount)
+			this.state.bubbles.push(bubble)
+		else
+			this.setState(state => ({ bubbles: state.bubbles.concat(bubble) }))
+	}
+
+
 	componentDidMount () {
-		console.info('~~ componentDidMount', arguments)
+		const {workspace} = this.props
+		const {state} = workspace
+
+
+		const doc_tip = tbrpg.get_tip(state)
+
+		const doc_last_adventure = state.last_adventure && render_adventure(state.last_adventure)
+
 		this.element.addEventListener('click', event => {
 			console.log('click detected on', event.target)
 			const {workspace} = this.props
 			play(workspace)
-			this.forceUpdate()
+			this.addRichTextBubble(render_adventure(workspace.state.last_adventure))
+			this.addRichTextBubble(tbrpg.get_tip(workspace.state))
 		})
 	}
 
@@ -27,15 +64,12 @@ class Home extends React.Component {
 		const {workspace} = this.props
 		const {state} = workspace
 
-		const doc_recap = tbrpg.get_recap(state)
-		const doc_tip = tbrpg.get_tip(state)
-		const doc_adventure = state.last_adventure && render_adventure(state.last_adventure)
-
+		console.log('render', this.state)
 		return (
 			<div ref={elt => this.element = elt}>
-				{doc_recap && <div key={'recap'}>{rich_text_to_react(doc_recap)}</div>}
-				{doc_tip && <div key={'tip'}>{rich_text_to_react(doc_tip)}</div>}
-				{doc_adventure && <div key={'la'}>{rich_text_to_react(doc_adventure)}</div>}
+				<Chat>
+					{this.state.bubbles}
+				</Chat>
 				<button>play</button>
 			</div>
 		)

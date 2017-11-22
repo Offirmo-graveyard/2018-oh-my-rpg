@@ -4,7 +4,7 @@ import { State as CharacterState, CharacterAttribute, CHARACTER_STATS_SORTED } f
 
 function render_avatar(state: CharacterState): RichText.Document {
 	// TODO refactor
-	const $doc = RichText.paragraph()
+	const $doc = RichText.section()
 		.pushText('name:  {{name}}{{br}}')
 		.pushText('class: {{class}}')
 		.pushRawNode(

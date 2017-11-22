@@ -4,7 +4,7 @@ const RichText = require("@oh-my-rpg/rich-text-format");
 function get_recap(state) {
     const isNewGame = (state.meaningful_interaction_count === 0);
     if (isNewGame) {
-        return RichText.paragraph()
+        return RichText.section()
             .pushStrong('You are an otherworlder.{{br}}')
             .pushText('Congratulations, adventurer from another world!{{br}}')
             .pushText('You were chosen to enter the unknown realm of ')
@@ -14,7 +14,7 @@ function get_recap(state) {
             .pushText('But for now, let’s go on an adventure, for glory ⚔ and loot 📦 💰 !')
             .done();
     }
-    return RichText.paragraph()
+    return RichText.section()
         .pushText('You are ')
         .pushNode(RichText.span().addClass('avatar__name').pushText(state.avatar.name).done(), 'name')
         .pushText(', the ')
@@ -30,7 +30,7 @@ exports.get_recap = get_recap;
 function get_tip(state) {
     const hasEverPlayed = !!state.click_count;
     if (!hasEverPlayed)
-        return RichText.paragraph()
+        return RichText.section()
             .pushStrong('Tip: ')
             .pushText('Select ')
             .pushStrong('play')

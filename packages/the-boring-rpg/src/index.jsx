@@ -4,6 +4,7 @@ console.log('Hello, world!')
 
 import React from 'react'
 import ReactDOM from 'react-dom'
+import 'normalize.css'
 
 import { init_savegame} from './services/init'
 import { App } from './components/app'

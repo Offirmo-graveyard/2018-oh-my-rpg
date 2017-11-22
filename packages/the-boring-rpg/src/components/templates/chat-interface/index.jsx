@@ -1,24 +1,30 @@
 import React from 'react'
 import classNames from 'classnames'
 
-function Chat() {
+function Chat({children}) {
+	const classes = classNames('chat')
 	return (
-		<div className="">
-			{this.props.children}
+		<div className={classes}>
+			{children}
 		</div>
 	)
 }
 
-function ChatBubble({direction}) {
-	const classes = ''
+function ChatBubble({direction, children}) {
+	const classes = classNames(
+		'chat__bubble',
+		{ 'chat__bubble--ltr': direction === 'ltr'},
+		{ 'chat__bubble--rtl': direction === 'rtl'},
+	)
 	return (
-		<div className="">
-			{this.props.children}
+		<div className={classes}>
+			{children}
 		</div>
 	)
 }
 
 export {
 	Chat,
+	ChatBubble,
 }
 

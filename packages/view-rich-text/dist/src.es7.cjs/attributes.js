@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const RichText = require("@oh-my-rpg/rich-text-format");
 const state_character_1 = require("@oh-my-rpg/state-character");
 function render_avatar(state) {
-    const $doc = RichText.paragraph()
+    // TODO refactor
+    const $doc = RichText.section()
         .pushText('name:  {{name}}{{br}}')
         .pushText('class: {{class}}')
         .pushRawNode(RichText.span().addClass('avatar__name').pushText(state.name).done(), 'name')

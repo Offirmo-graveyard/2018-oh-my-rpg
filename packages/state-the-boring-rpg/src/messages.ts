@@ -10,7 +10,7 @@ import {
 function get_recap(state: Readonly<State>): RichText.Document {
 	const isNewGame = (state.meaningful_interaction_count === 0)
 	if (isNewGame) {
-		return RichText.paragraph()
+		return RichText.section()
 			.pushStrong('You are an otherworlder.{{br}}')
 			.pushText('Congratulations, adventurer from another world!{{br}}')
 			.pushText('You were chosen to enter the unknown realm of ')
@@ -21,7 +21,7 @@ function get_recap(state: Readonly<State>): RichText.Document {
 			.done()
 	}
 
-	return RichText.paragraph()
+	return RichText.section()
 		.pushText('You are ')
 		.pushNode(
 			RichText.span().addClass('avatar__name').pushText(state.avatar.name).done(),
@@ -44,7 +44,7 @@ function get_tip(state: Readonly<State>): RichText.Document | null {
 	const hasEverPlayed = !!state.click_count
 
 	if(!hasEverPlayed)
-		return RichText.paragraph()
+		return RichText.section()
 			.pushStrong('Tip: ')
 			.pushText('Select ')
 			.pushStrong('play')
