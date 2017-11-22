@@ -34,6 +34,11 @@ const config = {
 			VERSION: JSON.stringify(version),
 			PUBLIC_PATH: JSON.stringify(PUBLIC_PATH),
 		}),
+		new webpack.DefinePlugin({
+			'process.env': {
+				'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+			}
+		}),
 		new HtmlWebpackPlugin({
 			template: 'src/index.html'
 		})
@@ -44,11 +49,6 @@ const config = {
 if (process.env.NODE_ENV === 'production') {
 	const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 	config.plugins.push(
-		new webpack.DefinePlugin({
-			'process.env': {
-				'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-			}
-		}),
 		new UglifyJsPlugin(),
 	)
 }

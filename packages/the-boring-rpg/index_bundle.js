@@ -1964,7 +1964,7 @@ function isnan (val) {
 "use strict";
 
 
-if (production === 'production') {
+if (undefined === 'production') {
   module.exports = __webpack_require__(147);
 } else {
   module.exports = __webpack_require__(148);
@@ -5430,7 +5430,7 @@ if (production === 'production') {
 
 var warning = function() {};
 
-if (production !== 'production') {
+if (undefined !== 'production') {
   warning = function(condition, format, args) {
     var len = arguments.length;
     args = new Array(len > 2 ? len - 2 : 0);
@@ -5520,7 +5520,7 @@ assert.equal = function assertEqual(l, r, msg) {
  * LICENSE file in the root directory of this source tree.
  */
 
-if (production !== 'production') {
+if (undefined !== 'production') {
   var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
     Symbol.for &&
     Symbol.for('react.element')) ||
@@ -5586,7 +5586,7 @@ tslib_1.__exportStar(__webpack_require__(253), exports);
  */
 
 var invariant = function(condition, format, a, b, c, d, e, f) {
-  if (production !== 'production') {
+  if (undefined !== 'production') {
     if (format === undefined) {
       throw new Error('invariant requires an error message argument');
     }
@@ -7032,7 +7032,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 var validateFormat = function validateFormat(format) {};
 
-if (production !== 'production') {
+if (undefined !== 'production') {
   validateFormat = function validateFormat(format) {
     if (format === undefined) {
       throw new Error('invariant requires an error message argument');
@@ -8527,7 +8527,7 @@ var createPath = function createPath(location) {
 
 var emptyObject = {};
 
-if (production !== 'production') {
+if (undefined !== 'production') {
   Object.freeze(emptyObject);
 }
 
@@ -8559,7 +8559,7 @@ var emptyFunction = __webpack_require__(16);
 
 var warning = emptyFunction;
 
-if (production !== 'production') {
+if (undefined !== 'production') {
   var printWarning = function printWarning(format) {
     for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
@@ -9340,7 +9340,7 @@ module.exports = {
 
 
 
-if (production !== 'production') {
+if (undefined !== 'production') {
   var invariant = __webpack_require__(25);
   var warning = __webpack_require__(41);
   var ReactPropTypesSecret = __webpack_require__(53);
@@ -9359,7 +9359,7 @@ if (production !== 'production') {
  * @private
  */
 function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
-  if (production !== 'production') {
+  if (undefined !== 'production') {
     for (var typeSpecName in typeSpecs) {
       if (typeSpecs.hasOwnProperty(typeSpecName)) {
         var error;
@@ -12018,7 +12018,7 @@ var EventListener = {
         }
       };
     } else {
-      if (production !== 'production') {
+      if (undefined !== 'production') {
         console.error('Attempted to listen to events during the capture phase on a ' + 'browser that does not support the capture phase. Your application ' + 'will not receive some events.');
       }
       return {
@@ -18216,7 +18216,7 @@ version:"16.1.1",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{ReactCurren
 
 
 
-if (production !== "production") {
+if (undefined !== "production") {
   (function() {
 'use strict';
 
@@ -19565,7 +19565,7 @@ function checkDCE() {
   ) {
     return;
   }
-  if (production !== 'production') {
+  if (undefined !== 'production') {
     // This branch is unreachable because this function is only called
     // in production, but the condition is true only in development.
     // Therefore if the branch is still here, dead code elimination wasn't
@@ -19585,7 +19585,7 @@ function checkDCE() {
   }
 }
 
-if (production === 'production') {
+if (undefined === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
@@ -19901,7 +19901,7 @@ module.exports = isNode;
 
 
 
-if (production !== "production") {
+if (undefined !== "production") {
   (function() {
 'use strict';
 
@@ -49530,7 +49530,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
   PropTypeError.prototype = Error.prototype;
 
   function createChainableTypeChecker(validate) {
-    if (production !== 'production') {
+    if (undefined !== 'production') {
       var manualPropTypeCallCache = {};
       var manualPropTypeWarningCount = 0;
     }
@@ -49547,7 +49547,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
             'Use `PropTypes.checkPropTypes()` to call them. ' +
             'Read more at http://fb.me/use-check-prop-types'
           );
-        } else if (production !== 'production' && typeof console !== 'undefined') {
+        } else if (undefined !== 'production' && typeof console !== 'undefined') {
           // Old behavior for people using React.PropTypes
           var cacheKey = componentName + ':' + propName;
           if (
@@ -49657,7 +49657,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
   function createEnumTypeChecker(expectedValues) {
     if (!Array.isArray(expectedValues)) {
-      production !== 'production' ? warning(false, 'Invalid argument supplied to oneOf, expected an instance of array.') : void 0;
+      undefined !== 'production' ? warning(false, 'Invalid argument supplied to oneOf, expected an instance of array.') : void 0;
       return emptyFunction.thatReturnsNull;
     }
 
@@ -49700,7 +49700,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
   function createUnionTypeChecker(arrayOfTypeCheckers) {
     if (!Array.isArray(arrayOfTypeCheckers)) {
-      production !== 'production' ? warning(false, 'Invalid argument supplied to oneOfType, expected an instance of array.') : void 0;
+      undefined !== 'production' ? warning(false, 'Invalid argument supplied to oneOfType, expected an instance of array.') : void 0;
       return emptyFunction.thatReturnsNull;
     }
 

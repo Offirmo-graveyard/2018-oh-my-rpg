@@ -23,7 +23,7 @@
 		"clean:build": "rm -rf dist",
 		"clean:deps": "rm -rf package-lock.json node_modules",
 		"build:prod": "webpack --config meta/webpack.config.ts --define process.env.NODE_ENV=\"production\"",
-		"start": "webpack-dev-server -d --config meta/webpack.config.ts",
+		"start": "webpack-dev-server -d --config meta/webpack.config.ts --define process.env.NODE_ENV=\"development\"",
 		"test": "echo 'TODO'",
 		"__helpers": "----------- Helpers -----------",
 		"build": "run-s clean:build build:prod",
