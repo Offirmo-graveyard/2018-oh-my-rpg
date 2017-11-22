@@ -9212,7 +9212,7 @@ tslib_1.__exportStar(__webpack_require__(75), exports);
 
 var RichText = __webpack_require__(15);
 
-var callbacks = __webpack_require__(329);
+var callbacks = __webpack_require__(330);
 
 function rich_text_to_react(doc) {
 	return RichText.walk(doc, callbacks);
@@ -48356,17 +48356,17 @@ var _nav = __webpack_require__(319);
 
 var _home = __webpack_require__(320);
 
-var _inventory = __webpack_require__(330);
+var _inventory = __webpack_require__(331);
 
-var _characterSheet = __webpack_require__(331);
+var _characterSheet = __webpack_require__(332);
 
-var _meta = __webpack_require__(332);
+var _meta = __webpack_require__(333);
 
-var _dummy = __webpack_require__(333);
+var _dummy = __webpack_require__(334);
 
 var _routes = __webpack_require__(145);
 
-__webpack_require__(334);
+__webpack_require__(335);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52168,7 +52168,7 @@ var _viewRichText = __webpack_require__(49);
 
 var _chatInterface = __webpack_require__(327);
 
-var _actions = __webpack_require__(328);
+var _actions = __webpack_require__(329);
 
 var _rich_text_to_react = __webpack_require__(50);
 
@@ -69666,6 +69666,8 @@ var _classnames = __webpack_require__(147);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
+var _pinScrollToBottom = __webpack_require__(328);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Chat(_ref) {
@@ -69688,7 +69690,11 @@ function ChatBubble(_ref2) {
 	return _react2.default.createElement(
 		'div',
 		{ className: classes },
-		children
+		_react2.default.createElement(
+			_pinScrollToBottom.PinScrollToBottom,
+			null,
+			children
+		)
 	);
 }
 
@@ -69697,6 +69703,78 @@ exports.ChatBubble = ChatBubble;
 
 /***/ }),
 /* 328 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.PinScrollToBottom = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(3);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PinScrollToBottom = function (_React$Component) {
+	_inherits(PinScrollToBottom, _React$Component);
+
+	function PinScrollToBottom() {
+		_classCallCheck(this, PinScrollToBottom);
+
+		return _possibleConstructorReturn(this, (PinScrollToBottom.__proto__ || Object.getPrototypeOf(PinScrollToBottom)).apply(this, arguments));
+	}
+
+	_createClass(PinScrollToBottom, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.scroll();
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate(prevProps) {
+			this.scroll();
+		}
+	}, {
+		key: 'componentWillUpdate',
+		value: function componentWillUpdate() {
+			var _document$documentEle = document.documentElement,
+			    clientHeight = _document$documentEle.clientHeight,
+			    scrollTop = _document$documentEle.scrollTop,
+			    scrollHeight = _document$documentEle.scrollHeight;
+
+			this.scrolledUp = clientHeight + scrollTop < scrollHeight;
+		}
+	}, {
+		key: 'scroll',
+		value: function scroll() {
+			if (!this.scrolledUp) window.scrollTo(0, document.documentElement.scrollHeight);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return this.props.children;
+		}
+	}]);
+
+	return PinScrollToBottom;
+}(_react2.default.Component);
+
+exports.PinScrollToBottom = PinScrollToBottom;
+
+/***/ }),
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69790,7 +69868,7 @@ exports.change_class = change_class;
 exports.reset_all = reset_all;
 
 /***/ }),
-/* 329 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69957,7 +70035,7 @@ var callbacks = {
 module.exports = callbacks;
 
 /***/ }),
-/* 330 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69994,7 +70072,7 @@ function Inventory(_ref) {
 exports.Inventory = Inventory;
 
 /***/ }),
-/* 331 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70031,7 +70109,7 @@ function CharacterSheet(_ref) {
 exports.CharacterSheet = CharacterSheet;
 
 /***/ }),
-/* 332 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70069,7 +70147,7 @@ function Meta(_ref) {
 exports.Meta = Meta;
 
 /***/ }),
-/* 333 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70101,13 +70179,13 @@ function Dummy(_ref) {
 exports.Dummy = Dummy;
 
 /***/ }),
-/* 334 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(335);
+var content = __webpack_require__(336);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -70132,7 +70210,7 @@ if(false) {
 }
 
 /***/ }),
-/* 335 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(82)(undefined);

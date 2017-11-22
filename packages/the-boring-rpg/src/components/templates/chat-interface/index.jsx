@@ -1,5 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
+import { PinScrollToBottom } from '../../atoms/pin-scroll-to-bottom'
 
 function Chat({children}) {
 	const classes = classNames('chat')
@@ -18,7 +19,9 @@ function ChatBubble({direction = 'ltr', children}) {
 	)
 	return (
 		<div className={classes}>
-			{children}
+			<PinScrollToBottom>
+				{children}
+			</PinScrollToBottom>
 		</div>
 	)
 }
