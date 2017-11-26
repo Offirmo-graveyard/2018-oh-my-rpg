@@ -237,8 +237,15 @@ function create({DEBUG, shouldCenter}) {
 		}))
 	}
 
+	const gauge = new Gauge({
+		template: [
+			{type: 'activityIndicator', kerning: 1, length: 1},
+			{type: 'section', kerning: 1, default: ''},
+			{type: 'subsection', kerning: 1, default: ''},
+			{type: 'progressbar', length: 33},
+		],
+	})
 	function display_progress({progress_promise, msg = 'loading', msgg_acknowledge} = {}) {
-		const gauge = new Gauge()
 		const progress_msg = msg + '...'
 		gauge.show(progress_msg, 0)
 		const auto_pulse = setInterval(() => gauge.pulse(), 100)
@@ -256,9 +263,10 @@ function create({DEBUG, shouldCenter}) {
 				gauge.hide()
 
 				let final_msg = success ? stylize_string.green('✔') : stylize_string.red('❌')
-				final_msg += ' ' + msg
-				if (msgg_acknowledge)
-					final_msg += ': ' + msgg_acknowledge(success)
+				final_msg += ' '
+				final_msg += msgg_acknowledge
+					? msgg_acknowledge(success)
+					: msg
 				console.log(final_msg)
 			})
 			.catch(err => {

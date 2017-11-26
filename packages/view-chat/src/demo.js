@@ -1,5 +1,6 @@
 'use strict';
 
+const i_will_handle_rejection_later = require('caught')
 
 function* get_next_step1() {
 	const state = {
@@ -18,7 +19,7 @@ function* get_next_step1() {
 		},
 		{
 			type: 'progress',
-			progress_promise: new Promise((resolve, reject) => setTimeout(() => reject(new Error('Demo step 2 rejection!')), 2000)),
+			progress_promise: i_will_handle_rejection_later(new Promise((resolve, reject) => setTimeout(() => reject(new Error('Demo step 2 rejection!')), 2000))),
 			msg_main: `Warming up`,
 			callback: success => console.log(`[callback called: ${success}]`),
 			msgg_acknowledge: success => success ? `Ready!` : 'Too lazy...',

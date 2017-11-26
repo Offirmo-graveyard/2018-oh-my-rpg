@@ -137,9 +137,8 @@ function create({DEBUG, gen_next_step, ui, inter_msg_delay_ms = 700}) {
 
 			case 'progress':
 				await ui.display_progress({
-						progress_promise: step.progress_promise || create_dummy_progress_promise({
-							DURATION_MS: step.duration_ms
-						}),
+						progress_promise: step.progress_promise
+							|| create_dummy_progress_promise({ DURATION_MS: step.duration_ms }),
 						msg: step.msg_main,
 						msgg_acknowledge: step.msgg_acknowledge
 					})

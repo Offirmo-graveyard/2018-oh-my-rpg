@@ -90,6 +90,36 @@ function start_loop(options) {
 				msg_main += rich_text_to_ansi($doc)
 				chat_state.sub.main.last_adventure = state.last_adventure
 				steps.push({
+					type: 'progress',
+					duration_ms: 600,
+					msg_main: `Preparing for adventure`,
+					msgg_acknowledge: () => 'Equipment repaired',
+				})
+				steps.push({
+					type: 'progress',
+					duration_ms: 700,
+					msg_main: `Preparing for adventure`,
+					msgg_acknowledge: () => 'Rations resupplied',
+				})
+				steps.push({
+					type: 'progress',
+					duration_ms: 800,
+					msg_main: `Preparing for adventure`,
+					msgg_acknowledge: () => 'Quests reviewed',
+				})
+				steps.push({
+					type: 'progress',
+					duration_ms: 900, // or provide a progress_promise
+					msg_main: `farming XP`,
+					msgg_acknowledge: () => 'XP farmed',
+				})
+				steps.push({
+					type: 'progress',
+					duration_ms: 1000,
+					msg_main: `exploring`,
+					msgg_acknowledge: () => 'exploring... Encountered something:\n',
+				})
+				steps.push({
 					type: 'simple_message',
 					msg_main,
 				})

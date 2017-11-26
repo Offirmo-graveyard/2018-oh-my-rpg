@@ -22,7 +22,12 @@ https://github.com/sindresorhus/ora
 https://github.com/sindresorhus/term-img
 
 
+Inspiration
+* nethack https://web.archive.org/web/20120316213754/http://archive.gamespy.com/legacy/halloffame/nethack_a.shtm
 
+
+Idées
+* https://worldbuilding.stackexchange.com/questions/94950/a-fruit-that-electrically-shocks-you
 
 
 https://app.graphcms.com/

@@ -17413,6 +17413,36 @@ function start_loop(options) {
 				msg_main += rich_text_to_ansi($doc)
 				chat_state.sub.main.last_adventure = state.last_adventure
 				steps.push({
+					type: 'progress',
+					duration_ms: 600,
+					msg_main: `Preparing for adventure`,
+					msgg_acknowledge: () => 'Equipment repaired',
+				})
+				steps.push({
+					type: 'progress',
+					duration_ms: 700,
+					msg_main: `Preparing for adventure`,
+					msgg_acknowledge: () => 'Rations resupplied',
+				})
+				steps.push({
+					type: 'progress',
+					duration_ms: 800,
+					msg_main: `Preparing for adventure`,
+					msgg_acknowledge: () => 'Quests reviewed',
+				})
+				steps.push({
+					type: 'progress',
+					duration_ms: 900, // or provide a progress_promise
+					msg_main: `farming XP`,
+					msgg_acknowledge: () => 'XP farmed',
+				})
+				steps.push({
+					type: 'progress',
+					duration_ms: 1000,
+					msg_main: `exploring`,
+					msgg_acknowledge: () => 'exploring... Encountered something:\n',
+				})
+				steps.push({
 					type: 'simple_message',
 					msg_main,
 				})
@@ -18228,8 +18258,15 @@ function create({DEBUG, shouldCenter}) {
 		}))
 	}
 
+	const gauge = new Gauge({
+		template: [
+			{type: 'activityIndicator', kerning: 1, length: 1},
+			{type: 'section', kerning: 1, default: ''},
+			{type: 'subsection', kerning: 1, default: ''},
+			{type: 'progressbar', length: 33},
+		],
+	})
 	function display_progress({progress_promise, msg = 'loading', msgg_acknowledge} = {}) {
-		const gauge = new Gauge()
 		const progress_msg = msg + '...'
 		gauge.show(progress_msg, 0)
 		const auto_pulse = setInterval(() => gauge.pulse(), 100)
@@ -18247,9 +18284,10 @@ function create({DEBUG, shouldCenter}) {
 				gauge.hide()
 
 				let final_msg = success ? stylize_string.green('✔') : stylize_string.red('❌')
-				final_msg += ' ' + msg
-				if (msgg_acknowledge)
-					final_msg += ': ' + msgg_acknowledge(success)
+				final_msg += ' '
+				final_msg += msgg_acknowledge
+					? msgg_acknowledge(success)
+					: msg
 				console.log(final_msg)
 			})
 			.catch(err => {
@@ -20359,9 +20397,8 @@ function create({DEBUG, gen_next_step, ui, inter_msg_delay_ms = 700}) {
 
 			case 'progress':
 				await ui.display_progress({
-						progress_promise: step.progress_promise || create_dummy_progress_promise({
-							DURATION_MS: step.duration_ms
-						}),
+						progress_promise: step.progress_promise
+							|| create_dummy_progress_promise({ DURATION_MS: step.duration_ms }),
 						msg: step.msg_main,
 						msgg_acknowledge: step.msgg_acknowledge
 					})
