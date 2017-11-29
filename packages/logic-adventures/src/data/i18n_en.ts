@@ -18,11 +18,11 @@ You looted a {{item}} from its corpse.`,
 You have defeated a {{encounter}}!{{br}}
 You perfected your {{attr_name}} during the fight: +{{attr}} {{attr_name}}!`,
 		fight_lost_any: `
-You were attacked and nearly defeated by a {{encounter}} but you got away just before it was about to kill you.{{br}}
+You were attacked and nearly killed by a {{encounter}} but you got away just before it was too late.{{br}}
 You figured out techniques to flee more efficiently: +{{attr}} {{attr_name}}!`,
 		fight_lost_shortcoming: `
-You were attacked by a {{encounter}} and that didn't end well... but you got away just before it was about to kill you.{{br}}
-You reflect on your lack of {{attr_name}} during this fight and train hard: +{{attr}} {{attr_name}}!`,
+You were attacked by a {{encounter}} and it didn't end well... but you got away just before it was about to kill you.{{br}}
+You reflect on your lack of {{attr_name}} in the fight and train hard: +{{attr}} {{attr_name}}!`,
 
 		// scavenged from screens of the original game
 		bored_log: `
@@ -35,14 +35,14 @@ You gained {{coin}}!`,
 A dying man on the street left you everything he had.
 You gained {{coin}}!`,
 		ate_bacon: `
-You ate some bacon.
+You ate some delicious crispy bacon.
 You gained +{{level}} level!`,
 		/* too bland, please!
 		ate_mushroom: `
 You ate a mushroom.
 You gained +{{level}} level!`,*/
 		ate_zombie: `
-You ate a zombie.
+You felt adventerous and ate a severed zombie arm.
 You gained +{{mana}} mana!`,
 		refreshing_nap: `
 You took a nap and feel refreshed.
@@ -57,7 +57,7 @@ You gained +{{mana}} mana!`,
 You wrote a paper on nuclear fusion.
 You gained +{{wisdom}} wisdom!`,
 		found_green_mushroom: `
-You found a green mushroom.
+You found a giant green mushroom.
 You gained +{{level}} level!`,
 
 		// from me, inferred and extended
@@ -96,54 +96,54 @@ You meet a mysterious old wizard…
 Before giving you the quest, he tells you his loooong story: You gain +{{wisdom}} wisdom!`,
 		// electricbunnycomics.com
 		good_necromancer: `
-You meet a child weeping over his dead hamster pet… Thanks to necromancy, you reanimate it as a hamster-zombie!
+You meet a child weeping over his dead hamster… Thanks to necromancy, you reanimate it as a hamster-zombie!
 Oddly, the child cries even more while running away.{{br}}
-Fortunately, you gain +{{agility}} agility for avoiding the stones thrown by the villagers.`,
+Fortunately, you gain +{{agility}} agility while avoiding the stones thrown by the villagers.`,
 		// dorkly
 		talk_to_all_villagers: `
-You spoke to all villagers in the village: no quest left unanswered!{{br}}
-On the other hand, your head aches from discussing so much.
-+{{charisma}} charisma thanks to this training!`,
+You spoke to everyone in the village leaving no quest unanswered!{{br}}
+Although your head aches from talking so much.
++{{charisma}} charisma having met so many people!`,
 		always_keep_potions: `
-Being a good adventurer, you kept a health potion "just in case":
+Being a seasoned adventurer, you kept a health potion "just in case":
 Well done, your health is top-notch!`,
 		lost: `
 With all those quests, you forgot where you had to go…{{br}}
-But circling around the whole map is good for your health: +{{health}} health!`,
+But circling around the map is good for your health: +{{health}} health!`,
 		grinding: `
-For lack of a better idea, you grind for hours and hours…
+For the lack of anything else to do, you grind for hours and hours…
 So what? It's an RPG, what did you expect?
-But it pays: +{{level}} level!`,
+But it pays off: +{{level}} level!`,
 		// DK
 		fate_sword: `
-To thank you for saving his wife and his children, the farmer offer you "Destiny",
-the heirloom sword passed in his family from generations.{{br}}
-30 minutes later, the merchant only gives you {{coin}} for it… Ahh those poors!`,
+To thank you for saving his wife and his children, a farmer offers you "Destiny",
+the heirloom sword passed down in his family for generations.{{br}}
+30 minutes later, the merchant buys it off you for only {{coin}}… some heirloom!`,
 		// ?
 		so_many_potions: `
 The fight against the final boss was hard, very hard…
-Most importantly, +{{strength}} strength for managing to control a pressing urge after drinking 25 potions !`,
+More importantly, +{{strength}} strength for managing to consume 25 potions during the encounter!`,
 		// cad-comic.com
 		rematch: `
 You got beaten by a goblin!
-Shameful, you roam around the country, accepting quests after quests to train yourself before facing him again.{{br}}
-Unfortunately, he also trained and beat you again!
-Well, the +{{level}} level will always be useful…`,
+In shame you roam around the country, accepting quest after quest to train yourself before facing him again.{{br}}
+Alas, he also trained and beat you again!
+Well, the +{{level}} level is still useful…`,
 		// paintraincomic.com
 		// http://paintraincomic.com/comic/cemetery/
 		useless: `
-Arriving at the village, the mayor testify that the neighborhood is no longer dangerous.
-The sorceress find herself someone and no longer curses people.
-The haunted cemetery was a pet cemetery, villagers are happy to have them back.
-The giant is helping the farmers in the fields.{{br}}
-You feel useless and reflect on your role in the world. +{{wisdom}} wisdom!`,
+Arriving at the village, the mayor announces that the neighborhood is no longer dangerous.
+The sorceress fell in love and no longer curses people.
+The haunted cemetery was a pet cemetery, villagers are happy to have their companions back.
+The giant is helping the farmers with their harvest.{{br}}
+You feel useless and reflect on your place in the world. +{{wisdom}} wisdom!`,
 		// memecenter.com
 		escort: `
 You are escorting an important NPC.
-Unfortunately, if you walk, he's faster than you.
+Frustratingly, if you walk, he's faster than you.
 However, if you run, you're faster than him!
-By slaloming and running into circles, you manage.
-+{{health}} health thanks to those efforts!`,
+By strafing and running in circles, you manage.
++{{health}} health thanks to your pace-keeping efforts!`,
 		// memecenter.com
 		rare_goods_seller: `
 You come across an old man with eccentric apparel.
@@ -151,34 +151,44 @@ Score! It's a rare item seller!
 He gives you a good price for a {{item}}.`,
 		// memecenter.com
 		progress_loop: `
-You would need better gear to level up.
-But you'd need to level up to get better gear.
-Cruel dilemma!{{br}}
+You need better gear to level up.
+But you need to level up to get better gear.
+The irony is palpable!{{br}}
 Fortunately, you find a {{item}} at the bottom of a well!`,
 		// memecenter.com/motohorse
 		idiot_bandits: `
-You are being talked about since you slayed the dragon and defeated the sorceress.
-Bandits embush you, aiming for your wealth. What a silly idea!
-You read in the eyes of last one that he realizes it one moment
-before your fireball incinerates him.
+Your name is whispered across the land since you slayed the dragon and defeated the sorceress.
+Bandits ambush you, aiming for your wealth. For their folly!
+They realize their mistake one moment
+before your fireball incinerates them.
 Fortunately, gold doesn't burn: +{{coin}}!`,
 		// don't remember the source for this one
 		princess: `
-"You won't take back the princess!" yells the terrible black mage,
+"You won't take back the princess!" yells the fearsome black mage,
 as you reach his throne room.
 You reassure him: you are only here for loot.{{br}}
-He let you help yourself (+{{coin}})
-and enchant your weapon!`,
+He lets you help yourself to (+{{coin}})
+and even enchants your weapon too!`,
 		// DM of the ring
 		bad_village: `
 You reach a new village. There is no weapon shop.
 No potion shop either! And no quests at the inn!!
-That's too much. At your call, lightnings and meteors wipe this useless place.
-Good opportunity to practice your magic: +{{mana}} mana.`,
+What a useless village. At your call, lightning and meteors wipe out this useless place.
+A good opportunity to practice your magic: +{{mana}} mana.`,
 		// muppets
 		mana_mana: `
 "Mah na mah na" "To to to do do"{{br}}
 +{{mana}} mana!`,
+		// Treasure in random pots
+		zelda_reference: `
+You enter a pottery shop and destroy every jug, vase and item in the store.
+You collect +{{coin}} in rubies and other treasures found!`,
+		// Oblivion dangerous chicken
+		chicken_slayer: `
+You enter a village and see a chicken roaming in a garden peacfully. 
+You slay the chicken mercilessly.
+The entire cohort of guards for the town come after you and you are forced to slay them too.
+After hours of fighting you gain +{{strength}} strength`
 		// ?
 		/*
 		Vous vous présentez au capitaine de la garde. Votre mission : tuer 10 kobolds.
