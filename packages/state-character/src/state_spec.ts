@@ -7,13 +7,14 @@ import {
 	create,
 	increase_stat,
 } from '.'
+import { getSEC } from './sec'
 
 describe('🤕 ❤️  Character state - reducer', function() {
 
 	describe('🆕  initial state', function() {
 
 		it('should have correct defaults', function() {
-			const state = create()
+			const state = create(getSEC())
 			expect(state).to.deep.equal({
 				schema_version: SCHEMA_VERSION,
 				revision: 0,
@@ -39,23 +40,23 @@ describe('🤕 ❤️  Character state - reducer', function() {
 	describe('⬆ stat increase', function() {
 
 		it('should fail on invalid amount', function() {
-			let state = create()
+			let state = create(getSEC())
 
 			function increase_0() {
-				state = increase_stat(state, CharacterAttribute.agility, 0)
+				state = increase_stat(getSEC(), state, CharacterAttribute.agility, 0)
 			}
 			expect(increase_0).to.throw('invalid amount!')
 
 			function decrease() {
-				state = increase_stat(state, CharacterAttribute.agility, -1)
+				state = increase_stat(getSEC(), state, CharacterAttribute.agility, -1)
 			}
 			expect(decrease).to.throw('invalid amount!')
 		})
 
 		it('should work in nominal case', function() {
-			let state = create()
+			let state = create(getSEC())
 
-			state = increase_stat(state, CharacterAttribute.agility)
+			state = increase_stat(getSEC(), state, CharacterAttribute.agility)
 			expect(state.attributes.agility).to.equal(2)
 			expect(state.attributes).to.deep.equal({
 				level: 1,
@@ -70,7 +71,7 @@ describe('🤕 ❤️  Character state - reducer', function() {
 				luck: 1
 			})
 
-			state = increase_stat(state, CharacterAttribute.agility, 2)
+			state = increase_stat(getSEC(), state, CharacterAttribute.agility, 2)
 			expect(state.attributes.agility).to.equal(4)
 
 			expect(state.attributes).to.deep.equal({
@@ -86,7 +87,7 @@ describe('🤕 ❤️  Character state - reducer', function() {
 				luck: 1
 			})
 
-			state = increase_stat(state, CharacterAttribute.agility)
+			state = increase_stat(getSEC(), state, CharacterAttribute.agility)
 			expect(state.attributes.agility).to.equal(5)
 
 			expect(state.attributes).to.deep.equal({

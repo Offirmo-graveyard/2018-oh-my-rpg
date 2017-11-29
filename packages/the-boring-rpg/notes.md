@@ -26,3 +26,6 @@ Marketing
 bugs:
 - full inventory
 - display on windows
+
+
+https://pushjs.org/docs/permissions
