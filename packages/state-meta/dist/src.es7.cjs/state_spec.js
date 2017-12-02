@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const chai_1 = require("chai");
 const consts_1 = require("./consts");
 const _1 = require(".");
 describe('🤕 ❤️  Meta state - reducer', function () {
@@ -8,9 +9,9 @@ describe('🤕 ❤️  Meta state - reducer', function () {
         it('should have correct defaults and a unique uuid', function () {
             let state = _1.create();
             // uuid is random
-            expect(state.uuid).to.have.lengthOf(TEST_UUID_v1.length);
+            chai_1.expect(state.uuid).to.have.lengthOf(TEST_UUID_v1.length);
             state = Object.assign({}, state, { uuid: TEST_UUID_v1 });
-            expect(state).to.deep.equal({
+            chai_1.expect(state).to.deep.equal({
                 schema_version: consts_1.SCHEMA_VERSION,
                 revision: 0,
                 uuid: TEST_UUID_v1,

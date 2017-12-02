@@ -1,3 +1,5 @@
+import { expect } from 'chai'
+
 import { InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
 
 import {

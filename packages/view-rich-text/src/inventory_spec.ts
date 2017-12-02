@@ -1,3 +1,5 @@
+import { expect } from 'chai'
+
 import * as RichText from '@oh-my-rpg/rich-text-format'
 
 import { generate_random_demo_weapon, DEMO_WEAPON_1, DEMO_WEAPON_2 } from '@oh-my-rpg/logic-weapons'
@@ -40,7 +42,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 				const $doc = render_backpack(inventory)
 				const str = RichText.to_text($doc)
 
-				expect(str).to.be.a.string
+				expect(str).to.be.a('string')
 				expect(str).to.contain('empty')
 			})
 		})
@@ -60,7 +62,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 				const $doc = render_backpack(inventory)
 				const str = RichText.to_text($doc)
 
-				expect(str).to.be.a.string
+				expect(str).to.be.a('string')
 				expect(str).not.to.contain(' 0.')
 				expect(str).to.contain(' a.')
 				expect(str).to.contain(' e.')
@@ -105,7 +107,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 				let inventory = create_inventory()
 				const $doc = render_equipment(inventory)
 				const str = RichText.to_text($doc)
-				expect(str).to.be.a.string
+				expect(str).to.be.a('string')
 				expect(str).to.contain('armor : -')
 				expect(str).to.contain('weapon: -')
 			})
@@ -122,7 +124,7 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function() {
 
 				const $doc = render_equipment(inventory)
 				const str = RichText.to_text($doc)
-				expect(str).to.be.a.string
+				expect(str).to.be.a('string')
 				expect(str).to.contain('armor : legendary Apprentice’s Brass Belt +8 [4022 ↔ 4732]')
 				expect(str).to.contain('weapon: uncommon Adjudicator’s Admirable Axe [19 ↔ 133]')
 			})

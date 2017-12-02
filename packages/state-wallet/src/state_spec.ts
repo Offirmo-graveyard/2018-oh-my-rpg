@@ -1,3 +1,5 @@
+import { expect } from 'chai'
+
 import { LIB_ID, SCHEMA_VERSION } from './consts'
 
 import {

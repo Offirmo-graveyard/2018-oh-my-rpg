@@ -1,3 +1,5 @@
+import { expect } from 'chai'
+
 import { cloneDeep } from 'lodash'
 import * as deepFreeze from 'deep-freeze-strict'
 

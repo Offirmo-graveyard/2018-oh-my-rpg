@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const chai_1 = require("chai");
 const lodash_1 = require("lodash");
 const deepFreeze = require("deep-freeze-strict");
-const chai_1 = require("chai");
 const consts_1 = require("./consts");
 const migrations_1 = require("./migrations");
 const state_1 = require("./state");

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const chai_1 = require("chai");
 const RichText = require("@oh-my-rpg/rich-text-format");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
 const logic_armors_1 = require("@oh-my-rpg/logic-armors");
@@ -18,8 +19,8 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
                 let inventory = state_inventory_1.create();
                 const $doc = _1.render_backpack(inventory);
                 const str = RichText.to_text($doc);
-                expect(str).to.be.a.string;
-                expect(str).to.contain('empty');
+                chai_1.expect(str).to.be.a('string');
+                chai_1.expect(str).to.contain('empty');
             });
         });
         context('when not empty', function () {
@@ -34,11 +35,11 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
                 inventory = state_inventory_1.remove_item(inventory, 4);
                 const $doc = _1.render_backpack(inventory);
                 const str = RichText.to_text($doc);
-                expect(str).to.be.a.string;
-                expect(str).not.to.contain(' 0.');
-                expect(str).to.contain(' a.');
-                expect(str).to.contain(' e.');
-                expect(str).not.to.contain(' f.');
+                chai_1.expect(str).to.be.a('string');
+                chai_1.expect(str).not.to.contain(' 0.');
+                chai_1.expect(str).to.contain(' a.');
+                chai_1.expect(str).to.contain(' e.');
+                chai_1.expect(str).not.to.contain(' f.');
             });
         });
         describe('demo', function () {
@@ -74,9 +75,9 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
                 let inventory = state_inventory_1.create();
                 const $doc = _1.render_equipment(inventory);
                 const str = RichText.to_text($doc);
-                expect(str).to.be.a.string;
-                expect(str).to.contain('armor : -');
-                expect(str).to.contain('weapon: -');
+                chai_1.expect(str).to.be.a('string');
+                chai_1.expect(str).to.contain('armor : -');
+                chai_1.expect(str).to.contain('weapon: -');
             });
         });
         context('when not empty', function () {
@@ -88,9 +89,9 @@ describe('🔠  view to @oh-my-rpg/rich-text-format', function () {
                 inventory = state_inventory_1.equip_item(inventory, 0);
                 const $doc = _1.render_equipment(inventory);
                 const str = RichText.to_text($doc);
-                expect(str).to.be.a.string;
-                expect(str).to.contain('armor : legendary Apprentice’s Brass Belt +8 [4022 ↔ 4732]');
-                expect(str).to.contain('weapon: uncommon Adjudicator’s Admirable Axe [19 ↔ 133]');
+                chai_1.expect(str).to.be.a('string');
+                chai_1.expect(str).to.contain('armor : legendary Apprentice’s Brass Belt +8 [4022 ↔ 4732]');
+                chai_1.expect(str).to.contain('weapon: uncommon Adjudicator’s Admirable Axe [19 ↔ 133]');
             });
         });
         describe('demo', function () {

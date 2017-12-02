@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const chai_1 = require("chai");
 const consts_1 = require("./consts");
 const definitions_1 = require("@oh-my-rpg/definitions");
 const _1 = require(".");
@@ -8,7 +9,7 @@ describe('📦 📦 📦  Inventory state - reducer', function () {
     describe('🆕 initial state', function () {
         it('should have correct defaults', function () {
             const state = _1.create();
-            expect(state).to.deep.equal({
+            chai_1.expect(state).to.deep.equal({
                 schema_version: consts_1.SCHEMA_VERSION,
                 revision: 0,
                 unslotted_capacity: 20,
@@ -36,12 +37,12 @@ describe('📦 📦 📦  Inventory state - reducer', function () {
                     null,
                 ],
             });
-            expect(state.unslotted_capacity).to.equal(EXPECTED_UNSLOTTED_INVENTORY_LENGTH);
-            expect(state.unslotted).to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH);
-            expect(Object.keys(state.slotted)).to.have.lengthOf(0);
-            expect(_1.get_item_count(state), 'i').to.equal(0);
-            expect(_1.get_equiped_item_count(state), 'e').to.equal(0);
-            expect(_1.get_unequiped_item_count(state), 'u').to.equal(0);
+            chai_1.expect(state.unslotted_capacity).to.equal(EXPECTED_UNSLOTTED_INVENTORY_LENGTH);
+            chai_1.expect(state.unslotted).to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH);
+            chai_1.expect(Object.keys(state.slotted)).to.have.lengthOf(0);
+            chai_1.expect(_1.get_item_count(state), 'i').to.equal(0);
+            chai_1.expect(_1.get_equiped_item_count(state), 'e').to.equal(0);
+            chai_1.expect(_1.get_unequiped_item_count(state), 'u').to.equal(0);
         });
     });
     describe('📥 item addition', function () {
@@ -49,16 +50,16 @@ describe('📦 📦 📦  Inventory state - reducer', function () {
             const item = { slot: definitions_1.InventorySlot.none, quality: definitions_1.ItemQuality.common };
             let state = _1.create();
             state = _1.add_item(state, item);
-            expect(state.unslotted).to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH);
-            expect(_1.get_item_count(state)).to.equal(1);
+            chai_1.expect(state.unslotted).to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH);
+            chai_1.expect(_1.get_item_count(state)).to.equal(1);
         });
         it('should work on simple non-empty state', function () {
             const item = { slot: definitions_1.InventorySlot.none, quality: definitions_1.ItemQuality.common };
             let state = _1.create();
             state = _1.add_item(state, item);
             state = _1.add_item(state, item);
-            expect(state.unslotted, 'unslotted').to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH);
-            expect(_1.get_item_count(state), 'item count').to.equal(2);
+            chai_1.expect(state.unslotted, 'unslotted').to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH);
+            chai_1.expect(_1.get_item_count(state), 'item count').to.equal(2);
         });
         it('should fail when the inventory is full', function () {
             const item = { slot: definitions_1.InventorySlot.none, quality: definitions_1.ItemQuality.common };
@@ -83,11 +84,11 @@ describe('📦 📦 📦  Inventory state - reducer', function () {
             state = _1.add_item(state, item);
             state = _1.add_item(state, item);
             state = _1.add_item(state, item);
-            expect(state.unslotted).to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH);
+            chai_1.expect(state.unslotted).to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH);
             function addLast() {
                 state = _1.add_item(state, item);
             }
-            expect(addLast).to.throw('inventory is full!');
+            chai_1.expect(addLast).to.throw('inventory is full!');
         });
         it('should find a free slot when some items where recently removed', function () {
             const item1 = { slot: definitions_1.InventorySlot.none, quality: definitions_1.ItemQuality.common };
@@ -97,10 +98,10 @@ describe('📦 📦 📦  Inventory state - reducer', function () {
             state = _1.add_item(state, item1);
             state = _1.remove_item(state, 0);
             state = _1.add_item(state, item2);
-            expect(_1.get_item_count(state), 'item count').to.equal(2);
+            chai_1.expect(_1.get_item_count(state), 'item count').to.equal(2);
             // note: state was auto-sorted
-            expect(_1.get_item_at_coordinates(state, 0)).to.equal(item1);
-            expect(_1.get_item_at_coordinates(state, 1)).to.equal(item2);
+            chai_1.expect(_1.get_item_at_coordinates(state, 0)).to.equal(item1);
+            chai_1.expect(_1.get_item_at_coordinates(state, 1)).to.equal(item2);
         });
     });
     describe('📤 item removal', function () {
@@ -109,7 +110,7 @@ describe('📦 📦 📦  Inventory state - reducer', function () {
             function remove_one() {
                 state = _1.remove_item(state, 0);
             }
-            expect(remove_one).to.throw('can\'t remove item at #0, not found');
+            chai_1.expect(remove_one).to.throw('can\'t remove item at #0, not found');
         });
         it('should work in nominal case', function () {
             const item = { slot: definitions_1.InventorySlot.none, quality: definitions_1.ItemQuality.common };
@@ -117,9 +118,9 @@ describe('📦 📦 📦  Inventory state - reducer', function () {
             state = _1.add_item(state, item);
             state = _1.add_item(state, item);
             state = _1.remove_item(state, 0);
-            expect(_1.get_item_count(state), 'item count').to.equal(1);
-            expect(_1.get_item_at_coordinates(state, 1)).to.be.null;
-            expect(_1.get_item_at_coordinates(state, 2)).to.be.null;
+            chai_1.expect(_1.get_item_count(state), 'item count').to.equal(1);
+            chai_1.expect(_1.get_item_at_coordinates(state, 1)).to.be.null;
+            chai_1.expect(_1.get_item_at_coordinates(state, 2)).to.be.null;
         });
     });
     describe('⬆ item equipping', function () {
@@ -128,7 +129,7 @@ describe('📦 📦 📦  Inventory state - reducer', function () {
             function equip_empty() {
                 state = _1.equip_item(state, 0);
             }
-            expect(equip_empty).to.throw('can\'t equip item at #0, not found!');
+            chai_1.expect(equip_empty).to.throw('can\'t equip item at #0, not found!');
         });
         it('should fail on non-equipable item', function () {
             let state = _1.create();
@@ -137,19 +138,19 @@ describe('📦 📦 📦  Inventory state - reducer', function () {
             function equip_unequipable() {
                 state = _1.equip_item(state, 0);
             }
-            expect(equip_unequipable).to.throw('not equipable!');
+            chai_1.expect(equip_unequipable).to.throw('not equipable!');
         });
         it('should work on simple non-empty state, equip to the correct slot and correctly remove from unslotted', function () {
             let state = _1.create();
             const item = { slot: definitions_1.InventorySlot.weapon, quality: definitions_1.ItemQuality.common };
             state = _1.add_item(state, item);
-            expect(_1.get_equiped_item_count(state), 'e1').to.equal(0);
-            expect(_1.get_unequiped_item_count(state), 'u1').to.equal(1);
-            expect(_1.get_item_count(state), 'i1').to.equal(1);
+            chai_1.expect(_1.get_equiped_item_count(state), 'e1').to.equal(0);
+            chai_1.expect(_1.get_unequiped_item_count(state), 'u1').to.equal(1);
+            chai_1.expect(_1.get_item_count(state), 'i1').to.equal(1);
             state = _1.equip_item(state, 0);
-            expect(_1.get_equiped_item_count(state), 'e2').to.equal(1);
-            expect(_1.get_unequiped_item_count(state), 'u2').to.equal(0);
-            expect(_1.get_item_count(state), 'i1').to.equal(1);
+            chai_1.expect(_1.get_equiped_item_count(state), 'e2').to.equal(1);
+            chai_1.expect(_1.get_unequiped_item_count(state), 'u2').to.equal(0);
+            chai_1.expect(_1.get_item_count(state), 'i1').to.equal(1);
         });
         it('should work on simple non-empty state and correctly swap if the slot was occupied', function () {
             let state = _1.create();
@@ -159,11 +160,11 @@ describe('📦 📦 📦  Inventory state - reducer', function () {
             const item2 = { slot: definitions_1.InventorySlot.weapon, quality: definitions_1.ItemQuality.common };
             state = _1.add_item(state, item2);
             state = _1.equip_item(state, 0);
-            expect(_1.get_equiped_item_count(state), 'e').to.equal(1);
-            expect(_1.get_unequiped_item_count(state), 'u').to.equal(1);
-            expect(_1.get_item_count(state), 'i').to.equal(2);
-            expect(_1.get_item_in_slot(state, definitions_1.InventorySlot.weapon)).to.equal(item2);
-            expect(_1.get_item_at_coordinates(state, 0)).to.equal(item1);
+            chai_1.expect(_1.get_equiped_item_count(state), 'e').to.equal(1);
+            chai_1.expect(_1.get_unequiped_item_count(state), 'u').to.equal(1);
+            chai_1.expect(_1.get_item_count(state), 'i').to.equal(2);
+            chai_1.expect(_1.get_item_in_slot(state, definitions_1.InventorySlot.weapon)).to.equal(item2);
+            chai_1.expect(_1.get_item_at_coordinates(state, 0)).to.equal(item1);
         });
     });
     describe('⬇ item unequipping', function () {
@@ -172,7 +173,7 @@ describe('📦 📦 📦  Inventory state - reducer', function () {
             function unequip_empty() {
                 state = _1.unequip_item(state, definitions_1.InventorySlot.weapon);
             }
-            expect(unequip_empty).to.throw('can\'t unequip item from slot weapon, it\'s empty!');
+            chai_1.expect(unequip_empty).to.throw('can\'t unequip item from slot weapon, it\'s empty!');
         });
         it('should work on simple non-empty state, unequip to the correct slot and correctly add to unslotted', function () {
             let state = _1.create();
@@ -180,9 +181,9 @@ describe('📦 📦 📦  Inventory state - reducer', function () {
             state = _1.add_item(state, item);
             state = _1.equip_item(state, 0);
             state = _1.unequip_item(state, definitions_1.InventorySlot.weapon);
-            expect(_1.get_item_count(state), 'item count 1').to.equal(1);
-            expect(_1.get_unequiped_item_count(state), 'item count 2').to.equal(1);
-            expect(_1.get_item_in_slot(state, definitions_1.InventorySlot.weapon)).to.be.null;
+            chai_1.expect(_1.get_item_count(state), 'item count 1').to.equal(1);
+            chai_1.expect(_1.get_unequiped_item_count(state), 'item count 2').to.equal(1);
+            chai_1.expect(_1.get_item_in_slot(state, definitions_1.InventorySlot.weapon)).to.be.null;
         });
         it('should fail when the inventory is full', function () {
             let state = _1.create();
@@ -210,12 +211,12 @@ describe('📦 📦 📦  Inventory state - reducer', function () {
             state = _1.add_item(state, itemX);
             state = _1.add_item(state, itemX);
             state = _1.add_item(state, itemX);
-            expect(_1.get_item_count(state), 'item count 1').to.equal(21);
-            expect(_1.get_unequiped_item_count(state), 'item count 2').to.equal(20);
+            chai_1.expect(_1.get_item_count(state), 'item count 1').to.equal(21);
+            chai_1.expect(_1.get_unequiped_item_count(state), 'item count 2').to.equal(20);
             function unequip() {
                 state = _1.unequip_item(state, definitions_1.InventorySlot.weapon);
             }
-            expect(unequip).to.throw('inventory is full!');
+            chai_1.expect(unequip).to.throw('inventory is full!');
         });
     });
     describe('misc items iteration', function () {
@@ -230,12 +231,12 @@ describe('📦 📦 📦  Inventory state - reducer', function () {
             state = _1.remove_item(state, 0);
             const yielded_items = Array.from(_1.iterables_unslotted(state));
             console.log(yielded_items);
-            expect(yielded_items).to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH);
-            expect(yielded_items[0]).to.equal(item2);
-            expect(yielded_items[1]).to.equal(item3);
-            expect(yielded_items[2]).to.be.null;
-            expect(yielded_items[3]).to.be.null;
-            expect(yielded_items[EXPECTED_UNSLOTTED_INVENTORY_LENGTH - 1]).to.be.null;
+            chai_1.expect(yielded_items).to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH);
+            chai_1.expect(yielded_items[0]).to.equal(item2);
+            chai_1.expect(yielded_items[1]).to.equal(item3);
+            chai_1.expect(yielded_items[2]).to.be.null;
+            chai_1.expect(yielded_items[3]).to.be.null;
+            chai_1.expect(yielded_items[EXPECTED_UNSLOTTED_INVENTORY_LENGTH - 1]).to.be.null;
         });
     });
 });

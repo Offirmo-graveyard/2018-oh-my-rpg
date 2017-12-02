@@ -211,6 +211,7 @@ Après une brève hésitation sur l’éthique de l’extermination de créature
 		 xblack_mage_again:
 		 '',
 		 */
+		// get rid of them, not slaughter them all
 	}
 }
 

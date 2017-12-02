@@ -1,3 +1,5 @@
+import { expect } from 'chai'
+
 import * as RichText from '@oh-my-rpg/rich-text-format'
 
 import { InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
@@ -34,7 +36,7 @@ describe('⚔ 🛡 item rendering', function() {
 					enhancement_level: 0,
 				})
 				const str = RichText.to_text($doc)
-				expect(str).to.be.a.string
+				expect(str).to.be.a('string')
 				expect(str).to.include('Luth')
 				expect(str).to.include('Simple')
 				expect(str).to.include('Mercenary')
@@ -55,7 +57,7 @@ describe('⚔ 🛡 item rendering', function() {
 					enhancement_level: 3,
 				})
 				const str = RichText.to_text($doc)
-				expect(str).to.be.a.string
+				expect(str).to.be.a('string')
 				expect(str).to.include('Long sword')
 				expect(str).to.include('Onyx')
 				expect(str).to.include('Warfield king’s')
@@ -79,7 +81,7 @@ describe('⚔ 🛡 item rendering', function() {
 					enhancement_level: 0
 				})
 				const str = RichText.to_text($doc)
-				expect(str).to.be.a.string
+				expect(str).to.be.a('string')
 				expect(str).to.include('Socks')
 				expect(str).to.include('Onyx')
 				expect(str).to.include('Tormentor')
@@ -100,7 +102,7 @@ describe('⚔ 🛡 item rendering', function() {
 					enhancement_level: 5
 				})
 				const str = RichText.to_text($doc)
-				expect(str).to.be.a.string
+				expect(str).to.be.a('string')
 				expect(str).to.include('Mantle')
 				expect(str).to.include('Embroidered')
 				expect(str).to.include('Warfield')
