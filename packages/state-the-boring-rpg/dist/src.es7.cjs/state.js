@@ -22,13 +22,14 @@ const logic_adventures_1 = require("@oh-my-rpg/logic-adventures");
 const consts_1 = require("./consts");
 const types_1 = require("./types");
 exports.GainType = types_1.GainType;
+const sec_1 = require("./sec");
 /////////////////////
 function create() {
     let state = {
         schema_version: consts_1.SCHEMA_VERSION,
         revision: 0,
         meta: MetaState.create(),
-        avatar: CharacterState.create(),
+        avatar: CharacterState.create(sec_1.get_SEC()),
         inventory: InventoryState.create(),
         wallet: WalletState.create(),
         prng: PRNGState.create(),
@@ -116,7 +117,7 @@ function instantiate_adventure_archetype(rng, aa, character, inventory) {
     };
 }
 function receive_stat_increase(state, stat, amount = 1) {
-    state.avatar = state_character_1.increase_stat(state.avatar, stat, amount);
+    state.avatar = state_character_1.increase_stat(sec_1.get_SEC(), state.avatar, stat, amount);
     return state;
 }
 function receive_item(state, item) {
@@ -246,13 +247,13 @@ function sell_item(state, coordinates) {
 exports.sell_item = sell_item;
 function rename_avatar(state, new_name) {
     // TODO count it as a meaningful interaction once
-    state.avatar = state_character_1.rename(state.avatar, new_name);
+    state.avatar = state_character_1.rename(sec_1.get_SEC(), state.avatar, new_name);
     return state;
 }
 exports.rename_avatar = rename_avatar;
 function change_avatar_class(state, klass) {
     // TODO make this have an effect (in v2 ?)
-    state.avatar = state_character_1.switch_class(state.avatar, klass);
+    state.avatar = state_character_1.switch_class(sec_1.get_SEC(), state.avatar, klass);
     return state;
 }
 exports.change_avatar_class = change_avatar_class;

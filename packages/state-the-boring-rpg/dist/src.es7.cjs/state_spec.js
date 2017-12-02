@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const chai_1 = require("chai");
 const state_prng_1 = require("@oh-my-rpg/state-prng");
 const logic_adventures_1 = require("@oh-my-rpg/logic-adventures");
 const state_inventory_1 = require("@oh-my-rpg/state-inventory");
@@ -11,23 +12,23 @@ describe('⚔ 👑 😪  The Boring RPG - reducer', function () {
     describe('🆕  initial state', function () {
         it('should be correct', function () {
             const state = _1.create();
-            expect(Object.keys(state)).to.have.lengthOf(11); // this test should be updated if that changes
+            chai_1.expect(Object.keys(state)).to.have.lengthOf(11); // this test should be updated if that changes
             // check presence of sub-states
-            expect(state, 'meta').to.have.property('meta');
-            expect(state, 'avatar').to.have.property('avatar');
-            expect(state, 'inventory').to.have.property('inventory');
-            expect(state, 'wallet').to.have.property('wallet');
-            expect(state, 'prng').to.have.property('prng');
+            chai_1.expect(state, 'meta').to.have.property('meta');
+            chai_1.expect(state, 'avatar').to.have.property('avatar');
+            chai_1.expect(state, 'inventory').to.have.property('inventory');
+            chai_1.expect(state, 'wallet').to.have.property('wallet');
+            chai_1.expect(state, 'prng').to.have.property('prng');
             // init of custom values
-            expect(state).to.have.property('schema_version', consts_1.SCHEMA_VERSION);
-            expect(state).to.have.property('revision', 0);
-            expect(state).to.have.property('click_count', 0);
-            expect(state).to.have.property('good_click_count', 0);
-            expect(state).to.have.property('meaningful_interaction_count', 0);
-            expect(state.last_adventure).to.be.null;
+            chai_1.expect(state).to.have.property('schema_version', consts_1.SCHEMA_VERSION);
+            chai_1.expect(state).to.have.property('revision', 0);
+            chai_1.expect(state).to.have.property('click_count', 0);
+            chai_1.expect(state).to.have.property('good_click_count', 0);
+            chai_1.expect(state).to.have.property('meaningful_interaction_count', 0);
+            chai_1.expect(state.last_adventure).to.be.null;
             // check our 2 predefined items are present and equipped
-            expect(state_inventory_1.get_equiped_item_count(state.inventory), 'equipped').to.equal(2);
-            expect(state_inventory_1.get_unequiped_item_count(state.inventory), 'unequipped').to.equal(0);
+            chai_1.expect(state_inventory_1.get_equiped_item_count(state.inventory), 'equipped').to.equal(2);
+            chai_1.expect(state_inventory_1.get_unequiped_item_count(state.inventory), 'unequipped').to.equal(0);
         });
     });
     describe('👆🏾 user actions', function () {
@@ -41,14 +42,14 @@ describe('⚔ 👑 😪  The Boring RPG - reducer', function () {
             context('✅  when the cooldown has passed', function () {
                 it('should sometime generate a story adventure', () => {
                     const state = _1.play(_1.create());
-                    expect(state.last_adventure).not.to.be.null;
-                    expect(state.last_adventure.good).to.be.true;
+                    chai_1.expect(state.last_adventure).not.to.be.null;
+                    chai_1.expect(state.last_adventure.good).to.be.true;
                 });
                 it('should correctly increment counters', () => {
                     const state = _1.play(_1.create());
-                    expect(state).to.have.property('click_count', 1);
-                    expect(state).to.have.property('good_click_count', 1);
-                    expect(state).to.have.property('meaningful_interaction_count', 1);
+                    chai_1.expect(state).to.have.property('click_count', 1);
+                    chai_1.expect(state).to.have.property('good_click_count', 1);
+                    chai_1.expect(state).to.have.property('meaningful_interaction_count', 1);
                 });
                 it('should sometime generate a fight adventure', () => {
                     let fightCount = 0;
@@ -58,7 +59,7 @@ describe('⚔ 👑 😪  The Boring RPG - reducer', function () {
                         if (state.last_adventure.hid.startsWith('fight_'))
                             fightCount++;
                     }
-                    expect(fightCount).to.be.above(3);
+                    chai_1.expect(fightCount).to.be.above(3);
                 });
                 context('when the adventure is a story', function () {
                     describe('the outcome', function () {
@@ -66,7 +67,7 @@ describe('⚔ 👑 😪  The Boring RPG - reducer', function () {
                             let state = _1.create();
                             state = _1.play(state, 'dying_man');
                             // we got money
-                            expect(state_wallet_1.get_currency_amount(state.wallet, state_wallet_1.Currency.coin)).to.be.above(0);
+                            chai_1.expect(state_wallet_1.get_currency_amount(state.wallet, state_wallet_1.Currency.coin)).to.be.above(0);
                         });
                         it('should sometime be a token gain');
                         it('should sometime be a stat gain');
@@ -74,11 +75,11 @@ describe('⚔ 👑 😪  The Boring RPG - reducer', function () {
                             let state = _1.create();
                             state = _1.play(state, 'rare_goods_seller');
                             // check our 2 predefined items are still present and equipped
-                            expect(state_inventory_1.get_equiped_item_count(state.inventory), 'equipped').to.equal(2);
+                            chai_1.expect(state_inventory_1.get_equiped_item_count(state.inventory), 'equipped').to.equal(2);
                             // a new item is present
-                            expect(state_inventory_1.get_unequiped_item_count(state.inventory), 'unequipped').to.equal(1);
+                            chai_1.expect(state_inventory_1.get_unequiped_item_count(state.inventory), 'unequipped').to.equal(1);
                             // it's a weapon !
-                            expect(state_inventory_1.get_item_at_coordinates(state.inventory, 0)).to.have.property('slot', 'armor');
+                            chai_1.expect(state_inventory_1.get_item_at_coordinates(state.inventory, 0)).to.have.property('slot', 'armor');
                         });
                         it('should sometime be an item improvement');
                     });
@@ -93,8 +94,8 @@ describe('⚔ 👑 😪  The Boring RPG - reducer', function () {
                                 break;
                         }
                         //console.log(state.last_adventure)
-                        expect(state.last_adventure.encounter).to.exist;
-                        expect(state.last_adventure.encounter.level).to.be.within(400, 600);
+                        chai_1.expect(state.last_adventure.encounter).to.exist;
+                        chai_1.expect(state.last_adventure.encounter.level).to.be.within(400, 600);
                     });
                 });
             });

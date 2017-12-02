@@ -4,6 +4,15 @@ TOREAD https://josephg.com/blog/fixing-fortnite/
 Schema:
 http://www.vertabelo.com/blog/technical-articles/a-song-of-ice-and-databases-a-game-of-thrones-data-model
 
+Content:
+* stories
+  * https://ifcomp.org/comp/2017
+* pics
+  * https://www.pinterest.com.au/athn1/commoner-for-dd/
+  * https://lonewolfangel.deviantart.com/favourites/63788883/Fantasy-Male
+  * https://www.pinterest.com.au/msquirewriting/fantasy-art/
+  * https://deathbornaeon.deviantart.com/favourites/69459555/Druids-and-Shamans
+
 
 TODO:
 * lerna commands:
@@ -16,6 +25,7 @@ TODO:
   * seasonal content
 * countdowns
 * accumulator on non-play
+* clean root deps
 
 
 

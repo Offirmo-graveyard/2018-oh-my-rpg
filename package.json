@@ -18,7 +18,7 @@
 		"boxen": "^1.2.1"
 	},
 	"devDependencies": {
-		"@offirmo/unit-test-toolbox": "^2.1.0",
+		"@offirmo/unit-test-toolbox": "^3.0.0",
 		"@types/lodash": "^4.14.76",
 		"lerna": "^2.2.0",
 		"lodash": "^4.17.4",

@@ -1,3 +1,5 @@
+import { expect } from 'chai'
+
 import { LIB_ID, SCHEMA_VERSION } from './consts'
 import { xxx_internal_reset_prng_cache } from '@oh-my-rpg/state-prng'
 
@@ -22,7 +24,7 @@ describe('⚔ 👑 😪  The Boring RPG - contextual messages', function() {
 				const state = create()
 				const doc = get_recap(state)
 				const str = RichText.to_text(doc)
-				expect(str).to.include('for glory and loot')
+				expect(str).to.include('Congratulations, adventurer from another world!')
 			})
 		})
 

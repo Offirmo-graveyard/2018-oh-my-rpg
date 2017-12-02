@@ -22,7 +22,7 @@ const CHARACTER_STATS_SORTED = [
     'luck',
 ];
 exports.CHARACTER_STATS_SORTED = CHARACTER_STATS_SORTED;
-sec_1.getSEC().xTry('boot checks', () => {
+sec_1.get_SEC().xTry('boot checks', () => {
     if (CHARACTER_STATS.length !== CHARACTER_STATS_SORTED.length)
         throw new Error(`CHARACTER_STATS to update!`);
 });
@@ -30,7 +30,7 @@ const CHARACTER_CLASSES = typescript_string_enums_1.Enum.keys(types_1.CharacterC
 exports.CHARACTER_CLASSES = CHARACTER_CLASSES;
 ///////
 function create(SEC) {
-    return sec_1.getSEC(SEC).xTry('create', ({ enforce_immutability }) => {
+    return sec_1.get_SEC(SEC).xTry('create', ({ enforce_immutability }) => {
         return enforce_immutability({
             schema_version: consts_1.SCHEMA_VERSION,
             revision: 0,
@@ -53,7 +53,7 @@ function create(SEC) {
 exports.create = create;
 /////////////////////
 function rename(SEC, state, new_name) {
-    return sec_1.getSEC(SEC).xTry('rename', ({ enforce_immutability }) => {
+    return sec_1.get_SEC(SEC).xTry('rename', ({ enforce_immutability }) => {
         if (!new_name)
             throw new Error(`Error while renaming to "${new_name}: invalid target value!`); // TODO details
         if (new_name === state.name)
@@ -63,7 +63,7 @@ function rename(SEC, state, new_name) {
 }
 exports.rename = rename;
 function switch_class(SEC, state, klass) {
-    return sec_1.getSEC(SEC).xTry('switch_class', ({ enforce_immutability }) => {
+    return sec_1.get_SEC(SEC).xTry('switch_class', ({ enforce_immutability }) => {
         if (klass === state.klass)
             return state;
         return enforce_immutability(Object.assign({}, state, { klass, revision: state.revision + 1 }));
@@ -71,7 +71,7 @@ function switch_class(SEC, state, klass) {
 }
 exports.switch_class = switch_class;
 function increase_stat(SEC, state, stat, amount = 1) {
-    return sec_1.getSEC(SEC).xTry('increase_stat', ({ enforce_immutability }) => {
+    return sec_1.get_SEC(SEC).xTry('increase_stat', ({ enforce_immutability }) => {
         if (amount <= 0)
             throw new Error(`Error while increasing stat "${stat}": invalid amount!`); // TODO details
         // TODO stats caps

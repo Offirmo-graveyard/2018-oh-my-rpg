@@ -12,7 +12,7 @@ import {
 	State,
 } from './types'
 
-import { SafeExecutionContext, SECContext, getSEC } from './sec'
+import { SoftExecutionContext, SECContext, get_SEC } from './sec'
 
 /////////////////////
 
@@ -29,7 +29,7 @@ const CHARACTER_STATS_SORTED: CharacterAttribute[] = [
 	'luck',
 ]
 
-getSEC().xTry('boot checks', () => {
+get_SEC().xTry('boot checks', () => {
 	if (CHARACTER_STATS.length !== CHARACTER_STATS_SORTED.length)
 		throw new Error(`CHARACTER_STATS to update!`)
 })
@@ -38,8 +38,8 @@ const CHARACTER_CLASSES = Enum.keys(CharacterClass)
 
 ///////
 
-function create(SEC: SafeExecutionContext): State {
-	return getSEC(SEC).xTry('create', ({enforce_immutability}: SECContext) => {
+function create(SEC: SoftExecutionContext): State {
+	return get_SEC(SEC).xTry('create', ({enforce_immutability}: SECContext) => {
 		return enforce_immutability({
 			schema_version: SCHEMA_VERSION,
 			revision: 0,
@@ -65,8 +65,8 @@ function create(SEC: SafeExecutionContext): State {
 
 /////////////////////
 
-function rename(SEC: SafeExecutionContext, state: State, new_name: string): State {
-	return getSEC(SEC).xTry('rename', ({enforce_immutability}: SECContext) => {
+function rename(SEC: SoftExecutionContext, state: State, new_name: string): State {
+	return get_SEC(SEC).xTry('rename', ({enforce_immutability}: SECContext) => {
 		if (!new_name)
 			throw new Error(`Error while renaming to "${new_name}: invalid target value!`) // TODO details
 		if (new_name === state.name)
@@ -80,8 +80,8 @@ function rename(SEC: SafeExecutionContext, state: State, new_name: string): Stat
 	})
 }
 
-function switch_class(SEC: SafeExecutionContext, state: State, klass: CharacterClass): State {
-	return getSEC(SEC).xTry('switch_class', ({enforce_immutability}: SECContext) => {
+function switch_class(SEC: SoftExecutionContext, state: State, klass: CharacterClass): State {
+	return get_SEC(SEC).xTry('switch_class', ({enforce_immutability}: SECContext) => {
 		if (klass === state.klass)
 			return state
 
@@ -93,8 +93,8 @@ function switch_class(SEC: SafeExecutionContext, state: State, klass: CharacterC
 	})
 }
 
-function increase_stat(SEC: SafeExecutionContext, state: State, stat: CharacterAttribute, amount = 1): State {
-	return getSEC(SEC).xTry('increase_stat', ({enforce_immutability}: SECContext) => {
+function increase_stat(SEC: SoftExecutionContext, state: State, stat: CharacterAttribute, amount = 1): State {
+	return get_SEC(SEC).xTry('increase_stat', ({enforce_immutability}: SECContext) => {
 		if (amount <= 0)
 			throw new Error(`Error while increasing stat "${stat}": invalid amount!`) // TODO details
 
@@ -113,7 +113,7 @@ function increase_stat(SEC: SafeExecutionContext, state: State, stat: CharacterA
 
 /////////////////////
 
-function instantiate_lib(SEC: SafeExecutionContext) {
+function instantiate_lib(SEC: SoftExecutionContext) {
 	/*SEC = safe_execution_context.isomorphic.create({
 		parent: SEC,
 		module: LIB_ID,

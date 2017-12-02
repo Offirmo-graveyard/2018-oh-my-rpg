@@ -5,7 +5,7 @@ const state_1 = require("./state");
 const sec_1 = require("./sec");
 /////////////////////
 function migrate_to_latest(SEC, legacy_state, hints = {}) {
-    return sec_1.getSEC(SEC).xTry('migrate_to_latest', ({ SEC, logger }) => {
+    return sec_1.get_SEC(SEC).xTry('migrate_to_latest', ({ SEC, logger }) => {
         const src_version = (legacy_state && legacy_state.schema_version) || 0;
         let state = state_1.create(SEC);
         if (Object.keys(legacy_state).length === 0) {
