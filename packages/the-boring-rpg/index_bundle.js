@@ -6192,7 +6192,7 @@ tslib_1.__exportStar(__webpack_require__(292), exports);
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * 
+ *
  */
 
 function makeEmptyFunction(arg) {
@@ -7528,7 +7528,7 @@ module.exports = function deepFreeze (o) {
       deepFreeze(o[prop]);
     }
   });
-  
+
   return o;
 };
 
@@ -12010,7 +12010,7 @@ module.exports = getActiveElement;
  * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
- * 
+ *
  */
 
 /*eslint-disable no-self-compare */
@@ -12082,7 +12082,7 @@ module.exports = shallowEqual;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * 
+ *
  */
 
 var isTextNode = __webpack_require__(156);
@@ -17180,7 +17180,7 @@ function increase_stat(SEC, state, stat, amount = 1) {
 exports.increase_stat = increase_stat;
 /////////////////////
 function instantiate_lib(SEC) {
-    /*SEC = safe_execution_context.isomorphic.create({
+    /*SEC = soft_execution_context.isomorphic.create({
         parent: SEC,
         module: LIB_ID,
         context: {
@@ -26026,7 +26026,7 @@ var AsyncUpdates = 1;
   try {
     var nonExtensibleObject = Object.preventExtensions({});
     /* eslint-disable no-new */
-    
+
     /* eslint-enable no-new */
   } catch (e) {
     // TODO: Consider warning about bad polyfills
@@ -32156,7 +32156,7 @@ function setValueForProperty(node, name, value) {
   }
 
   {
-    
+
   }
 }
 
@@ -32171,7 +32171,7 @@ function setValueForAttribute(node, name, value) {
   }
 
   {
-    
+
   }
 }
 
@@ -44301,13 +44301,13 @@ Script.prototype.runInContext = function (context) {
     if (!(context instanceof Context)) {
         throw new TypeError("needs a 'context' argument.");
     }
-    
+
     var iframe = document.createElement('iframe');
     if (!iframe.style) iframe.style = {};
     iframe.style.display = 'none';
-    
+
     document.body.appendChild(iframe);
-    
+
     var win = iframe.contentWindow;
     var wEval = win.eval, wExecScript = win.execScript;
 
@@ -44316,7 +44316,7 @@ Script.prototype.runInContext = function (context) {
         wExecScript.call(win, 'null');
         wEval = win.eval;
     }
-    
+
     forEach(Object_keys(context), function (key) {
         win[key] = context[key];
     });
@@ -44325,11 +44325,11 @@ Script.prototype.runInContext = function (context) {
             win[key] = context[key];
         }
     });
-    
+
     var winKeys = Object_keys(win);
 
     var res = wEval.call(win, this.code);
-    
+
     forEach(Object_keys(win), function (key) {
         // Avoid copying circular objects like `top` and `window` by only
         // updating existing context properties or new properties in the `win`
@@ -44344,9 +44344,9 @@ Script.prototype.runInContext = function (context) {
             defineProp(context, key, win[key]);
         }
     });
-    
+
     document.body.removeChild(iframe);
-    
+
     return res;
 };
 
@@ -45812,7 +45812,7 @@ module.exports = function privateDecrypt(private_key, enc, reverse) {
   } else {
     padding = 4;
   }
-  
+
   var key = parseKeys(private_key);
   var k = key.modulus.byteLength();
   if (enc.length > k || new bn(enc).cmp(key.modulus) >= 0) {

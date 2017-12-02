@@ -5,15 +5,16 @@ const Conf = require('conf')
 const soft_execution_context = require('@offirmo/soft-execution-context/src/soft-execution-context-node')
 const { compatibleLoggerToConsole } = require('@offirmo/loggers-types-and-stubs')
 const { migrate_to_latest } = require('@oh-my-rpg/state-the-boring-rpg')
+const { displayError } = require('@offirmo/soft-execution-context/src/display-ansi')
 
 const { prettify_json_for_debug } = require('./utils/debug')
 
 /////////////////////////////////////////////////
 
 
-const SEC = safe_execution_context.node.create({
+const SEC = soft_execution_context.node.create({
 	module: 'the-npm-rpg',
-	onError,
+	onError: displayError,
 	context: {
 		ENV: 'development', // TODO auto
 		logger: compatibleLoggerToConsole,
@@ -22,7 +23,9 @@ const SEC = safe_execution_context.node.create({
 
 SEC.listenToUncaughtErrors()
 SEC.listenToUnhandledRejections()
-SEC.context.logger.info('Soft Execution Context initialized.')
+SEC.xTry('init', ({logger}) => {
+	logger.info('Soft Execution Context initialized.')
+})
 
 
 function get_SEC() {
@@ -30,7 +33,7 @@ function get_SEC() {
 }
 
 function init_savegame({verbose}) {
-	return SEC.yTry('init_savegame', ({logger}) => {
+	return SEC.xTry('init_savegame', ({logger}) => {
 		const config = new Conf({
 			configName: 'state',
 			defaults: {},

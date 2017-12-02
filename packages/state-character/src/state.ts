@@ -114,7 +114,7 @@ function increase_stat(SEC: SoftExecutionContext, state: State, stat: CharacterA
 /////////////////////
 
 function instantiate_lib(SEC: SoftExecutionContext) {
-	/*SEC = safe_execution_context.isomorphic.create({
+	/*SEC = soft_execution_context.isomorphic.create({
 		parent: SEC,
 		module: LIB_ID,
 		context: {
