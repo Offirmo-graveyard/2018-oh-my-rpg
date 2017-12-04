@@ -543,7 +543,6 @@ function start_loop(options) {
 		DEBUG: false,
 		gen_next_step: gen_next_step(),
 		ui: create_tty_chat_ui({DEBUG: false}),
-		inter_msg_delay_ms: 500,
 	})
 
 	return chat

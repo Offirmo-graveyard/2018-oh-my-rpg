@@ -43,7 +43,7 @@ function init_savegame({verbose}) {
 		logger.debug('config path:', config.path)
 		logger.debug('loaded state:', prettify_json_for_debug(config.store))
 
-		const state = migrate_to_latest(config.store)
+		const state = migrate_to_latest(SEC, config.store)
 		logger.debug('migrated state:', prettify_json_for_debug(state))
 
 		config.clear()
