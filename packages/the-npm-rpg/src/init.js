@@ -2,10 +2,10 @@
 
 const Conf = require('conf')
 
-const soft_execution_context = require('@offirmo/soft-execution-context/src/soft-execution-context-node')
+const soft_execution_context = require('@offirmo/soft-execution-context/dist/src.es7.cjs/soft-execution-context-node')
 const { compatibleLoggerToConsole } = require('@offirmo/loggers-types-and-stubs')
 const { migrate_to_latest } = require('@oh-my-rpg/state-the-boring-rpg')
-const { displayError } = require('@offirmo/soft-execution-context/src/display-ansi')
+const { displayError } = require('@offirmo/soft-execution-context/dist/src.es7.cjs/display-ansi')
 
 const { prettify_json_for_debug } = require('./utils/debug')
 
@@ -15,10 +15,6 @@ const { prettify_json_for_debug } = require('./utils/debug')
 const SEC = soft_execution_context.node.create({
 	module: 'the-npm-rpg',
 	onError: displayError,
-	context: {
-		ENV: 'development', // TODO auto
-		logger: compatibleLoggerToConsole,
-	}
 })
 
 SEC.listenToUncaughtErrors()

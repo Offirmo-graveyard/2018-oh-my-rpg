@@ -7,6 +7,7 @@ http://www.vertabelo.com/blog/technical-articles/a-song-of-ice-and-databases-a-g
 Content:
 * stories
   * https://ifcomp.org/comp/2017
+  * http://mangakakalot.com/chapter/the_great_ruler/chapter_21
 * pics
   * https://www.pinterest.com.au/athn1/commoner-for-dd/
   * https://lonewolfangel.deviantart.com/favourites/63788883/Fantasy-Male

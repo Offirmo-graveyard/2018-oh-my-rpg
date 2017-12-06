@@ -2,12 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const { LIB, INTERNAL_PROP } = require('../soft-execution-context/constants');
 const { createCatcher } = require('../catch-factory');
-const { create: createCore } = require('../soft-execution-context/core');
+const { create: createCore, setRoot } = require('../soft-execution-context/core');
+exports.setRoot = setRoot;
+const { createLogger } = require('../universal-logger-node');
 function create(...args) {
     const SEC = createCore(...args);
     // TODO protect from double install
     function listenToUncaughtErrors() {
-        if (!SEC[INTERNAL_PROP].module)
+        if (!SEC[INTERNAL_PROP].LS.module)
             throw new Error(`${LIB}›listenToUncaughtErrors() must only be called in the context of an app! (who are you to mess with globals, lib author??)`);
         const sub_SEC = SEC.child({ operation: '(uncaught error)' });
         process.on('uncaughtException', createCatcher({
@@ -17,7 +19,7 @@ function create(...args) {
         }));
     }
     function listenToUnhandledRejections() {
-        if (!SEC[INTERNAL_PROP].module)
+        if (!SEC[INTERNAL_PROP].LS.module)
             throw new Error(`${LIB}›listenToUncaughtErrors() must only be called in the context of an app! (who are you to mess with globals, lib author??)`);
         const sub_SEC = SEC.child({ operation: '(unhandled promise rejection)' });
         process.on('unhandledRejection', createCatcher({

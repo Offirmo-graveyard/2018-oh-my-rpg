@@ -27,7 +27,6 @@ function get_SEC(SEC?: SoftExecutionContext): SoftExecutionContext {
 		module: "oh-my-rpg",
 		context: {
 			enforce_immutability,
-			logger,
 		},
 		// TODO add debug details, version, etc.
 	})

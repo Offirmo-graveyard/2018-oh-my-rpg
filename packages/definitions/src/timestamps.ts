@@ -4,9 +4,7 @@ function get_UTC_timestamp_ms(): number {
 	return (+ Date.now())
 }
 
-function get_human_readable_UTC_timestamp_ms(): string {
-	const now = new Date()
-
+function get_human_readable_UTC_timestamp_ms_v1(now = new Date()): string {
 	const YYYY = now.getUTCFullYear()
 	const MM = ('0' + (now.getUTCMonth() + 1)).slice(-2)
 	const DD = ('0' + now.getUTCDate()).slice(-2)
@@ -15,13 +13,18 @@ function get_human_readable_UTC_timestamp_ms(): string {
 	const ss = ('0' + now.getUTCSeconds()).slice(-2)
 	const mmm = ('00' + now.getUTCMilliseconds()).slice(-3)
 
-	return `ts1_${YYYY}${MM}${DD}_${hh}:${mm}:${ss}.${mmm}`
+	return `${YYYY}${MM}${DD}_${hh}:${mm}:${ss}.${mmm}`
+}
+
+function get_human_readable_UTC_timestamp_ms(now = new Date()): string {
+	return 'ts1_' + get_human_readable_UTC_timestamp_ms_v1(now)
 }
 
 /////////////////////
 
 export {
 	get_UTC_timestamp_ms,
+	get_human_readable_UTC_timestamp_ms_v1,
 	get_human_readable_UTC_timestamp_ms,
 }
 

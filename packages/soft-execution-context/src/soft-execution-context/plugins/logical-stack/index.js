@@ -12,35 +12,44 @@ import {
 } from './constants'
 
 import { ERROR_FIELDS } from '../../../fields'
+ERROR_FIELDS.add('logicalStack')
 
-function getLogicalStack(module, operation, parentModule, parentFullLStack = LOGICAL_STACK_BEGIN_MARKER) {
-	if (!module && !parentModule)
-		throw new Error(`${LIB}: you must provide 'module' to annotate errors with a logical stack!`)
+function getLogicalStack(module, operation, parentModule, parentFullLStack = '') {
+
 	module = module || parentModule
+	if (!module)
+		throw new Error(`${LIB}/${SUB_LIB}: you must provide 'module' to start building a logical stack!`)
 
-	if (!module && !operation)
-		throw new Error(`${LIB}: you must provide 'module' and/or 'operation' to annotate errors with a logical stack!`)
+	if (parentModule && !parentFullLStack)
+		throw new Error(`${LIB}/${SUB_LIB}: you must provide the parent full LStack!`)
 
+	if (parentFullLStack && !parentModule)
+		throw new Error(`${LIB}/${SUB_LIB}: incoherency parentModule / parent LStack!`)
+
+	/// SHORT ///
 	let shortLStack = ''
 		+ LOGICAL_STACK_BEGIN_MARKER
 		+ LOGICAL_STACK_MODULE_MARKER
 		+ module
 
-	let fullLStack = parentFullLStack
+	if (operation) {
+		shortLStack += ''
+			+ LOGICAL_STACK_SEPARATOR
+			+ operation
+			+ LOGICAL_STACK_OPERATION_MARKER
+	}
+
+	/// FULL ///
+	let fullLStack = parentFullLStack || LOGICAL_STACK_BEGIN_MARKER
 
 	if (module !== parentModule)
 		fullLStack += ''
-			+ (parentFullLStack === LOGICAL_STACK_BEGIN_MARKER ? '' : LOGICAL_STACK_SEPARATOR)
+			+ (parentModule ? LOGICAL_STACK_SEPARATOR: '')
 			+ LOGICAL_STACK_MODULE_MARKER
 			+ module
 
 	if (operation) {
 		fullLStack += ''
-			+ LOGICAL_STACK_SEPARATOR
-			+ operation
-			+ LOGICAL_STACK_OPERATION_MARKER
-
-		shortLStack += ''
 			+ LOGICAL_STACK_SEPARATOR
 			+ operation
 			+ LOGICAL_STACK_OPERATION_MARKER
@@ -58,49 +67,46 @@ function installPluginLogicalStack(SEC, {module, operation, parent}) {
 
 	// inherit some stuff from our parent
 	if (parent) {
-		module = module || parent[INTERNAL_PROP].module
+		module = module || parent[INTERNAL_PROP].LS.module
 	}
 
-	if (parent && !parent[INTERNAL_PROP].logicalStack) {
-		console.log('UHHH?')
-	}
-
+	const SECInternal = SEC[INTERNAL_PROP]
 
 	const logicalStack = getLogicalStack(
 		module,
 		operation,
-		parent ? parent[INTERNAL_PROP].module : undefined,
-		parent ? parent[INTERNAL_PROP].logicalStack.full : undefined,
+		parent ? parent[INTERNAL_PROP].LS.module : undefined,
+		parent ? parent[INTERNAL_PROP].LS.logicalStack.full : undefined,
 	)
 
-	SEC[INTERNAL_PROP].errDecorators.push(function attachLogicalStack(err) {
+	SECInternal.errDecorators.push(function attachLogicalStackToError(err) {
 		if (err.logicalStack) {
 			// OK this error is already decorated.
-			// message already decorated, don't touch
+			// Thus the message is also already decorated, don't touch it.
 
 			// can we add more info?
 			if (err.logicalStack.includes(logicalStack.full)) {
-				// ok, already chained
+				// ok, logical stack already chained
 			}
 			else {
-				// TOTEST
+				// SEC chain was interrupted
 				err.logicalStack = logicalStack.full + LOGICAL_STACK_SEPARATOR_NON_ADJACENT + err.logicalStack
 			}
 		}
 		else {
 			if (!err.message.startsWith(logicalStack.short))
-					 err.message = logicalStack.short + LOGICAL_STACK_END_MARKER + ' ' + err.message
+					err.message = logicalStack.short + LOGICAL_STACK_END_MARKER + ' ' + err.message
 			err.logicalStack = logicalStack.full
 		}
 
 		return err
 	})
 
-	ERROR_FIELDS.add('logicalStack')
-
-	SEC[INTERNAL_PROP].module = module
-	SEC[INTERNAL_PROP].operation = operation
-	SEC[INTERNAL_PROP].logicalStack = logicalStack
+	SECInternal.LS = {
+		module,
+		operation,
+		logicalStack,
+	}
 
 	return SEC
 }
