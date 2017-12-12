@@ -18,6 +18,26 @@ const logger = createLogger({
 	level: 'warn',
 })
 
+// test
+/*
+;[
+	'fatal',
+	'emerg',
+	'alert',
+	'crit',
+	'error',
+	'warning',
+	'warn',
+	'notice',
+	'info',
+	'verbose',
+	'log',
+	'debug',
+	'trace',
+	'silly',
+].forEach(level => logger[level]({level}))
+*/
+
 function onError(err) {
 	logger.fatal('error!', {err})
 }
@@ -41,14 +61,13 @@ function get_SEC() {
 	return SEC
 }
 
-function init_savegame({verbose}) {
+function init_savegame() {
 	return SEC.xTry('init_savegame', ({logger}) => {
 		const config = new Conf({
 			configName: 'state',
 			defaults: {},
 		})
 
-		// TODO verbose in SEC
 		logger.verbose(`config path: "${config.path}"`)
 		logger.trace('loaded state:', {state: config.store})
 

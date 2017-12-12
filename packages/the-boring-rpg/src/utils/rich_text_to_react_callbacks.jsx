@@ -21,6 +21,11 @@ function on_node_exit({$node, $id, state, depth}) {
 
 	const classes = classNames(...$classes)
 	let children = state.children.map(c => c.element)
+	children = React.Children.map(children, (child, index) => {
+		return (typeof child === 'string')
+			? child
+			: React.cloneElement(child, {key: `${index}`})
+	})
 	let element = null
 
 	switch ($type) {

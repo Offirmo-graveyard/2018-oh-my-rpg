@@ -97,6 +97,12 @@ function get_prng(state: Readonly<State>): MT19937 {
 	return cached_prng
 }
 
+// useful for re-seeding
+function generate_random_seed(): number {
+	const rng: MTEngineWithSeed = Random.engines.mt19937().autoSeed()
+	return Random.integer(-2147483646, 2147483647)(rng)
+}
+
 function xxx_internal_reset_prng_cache() {
 	cached_prng = Random.engines.mt19937().seed(DEFAULT_SEED)
 	cached_prng._seed = DEFAULT_SEED
@@ -148,6 +154,7 @@ export {
 	update_use_count,
 
 	get_prng,
+	generate_random_seed,
 
 	// exposed for testability, do not use !
 	xxx_internal_reset_prng_cache,

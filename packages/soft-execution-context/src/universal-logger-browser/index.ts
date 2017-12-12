@@ -33,21 +33,46 @@ const LEVEL_TO_CONSOLE_METHOD: { [k: string]: string } = {
 	[LogLevel.silly]:   'debug',
 }
 
+const LEVEL_TO_STYLE: { [k: string]: string } = {
+	[LogLevel.fatal]:   '',
+	[LogLevel.emerg]:   '',
+	[LogLevel.alert]:   '',
+	[LogLevel.crit]:    '',
+
+	[LogLevel.error]:   '',
+
+	[LogLevel.warning]: '',
+	[LogLevel.warn]:    '',
+
+	[LogLevel.notice]:  'color: #659AD2',
+	[LogLevel.info]:    'color: #659AD2',
+	[LogLevel.verbose]: 'color: #659AD2',
+
+	[LogLevel.log]:     '',
+	[LogLevel.debug]:   '',
+
+	[LogLevel.trace]:   'color: #9AA2AA',
+	[LogLevel.silly]:   'color: #9AA2AA',
+}
+
 function createLogger(p: LoggerParams): Logger {
 
 	function outputFn(payload: Payload): void {
 		const { level, name, msg, time, details } = payload
 		//const { err, ...detailsNoErr } = details
 		let line = ''
-			+ time
-			+ ' '
-			+ `[${level}]`
-			+ '› '
+			//+ time
+			//+ ' '
+			+ `%c[${level}]`
+			+ '›'
 			+ name
 			+ '›'
-			+ (msg ? ' ' : '')
+			//+ (msg ? ' ' : '')
 			+ msg
-		;(console as any)[LEVEL_TO_CONSOLE_METHOD[level]](line, details)
+		if (Object.keys(details).length)
+			(console as any)[LEVEL_TO_CONSOLE_METHOD[level]](line, LEVEL_TO_STYLE[level], details)
+		else
+			(console as any)[LEVEL_TO_CONSOLE_METHOD[level]](line, LEVEL_TO_STYLE[level])
 	}
 
 	return createCoreLogger({

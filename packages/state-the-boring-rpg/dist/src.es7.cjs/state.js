@@ -62,6 +62,7 @@ function create() {
 }
 exports.create = create;
 /////////////////////
+// internal funcs
 const STATS = ['health', 'mana', 'strength', 'agility', 'charisma', 'wisdom', 'luck'];
 function instantiate_adventure_archetype(rng, aa, character, inventory) {
     let { hid, good, type, outcome: should_gain } = aa;
@@ -224,6 +225,12 @@ function appraise_item_at_coordinates(state, coordinates) {
 }
 exports.appraise_item_at_coordinates = appraise_item_at_coordinates;
 /////////////////////
+function reseed(state, seed) {
+    seed = seed || state_prng_1.generate_random_seed();
+    state.prng = PRNGState.set_seed(state.prng, seed);
+    return state;
+}
+exports.reseed = reseed;
 // allow passing an explicit adventure archetype for testing !
 function play(state, explicit_adventure_archetype_hid) {
     state.click_count++;

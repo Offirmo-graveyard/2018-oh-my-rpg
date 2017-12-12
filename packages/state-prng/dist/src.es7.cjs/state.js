@@ -67,6 +67,12 @@ function get_prng(state) {
     return cached_prng;
 }
 exports.get_prng = get_prng;
+// useful for re-seeding
+function generate_random_seed() {
+    const rng = random_1.Random.engines.mt19937().autoSeed();
+    return random_1.Random.integer(-2147483646, 2147483647)(rng);
+}
+exports.generate_random_seed = generate_random_seed;
 function xxx_internal_reset_prng_cache() {
     cached_prng = random_1.Random.engines.mt19937().seed(DEFAULT_SEED);
     cached_prng._seed = DEFAULT_SEED;

@@ -10,10 +10,29 @@ import { LS_KEYS } from './consts'
 
 const logger = createLogger({
 	name: 'the-boring-rpg',
-	level: 'trace',
+	level: 'silly',
 })
 logger.trace('Logger up.')
 
+// test
+/*
+;[
+	'fatal',
+	'emerg',
+	'alert',
+	'crit',
+	'error',
+	'warning',
+	'warn',
+	'notice',
+	'info',
+	'verbose',
+	'log',
+	'debug',
+	'trace',
+	'silly',
+].forEach(level => logger[level]({level}))
+*/
 
 function onError(err) {
 	logger.fatal('error!', {err})
@@ -29,7 +48,7 @@ const SEC = soft_execution_context.browser.create({
 })
 soft_execution_context.setRoot(SEC)
 
-//SEC.listenToUncaughtErrors()
+SEC.listenToAll()
 //SEC.listenToUnhandledRejections()
 logger.trace('Soft Execution Context initialized.')
 
@@ -39,24 +58,28 @@ function get_SEC() {
 
 /////////////////////////////////////////////////
 
-function init_savegame({verbose}) {
-	const lscontent = localStorage.getItem(LS_KEYS.savegame)
-	let state = null
-	try {
-		if (lscontent)
-			state = JSON.parse(lscontent)
-	}
-	catch (err) {}
+function init_savegame() {
+	return SEC.xTry('init_savegame', ({logger}) => {
+		logger.verbose('LS key:', {key: LS_KEYS.savegame})
 
-	if (verbose) console.log('LS key:', LS_KEYS.savegame)
-	if (verbose) console.log('loaded state:', state)
+		const lscontent = localStorage.getItem(LS_KEYS.savegame)
+		let state = null
+		try {
+			if (lscontent)
+				state = JSON.parse(lscontent)
+		}
+		catch (err) {
+		}
 
-	state = migrate_to_latest(SEC, state)
-	if (verbose) console.log('migrated state:', state)
+		logger.trace('loaded state:', {state})
 
-	localStorage.setItem(LS_KEYS.savegame, JSON.stringify(state))
+		state = migrate_to_latest(SEC, state)
+		logger.trace('migrated state:', {state})
 
-	return state
+		localStorage.setItem(LS_KEYS.savegame, JSON.stringify(state))
+
+		return state
+	})
 }
 
 /////////////////////////////////////////////////

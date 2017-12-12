@@ -57,7 +57,14 @@ else {
 		historyApiFallback: {
 			index: PUBLIC_PATH,
 		},
+		// https://github.com/webpack/webpack-dev-server/issues/533#issuecomment-238001949
+		headers: {
+			"Access-Control-Allow-Origin": "*",
+			//"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+			//"Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization",
+		},
 	}
+
 }
 
 module.exports = config

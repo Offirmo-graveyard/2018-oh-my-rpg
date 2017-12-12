@@ -37,6 +37,7 @@ import {
 import * as PRNGState from '@oh-my-rpg/state-prng'
 import {
 	get_prng,
+	generate_random_seed,
 } from '@oh-my-rpg/state-prng'
 
 import {
@@ -131,7 +132,7 @@ function create(): State {
 }
 
 /////////////////////
-
+// internal funcs
 const STATS = [ 'health', 'mana', 'strength', 'agility', 'charisma', 'wisdom', 'luck' ]
 function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, character: CharacterAttributes, inventory: InventoryState.State): Adventure {
 	let {hid, good, type, outcome : should_gain} = aa
@@ -325,6 +326,15 @@ function appraise_item_at_coordinates(state: Readonly<State>, coordinates: Inven
 
 /////////////////////
 
+
+function reseed(state: State, seed?: number): State {
+	seed = seed || generate_random_seed()
+
+	state.prng = PRNGState.set_seed(state.prng, seed)
+
+	return state
+}
+
 // allow passing an explicit adventure archetype for testing !
 function play(state: State, explicit_adventure_archetype_hid?: string): State {
 	state.click_count++
@@ -497,6 +507,7 @@ export {
 
 	create,
 
+	reseed,
 	play,
 	equip_item,
 	sell_item,

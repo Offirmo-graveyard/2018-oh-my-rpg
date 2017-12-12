@@ -22,7 +22,7 @@ class Home extends React.Component {
 	}
 
 	addRichTextBubble(document, {before_mount = false, direction = 'ltr'} = {}) {
-		console.log('addRichTextBubble', document)
+		//console.log('addRichTextBubble', document)
 		if (!document) return
 
 		const key = this.state.bubbles.length + 1
@@ -44,7 +44,7 @@ class Home extends React.Component {
 		const {state} = workspace
 
 		this.element.addEventListener('click', event => {
-			console.log('click detected on', event.target)
+			//console.log('click detected on', event.target)
 			const {workspace} = this.props
 			this.addRichTextBubble('Let’s go adventuring!', {direction: 'rtl'})
 			play(workspace)
@@ -62,7 +62,7 @@ class Home extends React.Component {
 		const {workspace} = this.props
 		const {state} = workspace
 
-		console.log('render', this.state)
+		//console.log('render', this.state)
 		return (
 			<div ref={elt => this.element = elt}>
 				<Chat>
