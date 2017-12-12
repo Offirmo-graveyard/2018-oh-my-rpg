@@ -1,3 +1,5 @@
+import { expect } from 'chai'
+
 import { xxx_internal_reset_prng_cache } from '@oh-my-rpg/state-prng'
 import { ALL_GOOD_ADVENTURE_ARCHETYPES } from '@oh-my-rpg/logic-adventures'
 import {
@@ -25,7 +27,7 @@ describe('📃  adventure rendering', function() {
 
 		const str = rich_text_to_ansi($doc)
 		console.log(str)
-		expect(str).to.be.a.string
+		expect(str).to.be.a('string')
 		expect(str).to.include('A dying man on the street left you everything he had.')
 		expect(str).to.include('You gained')
 		expect(str).to.include('1234 coins')

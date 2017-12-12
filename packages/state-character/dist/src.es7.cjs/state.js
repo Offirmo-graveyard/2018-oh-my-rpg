@@ -7,8 +7,7 @@ const consts_1 = require("./consts");
 const types_1 = require("./types");
 exports.CharacterAttribute = types_1.CharacterAttribute;
 exports.CharacterClass = types_1.CharacterClass;
-const immutable = (state) => state;
-//const immutable = (state: State) => deepFreeze(state)
+const sec_1 = require("./sec");
 /////////////////////
 const CHARACTER_STATS = typescript_string_enums_1.Enum.keys(types_1.CharacterAttribute);
 exports.CHARACTER_STATS = CHARACTER_STATS;
@@ -23,51 +22,61 @@ const CHARACTER_STATS_SORTED = [
     'luck',
 ];
 exports.CHARACTER_STATS_SORTED = CHARACTER_STATS_SORTED;
-if (CHARACTER_STATS.length !== CHARACTER_STATS_SORTED.length)
-    throw new Error(`${consts_1.LIB_ID}: CHARACTER_STATS to update!`);
+sec_1.get_SEC().xTry('boot checks', () => {
+    if (CHARACTER_STATS.length !== CHARACTER_STATS_SORTED.length)
+        throw new Error(`CHARACTER_STATS to update!`);
+});
 const CHARACTER_CLASSES = typescript_string_enums_1.Enum.keys(types_1.CharacterClass);
 exports.CHARACTER_CLASSES = CHARACTER_CLASSES;
 ///////
-function create() {
-    return immutable({
-        schema_version: consts_1.SCHEMA_VERSION,
-        revision: 0,
-        name: '[anonymous]',
-        klass: types_1.CharacterClass.novice,
-        attributes: {
-            level: 1,
-            // TODO improve this
-            health: 1,
-            mana: 0,
-            strength: 1,
-            agility: 1,
-            charisma: 1,
-            wisdom: 1,
-            luck: 1
-        },
+function create(SEC) {
+    return sec_1.get_SEC(SEC).xTry('create', ({ enforce_immutability }) => {
+        return enforce_immutability({
+            schema_version: consts_1.SCHEMA_VERSION,
+            revision: 0,
+            name: '[anonymous]',
+            klass: types_1.CharacterClass.novice,
+            attributes: {
+                level: 1,
+                // TODO improve this
+                health: 1,
+                mana: 0,
+                strength: 1,
+                agility: 1,
+                charisma: 1,
+                wisdom: 1,
+                luck: 1
+            },
+        });
     });
 }
 exports.create = create;
 /////////////////////
-function rename(state, new_name) {
-    if (!new_name)
-        throw new Error(`${consts_1.LIB_ID}: Error while renaming to "${new_name}: invalid value!`);
-    if (new_name === state.name)
-        return state;
-    return immutable(Object.assign({}, state, { name: new_name, revision: state.revision + 1 }));
+function rename(SEC, state, new_name) {
+    return sec_1.get_SEC(SEC).xTry('rename', ({ enforce_immutability }) => {
+        if (!new_name)
+            throw new Error(`Error while renaming to "${new_name}: invalid target value!`); // TODO details
+        if (new_name === state.name)
+            return state;
+        return enforce_immutability(Object.assign({}, state, { name: new_name, revision: state.revision + 1 }));
+    });
 }
 exports.rename = rename;
-function switch_class(state, klass) {
-    if (klass === state.klass)
-        return state;
-    return immutable(Object.assign({}, state, { klass, revision: state.revision + 1 }));
+function switch_class(SEC, state, klass) {
+    return sec_1.get_SEC(SEC).xTry('switch_class', ({ enforce_immutability }) => {
+        if (klass === state.klass)
+            return state;
+        return enforce_immutability(Object.assign({}, state, { klass, revision: state.revision + 1 }));
+    });
 }
 exports.switch_class = switch_class;
-function increase_stat(state, stat, amount = 1) {
-    if (amount <= 0)
-        throw new Error(`${consts_1.LIB_ID}: Error while increasing stat "${stat}: invalid amount!`);
-    // TODO stats caps
-    return immutable(Object.assign({}, state, { attributes: Object.assign({}, state.attributes, { [stat]: state.attributes[stat] + amount }), revision: state.revision + 1 }));
+function increase_stat(SEC, state, stat, amount = 1) {
+    return sec_1.get_SEC(SEC).xTry('increase_stat', ({ enforce_immutability }) => {
+        if (amount <= 0)
+            throw new Error(`Error while increasing stat "${stat}": invalid amount!`); // TODO details
+        // TODO stats caps
+        return enforce_immutability(Object.assign({}, state, { attributes: Object.assign({}, state.attributes, { [stat]: state.attributes[stat] + amount }), revision: state.revision + 1 }));
+    });
 }
 exports.increase_stat = increase_stat;
 /////////////////////

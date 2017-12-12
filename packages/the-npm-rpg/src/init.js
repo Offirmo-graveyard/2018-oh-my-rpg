@@ -2,32 +2,69 @@
 
 const Conf = require('conf')
 
+const soft_execution_context = require('@offirmo/soft-execution-context/dist/src.es7.cjs/soft-execution-context-node')
+const { compatibleLoggerToConsole } = require('@offirmo/loggers-types-and-stubs')
 const { migrate_to_latest } = require('@oh-my-rpg/state-the-boring-rpg')
+const { createLogger } = require('@offirmo/soft-execution-context/dist/src.es7.cjs/universal-logger-node')
+
+//const { displayError } = require('@offirmo/soft-execution-context/dist/src.es7.cjs/display-ansi')
 
 const { prettify_json_for_debug } = require('./utils/debug')
 
 /////////////////////////////////////////////////
 
+const logger = createLogger({
+	name: 'the-npm-rpg',
+	level: 'warn',
+})
+
+function onError(err) {
+	logger.fatal('error!', {err})
+}
+
+// TODO report sentry
+const SEC = soft_execution_context.node.create({
+	module: 'the-npm-rpg',
+	onError,
+	context: {
+		logger,
+	}
+})
+soft_execution_context.setRoot(SEC)
+
+SEC.listenToUncaughtErrors()
+SEC.listenToUnhandledRejections()
+logger.trace('Soft Execution Context initialized.')
+
+
+function get_SEC() {
+	return SEC
+}
+
 function init_savegame({verbose}) {
-	const config = new Conf({
-		configName: 'state',
-		defaults: {},
+	return SEC.xTry('init_savegame', ({logger}) => {
+		const config = new Conf({
+			configName: 'state',
+			defaults: {},
+		})
+
+		// TODO verbose in SEC
+		logger.verbose(`config path: "${config.path}"`)
+		logger.trace('loaded state:', {state: config.store})
+
+		const state = migrate_to_latest(SEC, config.store)
+		logger.trace('migrated state:', {state})
+
+		config.clear()
+		config.set(state)
+
+		return config
 	})
-
-	if (verbose) console.log('config path:', config.path)
-	if (verbose) console.log('loaded state:', prettify_json_for_debug(config.store))
-
-	const state = migrate_to_latest(config.store)
-	if (verbose) console.log('migrated state:', prettify_json_for_debug(state))
-
-	config.clear()
-	config.set(state)
-
-	return config
 }
 
 /////////////////////////////////////////////////
 
 module.exports = {
+	SEC,
 	init_savegame,
 }

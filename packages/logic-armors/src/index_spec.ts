@@ -1,3 +1,5 @@
+import { expect } from 'chai'
+
 import { InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
 import { Random, Engine } from '@offirmo/random'
 
@@ -59,11 +61,11 @@ describe('🛡 👕  armor logic:', function() {
 			armor.enhancement_level = 0
 
 			armor = enhance(armor)
-			expect(armor.enhancement_level, 1).to.equal(1)
+			expect(armor.enhancement_level, String(1)).to.equal(1)
 
 			for(let i = 2; i <= MAX_ENHANCEMENT_LEVEL; ++i) {
 				armor = enhance(armor)
-				expect(armor.enhancement_level, i).to.equal(i)
+				expect(armor.enhancement_level, String(i)).to.equal(i)
 			}
 
 			expect(armor.enhancement_level, 'max').to.equal(MAX_ENHANCEMENT_LEVEL)

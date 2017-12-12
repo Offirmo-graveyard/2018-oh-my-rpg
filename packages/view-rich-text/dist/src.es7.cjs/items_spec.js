@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const chai_1 = require("chai");
 const RichText = require("@oh-my-rpg/rich-text-format");
 const definitions_1 = require("@oh-my-rpg/definitions");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
@@ -24,11 +25,11 @@ describe('⚔ 🛡 item rendering', function () {
                     enhancement_level: 0,
                 });
                 const str = RichText.to_text($doc);
-                expect(str).to.be.a.string;
-                expect(str).to.include('Luth');
-                expect(str).to.include('Simple');
-                expect(str).to.include('Mercenary');
-                expect(str).not.to.include('+');
+                chai_1.expect(str).to.be.a('string');
+                chai_1.expect(str).to.include('Luth');
+                chai_1.expect(str).to.include('Simple');
+                chai_1.expect(str).to.include('Mercenary');
+                chai_1.expect(str).not.to.include('+');
             });
         });
         context('when enhanced', function () {
@@ -43,11 +44,11 @@ describe('⚔ 🛡 item rendering', function () {
                     enhancement_level: 3,
                 });
                 const str = RichText.to_text($doc);
-                expect(str).to.be.a.string;
-                expect(str).to.include('Long sword');
-                expect(str).to.include('Onyx');
-                expect(str).to.include('Warfield king’s');
-                expect(str).to.include('+3');
+                chai_1.expect(str).to.be.a('string');
+                chai_1.expect(str).to.include('Long sword');
+                chai_1.expect(str).to.include('Onyx');
+                chai_1.expect(str).to.include('Warfield king’s');
+                chai_1.expect(str).to.include('+3');
             });
         });
     });
@@ -64,11 +65,11 @@ describe('⚔ 🛡 item rendering', function () {
                     enhancement_level: 0
                 });
                 const str = RichText.to_text($doc);
-                expect(str).to.be.a.string;
-                expect(str).to.include('Socks');
-                expect(str).to.include('Onyx');
-                expect(str).to.include('Tormentor');
-                expect(str).not.to.include('+');
+                chai_1.expect(str).to.be.a('string');
+                chai_1.expect(str).to.include('Socks');
+                chai_1.expect(str).to.include('Onyx');
+                chai_1.expect(str).to.include('Tormentor');
+                chai_1.expect(str).not.to.include('+');
             });
         });
         context('when enhanced', function () {
@@ -83,11 +84,11 @@ describe('⚔ 🛡 item rendering', function () {
                     enhancement_level: 5
                 });
                 const str = RichText.to_text($doc);
-                expect(str).to.be.a.string;
-                expect(str).to.include('Mantle');
-                expect(str).to.include('Embroidered');
-                expect(str).to.include('Warfield');
-                expect(str).to.include('+5');
+                chai_1.expect(str).to.be.a('string');
+                chai_1.expect(str).to.include('Mantle');
+                chai_1.expect(str).to.include('Embroidered');
+                chai_1.expect(str).to.include('Warfield');
+                chai_1.expect(str).to.include('+5');
             });
         });
     });

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const chai_1 = require("chai");
 const RichText = require("@oh-my-rpg/rich-text-format");
 const state_wallet_1 = require("@oh-my-rpg/state-wallet");
 const { rich_text_to_ansi } = require('../../../the-npm-rpg/src/utils/rich_text_to_ansi');
@@ -10,9 +11,9 @@ describe('💰  wallet rendering', function () {
             let wallet = state_wallet_1.create();
             const $doc = _1.render_wallet(wallet);
             const str = RichText.to_text($doc);
-            expect(str).to.be.a.string;
-            expect(str).to.contain(' 0 coins');
-            expect(str).to.contain(' 0 tokens');
+            chai_1.expect(str).to.be.a('string');
+            chai_1.expect(str).to.contain(' 0 coins');
+            chai_1.expect(str).to.contain(' 0 tokens');
         });
     });
     context('when not empty', function () {
@@ -22,10 +23,10 @@ describe('💰  wallet rendering', function () {
             wallet = state_wallet_1.add_amount(wallet, state_wallet_1.Currency.token, 67);
             const $doc = _1.render_wallet(wallet);
             const str = RichText.to_text($doc);
-            expect(str).to.be.a.string;
-            expect(str).not.to.contain('0');
-            expect(str).to.contain(' 12345 coins');
-            expect(str).to.contain(' 67 tokens');
+            chai_1.expect(str).to.be.a('string');
+            chai_1.expect(str).not.to.contain('0');
+            chai_1.expect(str).to.contain(' 12345 coins');
+            chai_1.expect(str).to.contain(' 67 tokens');
         });
     });
     describe('demo', function () {

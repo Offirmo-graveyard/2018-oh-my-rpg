@@ -1,3 +1,5 @@
+import { expect } from 'chai'
+
 import { Random, Engine } from '@offirmo/random'
 
 import {
@@ -92,7 +94,7 @@ describe('⚔ 💰  adventures', function() {
 				it('should have an en i18n message', () => {
 					const _: any = i18n_messages.en
 					expect(_).to.have.nested.property(`adventures.${hid}`)
-					expect(_.adventures[hid]).to.be.a.string
+					expect(_.adventures[hid]).to.be.a('string')
 				})
 			})
 		})

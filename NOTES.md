@@ -4,6 +4,25 @@ TOREAD https://josephg.com/blog/fixing-fortnite/
 Schema:
 http://www.vertabelo.com/blog/technical-articles/a-song-of-ice-and-databases-a-game-of-thrones-data-model
 
+Wiki
+https://github.com/online-adventures/cheatsheets/blob/master/CONTRIBUTING.md
+https://devhints.io/cheatsheet-styles
+
+Priest = ce qui devrait être
+besoin d'un cœur pur sans préjugés
+rare, difficile d'accès
+
+
+Content:
+* stories
+  * https://ifcomp.org/comp/2017
+  * http://mangakakalot.com/chapter/the_great_ruler/chapter_21
+* pics
+  * https://www.pinterest.com.au/athn1/commoner-for-dd/
+  * https://lonewolfangel.deviantart.com/favourites/63788883/Fantasy-Male
+  * https://www.pinterest.com.au/msquirewriting/fantasy-art/
+  * https://deathbornaeon.deviantart.com/favourites/69459555/Druids-and-Shamans
+
 
 TODO:
 * lerna commands:
@@ -16,11 +35,13 @@ TODO:
   * seasonal content
 * countdowns
 * accumulator on non-play
+* clean root deps
 
 
 
 spacetime
 
+https://getavataaars.com/?accessoriesType=Wayfarers&avatarStyle=Circle&clotheColor=PastelRed&clotheType=Hoodie&eyeType=Dizzy&eyebrowType=RaisedExcitedNatural&hairColor=Platinum&mouthType=Serious&ref=producthunt&skinColor=Brown&topType=LongHairFroBand
 
 http://paizo.com/pathfinderRPG
 

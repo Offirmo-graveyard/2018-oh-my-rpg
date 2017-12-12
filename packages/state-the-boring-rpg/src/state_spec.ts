@@ -1,3 +1,4 @@
+import { expect } from 'chai'
 
 import * as MetaState from '@oh-my-rpg/state-meta'
 import * as CharacterState from '@oh-my-rpg/state-character'

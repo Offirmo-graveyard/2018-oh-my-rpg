@@ -1,3 +1,5 @@
+import { expect } from 'chai'
+
 import * as RichText from '@oh-my-rpg/rich-text-format'
 
 import {
@@ -23,7 +25,7 @@ describe('💰  wallet rendering', function() {
 			const $doc = render_wallet(wallet)
 			const str = RichText.to_text($doc)
 
-			expect(str).to.be.a.string
+			expect(str).to.be.a('string')
 			expect(str).to.contain(' 0 coins')
 			expect(str).to.contain(' 0 tokens')
 		})
@@ -39,7 +41,7 @@ describe('💰  wallet rendering', function() {
 			const $doc = render_wallet(wallet)
 			const str = RichText.to_text($doc)
 
-			expect(str).to.be.a.string
+			expect(str).to.be.a('string')
 			expect(str).not.to.contain('0')
 			expect(str).to.contain(' 12345 coins')
 			expect(str).to.contain(' 67 tokens')

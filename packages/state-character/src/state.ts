@@ -3,7 +3,7 @@
 import { Enum } from 'typescript-string-enums'
 import * as deepFreeze from 'deep-freeze-strict'
 
-import { LIB_ID, SCHEMA_VERSION } from './consts'
+import { SCHEMA_VERSION } from './consts'
 
 import {
 	CharacterAttribute,
@@ -12,8 +12,7 @@ import {
 	State,
 } from './types'
 
-const immutable = (state: State) => state
-//const immutable = (state: State) => deepFreeze(state)
+import { SoftExecutionContext, SECContext, get_SEC } from './sec'
 
 /////////////////////
 
@@ -29,75 +28,86 @@ const CHARACTER_STATS_SORTED: CharacterAttribute[] = [
 	'wisdom',
 	'luck',
 ]
-if (CHARACTER_STATS.length !== CHARACTER_STATS_SORTED.length)
-	throw new Error(`${LIB_ID}: CHARACTER_STATS to update!`)
+
+get_SEC().xTry('boot checks', () => {
+	if (CHARACTER_STATS.length !== CHARACTER_STATS_SORTED.length)
+		throw new Error(`CHARACTER_STATS to update!`)
+})
 
 const CHARACTER_CLASSES = Enum.keys(CharacterClass)
 
 ///////
 
-function create(): State {
-	return immutable({
-		schema_version: SCHEMA_VERSION,
-		revision: 0,
+function create(SEC: SoftExecutionContext): State {
+	return get_SEC(SEC).xTry('create', ({enforce_immutability}: SECContext) => {
+		return enforce_immutability({
+			schema_version: SCHEMA_VERSION,
+			revision: 0,
 
-		name: '[anonymous]',
-		klass: CharacterClass.novice,
-		attributes: {
-			level: 1,
+			name: '[anonymous]',
+			klass: CharacterClass.novice,
+			attributes: {
+				level: 1,
 
-			// TODO improve this
-			health: 1,
-			mana: 0,
+				// TODO improve this
+				health: 1,
+				mana: 0,
 
-			strength: 1,
-			agility: 1,
-			charisma: 1,
-			wisdom: 1,
-			luck: 1
-		},
+				strength: 1,
+				agility: 1,
+				charisma: 1,
+				wisdom: 1,
+				luck: 1
+			},
+		})
 	})
 }
 
 /////////////////////
 
-function rename(state: State, new_name: string): State {
-	if (!new_name)
-		throw new Error(`${LIB_ID}: Error while renaming to "${new_name}: invalid value!`)
-	if (new_name === state.name)
-		return state
+function rename(SEC: SoftExecutionContext, state: State, new_name: string): State {
+	return get_SEC(SEC).xTry('rename', ({enforce_immutability}: SECContext) => {
+		if (!new_name)
+			throw new Error(`Error while renaming to "${new_name}: invalid target value!`) // TODO details
+		if (new_name === state.name)
+			return state
 
-	return immutable({
-		...state,
-		name: new_name,
-		revision: state.revision + 1,
+		return enforce_immutability({
+			...state,
+			name: new_name,
+			revision: state.revision + 1,
+		})
 	})
 }
 
-function switch_class(state: State, klass: CharacterClass): State {
-	if (klass === state.klass)
-		return state
+function switch_class(SEC: SoftExecutionContext, state: State, klass: CharacterClass): State {
+	return get_SEC(SEC).xTry('switch_class', ({enforce_immutability}: SECContext) => {
+		if (klass === state.klass)
+			return state
 
-	return immutable({
-		...state,
-		klass,
-		revision: state.revision + 1,
+		return enforce_immutability({
+			...state,
+			klass,
+			revision: state.revision + 1,
+		})
 	})
 }
 
-function increase_stat(state: State, stat: CharacterAttribute, amount = 1): State {
-	if (amount <= 0)
-		throw new Error(`${LIB_ID}: Error while increasing stat "${stat}: invalid amount!`)
+function increase_stat(SEC: SoftExecutionContext, state: State, stat: CharacterAttribute, amount = 1): State {
+	return get_SEC(SEC).xTry('increase_stat', ({enforce_immutability}: SECContext) => {
+		if (amount <= 0)
+			throw new Error(`Error while increasing stat "${stat}": invalid amount!`) // TODO details
 
-	// TODO stats caps
+		// TODO stats caps
 
-	return immutable({
-		...state,
-		attributes: {
-			...state.attributes,
-			[stat]: state.attributes[stat] + amount,
-		},
-		revision: state.revision + 1,
+		return enforce_immutability({
+			...state,
+			attributes: {
+				...state.attributes,
+				[stat]: state.attributes[stat] + amount,
+			},
+			revision: state.revision + 1,
+		})
 	})
 }
 
@@ -165,6 +175,7 @@ export {
 	CHARACTER_STATS,
 	CHARACTER_STATS_SORTED,
 	CHARACTER_CLASSES,
+
 
 	create,
 	rename,

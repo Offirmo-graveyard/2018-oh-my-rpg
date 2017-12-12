@@ -82,6 +82,7 @@ import {
 	Adventure,
 } from './types'
 
+import { SoftExecutionContext, SECContext, get_SEC } from './sec'
 
 /////////////////////
 
@@ -91,7 +92,7 @@ function create(): State {
 		revision: 0,
 
 		meta: MetaState.create(),
-		avatar: CharacterState.create(),
+		avatar: CharacterState.create(get_SEC()),
 		inventory: InventoryState.create(),
 		wallet: WalletState.create(),
 		prng: PRNGState.create(),
@@ -192,7 +193,7 @@ function instantiate_adventure_archetype(rng: Engine, aa: AdventureArchetype, ch
 }
 
 function receive_stat_increase(state: State, stat: CharacterAttribute, amount = 1): State {
-	state.avatar = increase_stat(state.avatar, stat, amount)
+	state.avatar = increase_stat(get_SEC(), state.avatar, stat, amount)
 	return state
 }
 
@@ -350,13 +351,13 @@ function sell_item(state: State, coordinates: InventoryCoordinates): State {
 
 function rename_avatar(state: State, new_name: string): State {
 	// TODO count it as a meaningful interaction once
-	state.avatar = rename(state.avatar, new_name)
+	state.avatar = rename(get_SEC(), state.avatar, new_name)
 	return state
 }
 
 function change_avatar_class(state: State, klass: CharacterClass): State {
 	// TODO make this have an effect (in v2 ?)
-	state.avatar = switch_class(state.avatar, klass)
+	state.avatar = switch_class(get_SEC(), state.avatar, klass)
 	return state
 }
 

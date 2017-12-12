@@ -1,0 +1,36 @@
+{
+	"name": "@offirmo/soft-execution-context",
+	"version": "0.0.1",
+	"description": "A fresh take on multi-usage asynchronous contexts for node and browser. Inspired by zone.js and node domains.",
+	"main": "dist/src.es7.cjs/index.js",
+	"repository": "https://github.com/Offirmo/async-context.git",
+	"author": "Offirmo <offirmo.net@gmail.com>",
+	"license": "UNLICENSED",
+	"private": false,
+	"scripts": {
+		"__dev": "~~~~~~~ DEVELOPMENT ~~~~~~~",
+		"clean:build": "rm -rf dist",
+		"clean:deps": "rm -rf package-lock.json node_modules",
+		"build:dev": "../../node_modules/.bin/tsc --project meta/dev",
+		"build:dev:watch": "npm run build:dev -- --watch",
+		"test": "../../node_modules/.bin/mocha --opts ../../node_modules/@offirmo/unit-test-toolbox/mocha.opts ../../node_modules/@offirmo/unit-test-toolbox/mocha-chai-init-node.js 'dist/src.es7.cjs/**/*spec.js'",
+		"__helpers": "----------- Helpers -----------",
+		"dev": "run-s clean:build build:dev:watch",
+		"build": "run-s clean:build build:dev",
+		"clean": "run-s clean:build clean:deps",
+		"demo": "./demo/index.js"
+	},
+	"dependencies": {
+		"@offirmo/loggers-types-and-stubs": "^0.2.0",
+		"chalk": "^2.3.0",
+		"nanoevents": "^1.0.2",
+		"nanoid": "^1.0.1",
+		"typescript-string-enums": "^0.3.5"
+	},
+	"devDependencies": {
+		"@offirmo/unit-test-toolbox": "^3.0.0",
+		"prettyjson": "^1.2.1",
+		"npm-run-all": "^4.1.1",
+		"tslib": "^1.7.1"
+	}
+}

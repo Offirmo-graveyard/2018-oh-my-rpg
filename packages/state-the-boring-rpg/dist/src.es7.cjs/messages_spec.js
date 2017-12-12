@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const chai_1 = require("chai");
 const state_prng_1 = require("@oh-my-rpg/state-prng");
 const RichText = require("@oh-my-rpg/rich-text-format");
 const _1 = require(".");
@@ -11,7 +12,7 @@ describe('⚔ 👑 😪  The Boring RPG - contextual messages', function () {
                 const state = _1.create();
                 const doc = _1.get_recap(state);
                 const str = RichText.to_text(doc);
-                expect(str).to.include('for glory and loot');
+                chai_1.expect(str).to.include('Congratulations, adventurer from another world!');
             });
         });
         context('when the user has already played', function () {
@@ -25,8 +26,8 @@ describe('⚔ 👑 😪  The Boring RPG - contextual messages', function () {
                 const doc = _1.get_tip(state);
                 const str = RichText.to_text(doc);
                 //console.log(`"${str}"`)
-                expect(str).to.include('Tip:');
-                expect(str).to.include('Select play');
+                chai_1.expect(str).to.include('Tip:');
+                chai_1.expect(str).to.include('Select play');
             });
         });
         context('when the user has already played', function () {

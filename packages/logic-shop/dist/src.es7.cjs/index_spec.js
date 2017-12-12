@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const chai_1 = require("chai");
 const definitions_1 = require("@oh-my-rpg/definitions");
 const _1 = require(".");
 describe('📦 💰 📤 📥  shop logic:', function () {
@@ -15,8 +16,8 @@ describe('📦 💰 📤 📥  shop logic:', function () {
                     base_strength: 14,
                     enhancement_level: 3,
                 });
-                expect(price).to.be.a('number');
-                expect(price).to.equal(3670);
+                chai_1.expect(price).to.be.a('number');
+                chai_1.expect(price).to.equal(3670);
             });
         });
         context('of weapons', function () {
@@ -30,8 +31,8 @@ describe('📦 💰 📤 📥  shop logic:', function () {
                     base_strength: 14,
                     enhancement_level: 3,
                 });
-                expect(price).to.be.a('number');
-                expect(price).to.equal(3262);
+                chai_1.expect(price).to.be.a('number');
+                chai_1.expect(price).to.equal(3262);
             });
         });
     });

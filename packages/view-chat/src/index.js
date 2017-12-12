@@ -6,7 +6,17 @@ const { prettify_params_for_debug } = require('./utils')
 
 const LIB = '@oh-my-rpg/view-chat'
 
-function create({DEBUG, gen_next_step, ui, inter_msg_delay_ms = 700}) {
+function is_step_input(step) {
+	return step && step.type.startsWith('ask_')
+}
+
+function create({
+						 DEBUG,
+						 gen_next_step,
+						 ui,
+						 inter_msg_delay_ms = 0,
+						 after_input_delay_ms = 0,
+					 }) {
 	if (DEBUG) console.log('↘ create()')
 
 	function create_dummy_progress_promise({DURATION_MS = 2000, PERIOD_MS = 100} = {}) {
@@ -103,18 +113,17 @@ function create({DEBUG, gen_next_step, ui, inter_msg_delay_ms = 700}) {
 			answer = await ui.read_answer(step)
 			if (DEBUG) console.log(`↖ ask_user(…) answer = "${answer}"`)
 		} while (!ok)
+		await ui.pretend_to_think(after_input_delay_ms)
 
 		let acknowledged = false
 		if (step.choices.length) {
 			const selected_choice = step.choices.find(choice => choice.value === answer)
 			if (selected_choice.msgg_acknowledge) {
-				await ui.pretend_to_think(inter_msg_delay_ms)
 				await ui.display_message({msg: selected_choice.msgg_acknowledge(answer)})
 				acknowledged = true
 			}
 		}
 		if (!acknowledged && step.msgg_acknowledge) {
-			await ui.pretend_to_think(inter_msg_delay_ms)
 			await ui.display_message({msg: step.msgg_acknowledge(answer)})
 			acknowledged = true
 		}
@@ -172,8 +181,7 @@ function create({DEBUG, gen_next_step, ui, inter_msg_delay_ms = 700}) {
 					err.step = step
 					throw err
 				}
-
-				break
+				return answer
 			}
 			default:
 				throw new Error(`Unsupported step type: "${step.type}"!`)
@@ -185,17 +193,25 @@ function create({DEBUG, gen_next_step, ui, inter_msg_delay_ms = 700}) {
 		try {
 			await ui.setup()
 			let should_exit = false
-			let last_step = undefined
-			let last_answer = undefined
+			let last_step = undefined // just in case
+			let last_answer = undefined // just in case
 			do {
-				const {value: raw_step, done} = await ui.spin_until_resolution(gen_next_step.next({last_step, last_answer}))
+				const step_start_timestamp_ms = +new Date()
+				const yielded_step = gen_next_step.next({last_step, last_answer})
+				const {value: raw_step, done} = await ui.spin_until_resolution(yielded_step)
 				if (done) {
 					should_exit = true
 					continue
 				}
-
 				const step = normalize_step(raw_step)
-				await execute_step(step)
+				const elapsed_time_ms = (+new Date()) - step_start_timestamp_ms
+				if (is_step_input(last_step)) {
+					// pretend to have processed the user answer
+					await ui.pretend_to_think(Math.max(0, after_input_delay_ms - elapsed_time_ms))
+				}
+
+				last_answer = await execute_step(step)
+				last_step = step
 			} while(!should_exit)
 			await ui.teardown()
 		}
