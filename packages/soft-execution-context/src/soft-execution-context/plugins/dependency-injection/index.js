@@ -3,83 +3,58 @@
 import { compatibleLoggerToVoid } from '@offirmo/loggers-types-and-stubs'
 import { LIB, INTERNAL_PROP } from '../../constants'
 import { SUB_LIB } from './constants'
-import { createLogger, createChildLogger } from '../../../universal-logger-core'
+import { createLogger, createChildLogger } from '../../../universal-logger-core' // TODO ?
+
+function getContext(SEC) {
+	return SEC[INTERNAL_PROP].DI.context
+}
 
 function installPluginDependencyInjection(SEC, args) {
 	const { parent } = args
-	let { context = {}, contextGenerators = {} } = args
+	const {
+		defaultContext: defaultChildContext = {},
+		context: childContext = {},
+	} = args
+	const SECInternal = SEC[INTERNAL_PROP]
 
 	// TODO check params
 	// TODO report handled params
 
-	// inherit some stuff from our parent, but at lower priority
-	if (parent) {
-		// TODO check conflicts?
-
-		// inherit intelligently those one:
-		const logLevel = context.logLevel || (parent[INTERNAL_PROP].LS.logicalStack.short === SEC[INTERNAL_PROP].LS.logicalStack.short
-			? parent[INTERNAL_PROP].DI.context.logLevel
-			: 'error')
-		const logger = context.logger || parent[INTERNAL_PROP].DI.context.logger.child({
-			name: SEC[INTERNAL_PROP].LS.logicalStack.short,
-			logLevel,
-			details: {
-				// TODO
-			}
-		})
-
-		context = {
-			...parent[INTERNAL_PROP].DI.context,
-			...context,
-			logLevel,
-			logger,
-		}
-		contextGenerators = {
-			...parent[INTERNAL_PROP].contextGenerators,
-			...contextGenerators,
-		}
-	}
-	else {
-		// provide defaults to overridable props
-		context = {
-			env: 'development', // like express does
-			logger: createLogger({
-				name: SEC[INTERNAL_PROP].LS.logicalStack.short,
-				level: context.logLevel,
-			}), // TODO child ?
-			logLevel: context.logger
-				? context.logger.getLevel()
-				: 'error',
-			...context,
-		}
+	// TODO check conflicts?
+	const defaultContext = {
+		env: 'development', // like express does
+		//logger: compatibleLoggerToVoid,
+		logger: createLogger({
+			name: SECInternal.LS.module,
+			level: 'error'
+		}),
 	}
 
-	// inject non-overridable ones
-	context = {
-		// TODO check conflicts?
-		...context,
-		logicalStack: SEC[INTERNAL_PROP].LS.logicalStack,
-		tracePrefix: SEC[INTERNAL_PROP].LS.logicalStack.short,
+	const parentContext = parent ? parent[INTERNAL_PROP].DI.context : {}
+
+	const forcedContext = {
+		logicalStack: SECInternal.LS.logicalStack,
+		tracePrefix: SECInternal.LS.logicalStack.short,
 	}
 
-	// build generated values
-	Object.keys(contextGenerators).forEach(key => {
-		context[key] = contextGenerators[key](context)
-	})
+	let context = {
+		...defaultContext,
+		...defaultChildContext,
+		...parentContext,
+		...childContext,
+		...forcedContext,
+	}
 
-	// TODO check non-overridable ?
 	// TODO deep freeze ?
 
-	SEC[INTERNAL_PROP].DI = {
+	SECInternal.DI = {
 		context,
-		contextGenerators,
 	}
-
-	//SEC.context.logger.log('test foo')
 
 	return SEC
 }
 
 export {
 	installPluginDependencyInjection,
+	getContext,
 }

@@ -36,7 +36,7 @@ const LEVEL_TO_HUMAN: { [k: string]: string } = {
 	[LogLevel.warning]: 'warn',
 	[LogLevel.warn]:    'warn',
 
-	[LogLevel.notice]:  'notice',
+	[LogLevel.notice]:  'note',
 
 	[LogLevel.info]:    'info',
 

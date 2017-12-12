@@ -80,24 +80,6 @@ function increase_stat(SEC, state, stat, amount = 1) {
 }
 exports.increase_stat = increase_stat;
 /////////////////////
-function instantiate_lib(SEC) {
-    /*SEC = safe_execution_context.isomorphic.create({
-        parent: SEC,
-        module: LIB_ID,
-        context: {
-            enforce_immutability,
-        }
-    })
-
-    return {
-        create: create.bind(null, SEC),
-        rename: rename.bind(null, SEC),
-        switch_class: switch_class.bind(null, SEC),
-        increase_stat: increase_stat.bind(null, SEC),
-    }*/
-}
-exports.instantiate_lib = instantiate_lib;
-/////////////////////
 // needed to test migrations, both here and in composing parents
 // a full featured, non-trivial demo state
 // needed for demos

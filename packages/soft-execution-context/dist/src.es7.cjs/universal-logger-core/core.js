@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const types_1 = require("./types");
 const const_1 = require("./const");
-const definitions_1 = require("@oh-my-rpg/definitions");
+const timestamp_1 = require("../timestamp");
 function createLogger({ name, level = types_1.LogLevel.info, details = {}, outputFn = console.log, }) {
     if (!name)
         throw new Error('universal-logger-core›create(): you must provide a name!');
@@ -17,6 +17,13 @@ function createLogger({ name, level = types_1.LogLevel.info, details = {}, outpu
         logger[level] = (message, details) => {
             if (!isLevelEnabled(level))
                 return;
+            if (!details && typeof message === 'object') {
+                details = message;
+                message = details.err
+                    ? details.err.message
+                    : '';
+            }
+            message = message || '';
             outputFn(serializer(level, message, details));
         };
         return logger;
@@ -51,10 +58,14 @@ function createLogger({ name, level = types_1.LogLevel.info, details = {}, outpu
         });
     }
     function serializer(level, msg, details) {
-        const payload = Object.assign({}, internal_state.details, details, { level,
-            name, time: definitions_1.get_human_readable_UTC_timestamp_ms_v1(), 
+        const payload = {
+            details: Object.assign({}, internal_state.details, details),
+            level,
+            name,
+            time: timestamp_1.get_human_readable_UTC_timestamp_ms_v1(),
             //time: (new Date()).toISOString(),
-            msg });
+            msg,
+        };
         return payload;
     }
     return logger;

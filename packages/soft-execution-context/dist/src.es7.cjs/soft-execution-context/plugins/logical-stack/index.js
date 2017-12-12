@@ -4,6 +4,7 @@ const constants_1 = require("../../constants");
 const constants_2 = require("./constants");
 const fields_1 = require("../../../fields");
 fields_1.ERROR_FIELDS.add('logicalStack');
+// TODO add non-inheritable instance
 function getLogicalStack(module, operation, parentModule, parentFullLStack = '') {
     module = module || parentModule;
     if (!module)
@@ -48,7 +49,11 @@ function installPluginLogicalStack(SEC, { module, operation, parent }) {
         module = module || parent[constants_1.INTERNAL_PROP].LS.module;
     }
     const SECInternal = SEC[constants_1.INTERNAL_PROP];
-    const logicalStack = getLogicalStack(module, operation, parent ? parent[constants_1.INTERNAL_PROP].LS.module : undefined, parent ? parent[constants_1.INTERNAL_PROP].LS.logicalStack.full : undefined);
+    const logicalStack = getLogicalStack(module, operation, SECInternal.hasNonRootParent
+        ? parent[constants_1.INTERNAL_PROP].LS.module
+        : undefined, SECInternal.hasNonRootParent
+        ? parent[constants_1.INTERNAL_PROP].LS.logicalStack.full
+        : undefined);
     SECInternal.errDecorators.push(function attachLogicalStackToError(err) {
         if (err.logicalStack) {
             // OK this error is already decorated.

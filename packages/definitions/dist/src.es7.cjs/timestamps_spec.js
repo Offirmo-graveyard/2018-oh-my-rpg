@@ -15,6 +15,15 @@ describe('timestamps', function () {
             }
         });
     });
+    describe('get_human_readable_UTC_timestamp_ms_v1()', function () {
+        it('should return correct UTC timestamps', function () {
+            for (let i = 0; i < 10; ++i) {
+                const stamp = _1.get_human_readable_UTC_timestamp_ms_v1();
+                console.log(stamp);
+                chai_1.expect(stamp).to.be.a('string');
+            }
+        });
+    });
     describe('get_human_readable_UTC_timestamp_ms()', function () {
         it('should return correct UTC timestamps', function () {
             for (let i = 0; i < 10; ++i) {

@@ -27,7 +27,7 @@ const LEVEL_TO_HUMAN = {
     [types_1.LogLevel.error]: 'error',
     [types_1.LogLevel.warning]: 'warn',
     [types_1.LogLevel.warn]: 'warn',
-    [types_1.LogLevel.notice]: 'notice',
+    [types_1.LogLevel.notice]: 'note',
     [types_1.LogLevel.info]: 'info',
     [types_1.LogLevel.verbose]: 'verbose',
     [types_1.LogLevel.log]: 'log',

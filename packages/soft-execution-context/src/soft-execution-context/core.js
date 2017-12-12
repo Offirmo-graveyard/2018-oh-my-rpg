@@ -7,7 +7,7 @@ import { promiseTry } from '../promise-try'
 import { normalizeError } from '../normalize'
 import { createCatcher } from '../catch-factory'
 import { installPluginLogicalStack } from './plugins/logical-stack'
-import { installPluginDependencyInjection } from './plugins/dependency-injection'
+import { installPluginDependencyInjection, getContext } from './plugins/dependency-injection'
 
 function isSEC(SEC) {
 	return (SEC && SEC[INTERNAL_PROP])
@@ -27,12 +27,14 @@ function create(args = {}) {
 	if (args.parent && !isSEC(args.parent))
 		throw new Error(`${LIB}›create() argument error: parent must be a valid SEC!`)
 
+	const hasNonRootParent = !!args.parent
 	args.parent = args.parent || rootSEC
 
 	const onError = args.onError || (args.parent && args.parent.onError) // XXX inherit, really?
 
 	let SEC = {
 		[INTERNAL_PROP]: {
+			hasNonRootParent,
 			//parent,
 			//onError,
 			errDecorators: [ normalizeError ],
@@ -152,4 +154,5 @@ export {
 	isSEC,
 	setRoot,
 	create,
+	getContext,
 }

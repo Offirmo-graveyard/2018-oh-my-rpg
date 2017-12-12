@@ -1,6 +1,6 @@
 import { LogLevel, InternalLoggerState, Logger, LoggerParams, Details, Payload, OutputFn } from './types'
 import { LEVEL_TO_INTEGER } from './const'
-import { get_human_readable_UTC_timestamp_ms_v1 } from '@oh-my-rpg/definitions'
+import { get_human_readable_UTC_timestamp_ms_v1 } from '../timestamp'
 
 
 interface CreateParams extends LoggerParams {
@@ -25,9 +25,17 @@ function createLogger({
 	}
 
 	const logger: Logger = Object.keys(LEVEL_TO_INTEGER).reduce((logger: any, level: LogLevel) => {
-		logger[level] = (message: string, details: Details) => {
+		logger[level] = (message?: string, details?: Details) => {
 			if (!isLevelEnabled(level)) return
-			outputFn(serializer(level, message, details))
+
+			if (!details && typeof message === 'object') {
+				details = (message as Details)
+				message = details.err
+					? details.err.message
+					: ''
+			}
+			message = message || ''
+			outputFn(serializer(level, message as string, details as Details))
 		}
 		return logger
 	}, {
@@ -71,8 +79,10 @@ function createLogger({
 
 	function serializer(level: LogLevel, msg: string, details: Details): Payload {
 		const payload: Payload = {
-			...internal_state.details,
-			...details,
+			details: {
+				...internal_state.details,
+				...details,
+			},
 			level,
 			name,
 			time: get_human_readable_UTC_timestamp_ms_v1(),

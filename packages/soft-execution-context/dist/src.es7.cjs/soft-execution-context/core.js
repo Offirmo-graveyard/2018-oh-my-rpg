@@ -7,6 +7,7 @@ const normalize_1 = require("../normalize");
 const catch_factory_1 = require("../catch-factory");
 const logical_stack_1 = require("./plugins/logical-stack");
 const dependency_injection_1 = require("./plugins/dependency-injection");
+exports.getContext = dependency_injection_1.getContext;
 function isSEC(SEC) {
     return (SEC && SEC[constants_1.INTERNAL_PROP]);
 }
@@ -23,10 +24,12 @@ exports.setRoot = setRoot;
 function create(args = {}) {
     if (args.parent && !isSEC(args.parent))
         throw new Error(`${constants_1.LIB}›create() argument error: parent must be a valid SEC!`);
+    const hasNonRootParent = !!args.parent;
     args.parent = args.parent || rootSEC;
     const onError = args.onError || (args.parent && args.parent.onError); // XXX inherit, really?
     let SEC = {
         [constants_1.INTERNAL_PROP]: {
+            hasNonRootParent,
             //parent,
             //onError,
             errDecorators: [normalize_1.normalizeError],

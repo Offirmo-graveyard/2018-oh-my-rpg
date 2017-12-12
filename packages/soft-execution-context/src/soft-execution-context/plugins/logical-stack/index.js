@@ -14,6 +14,9 @@ import {
 import { ERROR_FIELDS } from '../../../fields'
 ERROR_FIELDS.add('logicalStack')
 
+
+// TODO add non-inheritable instance
+
 function getLogicalStack(module, operation, parentModule, parentFullLStack = '') {
 
 	module = module || parentModule
@@ -75,8 +78,12 @@ function installPluginLogicalStack(SEC, {module, operation, parent}) {
 	const logicalStack = getLogicalStack(
 		module,
 		operation,
-		parent ? parent[INTERNAL_PROP].LS.module : undefined,
-		parent ? parent[INTERNAL_PROP].LS.logicalStack.full : undefined,
+		SECInternal.hasNonRootParent
+				? parent[INTERNAL_PROP].LS.module
+				: undefined,
+		SECInternal.hasNonRootParent
+			? parent[INTERNAL_PROP].LS.logicalStack.full
+			: undefined,
 	)
 
 	SECInternal.errDecorators.push(function attachLogicalStackToError(err) {

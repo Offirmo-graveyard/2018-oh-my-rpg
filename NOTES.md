@@ -4,6 +4,15 @@ TOREAD https://josephg.com/blog/fixing-fortnite/
 Schema:
 http://www.vertabelo.com/blog/technical-articles/a-song-of-ice-and-databases-a-game-of-thrones-data-model
 
+Wiki
+https://github.com/online-adventures/cheatsheets/blob/master/CONTRIBUTING.md
+https://devhints.io/cheatsheet-styles
+
+Priest = ce qui devrait être
+besoin d'un cœur pur sans préjugés
+rare, difficile d'accès
+
+
 Content:
 * stories
   * https://ifcomp.org/comp/2017

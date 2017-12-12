@@ -1,5 +1,9 @@
 
-import {create as create_core, setRoot} from './core'
+import {
+	isSEC,
+	create as create_core,
+	setRoot,
+} from './core'
 
 function create(...args) {
 	const SEC = create_core(...args)
@@ -12,6 +16,7 @@ function create(...args) {
 
 
 export {
+	isSEC,
 	create,
 	setRoot,
 }

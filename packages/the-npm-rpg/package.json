@@ -41,7 +41,7 @@
 		"@oh-my-rpg/view-chat": "^0.0.1",
 		"@oh-my-rpg/view-chat-ui-tty": "^0.0.1",
 		"@oh-my-rpg/view-rich-text": "^0.0.1",
-		"chalk": "^2.2.0",
+		"chalk": "^2.3.0",
 		"env-paths": "^1.0.0",
 		"fetchival": "^0.3.2",
 		"gauge": "^2.7.4",

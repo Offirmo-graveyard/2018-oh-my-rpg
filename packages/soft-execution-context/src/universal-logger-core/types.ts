@@ -19,7 +19,7 @@ const LogLevel = Enum(
 type LogLevel = Enum<typeof LogLevel>
 
 type Details = { [k: string]: any}
-type LogFn = (message: string, details: Details) => void
+type LogFn = (message?: string, details?: Details) => void
 type OutputFn = (payload: Payload) => void
 
 interface LoggerParams {
@@ -69,9 +69,8 @@ interface Payload {
 	name: string
 	msg: string
 	time: string
-	err?: Error,
-
-	[k: string]: any
+	err?: Error
+	details: Details
 }
 
 

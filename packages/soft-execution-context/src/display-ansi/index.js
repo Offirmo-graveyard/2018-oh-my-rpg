@@ -1,11 +1,13 @@
+import chalk from 'chalk'
+
 import {ERROR_FIELDS} from '../fields'
 
 function displayErrProp(errLike, prop) {
-	console.error(`🔥  ${prop}: "${errLike[prop]}"`)
+	console.error(chalk.red(chalk.dim(`🔥  ${prop}: "`) + errLike[prop] + chalk.dim('"')))
 }
 
 function displayError(errLike = {}) {
-	console.error(`🔥🔥🔥🔥🔥🔥🔥  ${errLike.name || 'Error'} 🔥🔥🔥🔥🔥🔥🔥`)
+	console.error(chalk.red(`🔥🔥🔥🔥🔥🔥🔥  ${chalk.bold(errLike.name || 'Error')} 🔥🔥🔥🔥🔥🔥🔥`))
 
 	const displayedProps = new Set()
 	displayedProps.add('name')

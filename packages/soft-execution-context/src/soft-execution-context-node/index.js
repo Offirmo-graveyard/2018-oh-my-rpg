@@ -2,7 +2,12 @@
 
 const { LIB, INTERNAL_PROP } = require('../soft-execution-context/constants')
 const { createCatcher } = require('../catch-factory')
-const { create: createCore, setRoot } = require('../soft-execution-context/core')
+const {
+	isSEC,
+	create: createCore,
+	setRoot,
+	getContext,
+} = require('../soft-execution-context/core')
 const { createLogger } = require('../universal-logger-node')
 
 function create(...args) {
@@ -48,6 +53,9 @@ const node = {
 }
 
 export {
+	isSEC,
 	setRoot,
+	getContext,
+
 	node,
 }

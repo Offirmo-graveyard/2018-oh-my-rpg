@@ -38,6 +38,7 @@
 		"react-router-dom": "^4.2.2"
 	},
 	"devDependencies": {
+		"@offirmo/soft-execution-context": "^0.0.1",
 		"@oh-my-rpg/data": "^0.0.1",
 		"@oh-my-rpg/logic-adventures": "^0.0.1",
 		"@oh-my-rpg/logic-armors": "^0.0.1",

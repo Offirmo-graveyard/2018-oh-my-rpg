@@ -11,8 +11,8 @@ function create({SEC} = {}) {
 	SEC = soft_execution_context.isomorphic.create({parent: SEC, module: LIB})
 
 	// TODO add an id!
-	return SEC.xTryCatch(`instantiating#${instance_count}`, ({tracePrefix, logger, env}) => {
-		logger.trace(`env = "${env}"`)
+	return SEC.xTryCatch(`instantiating#${instance_count}`, ({logger, env}) => {
+		logger.trace({env})
 
 		// test
 		;[
@@ -30,7 +30,7 @@ function create({SEC} = {}) {
 			'debug',
 			'trace',
 			'silly',
-		].forEach(level => logger[level](`level = "${level}"`))
+		].forEach(level => logger[level]({level}))
 
 		function foo_sync({x} = {}) {
 			SEC.xTry('foo_sync()', () => {

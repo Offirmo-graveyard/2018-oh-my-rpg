@@ -6,13 +6,14 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import 'normalize.css'
 
-import { init_savegame} from './services/init'
+import { SEC, init_savegame} from './services/init'
 import { App } from './components/app'
 
 const workspace = {
 	version: VERSION,
 	verbose: true, // XXX
 	state: null,
+	SEC,
 }
 workspace.state = init_savegame(workspace)
 

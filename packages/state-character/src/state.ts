@@ -113,25 +113,6 @@ function increase_stat(SEC: SoftExecutionContext, state: State, stat: CharacterA
 
 /////////////////////
 
-function instantiate_lib(SEC: SoftExecutionContext) {
-	/*SEC = soft_execution_context.isomorphic.create({
-		parent: SEC,
-		module: LIB_ID,
-		context: {
-			enforce_immutability,
-		}
-	})
-
-	return {
-		create: create.bind(null, SEC),
-		rename: rename.bind(null, SEC),
-		switch_class: switch_class.bind(null, SEC),
-		increase_stat: increase_stat.bind(null, SEC),
-	}*/
-}
-
-/////////////////////
-
 // needed to test migrations, both here and in composing parents
 
 // a full featured, non-trivial demo state
@@ -200,8 +181,6 @@ export {
 	rename,
 	switch_class,
 	increase_stat,
-
-	instantiate_lib,
 
 	DEMO_STATE,
 	OLDEST_LEGACY_STATE_FOR_TESTS,

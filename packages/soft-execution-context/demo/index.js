@@ -6,70 +6,67 @@
 
 const APP = 'SEC_DEMO_01'
 
-console.log(`${APP} starting...`)
-
-const prettyjson = require('prettyjson')
-
-function prettify_json(data, options) {
-	return prettyjson.render(data, options)
-}
+console.log(`Hello from ${APP}...`)
 
 const ROOT = '../dist/src.es7.cjs/'
 
 const soft_execution_context = require(ROOT + 'soft-execution-context-node')
-const {displayError} = require(ROOT + 'display-ansi')
 const { createLogger } = require(ROOT + 'universal-logger-node')
+//const { createLogger } = require(ROOT + 'universal-logger-browser')
+
+const logger = createLogger({
+	name: APP,
+	level: 'trace',
+})
 
 function onError(err) {
-	displayError(err)
-	//console.error('🔥  error,', prettify_json(err))
+	logger.fatal('error!', {err})
 }
 
 const SEC = soft_execution_context.node.create({
 	module: APP,
 	onError,
 	context: {
-		logger: createLogger({
-			name: APP,
-			level: 'trace',
-		})
+		logger,
 	},
-	/*contextGenerators: {
-		logger: ({tracePrefix, env, logger}) => {
-			console.log('log gen', {tracePrefix, env, logger: !!logger})
-			return compatibleLoggerToConsole
-		}
-	}*/
 })
-soft_execution_context.setRoot(SEC)
+
+// TODO should work whether this line is on or off
+//soft_execution_context.setRoot(SEC)
 
 SEC.listenToUncaughtErrors()
 SEC.listenToUnhandledRejections()
 
-const bad_lib = require('./bad_lib')
-const intercepting_lib = require('./intercepting_lib')
+// Top uses tryCatch
+SEC.xTryCatch('starting', ({SEC, logger}) => {
+	logger.log('...')
 
-/*
-SEC.xTryCatch('starting', function start({SEC}) {
-	console.log('starting...')
+	// sync, immediate
 	//throw new Error('Foo')
-	const good_lib = require('./good_lib').create({SEC})
 
-	//SEC.xTry('calling bad lib', () => bad_lib.foo_sync())
-	//SEC.xTry('calling good lib', () => good_lib.foo_sync())
+	// sync, in libs
+	/*
+	const bad_lib = require('./bad_lib')
+	SEC.xTry('calling bad lib', () => bad_lib.foo_sync())
+	*/
+
+
+	const good_lib = require('./good_lib').create({SEC})
+	SEC.xTry('calling good lib', () => good_lib.foo_sync())
+
+
+	/*
+	const intercepting_lib = require('./intercepting_lib')
 	SEC.xTry('calling intercepting lib', () => intercepting_lib.foo_sync())
+	*/
 
 	console.log('--- this should not be called !! ---')
-})
-*/
-SEC.xPromiseTryCatch('starting', ({SEC, logger}) => {
-	logger.log(`starting...`)
 
-	//throw new Error('Foo')
-	const good_lib = require('./good_lib').create({SEC})
 
-	//return SEC.xPromiseResolve('calling bad lib', bad_lib.foo_async())
-	//return intercepting_lib.foo_async()
-	return SEC.xPromiseTry('calling intercepting lib', () => intercepting_lib.foo_async())
-	//return good_lib.foo_async().then(() => console.log('--- this should not be called !! ---'))
-})
+		//const good_lib = require('./good_lib').create({SEC})
+
+		//return SEC.xPromiseResolve('calling bad lib', bad_lib.foo_async())
+		//return intercepting_lib.foo_async()
+		return SEC.xPromiseTry('calling intercepting lib', () => intercepting_lib.foo_async())
+		//return good_lib.foo_async().then(() => console.log('--- this should not be called !! ---'))
+	})

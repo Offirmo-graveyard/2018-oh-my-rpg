@@ -22,7 +22,6 @@
 	},
 	"dependencies": {
 		"@offirmo/loggers-types-and-stubs": "^0.2.0",
-		"@oh-my-rpg/definitions": "^0.0.1",
 		"chalk": "^2.3.0",
 		"nanoevents": "^1.0.2",
 		"nanoid": "^1.0.1",

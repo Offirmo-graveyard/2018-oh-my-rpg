@@ -2,8 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const { LIB, INTERNAL_PROP } = require('../soft-execution-context/constants');
 const { createCatcher } = require('../catch-factory');
-const { create: createCore, setRoot } = require('../soft-execution-context/core');
+const { isSEC, create: createCore, setRoot, getContext, } = require('../soft-execution-context/core');
+exports.isSEC = isSEC;
 exports.setRoot = setRoot;
+exports.getContext = getContext;
 const { createLogger } = require('../universal-logger-node');
 function create(...args) {
     const SEC = createCore(...args);
