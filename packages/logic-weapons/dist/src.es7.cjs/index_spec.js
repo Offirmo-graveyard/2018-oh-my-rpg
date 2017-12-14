@@ -8,8 +8,10 @@ describe('⚔ 🏹  weapon logic:', function () {
     describe('creation', function () {
         it('should allow creating a random weapon', function () {
             const rng = random_1.Random.engines.mt19937().seed(789);
-            const weapon1 = _1.create(rng);
+            const weapon1 = definitions_1.xxx_test_unrandomize_element(_1.create(rng));
             chai_1.expect(weapon1).to.deep.equal({
+                uuid: 'uu1~test~test~test~test~',
+                element_type: definitions_1.ElementType.item,
                 slot: definitions_1.InventorySlot.weapon,
                 base_hid: 'luth',
                 qualifier1_hid: 'simple',
@@ -25,11 +27,13 @@ describe('⚔ 🏹  weapon logic:', function () {
         });
         it('should allow creating a partially predefined weapon', function () {
             const rng = random_1.Random.engines.mt19937().seed(789);
-            const weapon = _1.create(rng, {
+            const weapon = definitions_1.xxx_test_unrandomize_element(_1.create(rng, {
                 base_hid: 'spoon',
                 quality: 'artifact',
-            });
+            }));
             chai_1.expect(weapon).to.deep.equal({
+                uuid: 'uu1~test~test~test~test~',
+                element_type: definitions_1.ElementType.item,
                 slot: definitions_1.InventorySlot.weapon,
                 base_hid: 'spoon',
                 qualifier1_hid: 'composite',
@@ -63,17 +67,17 @@ describe('⚔ 🏹  weapon logic:', function () {
         });
     });
     describe('damage', function () {
+        const rng = random_1.Random.engines.mt19937().seed(789);
         describe('interval', function () {
             it('should work', () => {
-                const [min, max] = _1.get_damage_interval({
-                    slot: definitions_1.InventorySlot.weapon,
+                const [min, max] = _1.get_damage_interval(_1.create(rng, {
                     base_hid: 'luth',
                     qualifier1_hid: 'simple',
                     qualifier2_hid: 'mercenary',
                     quality: 'legendary',
                     base_strength: 14,
                     enhancement_level: 3,
-                });
+                }));
                 chai_1.expect(min).to.be.a('number');
                 chai_1.expect(max).to.be.a('number');
                 chai_1.expect(max).to.be.above(min);
@@ -117,28 +121,26 @@ describe('⚔ 🏹  weapon logic:', function () {
                 },
             ].forEach(quality_limits => {
                 it(`should have the correct minimal limit for quality "${quality_limits.quality}"`, () => {
-                    const [min, max] = _1.get_damage_interval({
-                        slot: definitions_1.InventorySlot.weapon,
+                    const [min, max] = _1.get_damage_interval(_1.create(rng, {
                         base_hid: 'whatever',
                         qualifier1_hid: 'whatever',
                         qualifier2_hid: 'whatever',
                         quality: quality_limits.quality,
                         base_strength: 1,
                         enhancement_level: 0,
-                    });
+                    }));
                     chai_1.expect(min).to.be.a('number');
                     chai_1.expect(min).to.equal(quality_limits.min);
                 });
                 it(`should have the correct maximal limit for quality "${quality_limits.quality}"`, () => {
-                    const [min, max] = _1.get_damage_interval({
-                        slot: definitions_1.InventorySlot.weapon,
+                    const [min, max] = _1.get_damage_interval(_1.create(rng, {
                         base_hid: 'whatever',
                         qualifier1_hid: 'whatever',
                         qualifier2_hid: 'whatever',
                         quality: quality_limits.quality,
                         base_strength: 20,
                         enhancement_level: 10,
-                    });
+                    }));
                     chai_1.expect(max).to.be.a('number');
                     chai_1.expect(max).to.equal(quality_limits.max);
                 });
@@ -146,15 +148,14 @@ describe('⚔ 🏹  weapon logic:', function () {
         });
         describe('medium', function () {
             it('should work', () => {
-                const med = _1.get_medium_damage({
-                    slot: definitions_1.InventorySlot.weapon,
+                const med = _1.get_medium_damage(_1.create(rng, {
                     base_hid: 'luth',
                     qualifier1_hid: 'simple',
                     qualifier2_hid: 'mercenary',
                     quality: 'legendary',
                     base_strength: 14,
                     enhancement_level: 3,
-                });
+                }));
                 chai_1.expect(med).to.be.a('number');
                 chai_1.expect(med).to.be.above(291); // min for legend+3
                 chai_1.expect(med).to.be.below(5824); // max for legend+3

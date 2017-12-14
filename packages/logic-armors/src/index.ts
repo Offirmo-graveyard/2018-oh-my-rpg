@@ -1,6 +1,6 @@
 /////////////////////
 
-import { generate_uuid } from '@oh-my-rpg/definitions'
+import { ElementType, create_element_base } from '@oh-my-rpg/definitions'
 import { Random, Engine } from '@offirmo/random'
 import { ItemQuality, InventorySlot } from '@oh-my-rpg/definitions'
 
@@ -62,7 +62,7 @@ const pick_random_base_strength = Random.integer(MIN_STRENGTH, MAX_STRENGTH)
 function create(rng: Engine, hints: Partial<Armor> = {}): Armor {
 	// TODO add a check for hints to be in existing components
 	return {
-		//uuid: generate_uuid(), TODO
+		...create_element_base(ElementType.item),
 		slot: InventorySlot.armor,
 		base_hid: hints.base_hid || pick_random_base(rng),
 		qualifier1_hid: hints.qualifier1_hid || pick_random_qualifier1(rng),
@@ -111,6 +111,8 @@ function get_medium_damage_reduction(armor: Armor): number {
 /////////////////////
 
 const DEMO_ARMOR_1: Armor = {
+	uuid: 'uu1~test~demo~armor~0001',
+	element_type: ElementType.item,
 	slot: InventorySlot.armor,
 	base_hid: ARMOR_BASES[0].hid,
 	qualifier1_hid: ARMOR_QUALIFIERS1[0].hid,
@@ -121,6 +123,8 @@ const DEMO_ARMOR_1: Armor = {
 }
 
 const DEMO_ARMOR_2: Armor = {
+	uuid: 'uu1~test~demo~armor~0002',
+	element_type: ElementType.item,
 	slot: InventorySlot.armor,
 	base_hid: ARMOR_BASES[1].hid,
 	qualifier1_hid: ARMOR_QUALIFIERS1[1].hid,

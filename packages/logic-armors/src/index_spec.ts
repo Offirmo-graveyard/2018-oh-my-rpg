@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 
-import { InventorySlot, ItemQuality } from '@oh-my-rpg/definitions'
+import { InventorySlot, ItemQuality, ElementType, xxx_test_unrandomize_element } from '@oh-my-rpg/definitions'
 import { Random, Engine } from '@offirmo/random'
 
 import {
@@ -18,8 +18,10 @@ describe('🛡 👕  armor logic:', function() {
 
 		it('should allow creating a random armor', function() {
 			const rng: Engine = Random.engines.mt19937().seed(789)
-			const armor1 = create(rng)
+			const armor1 = xxx_test_unrandomize_element(create(rng))
 			expect(armor1).to.deep.equal({
+				uuid: 'uu1~test~test~test~test~',
+				element_type: ElementType.item,
 				slot: InventorySlot.armor,
 				base_hid: 'socks',
 				qualifier1_hid: 'onyx',
@@ -37,11 +39,13 @@ describe('🛡 👕  armor logic:', function() {
 
 		it('should allow creating a partially predefined armor', function() {
 			const rng: Engine = Random.engines.mt19937().seed(789)
-			const armor = create(rng, {
+			const armor = xxx_test_unrandomize_element(create(rng, {
 				base_hid: 'shoes',
 				quality: 'artifact',
-			})
+			}))
 			expect(armor).to.deep.equal({
+				uuid: 'uu1~test~test~test~test~',
+				element_type: ElementType.item,
 				slot: InventorySlot.armor,
 				base_hid: 'shoes',
 				qualifier1_hid: 'skeleton',
@@ -85,19 +89,22 @@ describe('🛡 👕  armor logic:', function() {
 
 	describe('damage reduction', function() {
 		const ATTACK_VS_DEFENSE_RATIO = 0.5
+		function gen_test_armor() {
+			const rng: Engine = Random.engines.mt19937().seed(789)
+			return create(rng, {
+				base_hid: 'shield',
+				qualifier1_hid: 'simple',
+				qualifier2_hid: 'mercenary',
+				quality: 'legendary',
+				base_strength: 14,
+				enhancement_level: 3,
+			})
+		}
 
 		describe('interval', function() {
 
 			it('should work', () => {
-				const [min, max] = get_damage_reduction_interval({
-					slot: InventorySlot.armor,
-					base_hid: 'shield',
-					qualifier1_hid: 'simple',
-					qualifier2_hid: 'mercenary',
-					quality: 'legendary',
-					base_strength: 14,
-					enhancement_level: 3,
-				})
+				const [min, max] = get_damage_reduction_interval(gen_test_armor())
 				expect(min).to.be.a('number')
 				expect(max).to.be.a('number')
 				expect(max).to.be.above(min)
@@ -115,15 +122,7 @@ describe('🛡 👕  armor logic:', function() {
 		describe('medium', function() {
 
 			it('should work', () => {
-				const med = get_medium_damage_reduction({
-					slot: InventorySlot.weapon,
-					base_hid: 'shield',
-					qualifier1_hid: 'simple',
-					qualifier2_hid: 'mercenary',
-					quality: 'legendary',
-					base_strength: 14,
-					enhancement_level: 3,
-				})
+				const med = get_medium_damage_reduction(gen_test_armor())
 				expect(med).to.be.a('number')
 				expect(med).to.be.above(291 * ATTACK_VS_DEFENSE_RATIO) // min for legend+3
 				expect(med).to.be.below(5824 * ATTACK_VS_DEFENSE_RATIO) // max for legend+3

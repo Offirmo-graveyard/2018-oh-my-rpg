@@ -2,6 +2,17 @@ import { Enum } from 'typescript-string-enums';
 interface I18nMessages {
     [k: string]: string | I18nMessages;
 }
+declare type UUID = string;
+declare const ElementType: {
+    item: "item";
+    location: "location";
+    lore: "lore";
+};
+declare type ElementType = Enum<typeof ElementType>;
+interface Element {
+    uuid: UUID;
+    element_type: ElementType;
+}
 declare const ItemQuality: {
     common: "common";
     uncommon: "uncommon";
@@ -17,10 +28,8 @@ declare const InventorySlot: {
     armor: "armor";
 };
 declare type InventorySlot = Enum<typeof InventorySlot>;
-interface Item {
+interface Item extends Element {
     slot: InventorySlot;
     quality: ItemQuality;
 }
-declare type UUID = string;
-declare type ReportUp = (event: string, options: Object) => boolean;
-export { I18nMessages, ItemQuality, InventorySlot, Item, UUID, ReportUp };
+export { I18nMessages, UUID, ElementType, Element, ItemQuality, InventorySlot, Item };

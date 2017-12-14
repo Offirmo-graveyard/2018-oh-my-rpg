@@ -1,5 +1,7 @@
 import { expect } from 'chai'
 
+import { ElementType, create_element_base } from '@oh-my-rpg/definitions'
+
 import { LIB_ID, SCHEMA_VERSION } from './consts'
 
 import {
@@ -28,6 +30,17 @@ import {
 
 describe('📦 📦 📦  Inventory state - reducer', function() {
 	const EXPECTED_UNSLOTTED_INVENTORY_LENGTH = 20
+	const DUMMY_ITEM: Item = {
+		...create_element_base(ElementType.item),
+		slot: InventorySlot.none,
+		quality: ItemQuality.common
+	}
+	const DUMMY_EQUIPABLE_ITEM: Item = {
+		...create_element_base(ElementType.item),
+		slot: InventorySlot.weapon,
+		quality: ItemQuality.common
+	}
+	const DUMMY_NON_EQUIPABLE_ITEM: Item = DUMMY_ITEM
 
 	describe('🆕 initial state', function() {
 
@@ -77,55 +90,56 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 	describe('📥 item addition', function() {
 
 		it('should work on empty state', function() {
-			const item: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
 			let state = create()
-			state = add_item(state, item)
+			state = add_item(state, DUMMY_ITEM)
 			expect(state.unslotted).to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH)
 			expect(get_item_count(state)).to.equal(1)
 		})
 
 		it('should work on simple non-empty state', function() {
-			const item: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
 			let state = create()
-			state = add_item(state, item)
-			state = add_item(state, item)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
 			expect(state.unslotted, 'unslotted').to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH)
 			expect(get_item_count(state), 'item count').to.equal(2)
 		})
 
 		it('should fail when the inventory is full', function() {
-			const item: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
 			let state = create()
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
-			state = add_item(state, item)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
 			expect(state.unslotted).to.have.lengthOf(EXPECTED_UNSLOTTED_INVENTORY_LENGTH)
 			function addLast() {
-				state = add_item(state, item)
+				state = add_item(state, DUMMY_ITEM)
 			}
 			expect(addLast).to.throw('inventory is full!')
 		})
 
 		it('should find a free slot when some items where recently removed', function() {
-			const item1: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
-			const item2: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
+			const item1: Item = DUMMY_ITEM
+			const item2: Item = {
+				...create_element_base(ElementType.item),
+				slot: InventorySlot.none,
+				quality: ItemQuality.common
+			}
 			let state = create()
 			state = add_item(state, item1)
 			state = add_item(state, item1)
@@ -149,10 +163,9 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 		})
 
 		it('should work in nominal case', function() {
-			const item: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
 			let state = create()
-			state = add_item(state, item)
-			state = add_item(state, item)
+			state = add_item(state, DUMMY_ITEM)
+			state = add_item(state, DUMMY_ITEM)
 			state = remove_item(state, 0)
 			expect(get_item_count(state), 'item count').to.equal(1)
 			expect(get_item_at_coordinates(state, 1)).to.be.null
@@ -172,8 +185,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 
 		it('should fail on non-equipable item', function() {
 			let state = create()
-			const item: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
-			state = add_item(state, item)
+			state = add_item(state, DUMMY_NON_EQUIPABLE_ITEM)
 			function equip_unequipable() {
 				state = equip_item(state, 0)
 			}
@@ -182,8 +194,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 
 		it('should work on simple non-empty state, equip to the correct slot and correctly remove from unslotted', function() {
 			let state = create()
-			const item: Item = { slot: InventorySlot.weapon, quality: ItemQuality.common }
-			state = add_item(state, item)
+			state = add_item(state, DUMMY_EQUIPABLE_ITEM)
 			expect(get_equiped_item_count(state), 'e1').to.equal(0)
 			expect(get_unequiped_item_count(state), 'u1').to.equal(1)
 			expect(get_item_count(state), 'i1').to.equal(1)
@@ -196,11 +207,15 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 		it('should work on simple non-empty state and correctly swap if the slot was occupied', function() {
 			let state = create()
 
-			const item1: Item = { slot: InventorySlot.weapon, quality: ItemQuality.common }
+			const item1: Item = DUMMY_EQUIPABLE_ITEM
 			state = add_item(state, item1)
 			state = equip_item(state, 0)
 
-			const item2: Item = { slot: InventorySlot.weapon, quality: ItemQuality.common }
+			const item2: Item = {
+				...create_element_base(ElementType.item),
+				slot: InventorySlot.weapon,
+				quality: ItemQuality.rare
+			}
 			state = add_item(state, item2)
 			state = equip_item(state, 0)
 
@@ -225,7 +240,7 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 
 		it('should work on simple non-empty state, unequip to the correct slot and correctly add to unslotted', function() {
 			let state = create()
-			const item: Item = { slot: InventorySlot.weapon, quality: ItemQuality.common }
+			const item: Item = DUMMY_EQUIPABLE_ITEM
 			state = add_item(state, item)
 			state = equip_item(state, 0)
 			state = unequip_item(state, InventorySlot.weapon)
@@ -237,11 +252,11 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 		it('should fail when the inventory is full', function() {
 			let state = create()
 
-			const item: Item = { slot: InventorySlot.weapon, quality: ItemQuality.common }
+			const item: Item = DUMMY_EQUIPABLE_ITEM
 			state = add_item(state, item)
 			state = equip_item(state, 0)
 
-			const itemX: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
+			const itemX: Item = DUMMY_ITEM
 			state = add_item(state, itemX)
 			state = add_item(state, itemX)
 			state = add_item(state, itemX)
@@ -276,9 +291,15 @@ describe('📦 📦 📦  Inventory state - reducer', function() {
 	describe('misc items iteration', function() {
 
 		it('should yield all unequiped slots', () => {
-			const item1: Item = { slot: InventorySlot.armor, quality: ItemQuality.common }
-			const item2: Item = { slot: InventorySlot.weapon, quality: ItemQuality.common }
-			const item3: Item = { slot: InventorySlot.none, quality: ItemQuality.common }
+			const item1: Item = {
+				...create_element_base(ElementType.item),
+				slot: InventorySlot.armor, quality: ItemQuality.common }
+			const item2: Item = {
+				...create_element_base(ElementType.item),
+			slot: InventorySlot.weapon, quality: ItemQuality.common }
+			const item3: Item = {
+				...create_element_base(ElementType.item),
+				slot: InventorySlot.none, quality: ItemQuality.common }
 			let state = create()
 
 			state = add_item(state, item1)

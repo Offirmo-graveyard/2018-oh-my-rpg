@@ -22,7 +22,10 @@ Content:
   * https://lonewolfangel.deviantart.com/favourites/63788883/Fantasy-Male
   * https://www.pinterest.com.au/msquirewriting/fantasy-art/
   * https://deathbornaeon.deviantart.com/favourites/69459555/Druids-and-Shamans
-
+* world
+  * http://forgottenrealms.wikia.com/wiki/Main_Page
+  
+  
 
 TODO:
 * lerna commands:

@@ -187,6 +187,7 @@ function walk<State>(
 		depth = 0,
 	}: {
 		$parent_node?: CheckedNode,
+		//$parent_state?: State, TODO ?
 		$id?: string,
 		depth?: number,
 	} = {}

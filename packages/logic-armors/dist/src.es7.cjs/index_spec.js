@@ -8,8 +8,10 @@ describe('🛡 👕  armor logic:', function () {
     describe('creation', function () {
         it('should allow creating a random armor', function () {
             const rng = random_1.Random.engines.mt19937().seed(789);
-            const armor1 = _1.create(rng);
+            const armor1 = definitions_1.xxx_test_unrandomize_element(_1.create(rng));
             chai_1.expect(armor1).to.deep.equal({
+                uuid: 'uu1~test~test~test~test~',
+                element_type: definitions_1.ElementType.item,
                 slot: definitions_1.InventorySlot.armor,
                 base_hid: 'socks',
                 qualifier1_hid: 'onyx',
@@ -25,11 +27,13 @@ describe('🛡 👕  armor logic:', function () {
         });
         it('should allow creating a partially predefined armor', function () {
             const rng = random_1.Random.engines.mt19937().seed(789);
-            const armor = _1.create(rng, {
+            const armor = definitions_1.xxx_test_unrandomize_element(_1.create(rng, {
                 base_hid: 'shoes',
                 quality: 'artifact',
-            });
+            }));
             chai_1.expect(armor).to.deep.equal({
+                uuid: 'uu1~test~test~test~test~',
+                element_type: definitions_1.ElementType.item,
                 slot: definitions_1.InventorySlot.armor,
                 base_hid: 'shoes',
                 qualifier1_hid: 'skeleton',
@@ -64,17 +68,20 @@ describe('🛡 👕  armor logic:', function () {
     });
     describe('damage reduction', function () {
         const ATTACK_VS_DEFENSE_RATIO = 0.5;
+        function gen_test_armor() {
+            const rng = random_1.Random.engines.mt19937().seed(789);
+            return _1.create(rng, {
+                base_hid: 'shield',
+                qualifier1_hid: 'simple',
+                qualifier2_hid: 'mercenary',
+                quality: 'legendary',
+                base_strength: 14,
+                enhancement_level: 3,
+            });
+        }
         describe('interval', function () {
             it('should work', () => {
-                const [min, max] = _1.get_damage_reduction_interval({
-                    slot: definitions_1.InventorySlot.armor,
-                    base_hid: 'shield',
-                    qualifier1_hid: 'simple',
-                    qualifier2_hid: 'mercenary',
-                    quality: 'legendary',
-                    base_strength: 14,
-                    enhancement_level: 3,
-                });
+                const [min, max] = _1.get_damage_reduction_interval(gen_test_armor());
                 chai_1.expect(min).to.be.a('number');
                 chai_1.expect(max).to.be.a('number');
                 chai_1.expect(max).to.be.above(min);
@@ -88,15 +95,7 @@ describe('🛡 👕  armor logic:', function () {
         });
         describe('medium', function () {
             it('should work', () => {
-                const med = _1.get_medium_damage_reduction({
-                    slot: definitions_1.InventorySlot.weapon,
-                    base_hid: 'shield',
-                    qualifier1_hid: 'simple',
-                    qualifier2_hid: 'mercenary',
-                    quality: 'legendary',
-                    base_strength: 14,
-                    enhancement_level: 3,
-                });
+                const med = _1.get_medium_damage_reduction(gen_test_armor());
                 chai_1.expect(med).to.be.a('number');
                 chai_1.expect(med).to.be.above(291 * ATTACK_VS_DEFENSE_RATIO); // min for legend+3
                 chai_1.expect(med).to.be.below(5824 * ATTACK_VS_DEFENSE_RATIO); // max for legend+3
