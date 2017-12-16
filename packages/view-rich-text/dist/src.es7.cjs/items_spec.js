@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const chai_1 = require("chai");
 const RichText = require("@oh-my-rpg/rich-text-format");
-const definitions_1 = require("@oh-my-rpg/definitions");
 const logic_weapons_1 = require("@oh-my-rpg/logic-weapons");
 const logic_armors_1 = require("@oh-my-rpg/logic-armors");
 const { rich_text_to_ansi } = require('../../../the-npm-rpg/src/utils/rich_text_to_ansi');
@@ -15,80 +14,48 @@ describe('⚔ 🛡 item rendering', function () {
     describe('⚔  weapon rendering', function () {
         context('when not enhanced', function () {
             it('should render properly', () => {
-                const $doc = _1.render_weapon({
-                    slot: definitions_1.InventorySlot.weapon,
-                    base_hid: 'luth',
-                    qualifier1_hid: 'simple',
-                    qualifier2_hid: 'mercenary',
-                    quality: definitions_1.ItemQuality.legendary,
-                    base_strength: 14,
-                    enhancement_level: 0,
-                });
+                const $doc = _1.render_weapon(logic_weapons_1.DEMO_WEAPON_1);
                 const str = RichText.to_text($doc);
                 chai_1.expect(str).to.be.a('string');
-                chai_1.expect(str).to.include('Luth');
-                chai_1.expect(str).to.include('Simple');
-                chai_1.expect(str).to.include('Mercenary');
+                chai_1.expect(str).to.include('Axe');
+                chai_1.expect(str).to.include('Admirable');
+                chai_1.expect(str).to.include('Adjudicator’s');
                 chai_1.expect(str).not.to.include('+');
             });
         });
         context('when enhanced', function () {
             it('should render properly', () => {
-                const $doc = _1.render_weapon({
-                    slot: definitions_1.InventorySlot.weapon,
-                    base_hid: 'longsword',
-                    qualifier1_hid: 'onyx',
-                    qualifier2_hid: 'warfield_king',
-                    quality: definitions_1.ItemQuality.legendary,
-                    base_strength: 14,
-                    enhancement_level: 3,
-                });
+                const $doc = _1.render_weapon(logic_weapons_1.DEMO_WEAPON_2);
                 const str = RichText.to_text($doc);
                 chai_1.expect(str).to.be.a('string');
-                chai_1.expect(str).to.include('Long sword');
-                chai_1.expect(str).to.include('Onyx');
-                chai_1.expect(str).to.include('Warfield king’s');
-                chai_1.expect(str).to.include('+3');
+                chai_1.expect(str).to.include('Bow');
+                chai_1.expect(str).to.include('Arcanic');
+                chai_1.expect(str).to.include('Ambassador’s');
+                chai_1.expect(str).to.include('+8');
             });
         });
     });
     describe('🛡  armor rendering', function () {
         context('when not enhanced', function () {
             it('should render properly', () => {
-                const $doc = _1.render_armor({
-                    slot: definitions_1.InventorySlot.armor,
-                    base_hid: 'socks',
-                    qualifier1_hid: 'onyx',
-                    qualifier2_hid: 'tormentor',
-                    quality: definitions_1.ItemQuality.legendary,
-                    base_strength: 14,
-                    enhancement_level: 0
-                });
+                const $doc = _1.render_armor(logic_armors_1.DEMO_ARMOR_1);
                 const str = RichText.to_text($doc);
                 chai_1.expect(str).to.be.a('string');
-                chai_1.expect(str).to.include('Socks');
-                chai_1.expect(str).to.include('Onyx');
-                chai_1.expect(str).to.include('Tormentor');
+                chai_1.expect(str).to.include('Armguards');
+                chai_1.expect(str).to.include('Of the ancients');
+                chai_1.expect(str).to.include('Bone');
                 chai_1.expect(str).not.to.include('+');
             });
         });
         context('when enhanced', function () {
             it('should render properly', () => {
-                const $doc = _1.render_armor({
-                    slot: definitions_1.InventorySlot.armor,
-                    base_hid: 'mantle',
-                    qualifier1_hid: 'embroidered',
-                    qualifier2_hid: 'warfield_king',
-                    quality: definitions_1.ItemQuality.legendary,
-                    base_strength: 14,
-                    enhancement_level: 5
-                });
+                const $doc = _1.render_armor(logic_armors_1.DEMO_ARMOR_2);
                 const str = RichText.to_text($doc);
                 chai_1.expect(str).to.be.a('string');
-                chai_1.expect(str).to.include('Mantle');
-                chai_1.expect(str).to.include('Embroidered');
-                chai_1.expect(str).to.include('Warfield');
-                chai_1.expect(str).to.include('+5');
+                chai_1.expect(str).to.include('Belt');
+                chai_1.expect(str).to.include('Brass');
+                chai_1.expect(str).to.include('Apprentice’s');
+                chai_1.expect(str).to.include('+8');
             });
         });
     });

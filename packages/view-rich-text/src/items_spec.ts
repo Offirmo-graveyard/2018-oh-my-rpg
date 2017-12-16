@@ -26,20 +26,12 @@ describe('⚔ 🛡 item rendering', function() {
 		context('when not enhanced', function() {
 
 			it('should render properly', () => {
-				const $doc = render_weapon({
-					slot: InventorySlot.weapon,
-					base_hid: 'luth',
-					qualifier1_hid: 'simple',
-					qualifier2_hid: 'mercenary',
-					quality: ItemQuality.legendary,
-					base_strength: 14,
-					enhancement_level: 0,
-				})
+				const $doc = render_weapon(DEMO_WEAPON_1)
 				const str = RichText.to_text($doc)
 				expect(str).to.be.a('string')
-				expect(str).to.include('Luth')
-				expect(str).to.include('Simple')
-				expect(str).to.include('Mercenary')
+				expect(str).to.include('Axe')
+				expect(str).to.include('Admirable')
+				expect(str).to.include('Adjudicator’s')
 				expect(str).not.to.include('+')
 			})
 		})
@@ -47,21 +39,13 @@ describe('⚔ 🛡 item rendering', function() {
 		context('when enhanced', function() {
 
 			it('should render properly', () => {
-				const $doc = render_weapon({
-					slot: InventorySlot.weapon,
-					base_hid: 'longsword',
-					qualifier1_hid: 'onyx',
-					qualifier2_hid: 'warfield_king',
-					quality: ItemQuality.legendary,
-					base_strength: 14,
-					enhancement_level: 3,
-				})
+				const $doc = render_weapon(DEMO_WEAPON_2)
 				const str = RichText.to_text($doc)
 				expect(str).to.be.a('string')
-				expect(str).to.include('Long sword')
-				expect(str).to.include('Onyx')
-				expect(str).to.include('Warfield king’s')
-				expect(str).to.include('+3')
+				expect(str).to.include('Bow')
+				expect(str).to.include('Arcanic')
+				expect(str).to.include('Ambassador’s')
+				expect(str).to.include('+8')
 			})
 		})
 	})
@@ -71,20 +55,12 @@ describe('⚔ 🛡 item rendering', function() {
 		context('when not enhanced', function() {
 
 			it('should render properly', () => {
-				const $doc = render_armor({
-					slot: InventorySlot.armor,
-					base_hid: 'socks',
-					qualifier1_hid: 'onyx',
-					qualifier2_hid: 'tormentor',
-					quality: ItemQuality.legendary,
-					base_strength: 14,
-					enhancement_level: 0
-				})
+				const $doc = render_armor(DEMO_ARMOR_1)
 				const str = RichText.to_text($doc)
 				expect(str).to.be.a('string')
-				expect(str).to.include('Socks')
-				expect(str).to.include('Onyx')
-				expect(str).to.include('Tormentor')
+				expect(str).to.include('Armguards')
+				expect(str).to.include('Of the ancients')
+				expect(str).to.include('Bone')
 				expect(str).not.to.include('+')
 			})
 		})
@@ -92,21 +68,13 @@ describe('⚔ 🛡 item rendering', function() {
 		context('when enhanced', function() {
 
 			it('should render properly', () => {
-				const $doc = render_armor({
-					slot: InventorySlot.armor,
-					base_hid: 'mantle',
-					qualifier1_hid: 'embroidered',
-					qualifier2_hid: 'warfield_king',
-					quality: ItemQuality.legendary,
-					base_strength: 14,
-					enhancement_level: 5
-				})
+				const $doc = render_armor(DEMO_ARMOR_2)
 				const str = RichText.to_text($doc)
 				expect(str).to.be.a('string')
-				expect(str).to.include('Mantle')
-				expect(str).to.include('Embroidered')
-				expect(str).to.include('Warfield')
-				expect(str).to.include('+5')
+				expect(str).to.include('Belt')
+				expect(str).to.include('Brass')
+				expect(str).to.include('Apprentice’s')
+				expect(str).to.include('+8')
 			})
 		})
 	})

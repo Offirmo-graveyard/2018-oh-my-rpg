@@ -8,7 +8,7 @@ import {
 } from '.'
 
 
-describe.only('🗿 👻  meta rendering', function() {
+describe('🗿 👻  meta rendering', function() {
 
 	describe('demo', function() {
 		it('shows off', () => {
