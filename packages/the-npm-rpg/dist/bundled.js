@@ -2597,7 +2597,7 @@ tslib_1.__exportStar(__webpack_require__(197), exports);
 Object.defineProperty(exports, "__esModule", { value: true });
 const LIB_ID = '@oh-my-rpg/state-the-boring-rpg';
 exports.LIB_ID = LIB_ID;
-const SCHEMA_VERSION = 3;
+const SCHEMA_VERSION = 4;
 exports.SCHEMA_VERSION = SCHEMA_VERSION;
 //# sourceMappingURL=consts.js.map
 
@@ -6065,7 +6065,7 @@ const DEMO_ADVENTURE_02 = deepFreeze({
 });
 exports.DEMO_ADVENTURE_02 = DEMO_ADVENTURE_02;
 const DEMO_STATE = deepFreeze({
-    schema_version: 3,
+    schema_version: 4,
     revision: 203,
     meta: MetaState.DEMO_STATE,
     avatar: CharacterState.DEMO_STATE,
@@ -9007,28 +9007,14 @@ module.exports = x => {
 
 "use strict";
 
-const errorEx = __webpack_require__(100);
-const fallback = __webpack_require__(102);
+var errorEx = __webpack_require__(100);
+var fallback = __webpack_require__(102);
 
-function appendPosition(message) {
-	const posRe = / at (\d+:\d+) in/;
-	const numbers = posRe.exec(message);
-	return message.replace(posRe, ' in') + ':' + numbers[1];
-}
-
-const JSONError = errorEx('JSONError', {
-	fileName: errorEx.append('in %s'),
-	appendPosition: {
-		message: (shouldAppend, original) => {
-			if (shouldAppend) {
-				original[0] = appendPosition(original[0]);
-			}
-			return original;
-		}
-	}
+var JSONError = errorEx('JSONError', {
+	fileName: errorEx.append('in %s')
 });
 
-module.exports = (input, reviver, filename) => {
+module.exports = function (x, reviver, filename) {
 	if (typeof reviver === 'string') {
 		filename = reviver;
 		reviver = null;
@@ -9036,21 +9022,20 @@ module.exports = (input, reviver, filename) => {
 
 	try {
 		try {
-			return JSON.parse(input, reviver);
+			return JSON.parse(x, reviver);
 		} catch (err) {
-			fallback.parse(input, {
+			fallback.parse(x, {
 				mode: 'json',
-				reviver
+				reviver: reviver
 			});
 
 			throw err;
 		}
 	} catch (err) {
-		const jsonErr = new JSONError(err);
+		var jsonErr = new JSONError(err);
 
 		if (filename) {
 			jsonErr.fileName = filename;
-			jsonErr.appendPosition = true;
 		}
 
 		throw jsonErr;
@@ -15795,10 +15780,22 @@ exports.xxx_test_unrandomize_element = xxx_test_unrandomize_element;
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
+// - human readable timestamps
+// - valid in URLs ?
+// - valid in files ?
 function get_UTC_timestamp_ms() {
     return (+Date.now());
 }
 exports.get_UTC_timestamp_ms = get_UTC_timestamp_ms;
+function get_human_readable_UTC_timestamp_minutes(now = new Date()) {
+    const YYYY = now.getUTCFullYear();
+    const MM = ('0' + (now.getUTCMonth() + 1)).slice(-2);
+    const DD = ('0' + now.getUTCDate()).slice(-2);
+    const hh = ('0' + now.getUTCHours()).slice(-2);
+    const mm = ('0' + now.getUTCMinutes()).slice(-2);
+    return `${YYYY}${MM}${DD}_${hh}h${mm}`;
+}
+exports.get_human_readable_UTC_timestamp_minutes = get_human_readable_UTC_timestamp_minutes;
 function get_human_readable_UTC_timestamp_ms_v1(now = new Date()) {
     const YYYY = now.getUTCFullYear();
     const MM = ('0' + (now.getUTCMonth() + 1)).slice(-2);
@@ -15807,7 +15804,8 @@ function get_human_readable_UTC_timestamp_ms_v1(now = new Date()) {
     const mm = ('0' + now.getUTCMinutes()).slice(-2);
     const ss = ('0' + now.getUTCSeconds()).slice(-2);
     const mmm = ('00' + now.getUTCMilliseconds()).slice(-3);
-    return `${YYYY}${MM}${DD}_${hh}:${mm}:${ss}.${mmm}`;
+    // TODO remove the ':' ?
+    return `${YYYY}${MM}${DD}_${hh}h${mm}:${ss}.${mmm}`;
 }
 exports.get_human_readable_UTC_timestamp_ms_v1 = get_human_readable_UTC_timestamp_ms_v1;
 function get_human_readable_UTC_timestamp_ms(now = new Date()) {
@@ -18064,7 +18062,6 @@ exports.GainType = GainType;
 
 /////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
-const definitions_1 = __webpack_require__(0);
 const MetaState = __webpack_require__(61);
 const CharacterState = __webpack_require__(9);
 const WalletState = __webpack_require__(14);
@@ -18090,7 +18087,7 @@ function migrate_to_latest(SEC, legacy_state, hints = {}) {
             try {
                 // TODO logger
                 console.warn(`${consts_1.LIB_ID}: attempting to migrate schema from v${src_version} to v${consts_1.SCHEMA_VERSION}:`);
-                state = migrate_to_3(SEC, legacy_state, hints);
+                state = migrate_to_4(SEC, legacy_state, hints);
                 console.info(`${consts_1.LIB_ID}: schema migration successful.`);
             }
             catch (err) {
@@ -18111,43 +18108,11 @@ function migrate_to_latest(SEC, legacy_state, hints = {}) {
 }
 exports.migrate_to_latest = migrate_to_latest;
 /////////////////////
-function migrate_to_3(SEC, legacy_state, hints) {
-    return SEC.xTry('migrate_to_3', ({ SEC, logger }) => {
-        if (legacy_state.schema_version !== 2)
-            legacy_state = migrate_to_2(SEC, legacy_state, hints);
-        logger.info(`${consts_1.LIB_ID}: migrating schema from v${legacy_state.schema_version} to v${legacy_state.schema_version + 1}…`);
-        const { last_adventure } = legacy_state;
-        if (last_adventure) {
-            // renamed fieldsg
-            last_adventure.gains.coin = last_adventure.gains.coins;
-            delete last_adventure.gains.coins;
-            last_adventure.gains.token = last_adventure.gains.tokens;
-            delete last_adventure.gains.tokens;
-            // new fields
-            last_adventure.uuid = last_adventure.uuid || (hints && hints.to_v3 && hints.to_v3.last_adventure_uuid) || definitions_1.generate_uuid();
-        }
-        return Object.assign({}, legacy_state, { last_adventure, schema_version: 3 });
+function migrate_to_4(SEC, legacy_state, hints) {
+    return SEC.xTry('migrate_to_4', ({ logger }) => {
+        throw new Error(`Alpha release schema, won't migrate, would take too much time and schema is still unstable!`);
     });
 }
-/////////////////////
-function migrate_to_2(SEC, legacy_state, hints) {
-    return SEC.xTry('migrate_to_2', ({ SEC, logger }) => {
-        if (legacy_state.schema_version !== 1)
-            legacy_state = migrate_to_1(SEC, legacy_state, hints);
-        logger.info(`${consts_1.LIB_ID}: migrating schema from v1 to v2...`);
-        return Object.assign({}, legacy_state, { schema_version: 2, revision: (hints && hints.to_v2 && hints.to_v2.revision) || 0 });
-    });
-}
-/////////////////////
-function migrate_to_1(SEC, legacy_state, hints) {
-    return SEC.xTry('migrate_to_1', ({ logger }) => {
-        if (Object.keys(legacy_state).length !== Object.keys(state_1.OLDEST_LEGACY_STATE_FOR_TESTS).length)
-            throw new Error(`Unrecognized schema, most likely too old, can't migrate!`);
-        logger.info(`${consts_1.LIB_ID}: migrating schema from v0/non-versioned to v1...`);
-        return Object.assign({}, legacy_state, { schema_version: 1, revision: (hints && hints.to_v1 && hints.to_v1.revision) || 0 });
-    });
-}
-exports.migrate_to_1 = migrate_to_1;
 //# sourceMappingURL=migrations.js.map
 
 /***/ }),

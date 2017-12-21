@@ -421,7 +421,7 @@ const DEMO_ADVENTURE_02: Adventure = deepFreeze({
 	}
 })
 const DEMO_STATE: State = deepFreeze({
-	schema_version: 3,
+	schema_version: 4,
 	revision: 203,
 
 	meta: MetaState.DEMO_STATE,
@@ -440,53 +440,150 @@ const DEMO_STATE: State = deepFreeze({
 // the oldest format we can migrate from
 // must correspond to state above
 const OLDEST_LEGACY_STATE_FOR_TESTS: any = deepFreeze({
-	// no schema_version = 0
-
-	meta: MetaState.OLDEST_LEGACY_STATE_FOR_TESTS,
-	avatar: CharacterState.OLDEST_LEGACY_STATE_FOR_TESTS,
-	inventory: InventoryState.OLDEST_LEGACY_STATE_FOR_TESTS,
-	wallet: WalletState.OLDEST_LEGACY_STATE_FOR_TESTS,
-	prng: PRNGState.OLDEST_LEGACY_STATE_FOR_TESTS,
-
-	last_adventure: {
-		hid: 'fight_lost_any',
-		good: true,
-		encounter: {
-			name: 'chicken',
-			level: 7,
-			rank: 'elite',
-			possible_emoji: '🐓',
-		},
-		gains: {
-			level: 0,
-			health: 0,
-			mana: 0,
-			strength: 0,
-			agility: 0,
-			charisma: 0,
-			wisdom: 0,
-			luck: 1,
-			coins: 0,
-			tokens: 0,
-			armor: null,
-			weapon: null,
-			armor_improvement: false,
-			weapon_improvement: false,
-		},
+	"schema_version": 4,
+	"revision": 203,
+	"meta": {
+		"schema_version": 1,
+		"revision": 5,
+		"uuid": "uu1dgqu3h0FydqWyQ~6cYv3g",
+		"name": "Offirmo",
+		"email": "offirmo.net@gmail.com",
+		"allow_telemetry": false
 	},
-	click_count:                  86,
-	good_click_count:             86,
-	meaningful_interaction_count: 86,
+	"avatar": {
+		"schema_version": 2,
+		"revision": 42,
+		"name": "Perte",
+		"klass": "paladin",
+		"attributes": {
+			"level": 13,
+			"health": 12,
+			"mana": 23,
+			"strength": 4,
+			"agility": 5,
+			"charisma": 6,
+			"wisdom": 7,
+			"luck": 8
+		}
+	},
+	"inventory": {
+		"schema_version": 1,
+		"revision": 42,
+		"unslotted_capacity": 20,
+		"slotted": {
+			"armor": {
+				"uuid": "uu1~test~demo~armor~0002",
+				"element_type": "item",
+				"slot": "armor",
+				"base_hid": "belt",
+				"qualifier1_hid": "brass",
+				"qualifier2_hid": "apprentice",
+				"quality": "legendary",
+				"base_strength": 19,
+				"enhancement_level": 8
+			},
+			"weapon": {
+				"uuid": "uu1~test~demo~weapon~001",
+				"element_type": "item",
+				"slot": "weapon",
+				"base_hid": "axe",
+				"qualifier1_hid": "admirable",
+				"qualifier2_hid": "adjudicator",
+				"quality": "uncommon",
+				"base_strength": 2,
+				"enhancement_level": 0
+			}
+		},
+		"unslotted": [
+			{
+				"uuid": "uu1~test~demo~weapon~002",
+				"element_type": "item",
+				"slot": "weapon",
+				"base_hid": "bow",
+				"qualifier1_hid": "arcanic",
+				"qualifier2_hid": "ambassador",
+				"quality": "legendary",
+				"base_strength": 19,
+				"enhancement_level": 8
+			},
+			{
+				"uuid": "uu1~test~demo~armor~0001",
+				"element_type": "item",
+				"slot": "armor",
+				"base_hid": "armguards",
+				"qualifier1_hid": "bone",
+				"qualifier2_hid": "ancients",
+				"quality": "uncommon",
+				"base_strength": 2,
+				"enhancement_level": 0
+			},
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		]
+	},
+	"wallet": {
+		"schema_version": 1,
+		"revision": 42,
+		"coin_count": 23456,
+		"token_count": 89
+	},
+	"prng": {
+		"schema_version": 1,
+		"revision": 108,
+		"seed": 1234,
+		"use_count": 107
+	},
+	"last_adventure": {
+		"hid": "fight_lost_any",
+		"uuid": "uu1de1~EVAdXlW5_p23Ro4OH",
+		"good": true,
+		"encounter": {
+			"name": "chicken",
+			"level": 7,
+			"rank": "elite",
+			"possible_emoji": "🐓"
+		},
+		"gains": {
+			"level": 0,
+			"health": 0,
+			"mana": 0,
+			"strength": 0,
+			"agility": 0,
+			"charisma": 0,
+			"wisdom": 0,
+			"luck": 1,
+			"coin": 0,
+			"token": 0,
+			"armor": null,
+			"weapon": null,
+			"armor_improvement": false,
+			"weapon_improvement": false
+		}
+	},
+	"click_count": 86,
+	"good_click_count": 86,
+	"meaningful_interaction_count": 86
 })
 
 // some hints may be needed to migrate to demo state
 const MIGRATION_HINTS_FOR_TESTS: any = deepFreeze({
-	to_v3: {
-		last_adventure_uuid: 'uu1de1~EVAdXlW5_p23Ro4OH'
-	},
-
-	to_v2: {
-		revision: 203
+	to_v5: {
 	},
 
 	meta: MetaState.MIGRATION_HINTS_FOR_TESTS,

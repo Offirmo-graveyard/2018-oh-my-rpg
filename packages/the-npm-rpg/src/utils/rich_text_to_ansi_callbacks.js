@@ -12,14 +12,15 @@ const WIDTH_COMPENSATION = ' '
 function apply_type($type, str) {
 	switch($type) {
 		case 'li':
-		case 'p':
 		case 'span':
 		case 'section':
 			// nothing to do for those one
 			return str
+		// Note: \n will be merged
+		case 'p':
 		case 'ol':
 		case 'ul':
-			return str + '\n'
+			return '\n' + str + '\n'
 		case 'strong':
 			return stylize_string.bold(str)
 		case 'heading':
@@ -127,12 +128,22 @@ function on_concatenate_sub_node({state, sub_state, $id, $parent_node}) {
 	return state + sub_state
 }
 
+function clean(state) {
+	// merge adjacent \n
+	return state
+		.split('\n')
+		.filter(s => !!s)
+		.join('\n')
+}
+
 const callbacks = {
 	on_node_enter: () => '',
 	on_concatenate_str: ({state, str}) => state + str,
 	on_concatenate_sub_node,
 	on_class_after: ({state, $class, $node}) => apply_class($class, state, $node.$hints),
 	on_type: ({state, $type}) => apply_type($type, state),
+	on_root_exit: ({state}) => clean(state),
+
 	on_type_br: ({state}) => state + '\n',
 	on_type_hr: ({state}) => state + '\n------------------------------------------------------------\n',
 }

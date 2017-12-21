@@ -314,7 +314,7 @@ const DEMO_ADVENTURE_02 = deepFreeze({
 });
 exports.DEMO_ADVENTURE_02 = DEMO_ADVENTURE_02;
 const DEMO_STATE = deepFreeze({
-    schema_version: 3,
+    schema_version: 4,
     revision: 203,
     meta: MetaState.DEMO_STATE,
     avatar: CharacterState.DEMO_STATE,

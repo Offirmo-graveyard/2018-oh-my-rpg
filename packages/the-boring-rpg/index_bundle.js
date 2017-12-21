@@ -5479,23 +5479,6 @@ module.exports = warning;
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = __webpack_require__(11);
-tslib_1.__exportStar(__webpack_require__(129), exports);
-tslib_1.__exportStar(__webpack_require__(273), exports);
-tslib_1.__exportStar(__webpack_require__(130), exports);
-tslib_1.__exportStar(__webpack_require__(278), exports);
-tslib_1.__exportStar(__webpack_require__(279), exports);
-tslib_1.__exportStar(__webpack_require__(280), exports);
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 var elliptic = exports;
 
 elliptic.version = __webpack_require__(232).version;
@@ -5508,6 +5491,23 @@ elliptic.curves = __webpack_require__(238);
 elliptic.ec = __webpack_require__(246);
 elliptic.eddsa = __webpack_require__(250);
 
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = __webpack_require__(11);
+tslib_1.__exportStar(__webpack_require__(129), exports);
+tslib_1.__exportStar(__webpack_require__(273), exports);
+tslib_1.__exportStar(__webpack_require__(130), exports);
+tslib_1.__exportStar(__webpack_require__(278), exports);
+tslib_1.__exportStar(__webpack_require__(279), exports);
+tslib_1.__exportStar(__webpack_require__(280), exports);
+//# sourceMappingURL=index.js.map
 
 /***/ }),
 /* 8 */
@@ -8056,9 +8056,9 @@ tslib_1.__exportStar(__webpack_require__(296), exports);
 /////////////////////
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const definitions_1 = __webpack_require__(6);
+const definitions_1 = __webpack_require__(7);
 const random_1 = __webpack_require__(17);
-const definitions_2 = __webpack_require__(6);
+const definitions_2 = __webpack_require__(7);
 const data_1 = __webpack_require__(288);
 exports.i18n_messages = data_1.i18n_messages;
 exports.static_weapon_data = data_1.ENTRIES;
@@ -8164,9 +8164,9 @@ exports.DEMO_WEAPON_2 = DEMO_WEAPON_2;
 /////////////////////
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const definitions_1 = __webpack_require__(6);
+const definitions_1 = __webpack_require__(7);
 const random_1 = __webpack_require__(17);
-const definitions_2 = __webpack_require__(6);
+const definitions_2 = __webpack_require__(7);
 const data_1 = __webpack_require__(292);
 exports.i18n_messages = data_1.i18n_messages;
 exports.static_armor_data = data_1.ENTRIES;
@@ -11255,7 +11255,7 @@ tslib_1.__exportStar(__webpack_require__(297), exports);
 Object.defineProperty(exports, "__esModule", { value: true });
 const LIB_ID = '@oh-my-rpg/state-the-boring-rpg';
 exports.LIB_ID = LIB_ID;
-const SCHEMA_VERSION = 3;
+const SCHEMA_VERSION = 4;
 exports.SCHEMA_VERSION = SCHEMA_VERSION;
 //# sourceMappingURL=consts.js.map
 
@@ -11748,7 +11748,7 @@ var createTransitionManager = function createTransitionManager() {
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const definitions_1 = __webpack_require__(6);
+const definitions_1 = __webpack_require__(7);
 const logic_armors_1 = __webpack_require__(36);
 const logic_weapons_1 = __webpack_require__(35);
 const RichText = __webpack_require__(15);
@@ -12929,7 +12929,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const random_1 = __webpack_require__(17);
 const deepFreeze = __webpack_require__(23);
 /////////////////////
-const definitions_1 = __webpack_require__(6);
+const definitions_1 = __webpack_require__(7);
 const MetaState = __webpack_require__(131);
 const CharacterState = __webpack_require__(32);
 const state_character_1 = __webpack_require__(32);
@@ -13226,7 +13226,7 @@ const DEMO_ADVENTURE_02 = deepFreeze({
 });
 exports.DEMO_ADVENTURE_02 = DEMO_ADVENTURE_02;
 const DEMO_STATE = deepFreeze({
-    schema_version: 3,
+    schema_version: 4,
     revision: 203,
     meta: MetaState.DEMO_STATE,
     avatar: CharacterState.DEMO_STATE,
@@ -17389,7 +17389,7 @@ tslib_1.__exportStar(__webpack_require__(283), exports);
 /////////////////////
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const definitions_1 = __webpack_require__(6);
+const definitions_1 = __webpack_require__(7);
 const deepFreeze = __webpack_require__(23);
 const consts_1 = __webpack_require__(133);
 /////////////////////
@@ -17597,7 +17597,7 @@ exports.MIGRATION_HINTS_FOR_TESTS = MIGRATION_HINTS_FOR_TESTS;
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const definitions_1 = __webpack_require__(6);
+const definitions_1 = __webpack_require__(7);
 const consts_1 = __webpack_require__(68);
 function get_SEC(SEC) {
     return definitions_1.oh_my_rpg_get_SEC({
@@ -17726,7 +17726,7 @@ exports.SCHEMA_VERSION = SCHEMA_VERSION;
 Object.defineProperty(exports, "__esModule", { value: true });
 const deepFreeze = __webpack_require__(23);
 const consts_1 = __webpack_require__(139);
-const definitions_1 = __webpack_require__(6);
+const definitions_1 = __webpack_require__(7);
 exports.InventorySlot = definitions_1.InventorySlot;
 const logic_weapons_1 = __webpack_require__(35);
 const logic_armors_1 = __webpack_require__(36);
@@ -18140,7 +18140,7 @@ exports.AdventureType = AdventureType;
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const definitions_1 = __webpack_require__(6);
+const definitions_1 = __webpack_require__(7);
 const consts_1 = __webpack_require__(70);
 function get_SEC(SEC) {
     return definitions_1.oh_my_rpg_get_SEC({
@@ -40273,7 +40273,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
 var createHmac = __webpack_require__(102)
 var crt = __webpack_require__(66)
-var EC = __webpack_require__(7).ec
+var EC = __webpack_require__(6).ec
 var BN = __webpack_require__(4)
 var parseKeys = __webpack_require__(47)
 var curves = __webpack_require__(125)
@@ -40559,7 +40559,7 @@ utils.intFromLE = intFromLE;
 
 
 var BN = __webpack_require__(4);
-var elliptic = __webpack_require__(7);
+var elliptic = __webpack_require__(6);
 var utils = elliptic.utils;
 var getNAF = utils.getNAF;
 var getJSF = utils.getJSF;
@@ -40941,7 +40941,7 @@ BasePoint.prototype.dblp = function dblp(k) {
 
 
 var curve = __webpack_require__(46);
-var elliptic = __webpack_require__(7);
+var elliptic = __webpack_require__(6);
 var BN = __webpack_require__(4);
 var inherits = __webpack_require__(0);
 var Base = curve.base;
@@ -41890,7 +41890,7 @@ var BN = __webpack_require__(4);
 var inherits = __webpack_require__(0);
 var Base = curve.base;
 
-var elliptic = __webpack_require__(7);
+var elliptic = __webpack_require__(6);
 var utils = elliptic.utils;
 
 function MontCurve(conf) {
@@ -42073,7 +42073,7 @@ Point.prototype.getX = function getX() {
 
 
 var curve = __webpack_require__(46);
-var elliptic = __webpack_require__(7);
+var elliptic = __webpack_require__(6);
 var BN = __webpack_require__(4);
 var inherits = __webpack_require__(0);
 var Base = curve.base;
@@ -42515,7 +42515,7 @@ Point.prototype.mixedAdd = Point.prototype.add;
 var curves = exports;
 
 var hash = __webpack_require__(67);
-var elliptic = __webpack_require__(7);
+var elliptic = __webpack_require__(6);
 
 var assert = elliptic.utils.assert;
 
@@ -43893,7 +43893,7 @@ module.exports = {
 
 var BN = __webpack_require__(4);
 var HmacDRBG = __webpack_require__(247);
-var elliptic = __webpack_require__(7);
+var elliptic = __webpack_require__(6);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
@@ -44259,7 +44259,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
 
 
 var BN = __webpack_require__(4);
-var elliptic = __webpack_require__(7);
+var elliptic = __webpack_require__(6);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
@@ -44386,7 +44386,7 @@ KeyPair.prototype.inspect = function inspect() {
 
 var BN = __webpack_require__(4);
 
-var elliptic = __webpack_require__(7);
+var elliptic = __webpack_require__(6);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
@@ -44527,7 +44527,7 @@ Signature.prototype.toDER = function toDER(enc) {
 
 
 var hash = __webpack_require__(67);
-var elliptic = __webpack_require__(7);
+var elliptic = __webpack_require__(6);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
@@ -44651,7 +44651,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
 "use strict";
 
 
-var elliptic = __webpack_require__(7);
+var elliptic = __webpack_require__(6);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
@@ -44755,7 +44755,7 @@ module.exports = KeyPair;
 
 
 var BN = __webpack_require__(4);
-var elliptic = __webpack_require__(7);
+var elliptic = __webpack_require__(6);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var cachedProperty = utils.cachedProperty;
@@ -46236,7 +46236,7 @@ module.exports = function (okey, password) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
 var BN = __webpack_require__(4)
-var EC = __webpack_require__(7).ec
+var EC = __webpack_require__(6).ec
 var parseKeys = __webpack_require__(47)
 var curves = __webpack_require__(125)
 
@@ -46324,7 +46324,7 @@ module.exports = verify
 /* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var elliptic = __webpack_require__(7);
+/* WEBPACK VAR INJECTION */(function(Buffer) {var elliptic = __webpack_require__(6);
 var BN = __webpack_require__(4);
 
 module.exports = function createECDH(curve) {
@@ -46971,10 +46971,22 @@ exports.xxx_test_unrandomize_element = xxx_test_unrandomize_element;
 /////////////////////
 
 Object.defineProperty(exports, "__esModule", { value: true });
+// - human readable timestamps
+// - valid in URLs ?
+// - valid in files ?
 function get_UTC_timestamp_ms() {
     return +Date.now();
 }
 exports.get_UTC_timestamp_ms = get_UTC_timestamp_ms;
+function get_human_readable_UTC_timestamp_minutes(now = new Date()) {
+    const YYYY = now.getUTCFullYear();
+    const MM = ('0' + (now.getUTCMonth() + 1)).slice(-2);
+    const DD = ('0' + now.getUTCDate()).slice(-2);
+    const hh = ('0' + now.getUTCHours()).slice(-2);
+    const mm = ('0' + now.getUTCMinutes()).slice(-2);
+    return `${YYYY}${MM}${DD}_${hh}h${mm}`;
+}
+exports.get_human_readable_UTC_timestamp_minutes = get_human_readable_UTC_timestamp_minutes;
 function get_human_readable_UTC_timestamp_ms_v1(now = new Date()) {
     const YYYY = now.getUTCFullYear();
     const MM = ('0' + (now.getUTCMonth() + 1)).slice(-2);
@@ -46983,7 +46995,8 @@ function get_human_readable_UTC_timestamp_ms_v1(now = new Date()) {
     const mm = ('0' + now.getUTCMinutes()).slice(-2);
     const ss = ('0' + now.getUTCSeconds()).slice(-2);
     const mmm = ('00' + now.getUTCMilliseconds()).slice(-3);
-    return `${YYYY}${MM}${DD}_${hh}:${mm}:${ss}.${mmm}`;
+    // TODO remove the ':' ?
+    return `${YYYY}${MM}${DD}_${hh}h${mm}:${ss}.${mmm}`;
 }
 exports.get_human_readable_UTC_timestamp_ms_v1 = get_human_readable_UTC_timestamp_ms_v1;
 function get_human_readable_UTC_timestamp_ms(now = new Date()) {
@@ -47794,7 +47807,7 @@ tslib_1.__exportStar(__webpack_require__(299), exports);
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const random_1 = __webpack_require__(17);
-const definitions_1 = __webpack_require__(6);
+const definitions_1 = __webpack_require__(7);
 const types_1 = __webpack_require__(142);
 const data_1 = __webpack_require__(300);
 /////////////////////
@@ -48672,7 +48685,7 @@ exports.CHARACTERS = CHARACTERS;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const random_1 = __webpack_require__(17);
-const definitions_1 = __webpack_require__(6);
+const definitions_1 = __webpack_require__(7);
 const logic_weapons_1 = __webpack_require__(35);
 const logic_armors_1 = __webpack_require__(36);
 /////////////////////
@@ -48954,7 +48967,6 @@ exports.GainType = GainType;
 /////////////////////
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const definitions_1 = __webpack_require__(6);
 const MetaState = __webpack_require__(131);
 const CharacterState = __webpack_require__(32);
 const WalletState = __webpack_require__(33);
@@ -48975,7 +48987,7 @@ function migrate_to_latest(SEC, legacy_state, hints = {}) {
             try {
                 // TODO logger
                 console.warn(`${consts_1.LIB_ID}: attempting to migrate schema from v${src_version} to v${consts_1.SCHEMA_VERSION}:`);
-                state = migrate_to_3(SEC, legacy_state, hints);
+                state = migrate_to_4(SEC, legacy_state, hints);
                 console.info(`${consts_1.LIB_ID}: schema migration successful.`);
             } catch (err) {
                 // failed, reset all
@@ -48995,40 +49007,11 @@ function migrate_to_latest(SEC, legacy_state, hints = {}) {
 }
 exports.migrate_to_latest = migrate_to_latest;
 /////////////////////
-function migrate_to_3(SEC, legacy_state, hints) {
-    return SEC.xTry('migrate_to_3', ({ SEC, logger }) => {
-        if (legacy_state.schema_version !== 2) legacy_state = migrate_to_2(SEC, legacy_state, hints);
-        logger.info(`${consts_1.LIB_ID}: migrating schema from v${legacy_state.schema_version} to v${legacy_state.schema_version + 1}…`);
-        const { last_adventure } = legacy_state;
-        if (last_adventure) {
-            // renamed fieldsg
-            last_adventure.gains.coin = last_adventure.gains.coins;
-            delete last_adventure.gains.coins;
-            last_adventure.gains.token = last_adventure.gains.tokens;
-            delete last_adventure.gains.tokens;
-            // new fields
-            last_adventure.uuid = last_adventure.uuid || hints && hints.to_v3 && hints.to_v3.last_adventure_uuid || definitions_1.generate_uuid();
-        }
-        return Object.assign({}, legacy_state, { last_adventure, schema_version: 3 });
+function migrate_to_4(SEC, legacy_state, hints) {
+    return SEC.xTry('migrate_to_4', ({ logger }) => {
+        throw new Error(`Alpha release schema, won't migrate, would take too much time and schema is still unstable!`);
     });
 }
-/////////////////////
-function migrate_to_2(SEC, legacy_state, hints) {
-    return SEC.xTry('migrate_to_2', ({ SEC, logger }) => {
-        if (legacy_state.schema_version !== 1) legacy_state = migrate_to_1(SEC, legacy_state, hints);
-        logger.info(`${consts_1.LIB_ID}: migrating schema from v1 to v2...`);
-        return Object.assign({}, legacy_state, { schema_version: 2, revision: hints && hints.to_v2 && hints.to_v2.revision || 0 });
-    });
-}
-/////////////////////
-function migrate_to_1(SEC, legacy_state, hints) {
-    return SEC.xTry('migrate_to_1', ({ logger }) => {
-        if (Object.keys(legacy_state).length !== Object.keys(state_1.OLDEST_LEGACY_STATE_FOR_TESTS).length) throw new Error(`Unrecognized schema, most likely too old, can't migrate!`);
-        logger.info(`${consts_1.LIB_ID}: migrating schema from v0/non-versioned to v1...`);
-        return Object.assign({}, legacy_state, { schema_version: 1, revision: hints && hints.to_v1 && hints.to_v1.revision || 0 });
-    });
-}
-exports.migrate_to_1 = migrate_to_1;
 //# sourceMappingURL=migrations.js.map
 
 /***/ }),
@@ -53327,7 +53310,7 @@ exports.TextClass = TextClass;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = __webpack_require__(347);
-const definitions_1 = __webpack_require__(6);
+const definitions_1 = __webpack_require__(7);
 const state_character_1 = __webpack_require__(32);
 const logic_adventures_1 = __webpack_require__(143);
 const state_wallet_1 = __webpack_require__(33);
@@ -70596,7 +70579,7 @@ exports.render_character_sheet = render_character_sheet;
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const definitions_1 = __webpack_require__(6);
+const definitions_1 = __webpack_require__(7);
 const state_inventory_1 = __webpack_require__(34);
 const RichText = __webpack_require__(15);
 const items_1 = __webpack_require__(78);

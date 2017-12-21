@@ -83,16 +83,18 @@ const MSG_02 = {
 
 
 ////////////////////////////////////
-console.log('\n------- 1 -------')
-const doc1 = MSG_01
+if (false) {
+	console.log('\n------- 1 -------')
+	const doc = MSG_01
 
-console.log('\n------- to debug -------\n')
-RichText.to_debug(doc1)
+	console.log('\n------- to debug -------\n')
+	RichText.to_debug(doc)
 
-console.log('\n------- to text -------\n' + RichText.to_text(doc1))
-console.log('\n------- to ansi -------\n' + RichText.walk(doc1, callbacks_ansi))
-console.log('\n------- to html -------\n' + RichText.to_html(doc1))
-//console.log('\n------- to debug -------\n' + RichText.walk(doc1, callbacks_debug))
+	console.log('\n------- to text -------\n' + RichText.to_text(doc))
+	console.log('\n------- to ansi -------\n' + RichText.walk(doc, callbacks_ansi))
+	console.log('\n------- to html -------\n' + RichText.to_html(doc))
+	//console.log('\n------- to debug -------\n' + RichText.walk(doc, callbacks_debug))
+}
 
 
 // TODO actions
@@ -105,9 +107,9 @@ console.log('\n------- to html -------\n' + RichText.to_html(doc1))
 
 
 ////////////////////////////////////
-if (false) {
+if (true) {
 	console.log('\n------- 2 -------')
-	const doc2 = RichText.paragraph()
+	const doc = RichText.paragraph()
 		.pushText(''
 			+ 'Great sages prophetized your coming,{{br}}'
 			+ 'commoners are waiting for their hero{{br}}'
@@ -117,7 +119,8 @@ if (false) {
 		.pushStrong('A great saga just started.')
 		.done()
 
-	console.log('\n------- to text -------\n' + RichText.to_text(doc2))
-	console.log('\n------- to ansi -------\n' + RichText.walk(doc2, callbacks_ansi))
-	console.log('\n------- to html -------\n' + RichText.to_html(doc2))
+	//console.log('\n------- to text -------\n' + RichText.to_text(doc))
+	//console.log('\n------- to ansi -------\n' + RichText.walk(doc, callbacks_ansi))
+	console.log('\n------- to ansi -------\n' + RichText.walk(doc, callbacks_ansi))
+	console.log('\n------- to html -------\n' + RichText.to_html(doc))
 }
