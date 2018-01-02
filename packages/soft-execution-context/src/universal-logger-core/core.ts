@@ -48,6 +48,9 @@ function createLogger({
 	}) as Logger
 
 	function setLevel(level: LogLevel) {
+		if (!Object.keys(LEVEL_TO_INTEGER).includes(level))
+			throw new Error(`Logger core: unknown level "${level}"!`)
+
 		internal_state.level_enum = level
 		internal_state.level_int = LEVEL_TO_INTEGER[level]
 	}

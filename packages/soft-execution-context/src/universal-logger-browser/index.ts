@@ -27,10 +27,10 @@ const LEVEL_TO_CONSOLE_METHOD: { [k: string]: string } = {
 	[LogLevel.verbose]: 'info',
 
 	[LogLevel.log]:     'log',
-	[LogLevel.debug]:   'debug',
-
-	[LogLevel.trace]:   'debug',
-	[LogLevel.silly]:   'debug',
+	// note: console.debug doesn't display anything on Chrome, don't use it
+	[LogLevel.debug]:   'log',
+	[LogLevel.trace]:   'log',
+	[LogLevel.silly]:   'log',
 }
 
 const LEVEL_TO_STYLE: { [k: string]: string } = {
@@ -66,7 +66,7 @@ function createLogger(p: LoggerParams): Logger {
 			+ `%c[${level}]`
 			+ '›'
 			+ name
-			+ '›'
+			+ ': '
 			//+ (msg ? ' ' : '')
 			+ msg
 		if (Object.keys(details).length)

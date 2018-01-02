@@ -14,9 +14,10 @@ const LEVEL_TO_CONSOLE_METHOD = {
     [universal_logger_core_1.LogLevel.info]: 'info',
     [universal_logger_core_1.LogLevel.verbose]: 'info',
     [universal_logger_core_1.LogLevel.log]: 'log',
-    [universal_logger_core_1.LogLevel.debug]: 'debug',
-    [universal_logger_core_1.LogLevel.trace]: 'debug',
-    [universal_logger_core_1.LogLevel.silly]: 'debug',
+    // note: console.debug doesn't display anything on Chrome, don't use it
+    [universal_logger_core_1.LogLevel.debug]: 'log',
+    [universal_logger_core_1.LogLevel.trace]: 'log',
+    [universal_logger_core_1.LogLevel.silly]: 'log',
 };
 const LEVEL_TO_STYLE = {
     [universal_logger_core_1.LogLevel.fatal]: '',
@@ -44,7 +45,7 @@ function createLogger(p) {
             + `%c[${level}]`
             + '›'
             + name
-            + '›'
+            + ': '
             //+ (msg ? ' ' : '')
             + msg;
         if (Object.keys(details).length)

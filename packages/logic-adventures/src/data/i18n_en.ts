@@ -224,12 +224,14 @@ A good opportunity to practice your magic: +{{mana}} mana.`,
 		treasure_in_pots: `
 You enter a pottery shop and destroy every jug, vase and item in the store.
 You collect +{{coin}} in coin, precious stones and other treasures found!`,
+
 		// Oblivion dangerous chicken
 		chicken_slayer: `
 You enter a village and see a chicken roaming in a garden peacefully. 
 You slay the chicken mercilessly.
 The entire cohort of guards for the town come after you and you are forced to slay them too.
-After hours of fighting you gain +{{strength}} strength`,
+After hours of fighting you gain +{{strength}} strength!`,
+
 		// ?
 		/*
 		Vous vous présentez au capitaine de la garde. Votre mission : tuer 10 kobolds.

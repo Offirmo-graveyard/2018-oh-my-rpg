@@ -184,7 +184,7 @@ You collect +{{coin}} in coin, precious stones and other treasures found!`,
 You enter a village and see a chicken roaming in a garden peacefully. 
 You slay the chicken mercilessly.
 The entire cohort of guards for the town come after you and you are forced to slay them too.
-After hours of fighting you gain +{{strength}} strength`,
+After hours of fighting you gain +{{strength}} strength!`,
     }
 };
 const messages = {

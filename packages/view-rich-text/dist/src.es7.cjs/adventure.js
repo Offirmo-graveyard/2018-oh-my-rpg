@@ -8,6 +8,7 @@ const RichText = require("@oh-my-rpg/rich-text-format");
 const items_1 = require("./items");
 const wallet_1 = require("./wallet");
 const monster_1 = require("./monster");
+// TODO render attribute
 function render_adventure(a) {
     const gains = a.gains; // alias for typing
     // in this special function, we'll be:
@@ -105,11 +106,9 @@ function render_adventure(a) {
         console.info(`render_adventure(): handled outcome properties: "${Array.from(handled_adventure_outcomes_so_far.values())}"`);
         throw new Error(`render_adventure(): unhandled outcome properties!`);
     }
-    /////// Final //////
+    /////// Final wrap-up //////
     const _ = logic_adventures_1.i18n_messages.en;
     const story = _.adventures[a.hid];
-    // TODO weap improvement ?
-    // TODO charac gains?
     const $doc = RichText.section()
         .pushText(story)
         .pushLineBreak()

@@ -58,6 +58,7 @@ function create() {
     state = receive_item(state, start_armor);
     state = equip_item(state, 0);
     //state.prng = PRNGState.update_use_count(state.prng, rng)
+    state.meaningful_interaction_count = 0; // to compensate sub-functions use
     return state;
 }
 exports.create = create;
@@ -239,8 +240,9 @@ function play(state, explicit_adventure_archetype_hid) {
 }
 exports.play = play;
 function equip_item(state, coordinates) {
-    // TODO count it as a meaningful interaction if positive (or with a limit)
     state.inventory = InventoryState.equip_item(state.inventory, coordinates);
+    // TODO count it as a meaningful interaction only if positive (or with a limit)
+    state.meaningful_interaction_count++;
     return state;
 }
 exports.equip_item = equip_item;
@@ -248,19 +250,23 @@ function sell_item(state, coordinates) {
     const price = appraise_item_at_coordinates(state, coordinates);
     state.inventory = InventoryState.remove_item(state.inventory, coordinates);
     state.wallet = WalletState.add_amount(state.wallet, state_wallet_1.Currency.coin, price);
-    // TODO count it as a meaningful interaction if positive (or with a limit)
+    // TODO count it as a meaningful interaction only if positive (or with a limit)
+    state.meaningful_interaction_count++;
     return state;
 }
 exports.sell_item = sell_item;
 function rename_avatar(state, new_name) {
-    // TODO count it as a meaningful interaction once
     state.avatar = state_character_1.rename(sec_1.get_SEC(), state.avatar, new_name);
+    // TODO count it as a meaningful interaction once
+    state.meaningful_interaction_count++;
     return state;
 }
 exports.rename_avatar = rename_avatar;
 function change_avatar_class(state, klass) {
     // TODO make this have an effect (in v2 ?)
     state.avatar = state_character_1.switch_class(sec_1.get_SEC(), state.avatar, klass);
+    // TODO count it as a meaningful interaction only if positive (or with a limit)
+    state.meaningful_interaction_count++;
     return state;
 }
 exports.change_avatar_class = change_avatar_class;

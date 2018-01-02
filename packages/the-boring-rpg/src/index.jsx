@@ -1,7 +1,5 @@
 "use strict";
 
-console.log('Hello, world!')
-
 import React from 'react'
 import ReactDOM from 'react-dom'
 import 'normalize.css'

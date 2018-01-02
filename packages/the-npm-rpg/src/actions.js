@@ -46,8 +46,7 @@ function change_class({config}, new_class) {
 }
 
 function reset_all({config}) {
-	const state = tbrpg.create()
-	// TODO shuffle the seed
+	const state = tbrpg.reseed(tbrpg.create())
 	config.clear()
 	config.set(state)
 }

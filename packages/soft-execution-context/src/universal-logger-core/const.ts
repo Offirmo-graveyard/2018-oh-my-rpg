@@ -21,7 +21,7 @@ const LEVEL_TO_INTEGER: { [k: string]: number } = {
 
 	[LogLevel.trace]:   10,
 
-	[LogLevel.silly]:    5,
+	[LogLevel.silly]:    1,
 }
 
 // level to short, meaningful string to maybe be displayed on screen

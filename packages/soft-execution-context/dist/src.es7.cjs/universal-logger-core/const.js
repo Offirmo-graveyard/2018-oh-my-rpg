@@ -15,7 +15,7 @@ const LEVEL_TO_INTEGER = {
     [types_1.LogLevel.log]: 21,
     [types_1.LogLevel.debug]: 20,
     [types_1.LogLevel.trace]: 10,
-    [types_1.LogLevel.silly]: 5,
+    [types_1.LogLevel.silly]: 1,
 };
 exports.LEVEL_TO_INTEGER = LEVEL_TO_INTEGER;
 // level to short, meaningful string to maybe be displayed on screen

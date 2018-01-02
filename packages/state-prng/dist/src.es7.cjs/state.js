@@ -42,27 +42,40 @@ exports.update_use_count = update_use_count;
 // we use a global cache to not recreate the prng each time.
 // Still, we control that the usage conforms to those expectations.
 let cached_prng = 'foo';
-let updated = false;
+let cached_prng_was_updated_once = false;
 xxx_internal_reset_prng_cache();
-// XXX this method has expectations ! (see above)
+// WARNING this method has expectations ! (see above)
 function get_prng(state) {
-    let update_made = false;
+    /*console.log('get PRNG', {
+        expected_seed: state.seed,
+        expected_use_count: state.use_count,
+        seed: cached_prng._seed,
+        use_count: cached_prng.getUseCount(),
+    })*/
+    let cached_prng_updated = false;
     if (cached_prng._seed !== state.seed) {
         cached_prng.seed(state.seed);
-        update_made = true;
+        cached_prng._seed = state.seed; // maintain this extra property TODO improve the lib instead
+        cached_prng_updated = true;
     }
     if (cached_prng.getUseCount() !== state.use_count) {
         // should never happen
         if (cached_prng.getUseCount() !== 0)
-            throw new Error(`state-prng get_prng() unexpected case with current cached implementation: need to update a partially used prng!`);
+            throw new Error(`state-prng get_prng() unexpected case: cached implementation need to be fast forwarded!`);
         cached_prng.discard(state.use_count);
-        update_made = true;
+        cached_prng_updated = true;
     }
-    if (update_made) {
+    if (cached_prng_updated) {
         // should never happen if we correctly update the prng state after each use
-        if (updated)
+        if (cached_prng_was_updated_once)
             throw new Error(`state-prng unexpected case: need to update again the prng!`);
-        updated = true;
+        // we allow a unique update at start
+        // TODO filter default case?
+        /*console.log('updated PRNG from init situation', {
+            seed: cached_prng._seed,
+            use_count: cached_prng.getUseCount(),
+        })*/
+        cached_prng_was_updated_once = true;
     }
     return cached_prng;
 }
@@ -70,13 +83,13 @@ exports.get_prng = get_prng;
 // useful for re-seeding
 function generate_random_seed() {
     const rng = random_1.Random.engines.mt19937().autoSeed();
-    return random_1.Random.integer(-2147483646, 2147483647)(rng);
+    return random_1.Random.integer(-2147483646, 2147483647)(rng); // doc is unclear about allowed bounds...
 }
 exports.generate_random_seed = generate_random_seed;
 function xxx_internal_reset_prng_cache() {
     cached_prng = random_1.Random.engines.mt19937().seed(DEFAULT_SEED);
     cached_prng._seed = DEFAULT_SEED;
-    updated = false;
+    cached_prng_was_updated_once = false;
 }
 exports.xxx_internal_reset_prng_cache = xxx_internal_reset_prng_cache;
 /////////////////////

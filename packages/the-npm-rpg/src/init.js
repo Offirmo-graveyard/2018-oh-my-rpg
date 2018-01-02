@@ -6,6 +6,7 @@ const soft_execution_context = require('@offirmo/soft-execution-context/dist/src
 const { compatibleLoggerToConsole } = require('@offirmo/loggers-types-and-stubs')
 const { migrate_to_latest } = require('@oh-my-rpg/state-the-boring-rpg')
 const { createLogger } = require('@offirmo/soft-execution-context/dist/src.es7.cjs/universal-logger-node')
+const { DEFAULT_SEED } = require( '@oh-my-rpg/state-prng')
 
 //const { displayError } = require('@offirmo/soft-execution-context/dist/src.es7.cjs/display-ansi')
 
@@ -71,8 +72,19 @@ function init_savegame() {
 		logger.verbose(`config path: "${config.path}"`)
 		logger.trace('loaded state:', {state: config.store})
 
-		const state = migrate_to_latest(SEC, config.store)
-		logger.trace('migrated state:', {state})
+		let state = migrate_to_latest(SEC, config.store)
+
+		const is_new_state = state.prng.use_count === 0 && state.prng.seed === DEFAULT_SEED
+		if (is_new_state) {
+			state = reseed(state)
+			logger.verbose('Clean savegame created from scratch + reseeded:', {state})
+		}
+		else {
+			logger.trace('migrated state:', {state})
+		}
+
+		if (state.prng.seed === DEFAULT_SEED)
+			throw new Error('Reseeding expected!')
 
 		config.clear()
 		config.set(state)

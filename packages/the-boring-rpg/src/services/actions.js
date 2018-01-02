@@ -8,6 +8,8 @@ function persist(state) {
 	localStorage.setItem(LS_KEYS.savegame, JSON.stringify(state))
 }
 
+// TODO add error handling mechanism for play bugs, with player feedback
+
 function play(workspace) {
 	let { state } = workspace
 	state = tbrpg.play(state)
@@ -54,8 +56,7 @@ function change_class(workspace, new_class) {
 }
 
 function reset_all(workspace) {
-	const state = tbrpg.create()
-	// TODO shuffle the seed
+	const state = tbrpg.reseed(tbrpg.create())
 	workspace.state = state
 	persist(state)
 }

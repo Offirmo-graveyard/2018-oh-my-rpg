@@ -10,6 +10,7 @@ import * as RichText from '@oh-my-rpg/rich-text-format'
 import { render_item } from './items'
 import { render_currency_amount } from './wallet'
 import { render_monster } from './monster'
+// TODO render attribute
 
 
 function render_adventure(a: Adventure): RichText.Document {
@@ -135,12 +136,9 @@ function render_adventure(a: Adventure): RichText.Document {
 		throw new Error(`render_adventure(): unhandled outcome properties!`)
 	}
 
-	/////// Final //////
+	/////// Final wrap-up //////
 	const _ = I18N_ADVENTURES.en as any
 	const story = _.adventures[a.hid]
-
-	// TODO weap improvement ?
-	// TODO charac gains?
 
 	const $doc = RichText.section()
 		.pushText(story)
@@ -157,7 +155,6 @@ function render_adventure(a: Adventure): RichText.Document {
 
 	return $doc
 }
-
 
 
 export {

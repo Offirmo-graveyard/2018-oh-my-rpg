@@ -36,6 +36,8 @@ function createLogger({ name, level = types_1.LogLevel.info, details = {}, outpu
         child,
     });
     function setLevel(level) {
+        if (!Object.keys(const_1.LEVEL_TO_INTEGER).includes(level))
+            throw new Error(`Logger core: unknown level "${level}"!`);
         internal_state.level_enum = level;
         internal_state.level_int = const_1.LEVEL_TO_INTEGER[level];
     }

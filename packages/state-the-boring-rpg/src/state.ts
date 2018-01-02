@@ -129,6 +129,8 @@ function create(): State {
 
 	//state.prng = PRNGState.update_use_count(state.prng, rng)
 
+	state.meaningful_interaction_count = 0 // to compensate sub-functions use
+
 	return state
 }
 
@@ -345,8 +347,11 @@ function play(state: State, explicit_adventure_archetype_hid?: string): State {
 }
 
 function equip_item(state: State, coordinates: InventoryCoordinates): State {
-	// TODO count it as a meaningful interaction if positive (or with a limit)
 	state.inventory = InventoryState.equip_item(state.inventory, coordinates)
+
+	// TODO count it as a meaningful interaction only if positive (or with a limit)
+	state.meaningful_interaction_count++;
+
 	return state
 }
 
@@ -356,19 +361,28 @@ function sell_item(state: State, coordinates: InventoryCoordinates): State {
 	state.inventory = InventoryState.remove_item(state.inventory, coordinates)
 	state.wallet = WalletState.add_amount(state.wallet, Currency.coin, price)
 
-	// TODO count it as a meaningful interaction if positive (or with a limit)
+	// TODO count it as a meaningful interaction only if positive (or with a limit)
+	state.meaningful_interaction_count++;
+
 	return state
 }
 
 function rename_avatar(state: State, new_name: string): State {
-	// TODO count it as a meaningful interaction once
 	state.avatar = rename(get_SEC(), state.avatar, new_name)
+
+	// TODO count it as a meaningful interaction once
+	state.meaningful_interaction_count++;
+
 	return state
 }
 
 function change_avatar_class(state: State, klass: CharacterClass): State {
 	// TODO make this have an effect (in v2 ?)
 	state.avatar = switch_class(get_SEC(), state.avatar, klass)
+
+	// TODO count it as a meaningful interaction only if positive (or with a limit)
+	state.meaningful_interaction_count++;
+
 	return state
 }
 
