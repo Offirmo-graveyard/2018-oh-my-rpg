@@ -21,6 +21,7 @@ https://github.com/iarna/gauge
 https://github.com/SamVerschueren/listr
 https://github.com/sindresorhus/ora
 https://github.com/sindresorhus/term-img
+https://github.com/cronvel/terminal-kit
 
 
 Inspiration

@@ -16,11 +16,10 @@ function apply_type($type, str) {
 		case 'section':
 			// nothing to do for those one
 			return str
-		// Note: \n will be merged
-		case 'p':
 		case 'ol':
 		case 'ul':
-			return '\n' + str + '\n'
+			//return '\n' + str
+			return str
 		case 'strong':
 			return stylize_string.bold(str)
 		case 'heading':
@@ -129,11 +128,8 @@ function on_concatenate_sub_node({state, sub_state, $id, $parent_node}) {
 }
 
 function clean(state) {
-	// merge adjacent \n
+	// TODO remove trailing and early \n ?
 	return state
-		.split('\n')
-		.filter(s => !!s)
-		.join('\n')
 }
 
 const callbacks = {

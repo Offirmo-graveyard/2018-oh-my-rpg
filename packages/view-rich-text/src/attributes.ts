@@ -52,7 +52,7 @@ function render_attributes(state: CharacterState): RichText.Document {
 function render_character_sheet(state: CharacterState): RichText.Document {
 	const $doc = RichText.section()
 		.pushNode(render_avatar(state), 'avatar')
-		//.pushText('{{br}}')
+		.pushLineBreak()
 		.pushNode(render_attributes(state), 'attributes')
 		.done()
 

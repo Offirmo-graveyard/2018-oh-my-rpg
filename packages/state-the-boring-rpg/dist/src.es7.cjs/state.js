@@ -267,7 +267,7 @@ exports.change_avatar_class = change_avatar_class;
 /////////////////////
 // needed to test migrations, both here and in composing parents
 // a full featured, non-trivial demo state
-// needed for demos
+// with dev gain
 const DEMO_ADVENTURE_01 = deepFreeze({
     hid: 'fight_lost_any',
     uuid: 'uu1de1~EVAdXlW5_p23Ro4OH',
@@ -291,6 +291,7 @@ const DEMO_ADVENTURE_01 = deepFreeze({
     },
 });
 exports.DEMO_ADVENTURE_01 = DEMO_ADVENTURE_01;
+// with coin gain
 const DEMO_ADVENTURE_02 = deepFreeze({
     hid: 'dying_man',
     uuid: 'uu1de2~p23Ro4OH_EVAdXlW5',
@@ -313,6 +314,52 @@ const DEMO_ADVENTURE_02 = deepFreeze({
     }
 });
 exports.DEMO_ADVENTURE_02 = DEMO_ADVENTURE_02;
+// with loot gain
+const DEMO_ADVENTURE_03 = deepFreeze({
+    hid: 'rare_goods_seller',
+    uuid: 'uu1de2~p23Ro4OH_EVAdXlW5',
+    good: true,
+    gains: {
+        level: 0,
+        health: 0,
+        mana: 0,
+        strength: 0,
+        agility: 0,
+        charisma: 0,
+        wisdom: 0,
+        luck: 0,
+        coin: 0,
+        token: 0,
+        weapon: logic_weapons_1.DEMO_WEAPON_1,
+        armor: null,
+        weapon_improvement: false,
+        armor_improvement: false,
+    }
+});
+exports.DEMO_ADVENTURE_03 = DEMO_ADVENTURE_03;
+// with weapon enhancement gain
+const DEMO_ADVENTURE_04 = deepFreeze({
+    hid: 'princess',
+    uuid: 'uu1de2~p23Ro4OH_EVAdXlW5',
+    good: true,
+    gains: {
+        level: 0,
+        health: 0,
+        mana: 0,
+        strength: 0,
+        agility: 0,
+        charisma: 0,
+        wisdom: 0,
+        luck: 0,
+        coin: 123,
+        token: 0,
+        weapon: null,
+        armor: null,
+        weapon_improvement: false,
+        armor_improvement: true,
+    }
+});
+exports.DEMO_ADVENTURE_04 = DEMO_ADVENTURE_04;
 const DEMO_STATE = deepFreeze({
     schema_version: 4,
     revision: 203,
@@ -330,51 +377,150 @@ exports.DEMO_STATE = DEMO_STATE;
 // the oldest format we can migrate from
 // must correspond to state above
 const OLDEST_LEGACY_STATE_FOR_TESTS = deepFreeze({
-    // no schema_version = 0
-    meta: MetaState.OLDEST_LEGACY_STATE_FOR_TESTS,
-    avatar: CharacterState.OLDEST_LEGACY_STATE_FOR_TESTS,
-    inventory: InventoryState.OLDEST_LEGACY_STATE_FOR_TESTS,
-    wallet: WalletState.OLDEST_LEGACY_STATE_FOR_TESTS,
-    prng: PRNGState.OLDEST_LEGACY_STATE_FOR_TESTS,
-    last_adventure: {
-        hid: 'fight_lost_any',
-        good: true,
-        encounter: {
-            name: 'chicken',
-            level: 7,
-            rank: 'elite',
-            possible_emoji: '🐓',
-        },
-        gains: {
-            level: 0,
-            health: 0,
-            mana: 0,
-            strength: 0,
-            agility: 0,
-            charisma: 0,
-            wisdom: 0,
-            luck: 1,
-            coins: 0,
-            tokens: 0,
-            armor: null,
-            weapon: null,
-            armor_improvement: false,
-            weapon_improvement: false,
-        },
+    "schema_version": 4,
+    "revision": 203,
+    "meta": {
+        "schema_version": 1,
+        "revision": 5,
+        "uuid": "uu1dgqu3h0FydqWyQ~6cYv3g",
+        "name": "Offirmo",
+        "email": "offirmo.net@gmail.com",
+        "allow_telemetry": false
     },
-    click_count: 86,
-    good_click_count: 86,
-    meaningful_interaction_count: 86,
+    "avatar": {
+        "schema_version": 2,
+        "revision": 42,
+        "name": "Perte",
+        "klass": "paladin",
+        "attributes": {
+            "level": 13,
+            "health": 12,
+            "mana": 23,
+            "strength": 4,
+            "agility": 5,
+            "charisma": 6,
+            "wisdom": 7,
+            "luck": 8
+        }
+    },
+    "inventory": {
+        "schema_version": 1,
+        "revision": 42,
+        "unslotted_capacity": 20,
+        "slotted": {
+            "armor": {
+                "uuid": "uu1~test~demo~armor~0002",
+                "element_type": "item",
+                "slot": "armor",
+                "base_hid": "belt",
+                "qualifier1_hid": "brass",
+                "qualifier2_hid": "apprentice",
+                "quality": "legendary",
+                "base_strength": 19,
+                "enhancement_level": 8
+            },
+            "weapon": {
+                "uuid": "uu1~test~demo~weapon~001",
+                "element_type": "item",
+                "slot": "weapon",
+                "base_hid": "axe",
+                "qualifier1_hid": "admirable",
+                "qualifier2_hid": "adjudicator",
+                "quality": "uncommon",
+                "base_strength": 2,
+                "enhancement_level": 0
+            }
+        },
+        "unslotted": [
+            {
+                "uuid": "uu1~test~demo~weapon~002",
+                "element_type": "item",
+                "slot": "weapon",
+                "base_hid": "bow",
+                "qualifier1_hid": "arcanic",
+                "qualifier2_hid": "ambassador",
+                "quality": "legendary",
+                "base_strength": 19,
+                "enhancement_level": 8
+            },
+            {
+                "uuid": "uu1~test~demo~armor~0001",
+                "element_type": "item",
+                "slot": "armor",
+                "base_hid": "armguards",
+                "qualifier1_hid": "bone",
+                "qualifier2_hid": "ancients",
+                "quality": "uncommon",
+                "base_strength": 2,
+                "enhancement_level": 0
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ]
+    },
+    "wallet": {
+        "schema_version": 1,
+        "revision": 42,
+        "coin_count": 23456,
+        "token_count": 89
+    },
+    "prng": {
+        "schema_version": 1,
+        "revision": 108,
+        "seed": 1234,
+        "use_count": 107
+    },
+    "last_adventure": {
+        "hid": "fight_lost_any",
+        "uuid": "uu1de1~EVAdXlW5_p23Ro4OH",
+        "good": true,
+        "encounter": {
+            "name": "chicken",
+            "level": 7,
+            "rank": "elite",
+            "possible_emoji": "🐓"
+        },
+        "gains": {
+            "level": 0,
+            "health": 0,
+            "mana": 0,
+            "strength": 0,
+            "agility": 0,
+            "charisma": 0,
+            "wisdom": 0,
+            "luck": 1,
+            "coin": 0,
+            "token": 0,
+            "armor": null,
+            "weapon": null,
+            "armor_improvement": false,
+            "weapon_improvement": false
+        }
+    },
+    "click_count": 86,
+    "good_click_count": 86,
+    "meaningful_interaction_count": 86
 });
 exports.OLDEST_LEGACY_STATE_FOR_TESTS = OLDEST_LEGACY_STATE_FOR_TESTS;
 // some hints may be needed to migrate to demo state
 const MIGRATION_HINTS_FOR_TESTS = deepFreeze({
-    to_v3: {
-        last_adventure_uuid: 'uu1de1~EVAdXlW5_p23Ro4OH'
-    },
-    to_v2: {
-        revision: 203
-    },
+    to_v5: {},
     meta: MetaState.MIGRATION_HINTS_FOR_TESTS,
     avatar: CharacterState.MIGRATION_HINTS_FOR_TESTS,
     inventory: InventoryState.MIGRATION_HINTS_FOR_TESTS,

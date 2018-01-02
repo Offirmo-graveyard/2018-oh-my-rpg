@@ -45,6 +45,7 @@ import {
 	create as create_weapon,
 	enhance as enhance_weapon,
 	MAX_ENHANCEMENT_LEVEL as MAX_WEAPON_ENHANCEMENT_LEVEL,
+	DEMO_WEAPON_1,
 } from '@oh-my-rpg/logic-weapons'
 
 import {
@@ -376,7 +377,7 @@ function change_avatar_class(state: State, klass: CharacterClass): State {
 // needed to test migrations, both here and in composing parents
 
 // a full featured, non-trivial demo state
-// needed for demos
+// with dev gain
 const DEMO_ADVENTURE_01: Adventure = deepFreeze({
 	hid: 'fight_lost_any',
 	uuid: 'uu1de1~EVAdXlW5_p23Ro4OH',
@@ -399,6 +400,7 @@ const DEMO_ADVENTURE_01: Adventure = deepFreeze({
 		weapon_improvement: false,
 	},
 })
+// with coin gain
 const DEMO_ADVENTURE_02: Adventure = deepFreeze({
 	hid: 'dying_man',
 	uuid: 'uu1de2~p23Ro4OH_EVAdXlW5',
@@ -418,6 +420,50 @@ const DEMO_ADVENTURE_02: Adventure = deepFreeze({
 		armor: null,
 		weapon_improvement: false,
 		armor_improvement: false,
+	}
+})
+// with loot gain
+const DEMO_ADVENTURE_03: Adventure = deepFreeze({
+	hid: 'rare_goods_seller',
+	uuid: 'uu1de2~p23Ro4OH_EVAdXlW5',
+	good: true,
+	gains: {
+		level: 0,
+		health: 0,
+		mana: 0,
+		strength: 0,
+		agility: 0,
+		charisma: 0,
+		wisdom: 0,
+		luck: 0,
+		coin: 0,
+		token: 0,
+		weapon: DEMO_WEAPON_1,
+		armor: null,
+		weapon_improvement: false,
+		armor_improvement: false,
+	}
+})
+// with weapon enhancement gain
+const DEMO_ADVENTURE_04: Adventure = deepFreeze({
+	hid: 'princess',
+	uuid: 'uu1de2~p23Ro4OH_EVAdXlW5',
+	good: true,
+	gains: {
+		level: 0,
+		health: 0,
+		mana: 0,
+		strength: 0,
+		agility: 0,
+		charisma: 0,
+		wisdom: 0,
+		luck: 0,
+		coin: 123,
+		token: 0,
+		weapon: null,
+		armor: null,
+		weapon_improvement: false,
+		armor_improvement: true,
 	}
 })
 const DEMO_STATE: State = deepFreeze({
@@ -613,6 +659,8 @@ export {
 
 	DEMO_ADVENTURE_01,
 	DEMO_ADVENTURE_02,
+	DEMO_ADVENTURE_03,
+	DEMO_ADVENTURE_04,
 	DEMO_STATE,
 	OLDEST_LEGACY_STATE_FOR_TESTS,
 	MIGRATION_HINTS_FOR_TESTS,

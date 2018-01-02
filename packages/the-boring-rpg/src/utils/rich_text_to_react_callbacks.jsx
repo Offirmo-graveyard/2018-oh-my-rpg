@@ -30,7 +30,6 @@ function on_node_exit({$node, $id, state, depth}) {
 
 	switch ($type) {
 		case 'span': element = <span className={classes}>{children}</span>; break
-		case 'p': element = <p className={classes}>{children}</p>; break
 
 		case 'br': element = <br className={classes}/>; break
 		case 'hr': element = <hr className={classes}/>; break

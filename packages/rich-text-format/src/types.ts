@@ -4,7 +4,6 @@ import { Enum } from 'typescript-string-enums'
 
 const NodeType = Enum(
 	'span',
-	'p',
 	'br',
 	'hr',
 	'ol',
@@ -23,6 +22,7 @@ interface CheckedNode {
 	$type: NodeType
 	$classes: string[]
 	$content: string
+	// sub-nodes referenced in she content
 	$sub: {
 		[id: string]: Partial<CheckedNode>
 	}

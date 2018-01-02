@@ -75,10 +75,6 @@ function heading() {
     return create(types_1.NodeType.heading);
 }
 exports.heading = heading;
-function paragraph() {
-    return create(types_1.NodeType.p);
-}
-exports.paragraph = paragraph;
 function strong() {
     return create(types_1.NodeType.strong);
 }

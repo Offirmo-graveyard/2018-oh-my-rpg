@@ -1,7 +1,6 @@
 import { Enum } from 'typescript-string-enums';
 declare const NodeType: {
     span: "span";
-    p: "p";
     br: "br";
     hr: "hr";
     ol: "ol";

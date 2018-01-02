@@ -108,10 +108,6 @@ function heading(): Builder {
 	return create(NodeType.heading)
 }
 
-function paragraph(): Builder {
-	return create(NodeType.p)
-}
-
 function strong(): Builder {
 	return create(NodeType.strong)
 }
@@ -141,7 +137,6 @@ export {
 
 	section,
 	heading,
-	paragraph,
 	span,
 	ordered_list,
 	unordered_list,

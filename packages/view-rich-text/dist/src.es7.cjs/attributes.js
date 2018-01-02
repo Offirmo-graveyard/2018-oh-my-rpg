@@ -39,6 +39,7 @@ exports.render_attributes = render_attributes;
 function render_character_sheet(state) {
     const $doc = RichText.section()
         .pushNode(render_avatar(state), 'avatar')
+        .pushLineBreak()
         .pushNode(render_attributes(state), 'attributes')
         .done();
     return $doc;

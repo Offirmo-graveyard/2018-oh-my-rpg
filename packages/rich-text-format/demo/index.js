@@ -61,7 +61,7 @@ const NPC_01 = {
 
 const MSG_01 = {
 	$v: 1,
-	$type: 'p',
+	$type: 'section',
 	$content: 'You are in {{place}}. You meet {{npc}}.{{br}}He gives you a {{item}}.{{hr}}',
 	$sub: {
 		place: PLACE_01,
@@ -109,7 +109,7 @@ if (false) {
 ////////////////////////////////////
 if (true) {
 	console.log('\n------- 2 -------')
-	const doc = RichText.paragraph()
+	const doc = RichText.section()
 		.pushText(''
 			+ 'Great sages prophetized your coming,{{br}}'
 			+ 'commoners are waiting for their hero{{br}}'
@@ -117,6 +117,8 @@ if (true) {
 			+ '…undoubtly, you’ll make a name in this world and fulfill your destiny!{{br}}'
 		)
 		.pushStrong('A great saga just started.')
+		.pushText('{{br}}{{br}}loot:')
+		.pushNode(MSG_02, 'loot')
 		.done()
 
 	//console.log('\n------- to text -------\n' + RichText.to_text(doc))
