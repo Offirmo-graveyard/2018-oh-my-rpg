@@ -1,5 +1,5 @@
 import * as RichText from '@oh-my-rpg/rich-text-format'
-import { State as CharacterState, CharacterAttribute, CHARACTER_STATS_SORTED } from '@oh-my-rpg/state-character'
+import { State as CharacterState, CharacterAttribute, CHARACTER_ATTRIBUTES_SORTED } from '@oh-my-rpg/state-character'
 
 
 function render_avatar(state: CharacterState): RichText.Document {
@@ -26,7 +26,7 @@ function render_attributes(state: CharacterState): RichText.Document {
 		.done()
 
 	// TODO better sort
-	CHARACTER_STATS_SORTED.forEach((stat: CharacterAttribute, index: number) => {
+	CHARACTER_ATTRIBUTES_SORTED.forEach((stat: CharacterAttribute, index: number) => {
 		const label = stat
 		const value = state.attributes[stat]
 

@@ -16,8 +16,10 @@ function render_adventure(a) {
     const $story_sub_elements = {};
     // encounter
     // item
-    // attr, attr_name
-    //
+    // attr, attr_name,
+    // level, health, mana, strength, agility, charisma, wisdom, luck
+    // coin
+    // improved_item
     // 2. also generate some "summaries" for some gains
     let $listing_of_loot = RichText.span().done();
     let $listing_of_character_improvement = RichText.span().done();
@@ -55,7 +57,7 @@ function render_adventure(a) {
     })();
     (function render_character_improvement() {
         const $improvement_list = RichText.unordered_list().done();
-        state_character_1.CHARACTER_STATS.forEach((attr) => {
+        state_character_1.CHARACTER_ATTRIBUTES.forEach((attr) => {
             //console.info('handling adventure outcome [c1]: ' + attr)
             if (!gains[attr])
                 return;
@@ -78,25 +80,13 @@ function render_adventure(a) {
                 .done();
     })();
     (function render_item_improvement() {
-        let has_improvement = false;
+        const has_improvement = gains.armor_improvement || gains.weapon_improvement;
         const $improvement_list = RichText.unordered_list().done();
+        // TODO
         if (gains.armor_improvement)
             handled_adventure_outcomes_so_far.add('armor_improvement');
         if (gains.weapon_improvement)
             handled_adventure_outcomes_so_far.add('weapon_improvement');
-        state_character_1.CHARACTER_STATS.forEach((attr) => {
-            //console.info('handling adventure outcome [c1]: ' + attr)
-            if (!gains[attr])
-                return;
-            $story_sub_elements.attr_name = RichText.span().pushText(attr).done();
-            const $doc_attr_gain_value = RichText.span().pushText('' + gains[attr]).done();
-            $story_sub_elements.attr = $doc_attr_gain_value; // generic
-            $story_sub_elements[attr] = $doc_attr_gain_value; // precise
-            $improvement_list.$sub[attr] = attr === 'level'
-                ? RichText.span().pushText('🆙 You leveled up!').done()
-                : RichText.span().pushText(`You improved your ${attr} by ${gains[attr]}!`).done(); // TODO improve
-            handled_adventure_outcomes_so_far.add(attr);
-        });
         if (has_improvement)
             $listing_of_item_improvement = RichText.section()
                 .pushLineBreak()
@@ -111,7 +101,7 @@ function render_adventure(a) {
     const active_adventure_outcomes = Object.keys(gains).filter(prop => !!gains[prop]);
     const unhandled_adventure_outcomes = active_adventure_outcomes.filter(prop => !handled_adventure_outcomes_so_far.has(prop));
     if (unhandled_adventure_outcomes.length) {
-        console.error(`render_adventure(): UNhandled outcome properties: "${unhandled_adventure_outcomes}"!`);
+        console.error(`render_adventure(): *UN*handled outcome properties: "${unhandled_adventure_outcomes}"!`);
         console.info(`render_adventure(): handled outcome properties: "${Array.from(handled_adventure_outcomes_so_far.values())}"`);
         throw new Error(`render_adventure(): unhandled outcome properties!`);
     }

@@ -1,6 +1,6 @@
 import { difference } from 'lodash'
 import { InventorySlot, ITEM_SLOTS } from '@oh-my-rpg/definitions'
-import { CHARACTER_STATS, CharacterAttribute } from '@oh-my-rpg/state-character'
+import { CHARACTER_ATTRIBUTES, CharacterAttribute } from '@oh-my-rpg/state-character'
 import { i18n_messages as I18N_ADVENTURES } from '@oh-my-rpg/logic-adventures'
 import { Adventure, GainType } from '@oh-my-rpg/state-the-boring-rpg'
 import { ALL_CURRENCIES, Currency, get_currency_amount } from '@oh-my-rpg/state-wallet'
@@ -21,8 +21,10 @@ function render_adventure(a: Adventure): RichText.Document {
 	const $story_sub_elements: { [k: string]: RichText.Document } = {}
 	// encounter
 	// item
-	// attr, attr_name
-	//
+	// attr, attr_name,
+	// level, health, mana, strength, agility, charisma, wisdom, luck
+	// coin
+	// improved_item
 	// 2. also generate some "summaries" for some gains
 	let $listing_of_loot = RichText.span().done()
 	let $listing_of_character_improvement = RichText.span().done()
@@ -72,7 +74,7 @@ function render_adventure(a: Adventure): RichText.Document {
 	;(function render_character_improvement(): void {
 		const $improvement_list = RichText.unordered_list().done()
 
-		CHARACTER_STATS.forEach((attr: CharacterAttribute) => {
+		CHARACTER_ATTRIBUTES.forEach((attr: CharacterAttribute) => {
 			//console.info('handling adventure outcome [c1]: ' + attr)
 			if (!gains[attr]) return
 
@@ -103,32 +105,14 @@ function render_adventure(a: Adventure): RichText.Document {
 
 	/////// Item enhancement ///////
 	;(function render_item_improvement(): void {
-		let has_improvement = false
+		const has_improvement = gains.armor_improvement || gains.weapon_improvement
 		const $improvement_list = RichText.unordered_list().done()
 
+		// TODO
 		if (gains.armor_improvement)
 			handled_adventure_outcomes_so_far.add('armor_improvement')
 		if (gains.weapon_improvement)
 			handled_adventure_outcomes_so_far.add('weapon_improvement')
-
-
-		CHARACTER_STATS.forEach((attr: CharacterAttribute) => {
-			//console.info('handling adventure outcome [c1]: ' + attr)
-			if (!gains[attr]) return
-
-			$story_sub_elements.attr_name = RichText.span().pushText(attr).done()
-
-			const $doc_attr_gain_value = RichText.span().pushText('' + gains[attr]).done()
-			$story_sub_elements.attr = $doc_attr_gain_value // generic
-			$story_sub_elements[attr] = $doc_attr_gain_value // precise
-
-
-			$improvement_list.$sub[attr] = attr === 'level'
-				? RichText.span().pushText('🆙 You leveled up!').done()
-				: RichText.span().pushText(`You improved your ${attr} by ${gains[attr]}!`).done() // TODO improve
-
-			handled_adventure_outcomes_so_far.add(attr)
-		})
 
 		if (has_improvement)
 			$listing_of_item_improvement = RichText.section()
@@ -146,7 +130,7 @@ function render_adventure(a: Adventure): RichText.Document {
 	const active_adventure_outcomes = Object.keys(gains).filter(prop => !!gains[prop])
 	const unhandled_adventure_outcomes = active_adventure_outcomes.filter(prop => !handled_adventure_outcomes_so_far.has(prop))
 	if (unhandled_adventure_outcomes.length) {
-		console.error(`render_adventure(): UNhandled outcome properties: "${unhandled_adventure_outcomes}"!`)
+		console.error(`render_adventure(): *UN*handled outcome properties: "${unhandled_adventure_outcomes}"!`)
 		console.info(`render_adventure(): handled outcome properties: "${Array.from(handled_adventure_outcomes_so_far.values())}"`)
 		throw new Error(`render_adventure(): unhandled outcome properties!`)
 	}

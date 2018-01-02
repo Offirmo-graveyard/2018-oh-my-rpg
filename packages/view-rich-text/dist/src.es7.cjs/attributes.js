@@ -18,7 +18,7 @@ function render_attributes(state) {
         .addClass('attributes')
         .done();
     // TODO better sort
-    state_character_1.CHARACTER_STATS_SORTED.forEach((stat, index) => {
+    state_character_1.CHARACTER_ATTRIBUTES_SORTED.forEach((stat, index) => {
         const label = stat;
         const value = state.attributes[stat];
         const padded_label = `${label}............`.slice(0, 11);

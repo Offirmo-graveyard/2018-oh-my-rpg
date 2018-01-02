@@ -16,8 +16,8 @@ import { SoftExecutionContext, SECContext, get_SEC } from './sec'
 
 /////////////////////
 
-const CHARACTER_STATS = Enum.keys(CharacterAttribute)
-const CHARACTER_STATS_SORTED: CharacterAttribute[] = [
+const CHARACTER_ATTRIBUTES = Enum.keys(CharacterAttribute)
+const CHARACTER_ATTRIBUTES_SORTED: CharacterAttribute[] = [
 	'level',
 	'health',
 	'mana',
@@ -30,8 +30,8 @@ const CHARACTER_STATS_SORTED: CharacterAttribute[] = [
 ]
 
 get_SEC().xTry('boot checks', () => {
-	if (CHARACTER_STATS.length !== CHARACTER_STATS_SORTED.length)
-		throw new Error(`CHARACTER_STATS to update!`)
+	if (CHARACTER_ATTRIBUTES.length !== CHARACTER_ATTRIBUTES_SORTED.length)
+		throw new Error(`CHARACTER_ATTRIBUTES to update!`)
 })
 
 const CHARACTER_CLASSES = Enum.keys(CharacterClass)
@@ -172,8 +172,8 @@ export {
 	CharacterAttributes,
 	State,
 
-	CHARACTER_STATS,
-	CHARACTER_STATS_SORTED,
+	CHARACTER_ATTRIBUTES,
+	CHARACTER_ATTRIBUTES_SORTED,
 	CHARACTER_CLASSES,
 
 

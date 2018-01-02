@@ -31,7 +31,7 @@ describe('📃  adventure rendering', function() {
 		const str = strip_ansi(rich_text_to_ansi($doc))
 		console.log(str)
 		expect(str).to.be.a('string')
-		expect(str).to.include('You were attacked and nearly defeated')
+		expect(str).to.include('You were attacked and nearly killed')
 		expect(str).to.include('L7 elite★ chicken 🐓')
 		expect(str).to.include('+1 luck!')
 		expect(str).to.include('\nCharacter improvement:')

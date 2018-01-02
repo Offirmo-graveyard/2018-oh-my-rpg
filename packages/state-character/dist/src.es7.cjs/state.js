@@ -9,9 +9,9 @@ exports.CharacterAttribute = types_1.CharacterAttribute;
 exports.CharacterClass = types_1.CharacterClass;
 const sec_1 = require("./sec");
 /////////////////////
-const CHARACTER_STATS = typescript_string_enums_1.Enum.keys(types_1.CharacterAttribute);
-exports.CHARACTER_STATS = CHARACTER_STATS;
-const CHARACTER_STATS_SORTED = [
+const CHARACTER_ATTRIBUTES = typescript_string_enums_1.Enum.keys(types_1.CharacterAttribute);
+exports.CHARACTER_ATTRIBUTES = CHARACTER_ATTRIBUTES;
+const CHARACTER_ATTRIBUTES_SORTED = [
     'level',
     'health',
     'mana',
@@ -21,10 +21,10 @@ const CHARACTER_STATS_SORTED = [
     'wisdom',
     'luck',
 ];
-exports.CHARACTER_STATS_SORTED = CHARACTER_STATS_SORTED;
+exports.CHARACTER_ATTRIBUTES_SORTED = CHARACTER_ATTRIBUTES_SORTED;
 sec_1.get_SEC().xTry('boot checks', () => {
-    if (CHARACTER_STATS.length !== CHARACTER_STATS_SORTED.length)
-        throw new Error(`CHARACTER_STATS to update!`);
+    if (CHARACTER_ATTRIBUTES.length !== CHARACTER_ATTRIBUTES_SORTED.length)
+        throw new Error(`CHARACTER_ATTRIBUTES to update!`);
 });
 const CHARACTER_CLASSES = typescript_string_enums_1.Enum.keys(types_1.CharacterClass);
 exports.CHARACTER_CLASSES = CHARACTER_CLASSES;
