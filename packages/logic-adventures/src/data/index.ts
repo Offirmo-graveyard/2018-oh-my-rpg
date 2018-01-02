@@ -62,8 +62,8 @@ const ENTRIES: RawAdventureArchetypeEntry[] = [
 	{ good: true, type: story, hid: 'bad_village',            outcome: { mana: true }},
 	{ good: true, type: story, hid: 'mana_mana',              outcome: { mana: true }},
 
-	// meteorite
-
+	{ good: true, type: story, hid: 'treasure_in_pots',       outcome: { coin: 'small' }},
+	{ good: true, type: story, hid: 'chicken_slayer',         outcome: { strength: true }},
 ]
 
 

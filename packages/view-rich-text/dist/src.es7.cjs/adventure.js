@@ -14,9 +14,14 @@ function render_adventure(a) {
     // 1. generically filling a RichText.Document with any possible sub-elements,
     //    since we don't know whether the adventure messages use them or not.
     const $story_sub_elements = {};
+    // encounter
+    // item
+    // attr, attr_name
+    //
     // 2. also generate some "summaries" for some gains
     let $listing_of_loot = RichText.span().done();
     let $listing_of_character_improvement = RichText.span().done();
+    let $listing_of_item_improvement = RichText.span().done();
     // make sure that we handled every possible outcomes
     const handled_adventure_outcomes_so_far = new Set();
     (function render_loot() {
@@ -72,11 +77,33 @@ function render_adventure(a) {
                 .pushNode($improvement_list, 'list')
                 .done();
     })();
-    /////// Item enhancement ///////
-    if (gains.armor_improvement)
-        handled_adventure_outcomes_so_far.add('armor_improvement');
-    if (gains.weapon_improvement)
-        handled_adventure_outcomes_so_far.add('weapon_improvement');
+    (function render_item_improvement() {
+        let has_improvement = false;
+        const $improvement_list = RichText.unordered_list().done();
+        if (gains.armor_improvement)
+            handled_adventure_outcomes_so_far.add('armor_improvement');
+        if (gains.weapon_improvement)
+            handled_adventure_outcomes_so_far.add('weapon_improvement');
+        state_character_1.CHARACTER_STATS.forEach((attr) => {
+            //console.info('handling adventure outcome [c1]: ' + attr)
+            if (!gains[attr])
+                return;
+            $story_sub_elements.attr_name = RichText.span().pushText(attr).done();
+            const $doc_attr_gain_value = RichText.span().pushText('' + gains[attr]).done();
+            $story_sub_elements.attr = $doc_attr_gain_value; // generic
+            $story_sub_elements[attr] = $doc_attr_gain_value; // precise
+            $improvement_list.$sub[attr] = attr === 'level'
+                ? RichText.span().pushText('🆙 You leveled up!').done()
+                : RichText.span().pushText(`You improved your ${attr} by ${gains[attr]}!`).done(); // TODO improve
+            handled_adventure_outcomes_so_far.add(attr);
+        });
+        if (has_improvement)
+            $listing_of_item_improvement = RichText.section()
+                .pushLineBreak()
+                .pushText('Item improvement:')
+                .pushNode($improvement_list, 'list')
+                .done();
+    })();
     /////// Encounter ///////
     if (a.encounter)
         $story_sub_elements.encounter = monster_1.render_monster(a.encounter);
@@ -97,6 +124,7 @@ function render_adventure(a) {
         .pushText(story)
         .pushLineBreak()
         .pushNode($listing_of_loot, 'loot')
+        .pushNode($listing_of_item_improvement, 'item_improv')
         .pushNode($listing_of_character_improvement, 'char_improv')
         .done();
     $doc.$sub = Object.assign({}, $doc.$sub, $story_sub_elements);
