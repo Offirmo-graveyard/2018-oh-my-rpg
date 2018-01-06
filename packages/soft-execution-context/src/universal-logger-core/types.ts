@@ -1,28 +1,32 @@
 import { Enum } from 'typescript-string-enums'
 
+///////
+
 const LogLevel = Enum(
+	'fatal',
+	'emerg',
 	'alert',
 	'crit',
-	'debug',
-	'emerg',
 	'error',
-	'fatal',
-	'info',
-	'log',
-	'notice',
-	'silly',
-	'trace',
-	'verbose',
-	'warn',
 	'warning',
+	'warn',
+	'notice',
+	'info',
+	'verbose',
+	'log',
+	'debug',
+	'trace',
+	'silly',
 )
 type LogLevel = Enum<typeof LogLevel>
+
+///////
 
 type Details = { [k: string]: any}
 type LogFn = (message?: string, details?: Details) => void
 type OutputFn = (payload: Payload) => void
 
-interface LoggerParams {
+interface LogParams {
 	name: string
 	level?: LogLevel
 	details?: Details
@@ -30,16 +34,15 @@ interface LoggerParams {
 
 interface InternalLoggerState {
 	name: string
-	level_enum: LogLevel
-	level_int: number
+	level: LogLevel // lower bound, included
 	details: Details
-	output_fn: OutputFn
+	outputFn: OutputFn
 }
 
 interface Logger {
 	_: InternalLoggerState
 
-	child: (p: Partial<LoggerParams>) => Logger
+	child: (p: Partial<LogParams>) => Logger
 	isLevelEnabled: (level: LogLevel) => boolean
 	setLevel: (level: LogLevel) => void
 	getLevel: () => LogLevel
@@ -81,6 +84,6 @@ export {
 	OutputFn,
 	InternalLoggerState,
 	Logger,
-	LoggerParams,
+	LogParams,
 	Payload,
 }

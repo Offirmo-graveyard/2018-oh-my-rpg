@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const typescript_string_enums_1 = require("typescript-string-enums");
 const types_1 = require("./types");
+const ALL_LOG_LEVELS = typescript_string_enums_1.Enum.keys(types_1.LogLevel);
+exports.ALL_LOG_LEVELS = ALL_LOG_LEVELS;
 const LEVEL_TO_INTEGER = {
     [types_1.LogLevel.fatal]: 60,
     [types_1.LogLevel.emerg]: 59,
@@ -18,6 +21,8 @@ const LEVEL_TO_INTEGER = {
     [types_1.LogLevel.silly]: 1,
 };
 exports.LEVEL_TO_INTEGER = LEVEL_TO_INTEGER;
+if (ALL_LOG_LEVELS.length !== LEVEL_TO_INTEGER.length)
+    throw new Error(`universal-logger-core: LEVEL_TO_INTEGER needs an update`);
 // level to short, meaningful string to maybe be displayed on screen
 const LEVEL_TO_HUMAN = {
     [types_1.LogLevel.fatal]: 'fatal',
@@ -36,4 +41,6 @@ const LEVEL_TO_HUMAN = {
     [types_1.LogLevel.silly]: 'silly',
 };
 exports.LEVEL_TO_HUMAN = LEVEL_TO_HUMAN;
+if (ALL_LOG_LEVELS.length !== Object.keys(LEVEL_TO_HUMAN).length)
+    throw new Error(`universal-logger-core: LEVEL_TO_HUMAN needs an update`);
 //# sourceMappingURL=const.js.map

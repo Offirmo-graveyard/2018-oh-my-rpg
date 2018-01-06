@@ -2,7 +2,7 @@ import {
 	LEVEL_TO_HUMAN,
 	LogLevel,
 	Logger,
-	LoggerParams,
+	LogParams,
 	Details,
 	Payload,
 	OutputFn,
@@ -75,7 +75,7 @@ const LEVEL_TO_COLORIZE_BODY: { [k: string]: (s: string) => string } = {
 	[LogLevel.silly]:   s => chalk.dim(s),
 }
 
-function createLogger(p: LoggerParams): Logger {
+function createLogger(p: LogParams): Logger {
 
 	function outputFn(payload: Payload): void {
 		const { level, name, msg, time, details } = payload

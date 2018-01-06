@@ -2,17 +2,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const types_1 = require("./types");
 const const_1 = require("./const");
-const timestamp_1 = require("../timestamp");
+const timestamp_1 = require("../timestamp"); // TODO export it
+function checkLevel() {
+}
 function createLogger({ name, level = types_1.LogLevel.info, details = {}, outputFn = console.log, }) {
     if (!name)
         throw new Error('universal-logger-core›create(): you must provide a name!');
     const internal_state = {
         name,
-        level_enum: level,
-        level_int: 0,
+        level,
         details: Object.assign({}, details),
-        output_fn: outputFn,
+        outputFn: outputFn,
     };
+    let level_int = 0;
     const logger = Object.keys(const_1.LEVEL_TO_INTEGER).reduce((logger, level) => {
         logger[level] = (message, details) => {
             if (!isLevelEnabled(level))
@@ -36,21 +38,22 @@ function createLogger({ name, level = types_1.LogLevel.info, details = {}, outpu
         child,
     });
     function setLevel(level) {
-        if (!Object.keys(const_1.LEVEL_TO_INTEGER).includes(level))
+        if (!const_1.ALL_LOG_LEVELS.includes(level))
             throw new Error(`Logger core: unknown level "${level}"!`);
-        internal_state.level_enum = level;
-        internal_state.level_int = const_1.LEVEL_TO_INTEGER[level];
+        internal_state.level = level;
+        level_int = const_1.LEVEL_TO_INTEGER[level];
     }
     setLevel(level);
     function isLevelEnabled(level) {
-        return const_1.LEVEL_TO_INTEGER[level] >= internal_state.level_int;
+        return const_1.LEVEL_TO_INTEGER[level] >= level_int;
     }
     function getLevel() {
-        return internal_state.level_enum;
+        return internal_state.level;
     }
     function addDetails(details) {
         internal_state.details = Object.assign({}, internal_state.details, details);
     }
+    // TODO check
     function child({ name, level, details }) {
         return createChildLogger({
             parent: logger,
@@ -73,7 +76,7 @@ function createLogger({ name, level = types_1.LogLevel.info, details = {}, outpu
     return logger;
 }
 exports.createLogger = createLogger;
-function createChildLogger({ parent, name = parent._.name, level = parent.getLevel(), details = {}, outputFn = parent._.output_fn, }) {
+function createChildLogger({ parent, name = parent._.name, level = parent.getLevel(), details = {}, outputFn = parent._.outputFn, }) {
     details = Object.assign({}, parent._.details, details);
     return createLogger({
         name,

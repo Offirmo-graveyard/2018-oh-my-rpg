@@ -1,9 +1,29 @@
-import { LogLevel, InternalLoggerState, Logger, LoggerParams, Details, Payload, OutputFn } from './types'
-import { LEVEL_TO_INTEGER } from './const'
-import { get_human_readable_UTC_timestamp_ms_v1 } from '../timestamp'
+import { Enum } from 'typescript-string-enums'
+
+import { get_human_readable_UTC_timestamp_ms_v1 } from '../timestamp' // TODO export it
+
+import {
+	LogLevel,
+	InternalLoggerState,
+	Logger,
+	LogParams,
+	Details,
+	Payload,
+	OutputFn,
+} from './types'
+
+import {
+	ALL_LOG_LEVELS,
+	LEVEL_TO_INTEGER,
+} from './const'
 
 
-interface CreateParams extends LoggerParams {
+function checkLevel(level: LogLevel) {
+	if (!Enum.isType(LogLevel, level)) {
+		throw new Error(`Not a valid log level: "${level}"!`)
+}
+
+interface CreateParams extends LogParams {
 	outputFn?: OutputFn,
 }
 
@@ -13,16 +33,17 @@ function createLogger({
 	details = {},
 	outputFn = console.log,
 }: CreateParams): Logger {
+
 	if (!name)
 		throw new Error('universal-logger-core›create(): you must provide a name!')
 
-	const internal_state: InternalLoggerState = {
+	const internalState: InternalLoggerState = {
 		name,
-		level_enum: level,
-		level_int: 0,
+		level,
 		details: {...details},
-		output_fn: outputFn,
+		outputFn: outputFn,
 	}
+	let level_int = 0
 
 	const logger: Logger = Object.keys(LEVEL_TO_INTEGER).reduce((logger: any, level: LogLevel) => {
 		logger[level] = (message?: string, details?: Details) => {
@@ -39,7 +60,7 @@ function createLogger({
 		}
 		return logger
 	}, {
-		_: internal_state,
+		_: internalState,
 		isLevelEnabled,
 		setLevel,
 		getLevel,
@@ -48,30 +69,33 @@ function createLogger({
 	}) as Logger
 
 	function setLevel(level: LogLevel) {
-		if (!Object.keys(LEVEL_TO_INTEGER).includes(level))
-			throw new Error(`Logger core: unknown level "${level}"!`)
+		checkLevel(level)
 
-		internal_state.level_enum = level
-		internal_state.level_int = LEVEL_TO_INTEGER[level]
+		internalState.level = level
+		level_int = LEVEL_TO_INTEGER[level]
 	}
 	setLevel(level)
 
 	function isLevelEnabled(level: LogLevel) {
-		return LEVEL_TO_INTEGER[level] >= internal_state.level_int
+		checkLevel(level)
+
+		return LEVEL_TO_INTEGER[level] >= level_int
 	}
 
 	function getLevel() {
-		return internal_state.level_enum
+		return internalState.level
 	}
 
 	function addDetails(details: Details): void {
-		internal_state.details = {
-			...internal_state.details,
+		internalState.details = {
+			...internalState.details,
 			...details,
 		}
 	}
 
-	function child({name, level, details}: Partial<LoggerParams>): Logger {
+	// TODO check
+	/*
+	function child({name, level, details}: Partial<LogParams>): Logger {
 		return createChildLogger({
 			parent: logger,
 			name,
@@ -79,11 +103,12 @@ function createLogger({
 			details,
 		})
 	}
+	*/
 
 	function serializer(level: LogLevel, msg: string, details: Details): Payload {
 		const payload: Payload = {
 			details: {
-				...internal_state.details,
+				...internalState.details,
 				...details,
 			},
 			level,
@@ -99,33 +124,8 @@ function createLogger({
 	return logger
 }
 
-interface ChildCreateParams extends Partial<LoggerParams> {
-	parent: Logger
-	outputFn?: OutputFn,
-}
-
-function createChildLogger({
-	parent,
-	name = parent._.name,
-	level = parent.getLevel(),
-	details = {},
-	outputFn = parent._.output_fn,
-}: ChildCreateParams): Logger {
-	details = {
-		...parent._.details,
-		...details,
-	}
-
-	return createLogger({
-		name,
-		level,
-		details,
-		outputFn,
-	})
-}
 
 
 export {
 	createLogger,
-	createChildLogger,
 }

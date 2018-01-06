@@ -2,7 +2,7 @@ import {
 	LEVEL_TO_HUMAN,
 	LogLevel,
 	Logger,
-	LoggerParams,
+	LogParams,
 	Details,
 	Payload,
 	OutputFn,
@@ -55,7 +55,7 @@ const LEVEL_TO_STYLE: { [k: string]: string } = {
 	[LogLevel.silly]:   'color: #9AA2AA',
 }
 
-function createLogger(p: LoggerParams): Logger {
+function createLogger(p: LogParams): Logger {
 
 	function outputFn(payload: Payload): void {
 		const { level, name, msg, time, details } = payload
