@@ -16,16 +16,3 @@ TODO switch to hjson ?
 		{ "good": true, "hid": "",      "post": { "gains": { "weapon": true }}},
 		{ "good": true, "hid": "",      "post": { "gains": { "armor": true }}},
 
-		_make_friends: {
-			// TODO necro + follower ?
-		},
-		_unicorns: {
-			// TODO
-		},
-		_arrown_in_the_knee: {
-			// TODO
-		},
-		_black_mage_again: {
-			// TODO
-		}
-
