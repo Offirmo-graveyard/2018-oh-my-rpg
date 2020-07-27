@@ -57,8 +57,8 @@ neverending
 unknown
 
 
-       name: yjutard                                                               Pick a role or profession
-       role:  choosing now                                                         
+       name:                                                                Pick a role or profession
+       role:  choosing now
        race:  not yet specified                                                    a - an Archeologist
      gender:  not yet specified                                                    b - a Barbarian
   alignment:  not yet specified                                                    c - a Caveman/Cavewoman
@@ -73,12 +73,12 @@ unknown
                                                                                    v - a Valkyrie
                                                                                    w - a Wizard
                                                                                    * - Random
-                                                                                   
+
                                                                                    / - Pick race first
                                                                                    " - Pick gender first
                                                                                    [ - Pick alignment first
                                                                                    q - Quit
-                                                                                   (end) 
+                                                                                   (end)
 
 
 
